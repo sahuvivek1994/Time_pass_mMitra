@@ -12,7 +12,7 @@ class Splash_screen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
 
-        Timer().schedule(3000)
+        Timer().schedule(5000)
         {
             startActivity(Intent(this@Splash_screen,Login::class.java))
         }
