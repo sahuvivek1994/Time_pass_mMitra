@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">एम मित्रा</string>
+    <string name="hint_username">वापरकर्ता चे नाव</string>
+    <string name="hint_password">पासवर्ड</string>
+    <string name="button_login">लॉग इन</string>
+    <string name="enter_username">कृपया वापरकर्ताचे नाव प्रविष्ट करा</string>
+    <string name="enter_password">कृपया पासवर्ड प्रविष्ट करा</string>
+    <string name="action_settings">सेटिंग</string>
+    <string name="sync">संकालन</string>
+    <string name="give_sace_between_child_name">कृपया मुलाचे प्रथम नाव मध्य नाव आणि आडनाव यांच्या दरम्यान जागा द्या</string>
+    <string name="name_edit_change_successful">मुलाचे नाव यशस्वीरित्या बदलले गेले आहे</string>
+    <string name="name_edit_change_unsuccessful">मुलाचे नाव संपादन अयशस्वी झाले,कृपया पुन्हा प्रयत्न करा.</string>
+    <string name="error_performing_operation">काही समस्या आली, पुन्हा प्रयत्न करा</string>
+
+    <string name="anc">ए एन सी भेटी</string>
+    <string name="pnc">पी एन सी भेटी</string>
+    <string name="child">बाल संगोपन</string>
+    <string name="workplan">कार्य योजना</string>
+    <string name="highrisk">उच्च धोक्याचे यादी</string>
+    <string name="growth_monitoring">वाढ निरीक्षण</string>
+    <string name="resources">संसाधने</string>
+    <string name="registration">नोंदणी</string>
+    <string name="expected_delivery_date">आईच्या प्रसुतीची अपेक्षित तारीख</string>
+    <string name="change_child_name_title">बाळाचे नाव बदला</string>
+    <string name="category_personal">वैयक्तिक</string>
+    <string name="category_sync">डेटा समक्रमित करा</string>
+    <string name="category_account">खाता</string>
+    <string name="category_about">बद्दल</string>
+    <string name="language">भाषा</string>
+    <string name="sync_forms">फॉर्म सुधारणा</string>
+    <string name="get_help_mannual">संसाधने मदत घ्या</string>
+    <string name="restore_data">डेटा पुनर्संचयित</string>
+    <string name="check_update">अद्ययावत करा</string>
+    <string name="logout">लॉगआउट</string>
+    <string name="version">आवृत्ती</string>
+
+    <string name="no_internet_connection">इंटरनेट संपर्क क्षेत्रात उपलब्ध नाही आहे. आपले नेटवर्क
+        कनेक्शन तपासा
+    </string>
+    <string name="no_internet">इंटरनेट उपलब्ध नाही आहे</string>
+    <string name="downloading_data">डेटा डाउनलोड करीत आहे ...</string>
+    <string name="saving_forms">फॉर्म जतन करीत आहे ...</string>
+    <string name="select">निवडा</string>
+    <string name="button_next">पुढील</string>
+    <string name="button_previous">मागील</string>
+    <string name="Toast_msg_for_compulsory">वरील प्रश्न अनिवार्य आहेत</string>
+    <string name="no_data">कोणताही डेटा उपलब्ध नाही आहे</string>
+    <string name="dropdown_text">निवडा</string>
+    <string name="default_validation_msg">हा प्रश्न अनिवार्य आहे</string>
+    <string name="save_form">फॉर्म सेव करा</string>
+    <string name="save_form_message">तुम्हाला फॉर्म तपशील संचयीत करायची आहे?</string>
+    <string name="yes">होय</string>
+    <string name="no">नाही</string>
+    <string name="Toast_msg_for_formsavesuccessfully">फॉर्म यशस्वीरित्या जतन झाले</string>
+    <string name="enter_valid_lmp">कृपया वैध एल.एम.पी तारीख प्रविष्ट करा</string>
+    <string name="exceed_curnt_dt">प्रविष्ट केलेली तारीख चालू दिनांक पेक्षा पुढे आहे</string>
+    <string name="capture_photo_text">फोटो काढा</string>
+    <string name="High_Risk">रुग्ण भेटीचे सारांश - उच्च जोखिम आहे! पी.एच.सी/ प्रा.आरोग्य केंद्राला पाठवा</string>
+    <string name="no_highrisk_msg">उच्च धोक्याचे संदेश नाही आहेत</string>
+    <string name="confirm_dialog">खात्री करा</string>
+    <string name="checkbox_select_msg">कृपया सर्व चेकबॉक्स निवडा</string>
+    <string name="Diagnostic_Test">रुग्ण भेटीचे सारांश - निदान चाचणीसाठी पी.एच.सी/ प्रा.आरोग्य केंद्राला पाठवा</string>
+    <string name="no_referral_msg">रेफरल संदेश आढळले नाही</string>
+    <string name="present_age_msg">वर्तमान वय लग्नाचे वया पेक्षा कमी असावे</string>
+    <string name="Important_Note">रुग्ण भेटीचे सारांश</string>
+    <string name="counselling_msg_txt">समुपदेशन संदेश</string>
+    <string name="back_form">हे फॉर्म भरू नये</string>
+    <string name="back_form_message">आपण मधून निर्गमन करू इच्छिता?</string>
+    <string name="sync_forms_message">कृपया सेटिंग्ज वर फॉर्म संक्रमित करा,\n आता बाहेर पडण्यासाठी
+        OK बटण दाबणे
+    </string>
+    <string name="title_data_not_found">डेटा आढळले नाही</string>
+    <string name="ok">ठीक</string>
+    <string name="cancel">रद्द</string>
+    <string name="no_important_msg">संदेश आढळले नाही</string>
+    <string name="loading_question">प्रश्न लोड करीत आहे ....</string>
+    <string name="error">त्रुटी</string>
+    <string name="authentication_failed">प्रमाणीकरण अयशस्वी</string>
+    <string name="response_not_found">प्रतिसाद मिळत नाही</string>
+    <string name="input_output_error_occured">त्रुटी आढळली</string>
+    <string name="oops_some_thing_happened_wrong">उफ़ !! काहीतरी घडले. कृपया पुन्हा प्रयत्न करा
+    </string>
+    <string name="dialog_install_text">इंस्टॉल करा</string>
+    <string name="dialog_update_available">अपडेट उपलब्ध आहे</string>
+    <string name="dialog_app_updated_text">आपला अँप अपडेटेड आहे</string>
+    <string name="apk_download_request_text">नवीन आवृत्ती</string>
+    <string name="looking_for_update">माहिती शोधत आहे ...</string>
+    <string name="apk_download_progress_title">डाउनलोड होत आहे...</string>
+    <string name="invalid_data_frm_server">सर्व्हर पासून अवैध डेटा मिळत आहे</string>
+
+    //DO not translate ==========================================
+    <string name="title_english">English</string>
+    <string name="title_marathi">मराठी</string>
+    <string name="title_hindi">हिंदी</string>
+
+
+
+    <string name="default_language">en</string>
+
+    //==============================================================
+
+    <string name="forms_already_updated">फॉर्म आधीपासूनच उपलब्ध आहे</string>
+    <string name="visit_history">भेटींचा इतिहास</string>
+    <string name="unique_id">आय डी</string>
+    <string name="mobile_no">मोबाइल क्रमांक</string>
+    <string name="alternate_no">पर्यायी मोबाइल क्रमांक</string>
+    <string name="lmp_date">एल.एम.पी दिनांक</string>
+    <string name="delivery_date">प्रसुतीचा दिनांक</string>
+    <string name="high_risk">उच्च जोखिम</string>
+
+    <string name="file_not_exit_txt">फाइल अस्तित्वात नाही !!</string>
+    <string name="anc_next_visit">पुढील भेटी</string>
+    <string name="nextvisit_text_part1">आपली पुढील भेट आहे \t</string>
+    <string name="nextvisit_text_part2">\t आणि ते या तारीखला येईल\t</string>
+    <string name="nextvisit_text_part3">\t</string>
+    <string name="all_anc_visits_comp_msg">महिलांच्या सर्व एएनसी भेटी पूर्ण झाले</string>
+    <string name="all_anc_visits_comp_title">एएनसी भेटी पूर्ण झाले</string>
+    <string name="pregnant_woman">गर्भवती महिला</string>
+    <string name="uploading_forms">फॉर्म अपलोड करीत आहे ...</string>
+
+    <string name="dialog_title_error">त्रुटी आहे</string>
+    <string name="dialog_enter_height">कृपया येथे मुलांचा उंची से.मी मध्ये प्रविष्ट करा</string>
+    <string name="dialog_enter_weight">कृपया येथे मुलांचा वजन कीलो मध्ये प्रविष्ट करा</string>
+    <string name="dialog_enter_muac">MUAC मापन प्रविष्ट करा</string>
+    <string name="year">वर्ष</string>
+    <string name="years">वर्षे</string>
+    <string name="months">महिने</string>
+    <string name="month">महिना</string>
+    <string name="days">दिवस</string>
+    <string name="day">दिवस</string>
+    <string name="sam_status">सैम</string>
+    <string name="mam_status">मैम</string>
+    <string name="no_phone_number">फोन नंबर नाही आहे</string>
+    <string name="child_mother_name">आई :</string>
+    <string name="no_mother">आई नाही आहे</string>
+    <string name="consultation_video">सल्ला संदेश चे व्हिडिओ</string>
+    <string name="child_growth_no_data">या महिन्यात कोणताही डेटा मिळाले नाही</string>
+    <string name="save_child_data">या मुलाचे माहिती सेव करा</string>
+    <string name="referral">संदर्भित</string>
+    <string name="search_name">नावानुसार शोध घ्या</string>
+    <string name="danger_signs_during_infancy_video">बाल्यावपथेमधील धोक्याची लक्षणे वर अॅनिमेशन दाखविणे</string>
+    <string name="childs_weight">बाळाचे वजन</string>
+    <string name="muac_measurment">MUAC मापन</string>
+    <string name="childs_height">बलाचे उंची</string>
+    <string name="height_in_cm">उंची से.मी</string>
+    <string name="weight_in_kg">वजन किलोग्रॅम मध्ये</string>
+    <string name="date_of_birth">जन्म तारीख</string>
+    <string name="phone_no">फोन नंबर</string>
+    <string name="child_name">नाव : %1$s</string>
+    <string name="child_age">वय : %1$s</string>
+    <string name="age_in_months">वय महिन्यात</string>
+    <string name="age">वय</string>
+    <string name="weight">वजन</string>
+    <string name="help_manual_already_updated">मदत मॅन्युअल आधीपासूनच उपलब्ध आहे</string>
+
+    <string name="msg_no_faqs_available">.वारंवार विचारले जाणारे प्रश्न उपलब्ध नाही सेटिंग्ज वर जा
+        आणि वारंवार विचारले जाणारे प्रश्न मिळविण्यासाठी
+        <b>मदत मॅन्युअल</b>
+        वर क्लिक करा
+    </string>
+
+    <string name="animations">अॅनिमेशन</string>
+    <string name="videos">व्हिडिओ</string>
+    <string name="btn_title_faqs">वारंवार विचारले जाणारे प्रश्न</string>
+    <string name="btn_title_user_guide">मार्गदर्शक</string>
+    <string name="btn_reports">अहवाल</string>
+    <string name="msg_no_animations_available">कोणतेही एनिमेशन उपलब्ध नाही</string>
+    <string name="msg_no_videos_available">कोणतेही व्हिडिओ उपलब्ध नाहीत</string>
+    <string name="msg_no_mmitra_calls_available">कोणतेही एम-मित्र ध्वनी संदेश कॉल उपलब्ध नाहीत</string>
+    <string name="m_mitra_voice_calls">एम-मित्र ध्वनी संदेश कॉल</string>
+    <string name="open_file">फाईल उघडा</string>
+    <string name="no_handler_for_type">या प्रकारच्या फाईलसाठी चालत नाही</string>
+    <string name="select_file">फाईल निवडा</string>
+    <string name="choose_video_player">व्हिडिओ प्लेअर निवडा</string>
+    <string name="dob">जन्म दिनांक :</string>
+    <string name="mother">आई :</string>
+    <string name="village">गाव :</string>
+    <string name="mob">मोबाइल :</string>
+    <string name="last_visit">अंतिम भेट :</string>
+    <string name="address">पत्ता :</string>
+    <string name="age_param">वय :</string>
+    <string name="completed">पूर्ण झाले</string>
+    <string name="incomplete">अपूर्ण</string>
+    <string name="due">प्रलंबित भेटी</string>
+    <string name="overdue">अप्रलंबित भेटी</string>
+    <string name="child_care_1">बाल संगोपन 1</string>
+    <string name="child_care_3">बाल संगोपन 3</string>
+    <string name="child_care_5">बाल संगोपन 5</string>
+    <string name="child_care_7">बाल संगोपन 7</string>
+    <string name="child_care_9">बाल संगोपन 9</string>
+    <string name="child_care_11">बाल संगोपन 11</string>
+    <string name="child_care_2">बाल संगोपन 2</string>
+    <string name="child_care_4">बाल संगोपन 4</string>
+    <string name="child_care_6">बाल संगोपन 6</string>
+    <string name="child_care_8">बाल संगोपन 8</string>
+    <string name="child_care_10">बाल संगोपन 10</string>
+    <string name="child_care_12">बाल संगोपन 12</string>
+    <string name="form">फॉर्म</string>
+    <string name="antenatal_care_1">एएनसी 1</string>
+    <string name="antenatal_care_2">एएनसी 2</string>
+    <string name="antenatal_care_3">एएनसी 3</string>
+    <string name="antenatal_care_4">एएनसी 4</string>
+    <string name="antenatal_care_5">एएनसी 5</string>
+    <string name="antenatal_care_6">एएनसी 6</string>
+    <string name="delivery_form">डिलिव्हरी फॉर्म</string>
+    <string name="closure_form">रद्द फॉर्म</string>
+    <string name="registered_children">नोंदणीकृत मुले</string>
+    <string name="women_list">महिला</string>
+    <string name="children_list">मुले</string>
+    <string name="high_risk_visit_list">उच्च जोखिम भेटीचे यादी</string>
+
+    <string name="done">पूर्ण झाले</string>
+    <string name="refer_here">संदर्भित केंद्राला पाठवा</string>
+    <string name="select_referred_location">संदर्भित केंद्र निवडा</string>
+    <string name="not_applicable">लागू नाही</string>
+    <string name="an_initiative_by">सुरु करण्यात आले</string>
+    <string name="supported_by">सौजन्य</string>
+    <string name="child_closure">बालाची माहिती रद्द करा</string>
+    <string name="referred">संदर्भित</string>
+    <string name="not_referred">संदर्भित न केलेले</string>
+    <string name="restore_warning_text">चेतावनी</string>
+    <string name="dialog_msg_loss_data_warning">आपला न पाठवलेला फॉर्म रद्द होइल | हे फॉर्म पुढे
+        पाठविण्यासाठी \n रद्द बटण दाबा किंवा पुढे जाण्यासाठी "ठीक" बटण दाबणे
+    </string>
+    <string name="no_records_error_msg">कोणतेही रेकॉर्ड नाहीत</string>
+    <string name="resources_text">संसाधने</string>
+    <string name="authentication_error_msg">अवैध वापरकर्ता चे नाव आणि पासवर्ड</string>
+    <string name="profile_image_update_success_msg">लाभार्तीचा फोटो यशस्वीपणे उपलोड झाला.</string>
+    <string name="profile_image_update_failed_msg">लाभार्तीचा फोटो यशस्वीपणे उपलोड झाला नाही.</string>
+    <string name="change_text">बदल / दुरुस्ती</string>
+    <string name="change_profile_image_title">प्रोफाईलचा फोटो बदला</string>
+    <string name="change_pro_img_confirmation_msg">आपणास प्रोफाईलचा फोटो बदलायचा आहे का ?</string>
+    <string name="pro_img_already_updated_msg">प्रोफाईलचा फोटो या पूर्वीच बदला आहे</string>
+
+
+    <string-array name="migrantStatus">
+        <item>सर्व</item>
+        <item>निवासी</item>
+        <item>स्थलांतरित</item>
+    </string-array>
+
+    <string-array name="child_filters">
+        <item>सर्व</item>
+        <item>सामान्य वजन</item>
+        <item>वजन कमी</item>
+        <item>तीव्र वजन कमी</item>
+        <item>SAM</item>
+        <item>MAM</item>
+        <item>अपेक्षित भेटी</item>
+    </string-array>
+
+    <string-array name="referred_locations">
+        <item>@string/select</item>
+        <item>प्राथमिक आरोग्य केंद्र - पी एच सी</item>
+        <item>सार्वजनिक दवाखाना/चिकित्सालय</item>
+        <item>खाजगी  दवाखाना/चिकित्सालय</item>
+    </string-array>
+    <string name="Reg_women">कोणत्या ही नोंदणीकृत महिला मिलाली नाही</string>
+    <string name="empty_child_list_text">नोंदणीकृत कोणताही बालकास नाही</string>
+    <string name="no_child_found">कोई बच्चा नहीं मिला</string>
+    <string name="no_result_found">%s निकाल सापडला</string>
+    <string name="no_high_risk_woman_msg">कोणतीही उच्च जोखिम महिला सापडली नाही</string>
+    <string name="no_high_risk_child_msg">कोणताही उच्च जोखिम बालक सापडला नाही</string>
+    <string name="pending_label_text">प्रलंबित</string>
+    <string name="incomplete_visit">अपूर्ण भेटी</string>
+    <string name="total_visits">एकूण भेटी</string>
+    <string name="due_visits">अपेक्षित भेटी</string>
+    <string name="overdue_visits">राहिलेल्या भेटी</string>
+    <string name="total_referral">एकूण संदर्भित</string>
+    <string name="not_referral">संदर्भित नाही</string>
+    <string name="swipe_up_hint_text">अधिक माहितीसाठी वर स्वाईप करा </string>
+    <string name="update_forms_message">नवीन फॉर्म अपडेट करा. क्लिक ओके आणि सेटिंग मध्ये जाऊन फॉर्म सुधारणा वर क्लिक करा </string>
+    <string name="referral_count">संदर्भित सारांश</string>
+    <string name="visits_count">भेटी सारांश</string>
+    <string name="register_count">नोंदणी सारांश</string>
+    <string name="img_edit_name">img_edit_name</string>
+    <string name="graph">आलेख</string>
+    <string name="wages">मजुरी</string>
+    <string name="overall_report">एकूण अहवाल</string>
+    <string name="thirty_days_report">शेवटच्या 30 दिवसांचा अहवाल</string>
+    <string name="six_months_report">शेवटच्या 6 महिन्यांचा अहवाल</string>
+    <string name="one_year_report">गेल्या 1 वर्षाचा अहवाल</string>
+    <string name="custom_report">इच्छित अहवाल</string>
+    <string name="overall_report_based_on_server">एकूण अहवाल (सर्व्हरवर आधारित)</string>
+    <string name="overall_report_based_on_tab">एकूण अहवाल (टॅबवर आधारित)</string>
+    <string name="visit_type">भेटीचे प्रकार</string>
+    <string name="count">संख्या</string>
+    <string name="report_reg">नोंदणी</string>
+    <string name="report_anc">ए एन सी भेटी</string>
+    <string name="report_pnc">पी एन सी भेटी</string>
+    <string name="total">एकूण</string>
+    <string name="rep_incomplete_visit">अपूर्ण भेटी</string>
+    <string name="rep_total_visits">एकूण भेटी</string>
+    <string name="rep_due_visits">अपेक्षित भेटी</string>
+    <string name="rep_overdue_visits">राहिलेल्या भेटी</string>
+    <string-array name="filterTypes">
+        <item>एकूण अहवाल</item>
+        <item>शेवटच्या 30 दिवसांचा अहवाल</item>
+        <item>शेवटच्या 6 महिन्यांचा अहवाल</item>
+        <item>गेल्या 1 वर्षाचा अहवाल</item>
+        <item>इच्छित अहवाल</item>
+    </string-array>
+    <string name="from">पासून</string>
+    <string name="to">पर्यंत</string>
+    <string name="wages_based_on_server">मजुरी (सर्व्हरवर आधारित)</string>
+    <string name="wages_based_on_tab">मजुरी (टेबवर आधारित)</string>
+    <string name="report_title">अहवाल</string>
+    <string name="graphical_view">आलेख</string>
+
+
+</resources>

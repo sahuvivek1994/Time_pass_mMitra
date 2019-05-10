@@ -1,0 +1,116 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/baseLinear"
+    android:background="#fafafa"
+    android:weightSum="1">
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progressDrawable="@drawable/progress_anc"
+        android:layout_marginTop="@dimen/enr_large_margin"
+        android:layout_marginLeft="@dimen/enr_xlarge_margin"
+        android:layout_marginRight="@dimen/enr_xlarge_margin"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/text_total_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/00"
+            android:textStyle="bold"
+            android:paddingTop="@dimen/enr_small_padding"
+            android:textSize="@dimen/text_size_large"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:id="@+id/frame"
+        android:background="#fafafa"
+        android:layout_weight="0.9"
+        />
+
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="#fafafa"
+        android:id="@+id/buttonlayout"
+        android:layout_weight="0.1"
+        android:paddingLeft="@dimen/enr_xlarge_margin"
+        android:paddingRight="@dimen/enr_xlarge_margin"
+        android:gravity="center"
+        >
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:mrl_rippleOverlay="true"
+            app:mrl_rippleColor="@color/color_pinkish_grey"
+            app:mrl_rippleAlpha="0.4"
+            app:mrl_rippleDelayClick="true"
+            app:mrl_rippleHover="true"
+            android:layout_alignParentLeft="true">
+
+            <Button
+                android:id="@+id/btnpre"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/enr_button_height"
+                android:textSize="@dimen/text_size_xx_large"
+                android:text="@string/button_previous"
+                android:textColor="@color/color_blue"
+                android:drawableLeft="@drawable/ic_arrow_left_blue"
+                android:paddingLeft="@dimen/enr_normal_padding"
+                android:paddingRight="@dimen/enr_large_padding"
+                android:textAllCaps="true"
+                android:background="@null"
+                />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:mrl_rippleOverlay="true"
+            app:mrl_rippleColor="@color/color_pinkish_grey"
+            app:mrl_rippleAlpha="0.4"
+            app:mrl_rippleDelayClick="true"
+            app:mrl_rippleHover="true"
+            android:layout_alignParentRight="true">
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_xx_large"
+                android:text="@string/button_next"
+                android:textColor="@color/color_blue"
+                android:drawableRight="@drawable/ic_arrow_right_blue"
+                android:paddingRight="@dimen/enr_normal_padding"
+                android:paddingLeft="@dimen/enr_large_padding"
+                android:textAllCaps="true"
+                android:background="@null"
+                />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+
+
+
+
+
