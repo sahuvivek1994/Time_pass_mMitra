@@ -4,19 +4,19 @@
                                              xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
-                                             tools:context=".Login"
+                                             tools:context=".login.Login"
                                              android:background="@color/white">
 
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/guideline"
-            app:layout_constraintGuide_percent="0.06"/>
-    <android.support.constraint.Guideline
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline2"
             app:layout_constraintGuide_percent="0.53"/>
+    <android.support.constraint.Guideline
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guideline4"
+            app:layout_constraintGuide_percent="0.97"/>
     <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp" app:srcCompat="@drawable/m_mitra"
@@ -35,11 +35,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline3"
             app:layout_constraintGuide_percent="0.03"/>
-    <android.support.constraint.Guideline
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/guideline4"
-            app:layout_constraintGuide_percent="0.97"/>
     <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp" app:srcCompat="@drawable/armman"
@@ -110,5 +105,10 @@
             app:layout_constraintTop_toTopOf="@+id/guideline7" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toStartOf="@+id/guideline4"
             android:layout_marginEnd="8dp" android:layout_marginRight="8dp" app:layout_constraintVertical_bias="0.859"/>
+    <android.support.constraint.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guideline"
+            app:layout_constraintGuide_percent="0.06" app:layout_constraintGuide_begin="393dp"/>
 
 </android.support.constraint.ConstraintLayout>

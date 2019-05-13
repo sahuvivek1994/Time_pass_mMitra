@@ -16,4 +16,8 @@
         <item name="android:textColorPrimary">#616161</item>
         <item name="android:background">#FFFFFF</item>
     </style>
+    <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <!-- Customize color of navigation drawer icon and back arrow -->
+        <item name="colorControlNormal">@color/white</item>
+    </style>
 </resources>
