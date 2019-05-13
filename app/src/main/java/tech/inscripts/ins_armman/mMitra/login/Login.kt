@@ -1,12 +1,13 @@
 package tech.inscripts.ins_armman.mMitra.login
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import tech.inscripts.ins_armman.mMitra.R
-import tech.inscripts.ins_armman.mMitra.utility.utility
+import tech.inscripts.ins_armman.mMitra.mainMenu.MainActivity
 
 
 class Login : AppCompatActivity() {
@@ -28,6 +29,11 @@ class Login : AppCompatActivity() {
         mEditTextUserName = findViewById<View>(R.id.username) as EditText
         mEditTextPassword = findViewById<View>(R.id.password) as EditText
         mButtonLogin = findViewById<View>(R.id.button_login) as Button
+    }
+
+    fun login(view: View)
+    {
+        startActivity(Intent(this@Login, MainActivity::class.java))
     }
 
 }
