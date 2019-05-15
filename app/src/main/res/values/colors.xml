@@ -1,6 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+
+
+
+    <color name="color1">#D5E90E0E</color>
+    <color name="color2">#D5CC4141</color>
+    <color name="color3">#D5DB7272</color>
+    <color name="white">#FFFFFF</color>
+    <color name="login_button_color">#B5E45A5A</color>
+    <color name="colorPrimary">#C1161F</color>
+    <color name="colorPrimaryDark">#7f0000</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorRed">#B71C1C</color>
+
+    <color name="color_white">#FFFFFF</color>
+    <color name="highrisk_start_color">#EF5350</color>
+    <color name="highrisk_end_color">#BF360C</color>
+    <color name="reg_start_color">#29B6F6</color>
+    <color name="reg_end_color">#0D47A1</color>
+    <color name="anc_start_color">#FFA726</color>
+    <color name="anc_end_color">#FF6F00</color>
+    <color name="pnc_start_color">#AD1457</color>
+    <color name="pnc_end_color">#880E4F</color>
+    <color name="cc_start_color">#8BC34A</color>
+    <color name="cc_end_color">#33691E</color>
+    <color name="growth_monitor_start_color">#3F51B5</color>
+    <color name="growth_monitor_end_color">#1A237E</color>
+    <color name="workplan_start_color">#FF4081</color>
+    <color name="workplan_end_color">#C51162</color>
+    <color name="resources_start_color">#00897B</color>
+    <color name="resources_end_color">#004D40</color>
+
+    <color name="login_start_color">#ffffff</color>
+    <color name="login_end_color">#ffffff</color>
+
+    <color name="enroll_form">#0288D1</color>
+    <color name="color_blue">#3f51b5</color>
+    <color name="color_pinkish_grey">#bebebe</color>
+    <color name="title_bar">#263238</color>
+    <color name="highrisk">#f44336</color>
+    <color name="color_btn_normal">#757575</color>
+
+    <color name="color_reg">#5b5b5b</color>
+    <color name="color_anc">#2a857a</color>
+    <color name="color_pnc">#f0bc37</color>
+    <color name="color_cc">#a99f2a</color>
+    <color name="color_res">#326662</color>
+    <color name="color_highrisk">#c63843</color>
+    <color name="color_workplan">#72c78d</color>
+    <color name="color_gm">#6e89bf</color>
+    <color name="color_menu_button">#ffffff</color>
+
+    <color name="color_dark_gray">#414041</color>
+
+    <color name="color_completed">#00FF00</color>
+    <color name="color_incomplete">#FF9800</color>
+    <color name="color_due">#FFFF00</color>
+    <color name="color_overdue">#FF0000</color>
+    <color name="color_black">#000000</color>
+
+    <color name="text_color">#212121</color>
+    <color name="color_image_border">#BDBDBD</color>
+    <color name="main_question_background">#F5F5F5</color>
+    <color name="dependent_question_background">#EEEEEE</color>
+    <color name="anc_form">#FF9800</color>
+    <color name="anc_form_dependent">#EF6C00</color>
+    <color name="grey">#888</color>
+    <color name="color_namecard_red">#c62828</color>
+    <color name="yellow_color">#ffea00</color>
+
+    <color name="color_selection_bg">#3968E9</color>
+    <color name="light_gray">#f6f6f6</color>
+    <color name="color_border">#BDBDBD</color>
+    <color name="color_namecard_black">#222222</color>
+
+    <color name="color_light_gray">#BDBDBD</color>
+
+    <color name="color_referred">#1B5E20</color>
+    <color name="color_not_referred">#BF360C</color>
+    <color name="labelColor">@android:color/black</color>
+    <color name="valueColor">#424242</color>
+    <color name="closedWomen">#EF5350</color>
+    <color name="table_bg">#E8FEBA</color>
+    <color name="table_bg1">#FFEB3B</color>
+    <color name="report_overdue">#FFD08C</color>
+    <color name="report_due">#C0FF8C</color>
+    <color name="report_incomplete">#FFF78C</color>
+    <color name="value1">#8CECD6</color>
+    <color name="value2">#8EC1EC</color>
+    <color name="value3">#7F9ADD</color>
+    <color name="value4">#94D3E6</color>
+    <color name="value5">#A886E9CA</color>
+
 </resources>

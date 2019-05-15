@@ -1,14 +1,15 @@
 package tech.inscripts.ins_armman.mMitra.login
+import android.content.Context
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.*
-import android.widget.EditText
+import android.widget.Button
+import tech.inscripts.ins_armman.mMitra.HomeActivity
 import tech.inscripts.ins_armman.mMitra.R
-import tech.inscripts.ins_armman.mMitra.mainMenu.MainActivity
-
+import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
+import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
 
 class Login : AppCompatActivity() {
 
@@ -46,4 +47,3 @@ class Login : AppCompatActivity() {
 
     }
 
-}

@@ -1,0 +1,89 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--Text sizes -->
+    <dimen name="text_size_xxx_large">27sp</dimen>
+    <dimen name="text_size_xx_large">25sp</dimen>
+    <dimen name="text_size_x_large">24sp</dimen>
+    <dimen name="text_size_large">14sp</dimen>
+    <dimen name="text_size_medium">20sp</dimen>
+    <dimen name="text_size_normal">18sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_x_small">14sp</dimen>
+    <dimen name="text_size_xx_small">14sp</dimen>
+
+    <dimen name="login_button_padding">24dp</dimen>
+    <dimen name="login_margin">60dp</dimen>
+    <dimen name="home_page_margin">2dp</dimen>
+    <dimen name="menu_button_margin">4dp</dimen>
+    <dimen name="menu_button_top_padding">4dp</dimen>
+    <dimen name="menu_button_radius">2dp</dimen>
+    <dimen name="as_logo_top_margin">120dp</dimen>
+    <dimen name="ic_armman_margin">16dp</dimen>
+    <dimen name="progress_dialog_padding">20dp</dimen>
+    <dimen name="progressbar_margin_top">10dp</dimen>
+
+    <!--Enrollment frame-->
+    <dimen name="enr_large_margin">20dp</dimen>
+    <dimen name="enr_xlarge_margin">40dp</dimen>
+    <dimen name="enr_small_padding">5dp</dimen>
+    <dimen name="enr_normal_padding">10dp</dimen>
+    <dimen name="enr_large_padding">15dp</dimen>
+    <dimen name="enr_xlarge_padding">20dp</dimen>
+    <dimen name="enr_button_height">60dp</dimen>
+    <dimen name="image_view_size">80dp</dimen>
+    <dimen name="image_view_inner_radius">40dp</dimen>
+    <dimen name="image_view_margin_left_right">16dp</dimen>
+    <dimen name="image_view_margin_top_bottom">10dp</dimen>
+
+    <dimen name="badge_text_size">14sp</dimen>
+    <dimen name="questions_top_bottom_margin">-10dp</dimen>
+    <dimen name="margin_horizontal_hh_form">80dp</dimen>
+    <dimen name="padding_searchview">10dp</dimen>
+    <dimen name="spinner_padding_form">5dp</dimen>
+
+    <!--Search View-->
+    <dimen name="searchview_large_marging">20dp</dimen>
+    <dimen name="searchview_medium_marging">15dp</dimen>
+    <dimen name="searchview_normal_marging">10dp</dimen>
+    <dimen name="searchview_height">40dp</dimen>
+
+    <dimen name="textview_padding_form">5dp</dimen>
+    <dimen name="editext_padding_form">5dp</dimen>
+    <dimen name="margin_editext">5dp</dimen>
+    <dimen name="margin_top_child_growth_parameter">20dp</dimen>
+    <dimen name="edittext_layout_height">50dp</dimen>
+    <dimen name="margin_top_childlist_name">10dp</dimen>
+    <dimen name="margin_horizontal_childlist_name">10dp</dimen>
+
+    <!-- Login page -->
+    <dimen name="view_dash_line_width">270dp</dimen>
+    <dimen name="view_dash_line_height">10dp</dimen>
+    <dimen name="textview_initiative_margin_top">8dp</dimen>
+    <dimen name="textview_initiative_margin_bottom">6dp</dimen>
+    <dimen name="login_button_margin_start">48dp</dimen>
+    <dimen name="login_button_margin_end">48dp</dimen>
+    <dimen name="login_button_margin_top">5dp</dimen>
+
+    <!-- Home Page -->
+    <dimen name="bottom_sheet_text_size">18sp</dimen>
+    <dimen name="bottom_sheet_icon_height">16sp</dimen>
+    <dimen name="bottom_sheet_icon_width">16sp</dimen>
+    <dimen name="bottom_layout_marginBottom">6dp</dimen>
+    <dimen name="bottom_layout_marginEnd">12dp</dimen>
+    <dimen name="bottom_layout_marginTop">4dp</dimen>
+    <dimen name="bottom_sheet_text_min_size">10sp</dimen>
+
+    <!-- Resources page -->
+    <dimen name="resources_layout_margin">14dp</dimen>
+    <dimen name="resources_paddingLeft">150dp</dimen>
+
+    <!--Child History Layout -->
+    <dimen name="Info_status_bar_margin">2dp</dimen>
+    <dimen name="Info_status_bar_padding">2dp</dimen>
+    <dimen name="Info_layout_constraintHeight_percent">0.09</dimen>
+    <dimen name="Info_layout_constrainHeight_forms">0.61</dimen>
+
+</resources>

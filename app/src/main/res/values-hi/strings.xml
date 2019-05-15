@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">एम मित्रा</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="button_login">Login</string>
+    <string name="enter_username">Please enter username</string>
+    <string name="enter_password">Please enter password</string>
+    <string name="action_settings">सेटिंग</string>
+    <string name="sync">Sync</string>
+
+    <string name="anc">ए एन सी जाँच</string>
+    <string name="pnc">पी एन सी जाँच</string>
+    <string name="child">शिशु की देखभाल</string>
+    <string name="workplan">कार्य योजना</string>
+    <string name="highrisk">हाई रिस्क केस</string>
+    <string name="growth_monitoring">विकास की निगरानी</string>
+    <string name="resources">संसाधन</string>
+    <string name="registration">पंजीकरण</string>
+    <string name="expected_delivery_date">प्रसव की अनुमानित दिनांक</string>
+    <string name="change_child_name_title">बच्चे का नाम बदलें</string>
+    <string name="category_personal">Personal</string>
+    <string name="category_sync">सिंक डेटा</string>
+    <string name="category_account">खाता</string>
+    <string name="category_about">इस के बारे में</string>
+    <string name="language">भाषा</string>
+    <string name="sync_forms">फॉर्म को अपडेट करें</string>
+    <string name="get_help_mannual">संसाधन की मदद लें</string>
+    <string name="restore_data">डेटा को पुनर्स्थापित करें</string>
+    <string name="check_update">नया अपडेट खोजें</string>
+    <string name="logout">लॉगआउट</string>
+    <string name="version">Version</string>
+    <string name="give_sace_between_child_name">कृपया बच्चे के पहले नाम मध्य नाम और अंतिम नाम के बीच जगह दें</string>
+    <string name="name_edit_change_successful">बच्चे का नाम सफलतापूर्वक बदल दिया गया है</string>
+    <string name="name_edit_change_unsuccessful">बच्चे का नाम संपादित विफल रहा,कृपया पुन: प्रयास करें</string>
+    <string name="error_performing_operation">कुछ समस्या थी, फिर से प्रयास करें</string>
+    <string name="no_internet_connection">कोई इंटरनेट संपर्क में नहीं हैं। अपने जगह की नेटवर्क
+        कनेक्शन जाँच लें
+    </string>
+    <string name="no_internet">इंटरनेट उपलब्ध नहीं हैं</string>
+    <string name="downloading_data">Downloading data...</string>
+    <string name="saving_forms">Saving Forms...</string>
+    <string name="select" tools:ignore="ExtraTranslation">चुनें</string>
+    <string name="button_next">अगला</string>
+    <string name="button_previous">पिछला</string>
+    <string name="Toast_msg_for_compulsory">उपरोक्त प्रश्न अनिवार्य हैं</string>
+    <string name="no_data">कोई डेटा उपलब्ध नहीं हैं</string>
+    <string name="dropdown_text">चुनें</string>
+    <string name="default_validation_msg">यह प्रश्न अनिवार्य हैं</string>
+    <string name="save_form">फॉर्म सेव करें</string>
+    <string name="save_form_message">आप फार्म की जानकारी इस में रखना चाहते हैं?</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+    <string name="Toast_msg_for_formsavesuccessfully">फॉर्म सफलतापूर्वक सेव हो गया</string>
+    <string name="enter_valid_lmp">कृपया वैध एल.एम.पी दिनांक दर्ज करें</string>
+    <string name="exceed_curnt_dt">भरी गयी तिथि आज की तिथि से अधिक है</string>
+    <string name="capture_photo_text">फोटो खींचे</string>
+    <string name="High_Risk">रोगी की जाँच की सारांश - अति जोखिम की जाँच के लिए प्राथमिक आरोग्य
+        केंद्र में भेंजे
+    </string>
+    <string name="no_highrisk_msg">कोई अति जोखिमवाले संदेश नहीं हैं</string>
+    <string name="confirm_dialog">पुष्टि करें</string>
+    <string name="checkbox_select_msg">सभी चेक बॉक्स का चयन करें</string>
+    <string name="Diagnostic_Test">रोगी की जाँच की सारांश - नैदानिक परिक्षण के लिए प्राथमिक आरोग्य
+        केंद्र में भेजे
+    </string>
+    <string name="no_referral_msg">कोई रेफरल संदेश नहीं हैं</string>
+    <string name="present_age_msg">Present age should not be less than age at the marriage</string>
+    <string name="Important_Note">रोगी की जाँच की सारांश</string>
+    <string name="counselling_msg_txt">काउंसिलिंग संदेश</string>
+    <string name="back_form">फॉर्म से बाहर निकलें</string>
+    <string name="back_form_message">क्या आपको बाहर निकलना है?</string>
+    <string name="sync_forms_message">कृपया सेटिंग्स से फॉर्म को समक्रमिक करें, फिर बाहर निकलना हो
+        तो OK बटन दबा दें
+    </string>
+    <string name="title_data_not_found">यह डेटा नहीं मिला</string>
+    <string name="ok">ठीक</string>
+    <string name="cancel">रद्द</string>
+    <string name="no_important_msg">कोई संदेश नहीं हैं</string>
+    <string name="loading_question">सवाल लोड हो रहा है ...</string>
+    <string name="error">Error</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="response_not_found">Response not found</string>
+    <string name="input_output_error_occured">Input output error occurred</string>
+    <string name="oops_some_thing_happened_wrong">उफ़ !! कुछ हुआ। कृपया पुन: प्रयास करें</string>
+
+    <string name="dialog_install_text">इंस्टॉल करें</string>
+    <string name="dialog_update_available">अपडेट उपलब्ध है</string>
+    <string name="dialog_app_updated_text">आपका ऍप अपडेटेड है</string>
+    <string name="apk_download_request_text">नया संस्करण</string>
+    <string name="looking_for_update">Looking for update...</string>
+    <string name="apk_download_progress_title">डाउनलोड हो राहा है...</string>
+    <string name="invalid_data_frm_server">सर्वर से अमान्य डेटा मिला है</string>
+
+    //DO not translate ==========================================
+    <string name="title_english">English</string>
+    <string name="title_marathi">मराठी</string>
+    <string name="title_hindi">हिंदी</string>
+
+
+
+    <string name="default_language">en</string>
+
+    //==============================================================
+
+    <string name="forms_already_updated">Forms already updated</string>
+    <string name="visit_history">Visits History</string>
+    <string name="unique_id">ID</string>
+    <string name="mobile_no">Mobile No.</string>
+    <string name="alternate_no">Alternate No.</string>
+    <string name="lmp_date">LMP DAte</string>
+    <string name="delivery_date">प्रसव की दिनांक</string>
+    <string name="high_risk">High risk</string>
+
+    <string name="file_not_exit_txt">यह फाइल मौजूद नहीं है !!</string>
+    <string name="anc_next_visit">अगली भेंट</string>
+    <string name="nextvisit_text_part1">"आपकी अगली भेंट\t</string>
+    <string name="nextvisit_text_part2">\tहै\t</string>
+    <string name="nextvisit_text_part3">\t तिथि को</string>
+    <string name="all_anc_visits_comp_msg">महिला की सभी ए एन सी जांच पूर्ण हुई</string>
+    <string name="all_anc_visits_comp_title">ए एन सी जांच पूर्ण</string>
+    <string name="pregnant_woman">Pregnant women</string>
+    <string name="uploading_forms">Uploading forms...</string>
+
+    <string name="dialog_title_error">त्रुटि</string>
+    <string name="dialog_enter_height">कृपया बच्चों की ऊंचाई से.मी में यहा दर्ज करें</string>
+    <string name="dialog_enter_weight">कृपया बच्चों का वजन किलो में यहा दर्ज करें</string>
+    <string name="dialog_enter_muac">MUAC माप दर्ज करें</string>
+    <string name="year">साल</string>
+    <string name="years">वर्षों</string>
+    <string name="months">महीने</string>
+    <string name="month">महीना</string>
+    <string name="days">दिन</string>
+    <string name="day">दिन</string>
+    <string name="sam_status">सैम</string>
+    <string name="mam_status">मैम</string>
+    <string name="no_phone_number">फोन नंबर नहीं हैं</string>
+    <string name="child_mother_name">माँ :</string>
+    <string name="no_mother">माँ नहीं हैं</string>
+    <string name="consultation_video">सलाह संदेश के वीडियो</string>
+    <string name="child_growth_no_data">इस महीने पर कोई डेटा नहीं मिला</string>
+    <string name="save_child_data">इस बच्चे का डेटा सेव करें</string>
+    <string name="referral">रेफ़रल</string>
+    <string name="search_name">नाम से खोजें</string>
+    <string name="danger_signs_during_infancy_video">प्रारंभिक अवस्था के दौरान खतरे के संकेत पर एनीमेशन दिखाएं</string>
+    <string name="childs_weight">बच्चे का वजन</string>
+    <string name="muac_measurment">MUAC माप</string>
+    <string name="childs_height">बच्चे की ऊंचाई</string>
+    <string name="height_in_cm">ऊँचाई से.मी</string>
+    <string name="weight_in_kg">वजन किलोग्राम में</string>
+    <string name="date_of_birth">जन्म तारीख</string>
+    <string name="phone_no">फोन नंबर</string>
+    <string name="child_name">नाम : %1$s</string>
+    <string name="child_age">आयु : %1$s</string>
+    <string name="age_in_months">उम्र महीने</string>
+    <string name="age">आयु</string>
+    <string name="weight">वजन</string>
+    <string name="help_manual_already_updated">Help manual already updated</string>
+
+    <string name="msg_no_faqs_available">"अक्सर पूछे जाने वाले प्रश्न उपलब्ध नहीं है सेटिंग्स में
+        जाओ और पूछे जाने वाले प्रश्नों को प्राप्त करने के लिए,
+        <b>संसाधन की मदद लें पर क्लिक करें</b>
+    </string>
+
+    <string name="animations">एनिमेशन</string>
+    <string name="videos">वीडियो</string>
+    <string name="btn_title_faqs">FAQs</string>
+    <string name="btn_title_user_guide">मार्गदर्शिका</string>
+    <string name="btn_reports">रिपोर्ट</string>
+    <string name="msg_no_animations_available">एनिमेशन उपलब्ध नहीं हैं</string>
+    <string name="msg_no_videos_available">वीडियो उपलब्ध नहीं हैं</string>
+    <string name="msg_no_mmitra_calls_available">कोणतेही एम-मित्र ध्वनी संदेश कॉल उपलब्ध नाहीत</string>
+    <string name="m_mitra_voice_calls">m-Mitra voice calls</string>
+    <string name="open_file">Open File</string>
+    <string name="no_handler_for_type">No handler for this type of file.</string>
+    <string name="select_file">Select File</string>
+    <string name="choose_video_player">Choose video player</string>
+    <string name="dob">DOB :</string>
+    <string name="mother">Mother :</string>
+    <string name="village">Village :</string>
+    <string name="mob">Mob :</string>
+    <string name="last_visit">Last Visit :</string>
+    <string name="address">Address :</string>
+    <string name="age_param">Age :</string>
+    <string name="completed">Completed</string>
+    <string name="incomplete">Incomplete</string>
+    <string name="due">Due</string>
+    <string name="overdue">Overdue</string>
+    <string name="child_care_1">Child Care 1</string>
+    <string name="child_care_3">Child Care 3</string>
+    <string name="child_care_5">Child Care 5</string>
+    <string name="child_care_7">Child Care 7</string>
+    <string name="child_care_9">Child Care 9</string>
+    <string name="child_care_11">Child Care 11</string>
+    <string name="child_care_2">Child Care 2</string>
+    <string name="child_care_4">Child Care 4</string>
+    <string name="child_care_6">Child Care 6</string>
+    <string name="child_care_8">Child Care 8</string>
+    <string name="child_care_10">Child Care 10</string>
+    <string name="child_care_12">Child Care 12</string>
+    <string name="form">Form</string>
+    <string name="antenatal_care_1">Antenatal Care 1</string>
+    <string name="antenatal_care_2">Antenatal Care 2</string>
+    <string name="antenatal_care_3">Antenatal Care 3</string>
+    <string name="antenatal_care_4">Antenatal Care 4</string>
+    <string name="antenatal_care_5">Antenatal Care 5</string>
+    <string name="antenatal_care_6">Antenatal Care 6</string>
+    <string name="delivery_form">Delivery Form</string>
+    <string name="closure_form">Closure Form</string>
+    <string name="registered_children">Registered Children</string>
+    <string name="women_list">Women</string>
+    <string name="children_list">Children</string>
+    <string name="high_risk_visit_list">High risk visits list</string>
+
+    <string name="done">पूरा हुआ</string>
+    <string name="refer_here">Refer here</string>
+    <string name="select_referred_location">Select referred location</string>
+    <string name="not_applicable">NA</string>
+    <string name="an_initiative_by">An initiative by</string>
+    <string name="supported_by">Supported by</string>
+    <string name="child_closure">नवजात शिशु की जानकारी रद्द करें</string>
+    <string name="referred">संदर्भित</string>
+    <string name="not_referred">Not Referred</string>
+    <string name="restore_warning_text">चेतावनी</string>
+    <string name="dialog_msg_loss_data_warning">आपका ना भेजे गये फोर्म मिट जायेंगा| \n यदि यह फोर्म
+        भेजना हैं तो "रद्द" का बटन दबाएँ अथवा आगे भेजने के लिए "ठिक" बटन दबाएँ
+    </string>
+    <string name="no_records_error_msg">कोई रिकॉर्ड नहीं</string>
+    <string name="resources_text">Resources</string>
+    <string name="authentication_error_msg">अमान्य Username and Password</string>
+    <string name="profile_image_update_success_msg">Beneficiary image updated successfully</string>
+    <string name="profile_image_update_failed_msg">Beneficiary image update failed</string>
+    <string name="change_text">Change</string>
+    <string name="change_profile_image_title">Change Profile Image</string>
+    <string name="change_pro_img_confirmation_msg">Do you want to change profile image</string>
+    <string name="pro_img_already_updated_msg">Profile image already Updated</string>
+
+
+    <string-array name="migrantStatus">
+        <item>प्रवासी/ स्थायी निवासी</item>
+        <item>निवासी</item>
+        <item>प्रवासी</item>
+    </string-array>
+
+    <string-array name="referred_locations">
+        <item>@string/select</item>
+        <item>PHC</item>
+        <item>Public Clinic</item>
+        <item>Private Clinic</item>
+    </string-array>
+
+    <string-array name="child_filters">
+        <item>सब</item>
+        <item>सामान्य वज़न</item>
+        <item>कम वज़न</item>
+        <item>गंभीर रूप से वज़न कम</item>
+        <item>SAM</item>
+        <item>MAM</item>
+        <item>भेंट बाकी</item>
+    </string-array>
+    <string name="Reg_women">कोई पंजीकृत महिला मिली नहीं है</string>
+    <string name="empty_child_list_text">कोई बाल पंजीकृत नहीं है</string>
+    <string name="no_child_found">कोई बच्चा नहीं मिला</string>
+    <string name="no_result_found">%s result found</string>
+    <string name="no_high_risk_woman_msg">No high risk Woman found</string>
+    <string name="no_high_risk_child_msg">No high risk Child found</string>
+    <string name="pending_label_text">Pending</string>
+    <string name="incomplete_visit">incomplete visit</string>
+    <string name="total_visits">Total visits</string>
+    <string name="due_visits">Due visits</string>
+    <string name="overdue_visits">Overdue visits</string>
+    <string name="total_referral">Total referral</string>
+    <string name="not_referral">Not referred</string>
+    <string name="swipe_up_hint_text">swipe up for more info</string>
+    <string name="update_forms_message">Update new form. click OK and go to setting and click on from update</string>
+    <string name="referral_count">Referral Count</string>
+    <string name="visits_count">Visits count</string>
+    <string name="register_count">Register count</string>
+    <string name="img_edit_name">img_edit_name</string>
+    <string name="graph">ग्राफ</string>
+    <string name="wages">वेतन</string>
+    <string name="overall_report">Overall Report</string>
+    <string name="thirty_days_report">Last 30 days Report</string>
+    <string name="six_months_report">Last 6 monthss Report</string>
+    <string name="one_year_report">Last 1 Report</string>
+    <string name="custom_report">Custom Report</string>
+    <string name="overall_report_based_on_server">Overall Report(Based on Server)</string>
+    <string name="overall_report_based_on_tab">Overall Report(Based on Tab)</string>
+    <string name="visit_type">VISIT TYPE</string>
+    <string name="count">COUNT</string>
+    <string name="report_reg">REGISTRATION</string>
+    <string name="report_anc">ANC VISITS</string>
+    <string name="report_pnc">PNC VISITS</string>
+    <string name="total"></string>
+    <string name="rep_incomplete_visit">INCOMPLETE VISITS</string>
+    <string name="rep_total_visits">TOTAL VISITS</string>
+    <string name="rep_due_visits">DUE VISITS</string>
+    <string name="rep_overdue_visits">OVERDUE VISITS</string>
+    <string-array name="filterTypes">
+        <item>Overall Report</item>
+        <item>Last 30 days Report</item>
+        <item>Last 6 months Report</item>
+        <item>Last 1 year Report</item>
+        <item>Custom Report</item>
+    </string-array>
+    <string name="from">FROM</string>
+    <string name="to">TO</string>
+    <string name="wages_based_on_server">WAGES (BASED ON SERVER)</string>
+    <string name="wages_based_on_tab">WAGES (BASED ON TAB)</string>
+    <string name="report_title">REPORTS</string>
+    <string name="graphical_view">GRAPHICAL VIEW</string>
+
+</resources>
