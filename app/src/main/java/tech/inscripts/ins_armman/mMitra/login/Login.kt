@@ -9,7 +9,6 @@ import tech.inscripts.ins_armman.mMitra.HomeActivity
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
-import tech.inscripts.ins_armman.mMitra.forms.EnrollmentQuestions
 
 class Login : AppCompatActivity(),ILoginView {
 
