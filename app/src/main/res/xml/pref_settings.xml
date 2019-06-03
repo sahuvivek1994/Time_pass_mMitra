@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory
+        android:title="@string/category_personal"
+        android:key="personal_category">
+
+        <ListPreference
+            android:icon="@drawable/ic_language"
+            android:key="language"
+            android:title="@string/language"
+            android:summary="%s"
+            android:entries="@array/languages"
+            android:entryValues="@array/languages_value"
+            android:defaultValue="@string/default_language"
+            android:negativeButtonText="@string/cancel"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_sync"
+        android:key="sync_category">
+
+        <Preference
+            android:icon="@drawable/ic_sync_form"
+            android:key="sync_form"
+            android:title="@string/sync_forms">
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_get_help"
+            android:key="help_manual"
+            android:title="@string/get_help_mannual">
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_restore"
+            android:key="restore_data"
+            android:title="@string/restore_data">
+        </Preference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_account"
+        android:key="account_category">
+
+        <Preference
+            android:icon="@drawable/ic_check_update"
+            android:key="check_update"
+            android:title="@string/check_update">
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_logout"
+            android:key="logout"
+            android:title="@string/logout">
+        </Preference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_about"
+        android:key="about_category">
+
+        <Preference
+            android:key="version"
+            android:selectable="false"
+            android:persistent="false"
+            android:title="@string/version"
+            android:summary="1.1"/>
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

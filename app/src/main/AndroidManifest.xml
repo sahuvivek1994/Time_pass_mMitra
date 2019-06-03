@@ -21,7 +21,7 @@
                 android:label="@string/title_activity_main"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".settingActivity.Settings">
+        <activity android:name=".settingActivity.SettingsActivity">
         </activity>
         <activity android:name=".splash_screen.Splash_screen">
             <intent-filter>
