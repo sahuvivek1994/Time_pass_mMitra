@@ -1,11 +1,5 @@
 package tech.inscripts.ins_armman.mMitra.utility;
 
-
-
-/**
- * Created by lenovo on 24/10/17.
- */
-
 public interface Constants {
 
     String DATE_FORMAT = "dd/MM/yyyy";
