@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_marginTop="4dp"
+
+    android:layout_marginBottom="6dp"
+    card_view:cardCornerRadius="20dp"
+    card_view:layout_constraintBottom_toBottomOf="parent"
+    card_view:layout_constraintEnd_toEndOf="parent"
+    card_view:layout_constraintHorizontal_bias="1.0"
+    card_view:layout_constraintStart_toStartOf="parent"
+    card_view:layout_constraintTop_toTopOf="parent"
+    card_view:layout_constraintVertical_bias="1.0">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="25dp">
+
+        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageview_photo"
+            android:layout_width="@dimen/image_view_size"
+            android:layout_height="@dimen/image_view_size"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/woman"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.434"
+            app:riv_corner_radius="@dimen/image_view_inner_radius"
+            app:riv_mutate_background="true"
+            app:riv_oval="true"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textview_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/color_dark_gray"
+            android:textSize="@dimen/text_size_large"
+            card_view:layout_constraintBottom_toBottomOf="@+id/imageview_photo"
+            card_view:layout_constraintStart_toEndOf="@+id/imageview_photo"
+            card_view:layout_constraintTop_toTopOf="@+id/imageview_photo"
+            card_view:layout_constraintVertical_bias="0.15"
+            tools:text="@tools:sample/full_names" />
+
+
+        <TextView
+            android:id="@+id/textview_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            card_view:layout_constraintEnd_toEndOf="@+id/textview_name"
+            card_view:layout_constraintHorizontal_bias="0.204"
+            card_view:layout_constraintStart_toStartOf="@+id/textview_name"
+            card_view:layout_constraintTop_toBottomOf="@+id/textview_name"
+            tools:text="@tools:sample/cities" />
+
+        <TextView
+            android:id="@+id/womanStatusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif-monospace"
+            android:text="@string/incomplete_visit"
+            android:textColor="@color/color_incomplete"
+            android:visibility="gone"
+            card_view:layout_constraintBottom_toBottomOf="@+id/textview_details"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.808"
+            card_view:layout_constraintStart_toEndOf="@+id/textview_details"
+            card_view:layout_constraintTop_toTopOf="@+id/textview_details"
+            tools:visibility="visible" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

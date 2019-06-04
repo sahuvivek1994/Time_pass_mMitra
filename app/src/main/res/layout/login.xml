@@ -4,7 +4,7 @@
                                              xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
-                                             tools:context=".Login">
+                                             android:background="@color/white">
 
     <android.support.constraint.Guideline
             android:orientation="horizontal"
@@ -64,28 +64,29 @@
             android:layout_marginStart="40dp" app:layout_constraintEnd_toStartOf="@+id/guideline4"
             android:layout_marginEnd="40dp" android:layout_marginRight="40dp" android:hint="username"
             android:textColor="#B7960404"
-            android:textColorHint="#B7911616" android:textColorHighlight="#B7911616" android:textColorLink="#B7911616"/>
+            android:textColorHint="#B7911616" android:textColorHighlight="#B7911616" android:textColorLink="#B7911616"
+            android:textSize="24sp"/>
 
 
     <Button
             android:id="@+id/button_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="-31dp" app:layout_constraintTop_toBottomOf="@+id/password"
+            app:layout_constraintTop_toBottomOf="@+id/password"
             android:onClick="login"
-            android:layout_marginTop="50dp"/>
-
-            android:background="@drawable/login_button_shape"
-            android:elevation="50dp"
-            android:stateListAnimator="@null"
+            android:layout_marginTop="68dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            android:layout_marginEnd="40dp" android:layout_marginRight="40dp"
-            app:layout_constraintStart_toStartOf="@+id/guideline3" android:layout_marginLeft="40dp"
-            android:layout_marginStart="40dp" android:text="login" app:layout_constraintHorizontal_bias="1.0"
-            android:layout_marginTop="36dp" app:layout_constraintTop_toBottomOf="@+id/password"/>
+            android:text="LOGIN"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+            android:background="@drawable/login_button_shape"
+            android:elevation="50dp" android:textSize="24sp" android:textStyle="bold"/>
     <EditText
-            android:layout_width="404dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
             android:id="@+id/password"
@@ -95,7 +96,8 @@
             android:layout_marginEnd="40dp" app:layout_constraintEnd_toStartOf="@+id/guideline4"
             android:layout_marginRight="40dp" app:layout_constraintHorizontal_bias="0.0" android:hint="password"
             android:textColor="#B7C91212"
-            android:textColorHint="#B7911616" android:textColorHighlight="#B7911616" android:textColorLink="#B7911616"/>
+            android:textColorHint="#B7911616" android:textColorHighlight="#B7911616" android:textColorLink="#B7911616"
+            android:textSize="24sp"/>
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -113,5 +115,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline"
             app:layout_constraintGuide_percent="0.06" app:layout_constraintGuide_begin="393dp"/>
+    <TextView
+            android:text="COHORT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2" android:textStyle="bold"
+            android:textSize="36sp" app:fontFamily="sans-serif-medium" android:layout_marginTop="28dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline3" android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp"
+            android:textColor="#BC941616" app:layout_constraintHorizontal_bias="0.477"/>
 
 </android.support.constraint.ConstraintLayout>

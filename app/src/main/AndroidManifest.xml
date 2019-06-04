@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="tech.inscripts.ins_armman.mMitra">
+          xmlns:tools="http://schemas.android.com/tools" package="tech.inscripts.ins_armman.mMitra">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -16,36 +16,32 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity
-                android:name=".mainMenu.MainActivity"
-                android:label="@string/title_activity_main"
-                android:theme="@style/AppTheme.NoActionBar">
-        </activity>
         <activity android:name=".settingActivity.Settings">
         </activity>
-        <activity android:name=".splash_screen.Splash_screen">
-            <intent-filter>
-        <activity android:name="tech.inscripts.ins_armman.mMitra.Splash_screen"
+        <activity android:name=".Splash_screen"
                   android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity android:name="tech.inscripts.ins_armman.mMitra.login.Login"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity><activity android:name="tech.inscripts.ins_armman.mMitra.forms.EnrollmentQuestions"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
-    <activity android:name=".HomeActivity">
-        <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+    <activity android:name=".HomeActivity"
+              android:label="@string/app_name">
         </activity>
-        <activity android:name=".login.Login">
+        <activity android:name=".incompleteForms.IncompleteFormActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".completeForms.CompleteFormActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".UserProfileActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
