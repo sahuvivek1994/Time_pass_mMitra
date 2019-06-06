@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import tech.inscripts.ins_armman.mMitra.HomeActivity
+import tech.inscripts.ins_armman.mMitra.menu.HomeActivity
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager

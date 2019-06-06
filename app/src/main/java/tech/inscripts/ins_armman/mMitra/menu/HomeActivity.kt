@@ -1,9 +1,10 @@
-package tech.inscripts.ins_armman.mMitra
+package tech.inscripts.ins_armman.mMitra.menu
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.ImageButton
+import tech.inscripts.ins_armman.mMitra.R
 
 class HomeActivity : AppCompatActivity(),View.OnClickListener {
 

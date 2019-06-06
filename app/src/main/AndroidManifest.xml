@@ -35,7 +35,7 @@
         </activity><activity android:name="tech.inscripts.ins_armman.mMitra.forms.EnrollmentQuestions"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
-    <activity android:name=".HomeActivity">
+    <activity android:name=".menu.HomeActivity">
         </activity>
     </application>
 
