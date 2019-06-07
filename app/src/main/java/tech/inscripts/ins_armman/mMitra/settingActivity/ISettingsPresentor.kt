@@ -5,20 +5,20 @@ import android.database.Cursor
 import tech.inscripts.ins_armman.mMitra.utility.IBasePresenter
 
 interface ISettingsPresentor<V>:IBasePresenter<V> {
-    abstract fun changeLanguage(context: Context, language: String)
-    abstract fun downloadForms()
-    abstract fun downloadHelpManual()
-    abstract fun checkUpdate()
-    abstract fun downloadApk(apkLink: String)
-    abstract fun setApkDownloadProgress(progress: Int)
-    abstract fun onApkDownloaded()
-    abstract fun logout()
-    abstract fun restoreData()
-    abstract fun restoreRegistrations(pageNumber: Int)
-    abstract fun restoreVisits(pageNumber: Int)
-    abstract fun restoreReferrals(pageNumber: Int)
-    abstract fun restoreGrowthMonitorings(pageNumber: Int)
-    abstract fun resetDataMemberValues()
+     fun changeLanguage(context: Context, language: String)
+     fun downloadForms()
+     fun downloadHelpManual()
+     fun checkUpdate()
+     fun downloadApk(apkLink: String)
+     fun setApkDownloadProgress(progress: Int)
+     fun onApkDownloaded()
+     fun logout()
+     fun restoreData()
+     fun restoreRegistrations(pageNumber: Int)
+     fun restoreVisits(pageNumber: Int)
+     fun restoreReferrals(pageNumber: Int)
+     fun restoreGrowthMonitorings(pageNumber: Int)
+     fun resetDataMemberValues()
 
     interface OnQueryFinished {
 

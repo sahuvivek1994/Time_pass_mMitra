@@ -11,11 +11,10 @@ class RemoteDataSource {
         this.mRestClient = mRestClient
     }
 
-    fun getInstance(): RemoteDataSource {
+    fun getInstance(): RemoteDataSource? {
         if (mRemoteDataSource == null) {
-            mRemoteDataSource = RemoteDataSource(RestClient.getClient())
-        }
-        return mRemoteDataSource as RemoteDataSource
+            mRemoteDataSource = RestClient.
+        return mRemoteDataSource
     }
 fun <T> createApiService(apiInterface : Class<T>) : T? {
         return mRestClient?.create(apiInterface)

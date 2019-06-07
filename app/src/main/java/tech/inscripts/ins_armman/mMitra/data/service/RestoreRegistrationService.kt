@@ -13,9 +13,10 @@ import java.io.IOException
 class RestoreRegistrationService {
     private var mServiceAPI: RestoreRegistrationServiceApi?=null
 
-    fun RestoreRegistrationService(mServiceAPI: RestoreRegistrationServiceApi) {
+    constructor(mServiceAPI: RestoreRegistrationServiceApi?) {
         this.mServiceAPI = mServiceAPI
     }
+
 
     fun downloadRegistrationData(context: Context, request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnRegistrationsDownloadFinished) {
         val call = mServiceAPI!!.restoreRegistrationData(request)

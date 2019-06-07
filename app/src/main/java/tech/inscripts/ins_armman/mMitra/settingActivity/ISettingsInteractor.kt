@@ -4,10 +4,7 @@ import android.content.Context
 import org.json.JSONObject
 import tech.inscripts.ins_armman.mMitra.data.model.RequestFormModel
 import tech.inscripts.ins_armman.mMitra.data.model.UpdateModel
-import tech.inscripts.ins_armman.mMitra.data.model.restoreData.BeneficiariesList
-import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreDataRequest
-import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreRegistration
-import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreVisits
+import tech.inscripts.ins_armman.mMitra.data.model.restoreData.*
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.BeneficiaryDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.Referral
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.RequestHelpModel
@@ -62,10 +59,10 @@ interface ISettingsInteractor {
         fun onFailure(message: String)
     }
 
-    /*interface OnReferralDownloadFinished {
+    interface OnReferralDownloadFinished {
         fun onSuccessReferralDownloading(referral: RestoreReferral)
         fun onFailure(message: String)
-    }*/
+    }
 
    /* interface OnGrowthMonitoringFinished {
         fun onSuccessGrowthMonitoringDownloading(growthMonitoring: RestoreGrowthMonitoring)

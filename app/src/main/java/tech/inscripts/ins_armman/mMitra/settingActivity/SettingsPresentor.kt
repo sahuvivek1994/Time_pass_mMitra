@@ -2,18 +2,20 @@ package tech.inscripts.ins_armman.mMitra.settingActivity
 
 import android.content.Context
 import org.json.JSONObject
+import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.UpdateModel
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreDataRequest
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreRegistration
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreVisits
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.BeneficiaryDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.Referral
+import tech.inscripts.ins_armman.mMitra.settingActivity.ISettingsPresentor.OnQueryFinished
+import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
 
 class SettingsPresentor : ISettingsPresentor<ISettingsView>, ISettingsInteractor.OnFormDownloadFinished, ISettingsInteractor.onCheckUpdateFinished
     , ISettingsInteractor.onHelpManualDownloadFinished, ISettingsInteractor.OnRegistrationsDownloadFinished
     , ISettingsInteractor.OnVisitsDownloadFinished {
-
     private val FETCH_USER_DATA = 101
     private val FETCH_FORM_HASH = 102
 
@@ -32,11 +34,20 @@ class SettingsPresentor : ISettingsPresentor<ISettingsView>, ISettingsInteractor
     private val listRegistrations = ArrayList<BeneficiaryDetails>()
     private val listReferral= ArrayList<Referral>()
    // private val listGrowthMonitoring= ArrayList<GrowthMonitoring>()
-    override fun changeLanguage(context: Context, language: String) {
 
+
+
+
+
+
+        override fun changeLanguage(context: Context, language: String) {
+    mSettingsInteractor!!.changeLocale(context,language)
     }
 
     override fun downloadForms() {
+        if(Utility.hasInternetConnectivity(mSettingsView!!.context)){
+            mSettingsView?.showProgressBar(mSettingsView?.getContext()!!.getString(R.string.downloading_data))
+        }
     }
 
     override fun downloadHelpManual() {
@@ -76,28 +87,10 @@ class SettingsPresentor : ISettingsPresentor<ISettingsView>, ISettingsInteractor
     }
 
     override fun attachView(view: ISettingsView?) {
-
     }
 
     override fun detachView() {
     }
 
-    override fun onSuccessFormDownloading(jsonObject: JSONObject, hash: String) {
-    }
-
-    override fun onFailure(message: String) {
-    }
-
-    override fun onUpdateCheckSuccess(updateModel: UpdateModel) {
-    }
-
-    override fun onSuccessDownloadedHelpManual(jsonObject: JSONObject, hash: String) {
-    }
-
-    override fun onSuccessRegistrationsDownloading(registration: RestoreRegistration) {
-    }
-
-    override fun onSuccessVisitsDownloading(visits: RestoreVisits) {
-    }
 
 }
