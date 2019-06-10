@@ -6,15 +6,18 @@ import tech.inscripts.ins_armman.mMitra.data.service.*
 class RemoteDataSource {
     private var mRemoteDataSource: RemoteDataSource? = null
     private var mRestClient : Retrofit?=null
+    var rest = RestClient()
+
 
     constructor(mRestClient: Retrofit?) {
         this.mRestClient = mRestClient
     }
 
-    fun getInstance(): RemoteDataSource? {
+    fun getInstance(): RemoteDataSource {
         if (mRemoteDataSource == null) {
-            mRemoteDataSource = RestClient.
-        return mRemoteDataSource
+            mRemoteDataSource = RemoteDataSource(rest.getClient())
+        }
+        return mRemoteDataSource as RemoteDataSource
     }
 fun <T> createApiService(apiInterface : Class<T>) : T? {
         return mRestClient?.create(apiInterface)

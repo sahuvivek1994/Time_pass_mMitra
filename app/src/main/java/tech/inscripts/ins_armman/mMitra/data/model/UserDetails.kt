@@ -15,6 +15,8 @@ open class UserDetails {
     @SerializedName("showdata")
     private var showdata: String? = null
 
+
+
     fun setShowdata(showdata: String) {
         this.showdata = showdata
     }

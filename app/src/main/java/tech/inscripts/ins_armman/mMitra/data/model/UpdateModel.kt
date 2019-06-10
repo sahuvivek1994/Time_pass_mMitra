@@ -26,16 +26,16 @@ class UpdateModel {
 
     class Data {
         @SerializedName("id")
-        var id: String? = null
+        var id: String=""
         @SerializedName("name")
-        var name: String? = null
+        var name: String=""
         @SerializedName("versionName")
-        var versionName: String? = null
+        var versionName: String=""
         @SerializedName("versionCode")
-        var versionCode: String? = null
+        var versionCode: String =""
         @SerializedName("description")
-        var description: String? = null
+        var description: String=""
         @SerializedName("link")
-        var link: String? = null
+        var link: String = ""
     }
 }

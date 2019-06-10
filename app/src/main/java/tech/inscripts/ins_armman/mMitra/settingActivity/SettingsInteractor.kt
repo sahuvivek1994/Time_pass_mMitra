@@ -12,6 +12,7 @@ import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreDataReques
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.BeneficiaryDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.Referral
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.RequestHelpModel
+import tech.inscripts.ins_armman.mMitra.data.retrofit.RemoteDataSource
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
 
@@ -20,8 +21,9 @@ class SettingsInteractor:ISettingsInteractor,LoaderManager.LoaderCallbacks<Curso
     lateinit var mContext : Context
     var mOnQueryFinished : ISettingsPresentor.OnQueryFinished ?=null
         lateinit var mSettingsPresentor:SettingsPresentor
+    var instance= RemoteDataSource()
 
-    constructor(mContext: Context, mOnQueryFinished: ISettingsPresentor.OnQueryFinished?, mSettingsPresentor: SettingsPresentor) {
+    constructor(mContext: Context, mOnQueryFinished: ISettingsPresentor.OnQueryFinished, mSettingsPresentor: SettingsPresentor) {
         this.mContext = mContext
         this.mOnQueryFinished = mOnQueryFinished
         this.mSettingsPresentor = mSettingsPresentor
@@ -33,7 +35,7 @@ class SettingsInteractor:ISettingsInteractor,LoaderManager.LoaderCallbacks<Curso
     }
 
     override fun downloadForms(requestFormModel: RequestFormModel, onFormDownloadFinished: ISettingsInteractor.OnFormDownloadFinished) {
-
+var remoteDataSource : RemoteDataSource= RemoteDataSource.
     }
 
     override fun fetchLoginDetails(id: Int) {
