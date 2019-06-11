@@ -3,7 +3,7 @@ package tech.inscripts.ins_armman.mMitra.data
 interface Url {
     companion object {
 
-        //API V2 added after data sync error message structure changed
+        //API V2 added after dataSource sync error message structure changed
 
         val BASE_URL = "http://arogyasakhi.armman.org/API/V2/"
         //    String BASE_URL = "http://192.168.0.101/ArogyaSakhi-API/V2/";

@@ -80,7 +80,7 @@ public class AncVisits extends AppCompatActivity {
     HashMap<String, String> womendetails = new HashMap<>();
     HashMap<String, String> previousVisitDetails = new HashMap<>();
     HashMap<String, String> storeEnteredData = new HashMap<>();
-    HashMap<String, String> Backup_answerTyped1 = new HashMap<>(); // is used to insert the entered data into localDB
+    HashMap<String, String> Backup_answerTyped1 = new HashMap<>(); // is used to insert the entered dataSource into localDB
     TreeMap<String, String> validationlist = new TreeMap<>();    //TreeMap contains compulsory questions keyword and their answers
     TreeMap<String, Integer> NextButtonvalidationlist = new TreeMap<>();  // TreeMap is used to check how many compulsory questions are there on one single page
     ConcurrentHashMap<String, String> dependantquestion = new ConcurrentHashMap<>();
@@ -643,7 +643,7 @@ public class AncVisits extends AppCompatActivity {
         }
 
         /**
-         * this if condition is used to display the data which is already entered by the woman
+         * this if condition is used to display the dataSource which is already entered by the woman
          */
         if (womendetails.containsKey(keyword)) {
             et.setText(womendetails.get(keyword));
@@ -679,7 +679,7 @@ public class AncVisits extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable arg0) {
                 womendetails.put(keyword, et.getText().toString().trim());   // this hashmap is used to store
-                Backup_answerTyped1.put(keyword, et.getText().toString().trim()); // this hashmap is used to insert data in Backup_AnswerEntered
+                Backup_answerTyped1.put(keyword, et.getText().toString().trim()); // this hashmap is used to insert dataSource in Backup_AnswerEntered
 
 
                 if (validationlist.containsKey(keyword)) {
@@ -787,7 +787,7 @@ public class AncVisits extends AppCompatActivity {
         }
 
         /**
-         * this if condition is used to display the data which is already entered by the woman
+         * this if condition is used to display the dataSource which is already entered by the woman
          */
 
 
@@ -948,7 +948,7 @@ public class AncVisits extends AppCompatActivity {
                         }
 
                         womendetails.put(keyword, serverDate);
-                        Backup_answerTyped1.put(keyword, serverDate); // this hashmap is used to insert data in Backup_AnswerEntered
+                        Backup_answerTyped1.put(keyword, serverDate); // this hashmap is used to insert dataSource in Backup_AnswerEntered
 
 //						if (validationlist.containsKey(et.getTag()))
 //						{
@@ -1065,7 +1065,7 @@ public class AncVisits extends AppCompatActivity {
         }
 
         /**
-         * this if condition is used to display the data which is already entered by the woman
+         * this if condition is used to display the dataSource which is already entered by the woman
          */
         if (womendetails.containsKey(keyword)) {
             et.setText(womendetails.get(keyword));
@@ -1147,7 +1147,7 @@ public class AncVisits extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable arg0) {
                 womendetails.put(keyword, et.getText().toString());
-                Backup_answerTyped1.put(keyword, et.getText().toString()); // this hashmap is used to insert data in Backup_AnswerEntered
+                Backup_answerTyped1.put(keyword, et.getText().toString()); // this hashmap is used to insert dataSource in Backup_AnswerEntered
 
                 if (et.getText().toString().length() <= 0) {
                     tv.setError("");
@@ -1379,7 +1379,7 @@ public class AncVisits extends AppCompatActivity {
         }
 
         /**
-         * this if condition is used to display the data which is already entered by the woman
+         * this if condition is used to display the dataSource which is already entered by the woman
          */
         if (womendetails.containsKey(keyword)) {
             et.setText(womendetails.get(keyword));
@@ -1770,7 +1770,7 @@ public class AncVisits extends AppCompatActivity {
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
-                photo = (Bitmap) data.getExtras().get("data");
+                photo = (Bitmap) data.getExtras().get("dataSource");
                 iv.setImageBitmap(photo);
                 LinearLayout sanket = (LinearLayout) iv.getParent();
                 TextView tvs = (TextView) sanket.getChildAt(0);
@@ -2619,7 +2619,7 @@ public class AncVisits extends AppCompatActivity {
                     womendetails.put(keyword, "" + chechboxlist);
                     view_check = keyword;
 
-                    Backup_answerTyped1.put(keyword, ""+ chechboxlist); // this treemap is used to insert data in Backup_entered table.
+                    Backup_answerTyped1.put(keyword, ""+ chechboxlist); // this treemap is used to insert dataSource in Backup_entered table.
 
                     ll_sub = (LinearLayout) v.getParent().getParent();
 
@@ -3357,7 +3357,7 @@ public class AncVisits extends AppCompatActivity {
                 }
 
                 for (int i = 0; i < counclingMsgQstnKeywords.size(); i++) {
-                    Log.d(TAG, "if data : " + counclingMsgQstnKeywords.get(i));
+                    Log.d(TAG, "if dataSource : " + counclingMsgQstnKeywords.get(i));
                 }
 
             }
@@ -4703,7 +4703,7 @@ public class AncVisits extends AppCompatActivity {
     }
 
     /**
-     * This method is used to store ANC related data in local DB.
+     * This method is used to store ANC related dataSource in local DB.
      */
     public long StoreANCForm() {
         long insertedRowIdReferralWomenTable = -1;
@@ -4767,7 +4767,7 @@ public class AncVisits extends AppCompatActivity {
     }
 
     /**
-     * This methos is used to store Closure form related data in local DB.
+     * This methos is used to store Closure form related dataSource in local DB.
      *
      * @param closureType
      */
@@ -4785,7 +4785,7 @@ public class AncVisits extends AppCompatActivity {
     }
 
     /**
-     * This methos is used to store registration of the newly born children related data in local DB.
+     * This methos is used to store registration of the newly born children related dataSource in local DB.
      */
     public long StoreChildCareRegForm() {
         long insertedRowIdReferralWomenTable = -1;
@@ -4864,7 +4864,7 @@ public class AncVisits extends AppCompatActivity {
             System.out.println("^^^^^^^^^^^^^" + df.format(c3.getTime()));
 //			expec_date=df.format(c3.getTime());
 //
-//			Calendar c4 = Calendar.getInstance();
+//			Calendar c4 = Calendar.getDataSource();
 //			current_reg = datetime.format(c4.getTime());
 
             //get Time in milli seconds
@@ -5574,7 +5574,7 @@ public class AncVisits extends AppCompatActivity {
 
 //			System.out.println("toDate = " + toDate);
 //			Date expecDate = df.parse(toDate);
-//			Calendar c3 = Calendar.getInstance();
+//			Calendar c3 = Calendar.getDataSource();
 //			//Change to Calendar Date
 //			c3.setTime(expecDate);
 //			c3.add(Calendar.MONTH, 9);
@@ -5584,7 +5584,7 @@ public class AncVisits extends AppCompatActivity {
 //			System.out.println("expec_date = " + expec_date);
 //			Server_expected_date=sever_expec_date.format(c3.getTime());
 //
-//			Calendar c4 = Calendar.getInstance();
+//			Calendar c4 = Calendar.getDataSource();
 //			current_reg = datetime.format(c4.getTime());
 
             //get Time in milli seconds

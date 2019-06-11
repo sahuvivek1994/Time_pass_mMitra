@@ -34,8 +34,8 @@ public class DatabaseManager {
     }
 
     /**
-     * This method returns singleton instance of this class.Wherever in code, database is used we
-     * get it by using DatabaseManager instance.
+     * This method returns singleton dataSource of this class.Wherever in code, database is used we
+     * get it by using DatabaseManager dataSource.
      * @return
      */
     public static synchronized DatabaseManager getInstance() {
@@ -51,7 +51,7 @@ public class DatabaseManager {
      * Inside this method, we have a counter, which indicate how many times database is opened.
      * If it equals to one, it means we need to create new database connection, if not, database
      * connection is already established.
-     * @return instance of SqLiteDatabase.
+     * @return dataSource of SqLiteDatabase.
      */
     public synchronized SQLiteDatabase openDatabase() {
         if(mOpenCounter.incrementAndGet() == 1) {

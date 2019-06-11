@@ -6,7 +6,7 @@ import java.util.ArrayList
 class RestoreVisits {
     @SerializedName("total")
     private var total: Int = 0
-    @SerializedName("data")
+    @SerializedName("dataSource")
     private var beneficiariesLists: ArrayList<BeneficiariesList>? = null
 
     fun getTotal(): Int {

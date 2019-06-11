@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 class UpdateModel {
     @SerializedName("status")
     private var status: Boolean = false
-    @SerializedName("data")
+    @SerializedName("dataSource")
     private var data: Data? = null
 
     fun getStatus(): Boolean {

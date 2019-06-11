@@ -109,7 +109,7 @@ class BeneficiaryDetails {
     internal var child_status: String=""
 
             /*@SerializedName(DATA)
-    private ArrayList<QuestionAnswer> data;
+    private ArrayList<QuestionAnswer> dataSource;
     @SerializedName(REFERRAL)
     private ArrayList<Referral> referral; fun getDeliveryDate(): String? {
         return deliveryDate

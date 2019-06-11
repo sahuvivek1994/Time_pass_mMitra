@@ -6,7 +6,7 @@ import tech.inscripts.ins_armman.mMitra.data.model.syncing.Referral
 class RestoreReferral {
     @SerializedName("total")
     var total:Int?=null
-    @SerializedName("data")
+    @SerializedName("dataSource")
     var referralList: ArrayList<Referral>?=null
 
     override fun toString(): String {

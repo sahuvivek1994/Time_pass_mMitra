@@ -13,6 +13,8 @@ class RemoteDataSource {
         this.mRestClient = mRestClient
     }
 
+    constructor()
+
     fun getInstance(): RemoteDataSource {
         if (mRemoteDataSource == null) {
             mRemoteDataSource = RemoteDataSource(rest.getClient())

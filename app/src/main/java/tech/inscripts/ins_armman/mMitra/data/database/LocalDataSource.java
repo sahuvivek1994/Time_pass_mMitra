@@ -23,7 +23,7 @@ public class LocalDataSource {
     }
 
     public long insert(String tableName, ContentValues contentValues) {
-        Log.e("Attendance"," in function insert Inserted data in table:  "+  tableName + " " + contentValues.toString() + "");
+        Log.e("Attendance"," in function insert Inserted dataSource in table:  "+  tableName + " " + contentValues.toString() + "");
         long newRowId = mSQLiteDatabase.insert(tableName, null, contentValues);
         return newRowId;
     }
@@ -117,7 +117,7 @@ public class LocalDataSource {
     }
 
     public int update(String tableName, ContentValues values, String selection, String[] selectionArgs) {
-        Log.e("Attendance"," in function insert Updated data in table:  "+  tableName + " " + values.toString() + " " + selection + "   " + selectionArgs);
+        Log.e("Attendance"," in function insert Updated dataSource in table:  "+  tableName + " " + values.toString() + " " + selection + "   " + selectionArgs);
         int count = mSQLiteDatabase.update(
                 tableName,
                 values,

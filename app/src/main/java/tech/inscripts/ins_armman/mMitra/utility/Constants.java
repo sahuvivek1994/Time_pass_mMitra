@@ -36,7 +36,7 @@ public interface Constants {
     String QUESTION_KEYWORD = "q_keyword";
     String ANSWER = "ans_keyword";
     String CREATED_ON = "created_on";
-    String DATA = "data";
+    String DATA = "dataSource";
     String REFERRAL = "referral";
     String TYPE = "type";
     String BENEFICIARIES = "beneficiaries";

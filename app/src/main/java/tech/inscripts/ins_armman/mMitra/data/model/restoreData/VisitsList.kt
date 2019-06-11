@@ -10,7 +10,7 @@ class VisitsList {
     var formId: Int = 0
     @SerializedName("created_on")
     var createdOn: String? = null
-    @SerializedName("data")
+    @SerializedName("dataSource")
     var questionAnswers: ArrayList<QuestionAnswer>? = null
 
     override fun toString(): String {

@@ -7,7 +7,7 @@ import java.util.ArrayList
 class RestoreRegistration {
     @SerializedName("total")
     private val total: Int = 0
-    @SerializedName("data")
+    @SerializedName("dataSource")
     private val registrationData: ArrayList<BeneficiaryDetails>? = null
 
     fun getTotal(): Int {

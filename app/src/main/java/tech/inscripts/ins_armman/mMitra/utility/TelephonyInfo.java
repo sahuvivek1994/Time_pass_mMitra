@@ -69,7 +69,7 @@ public final class TelephonyInfo {
 
             telephonyInfo.imsiSIM1 = telephonyManager.getDeviceId();
 
-            Log.d(TAG, "getInstance: " + telephonyInfo.imsiSIM1);
+            Log.d(TAG, "getDataSource: " + telephonyInfo.imsiSIM1);
 
             telephonyInfo.imsiSIM2 = null;
 
