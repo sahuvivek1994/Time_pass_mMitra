@@ -1,8 +1,12 @@
 package tech.inscripts.ins_armman.mMitra.settingActivity
 
+import android.app.DownloadManager
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.database.Cursor
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
@@ -10,11 +14,14 @@ import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ProgressBar
+import android.widget.TextView
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract
 import tech.inscripts.ins_armman.mMitra.data.model.RequestFormModel
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.BeneficiariesList
@@ -23,19 +30,20 @@ import tech.inscripts.ins_armman.mMitra.data.model.syncing.BeneficiaryDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.Referral
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.RequestHelpModel
 import tech.inscripts.ins_armman.mMitra.data.retrofit.RemoteDataSource
-import tech.inscripts.ins_armman.mMitra.data.service.CheckUpdateService
-import tech.inscripts.ins_armman.mMitra.data.service.FormDownloadService
-import tech.inscripts.ins_armman.mMitra.data.service.HelpManualDownloadService
+import tech.inscripts.ins_armman.mMitra.data.service.*
 import tech.inscripts.ins_armman.mMitra.utility.Constants
 import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 import tech.inscripts.ins_armman.mMitra.utility.Utility
+import java.io.File
+import java.net.URI
 import java.util.ArrayList
+import android.content.BroadcastReceiver as BroadcastReceiver1
 
 class SettingsInteractor:ISettingsInteractor,LoaderManager.LoaderCallbacks<Cursor> {
 
-    public var mContext : Context
+     var mContext : Context
     var mOnQueryFinished : ISettingsPresentor.OnQueryFinished ?=null
-        lateinit var mSettingsPresentor:SettingsPresentor
+        var mSettingsPresentor:SettingsPresentor
     var dataSource= RemoteDataSource()
 
     constructor(mContext: Context, mOnQueryFinished: ISettingsPresentor.OnQueryFinished, mSettingsPresentor: SettingsPresentor) {
@@ -169,18 +177,96 @@ var remoteDataSource : RemoteDataSource= dataSource.getInstance()
         var destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/Download/"
         val fileName = "Arogyasakhi.apk"
         destination += fileName
+        val uri = Uri.parse("file://$destination")
+        var file : File = File(destination)
+        //delete update file if exists
+        if(file.exists())
+            file.delete()
+
+        //set downloadManager
+        var request = DownloadManager.Request(Uri.parse(apkLink))
+        request.setDescription(mContext.getString(R.string.apk_download_request_text))
+        request.setTitle(mContext.getString(R.string.app_name))
+
+        //set destination
+        request.setDestinationUri(uri)
+
+        //get download service and enqueue file
+        var manager : DownloadManager= mContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val downloadId= manager.enqueue(request)
+
+
+       Thread(Runnable {
+           var downloading= true
+           while(downloading){
+               var q : DownloadManager.Query= DownloadManager.Query()
+               q.setFilterById(downloadId)
+
+               var cur : Cursor = manager.query(q)
+               if(cur!=null){
+                   cur.moveToFirst()
+                   var byte_downloaded = cur.getInt(cur.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
+                   var byte_total = cur.getInt(cur.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
+
+                   if(cur.getInt(cur.getColumnIndex(DownloadManager.COLUMN_STATUS))== DownloadManager.STATUS_SUCCESSFUL){
+                       downloading=false
+                   }
+                   if(byte_downloaded!=0){
+                       var dl_progress = byte_downloaded*100/byte_total
+                       var progressInt=dl_progress
+                       Log.i("download_apk","progress"+progressInt)
+                       mSettingsPresentor.setApkDownloadProgress(progressInt)
+                   }
+                   cur.close()
+               }
+           }
+       }).start()
+
+        val onComplete = object : android.content.BroadcastReceiver() {
+            override fun onReceive(ctxt: Context, intent: Intent) {
+                mSettingsPresentor.onApkDownloaded()
+                val install = Intent(Intent.ACTION_VIEW)
+                install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                install.setDataAndType(
+                    uri,
+                    manager.getMimeTypeForDownloadedFile(downloadId)
+                )
+                if (install != null) {
+                    mContext.startActivity(install)
+                }
+                mContext.unregisterReceiver(this)
+                //finish();
+            }
+        }
+        mContext.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 
     override fun getHash(type: String): String {
+        var cur : Cursor= Utility.getDatabase().rawQuery(
+            "SELECT * FROM "
+    + DatabaseContract.HashTable.TABLE_NAME
+    + " WHERE "
+    + DatabaseContract.HashTable.COLUMN_ITEM
+    + " = ? ", arrayOf(type))
+        return if (cur.moveToFirst()) cur.getString(cur.getColumnIndex(DatabaseContract.HashTable.COLUMN_HASH)) else DEFAULT_HASH
+
     }
 
     override fun downloadRegistrationData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnRegistrationsDownloadFinished) {
+    var remoteDataSource : RemoteDataSource = dataSource.getInstance()
+        var service : RestoreRegistrationService = remoteDataSource.restoreRegistrationService()
+        service.downloadRegistrationData(mContext,request,downloadFinished)
     }
 
     override fun downloadVisitsData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnVisitsDownloadFinished) {
+        var remoteDataSource : RemoteDataSource = dataSource.getInstance()
+        var service : RestoreVisitsService = remoteDataSource.restoreVisitsService()
+        service.downloadVisitsData(mContext,request,downloadFinished)
     }
 
-    override fun saveDownloadedData(listRegistrations: ArrayList<BeneficiaryDetails>, listVisits: ArrayList<BeneficiariesList>, listReferral: ArrayList<Referral>) {
+    override fun saveDownloadedData(listRegistrations: ArrayList<BeneficiaryDetails>, listVisits: ArrayList<BeneficiariesList>) {
+
+        SaveRestoredDataAsyncTask(listRegistrations, listVisits).execute()
     }
 
     override fun addOrUpdateFormHash(item: String, hash: String) {
@@ -198,7 +284,7 @@ var remoteDataSource : RemoteDataSource= dataSource.getInstance()
     override fun onLoaderReset(p0: Loader<Cursor>) {
     }
 
-    class SaveFormASyncTask : AsyncTask<JSONObject, Int, Void>() {
+   inner class SaveFormASyncTask : AsyncTask<JSONObject, Int, Void>() {
 
         var progressBar : ProgressBar?= null
         var mProgressDialog : AlertDialog ? =null
@@ -260,6 +346,61 @@ var remoteDataSource : RemoteDataSource= dataSource.getInstance()
         override fun doInBackground(vararg params: JSONObject?): Void {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
+
+    }
+    inner class SaveRestoredDataAsyncTask : AsyncTask<ArrayList<Object>,Int,Void>(){
+
+        var progressBar : ProgressBar
+        var mProgressDialog : AlertDialog
+        var mProgress : Int
+        var listRegistrations :ArrayList<BeneficiaryDetails>
+        var listVisits :ArrayList<BeneficiariesList>
+
+        constructor(
+            listRegistrations: ArrayList<BeneficiaryDetails>,
+            listVisits: ArrayList<BeneficiariesList>
+        ) : super() {
+            this.listRegistrations = listRegistrations
+            this.listVisits = listVisits
+        }
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            var inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            var dialogView = inflater.inflate(R.layout.progress_dialog_layout,null)
+            val textView = dialogView.findViewById<TextView>(R.id.textView_label)
+            progressBar = dialogView.findViewById(R.id.progressBar)
+            textView.setText(R.string.saving_forms)
+            progressBar.isIndeterminate = false
+            progressBar.max = listRegistrations.size + listVisits.size
+            val mAlertDialogBuilder = AlertDialog.Builder(mContext)
+            mAlertDialogBuilder.setView(dialogView)
+            mAlertDialogBuilder.setCancelable(false)
+            mProgressDialog = mAlertDialogBuilder.create()
+            mProgressDialog.show()
+
+
+        }
+        override fun doInBackground(vararg params: ArrayList<Object>?): Void {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onProgressUpdate(vararg values: Int?) {
+            super.onProgressUpdate(*values)
+        }
+
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+        }
+
+        override fun onCancelled(result: Void?) {
+            super.onCancelled(result)
+        }
+
+        override fun onCancelled() {
+            super.onCancelled()
+        }
+
 
     }
 }

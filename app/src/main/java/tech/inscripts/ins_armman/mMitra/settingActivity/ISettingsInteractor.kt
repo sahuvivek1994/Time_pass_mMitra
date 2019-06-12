@@ -30,7 +30,7 @@ interface ISettingsInteractor {
     fun downloadGrowthMonitoringData(request: RestoreDataRequest, downloadFinished: OnGrowthMonitoringFinished)
     */
 
-    fun saveDownloadedData(listRegistrations: ArrayList<BeneficiaryDetails>, listVisits: ArrayList<BeneficiariesList>,listReferral: ArrayList<Referral>)
+    fun saveDownloadedData(listRegistrations: ArrayList<BeneficiaryDetails>, listVisits: ArrayList<BeneficiariesList>)
     fun addOrUpdateFormHash(item: String, hash: String)
     fun deleteLoginDetails()
 
