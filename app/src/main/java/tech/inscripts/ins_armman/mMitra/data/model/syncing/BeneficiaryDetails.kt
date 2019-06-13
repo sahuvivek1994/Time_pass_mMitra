@@ -115,6 +115,10 @@ class BeneficiaryDetails {
         return deliveryDate
     }*/
 
+    fun getDeliveryDate() : String?{
+        return deliveryDate
+    }
+
     fun setDeliveryDate(deliveryDate: String) {
         this.deliveryDate = deliveryDate
     }

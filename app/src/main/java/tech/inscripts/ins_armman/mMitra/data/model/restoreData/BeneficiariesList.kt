@@ -5,7 +5,7 @@ import java.util.ArrayList
 
  class BeneficiariesList {
      @SerializedName("unique_id")
-     var uniqueId : String?= null
+     var uniqueId : String=""
      @SerializedName("visits")
      val visitsList : ArrayList<VisitsList>? = null
 
