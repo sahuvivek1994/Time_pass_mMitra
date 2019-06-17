@@ -54,7 +54,7 @@ import static tech.inscripts.ins_armman.mMitra.utility.Keywords.VILLAGE_NAME;
 
 /**
  * This class is used to display questions of registration forms dynamically from the localDB.
- * After entering all data the answer's are saved in local db and based on lmp date she would be directed to either ANC forms or pnc.
+ * After entering all dataSource the answer's are saved in local db and based on lmp date she would be directed to either ANC forms or pnc.
  */
 public class EnrollmentQuestions extends AppCompatActivity {
 
@@ -123,7 +123,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
     //List<Visit>optionList=null; // is used to check whether the question contains dependant question
     List<Visit> optionList = new ArrayList<>(); // is used to check whether the question contains dependant question
     List<Visit> dependantList = null; // is used to retireve dependant question for the selected button
-    TreeMap<Integer, String> Backup_answerTyped1 = new TreeMap<Integer, String>(); // is used to insert the entered data into localDB
+    TreeMap<Integer, String> Backup_answerTyped1 = new TreeMap<Integer, String>(); // is used to insert the entered dataSource into localDB
     String Optionlanguage;
     HashMap<String, String> layoutids = new HashMap<>();
     ConcurrentHashMap<String, String> dependantquestion = new ConcurrentHashMap<>();
@@ -321,7 +321,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
 
                 case "current_time":
 
-//                    calendar = Calendar.getInstance();
+//                    calendar = Calendar.getDataSource();
                     result = timeFormat.format(Calendar.getInstance().getTime());
 
                     if (result != null) {
@@ -589,7 +589,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
     }
 
     /**
-     * This method is used to save the entered data by the user in localDB
+     * This method is used to save the entered dataSource by the user in localDB
      */
     public void saveform(final int migrantStatus) {
 
@@ -633,7 +633,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
                                 // Saving the Enrollment form status as complete and its
                                 // upload status as 0 i.e not uploaded to the server
 //                                dbhelper.saveFormUploadStatus(uniqueId, formID, 0, 1, "", "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
-                                int referenceId = questionInteractor.saveFilledFormStatus(uniqueId, Integer.parseInt(formID), 1, 0, Utility.getCurrentDateTime(),1);//                                dbhelper.insertanswer(womenanswer, formid, uniqueId); // this insert statement is used to insert all the data entered by the user in localDB
+                                int referenceId = questionInteractor.saveFilledFormStatus(uniqueId, Integer.parseInt(formID), 1, 0, Utility.getCurrentDateTime(),1);//                                dbhelper.insertanswer(womenanswer, formid, uniqueId); // this insert statement is used to insert all the dataSource entered by the user in localDB
                                 questionInteractor.saveQuestionAnswers(womendetails, referenceId, uniqueId, Integer.parseInt(formID), Utility.getCurrentDateTime());
                                 if(womendetails.containsKey("registration_option") && womendetails.containsValue("direct_reg_child")){
                                     directChildREgistration(uniqueId);
@@ -1256,7 +1256,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
         }
 
         /**
-         * this if condition is used to display the data which is already entered by the woman
+         * this if condition is used to display the dataSource which is already entered by the woman
          */
         if (womendetails.containsKey(keyword)) {
             et.setText(womendetails.get(keyword));
@@ -1355,8 +1355,8 @@ public class EnrollmentQuestions extends AppCompatActivity {
             public void afterTextChanged(Editable arg0) {
                 System.out.println("createDate onFocusChange" + et.getId());
                 womendetails.put(keyword, et.getText().toString());
-                womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString()); // this hashmap is used to insert data in AnswerEntered table
-                Backup_answerTyped1.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString()); // this hashmap is used to insert data in Backup_AnswerEntered
+                womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString()); // this hashmap is used to insert dataSource in AnswerEntered table
+                Backup_answerTyped1.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString()); // this hashmap is used to insert dataSource in Backup_AnswerEntered
 
                 if (et.getText().toString().length() <= 0) {
                     tv.setError("");
@@ -1640,7 +1640,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
 
                     womendetails.put(keyword, et.getText().toString());
                     womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString());
-                    Backup_answerTyped1.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString()); // this hashmap is used to insert data in Backup_AnswerEntered
+                    Backup_answerTyped1.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString()); // this hashmap is used to insert dataSource in Backup_AnswerEntered
 
 
                     /**
@@ -2474,7 +2474,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
 
 
                     womenanswer.put(tv.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + chechboxlist);
-                    Backup_answerTyped1.put(tv.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + chechboxlist); // this treemap is used to insert data in Backup_entered table.
+                    Backup_answerTyped1.put(tv.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + chechboxlist); // this treemap is used to insert dataSource in Backup_entered table.
                     ll_sub = (LinearLayout) v.getParent().getParent();
                 }
             });
@@ -3901,8 +3901,8 @@ public class EnrollmentQuestions extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable arg0) {
                 womendetails.put(keyword, et.getText().toString());
-                womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + dependantQuesKeyword + delimeter + et.getText().toString()); // this hashmap is used to insert data in AnswerEntered table
-                Backup_answerTyped1.put(et.getId(), "" + formid + delimeter + setid + delimeter + dependantQuesKeyword + delimeter + et.getText().toString()); // this hashmap is used to insert data in Backup_AnswerEntered
+                womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + dependantQuesKeyword + delimeter + et.getText().toString()); // this hashmap is used to insert dataSource in AnswerEntered table
+                Backup_answerTyped1.put(et.getId(), "" + formid + delimeter + setid + delimeter + dependantQuesKeyword + delimeter + et.getText().toString()); // this hashmap is used to insert dataSource in Backup_AnswerEntered
 
                 if (et.getText().toString().length() <= 0) {
                     tv.setError("");
@@ -3936,7 +3936,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
-                photo = (Bitmap) data.getExtras().get("data");
+                photo = (Bitmap) data.getExtras().get("dataSource");
                 iv.setImageBitmap(photo);
 
                 LinearLayout sanket = (LinearLayout) iv.getParent();
@@ -5016,7 +5016,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
 
         tv.setError(null);
 
-        Backup_answerTyped1.put(button.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + button.getTag());        // this hashmap is used to insert answered data into Backup_entered table
+        Backup_answerTyped1.put(button.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + button.getTag());        // this hashmap is used to insert answered dataSource into Backup_entered table
 
 
 //        dependantList = dbhelper.getDependant_Eng_queslist("" + button.getTag(), formid, ll_sub, keyword, "" + scroll_temp.getId());  // this list is used to get dependant question in english format (parameter"s received are form_id,keyword,answer_type,english_lang)

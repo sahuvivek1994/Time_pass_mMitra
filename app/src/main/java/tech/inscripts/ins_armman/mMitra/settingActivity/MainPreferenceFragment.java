@@ -160,7 +160,7 @@ public class MainPreferenceFragment extends PreferenceFragment  {
 
 
     public void updateAvailable(final String url) {
-        new android.support.v7.app.AlertDialog.Builder(getContext()).
+        new AlertDialog.Builder(getContext()).
                 setMessage(getString(R.string.dialog_update_available))
                 .setPositiveButton(getString(R.string.dialog_install_text), new DialogInterface.OnClickListener() {
                     @Override

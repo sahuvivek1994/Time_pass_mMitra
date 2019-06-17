@@ -235,7 +235,7 @@ public final class DatabaseContract {
         public static final String COLUMN_IMAGE = "image";
         public static final String COLUMN_UPDATE_IMAGE_STATUS = "update_image_status";
         /*COLUMN_FAILURE_STATUS and COLUMN_FAILURE_REASON column is to maintain
-            data sync failure status and reason
+            dataSource sync failure status and reason
          */
         public static final String COLUMN_FAILURE_STATUS = "failure_status";
         public static final String COLUMN_FAILURE_REASON = "failure_reason";
@@ -288,7 +288,7 @@ public final class DatabaseContract {
         public static final String COLUMN_NAME_REFERRED_TO = "referred_to";
         public static final String COLUMN_SUBMIT_STATUS = "submit_status";/* 0 means this has not been uploaded to the server since last change made. 1 means uploaded to the server*/
         /*COLUMN_FAILURE_STATUS and COLUMN_FAILURE_REASON column is to maintain
-            data sync failure status and reason
+            dataSource sync failure status and reason
          */
         public static final String COLUMN_FAILURE_STATUS = "failure_status";
         public static final String COLUMN_FAILURE_REASON = "failure_reason";
@@ -339,7 +339,7 @@ public final class DatabaseContract {
         public static final String COLUMN_CREATED_ON = "created_on";
         public static final String COLUMN_WAGES_STATUS = "wages_status";
         /*COLUMN_FAILURE_STATUS and COLUMN_FAILURE_REASON column is to maintain
-            data sync failure status and reason
+            dataSource sync failure status and reason
          */
         public static final String COLUMN_FAILURE_STATUS = "failure_status";
         public static final String COLUMN_FAILURE_REASON = "failure_reason";
@@ -375,7 +375,7 @@ public final class DatabaseContract {
         public static final String COLUMN_NEW_UNIQUE_ID = "uniqueId";
         public static final String COLUMN_SUBMIT_STATUS = "submit_status";
         /*COLUMN_FAILURE_STATUS and COLUMN_FAILURE_REASON column is to maintain
-            data sync failure status and reason
+            dataSource sync failure status and reason
          */
         public static final String COLUMN_FAILURE_STATUS = "failure_status";
         public static final String COLUMN_FAILURE_REASON = "failure_reason";

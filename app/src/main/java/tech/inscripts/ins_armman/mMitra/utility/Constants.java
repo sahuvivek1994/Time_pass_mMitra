@@ -1,11 +1,5 @@
 package tech.inscripts.ins_armman.mMitra.utility;
 
-
-
-/**
- * Created by lenovo on 24/10/17.
- */
-
 public interface Constants {
 
     String DATE_FORMAT = "dd/MM/yyyy";
@@ -42,7 +36,7 @@ public interface Constants {
     String QUESTION_KEYWORD = "q_keyword";
     String ANSWER = "ans_keyword";
     String CREATED_ON = "created_on";
-    String DATA = "data";
+    String DATA = "dataSource";
     String REFERRAL = "referral";
     String TYPE = "type";
     String BENEFICIARIES = "beneficiaries";
