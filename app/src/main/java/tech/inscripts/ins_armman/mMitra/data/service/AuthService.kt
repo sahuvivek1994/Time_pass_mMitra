@@ -32,19 +32,19 @@ if(userDetails!=null){
                     loginJsonResponse = response.errorBody().string()
                 }
                 val loginJsonObject = JSONObject(loginJsonResponse)
-                onLoginFinished.onSuccess(loginJsonObject)
+               // onLoginFinished.onSuccess(loginJsonObject)
             } catch (e: IOException) {
                 e.printStackTrace()
-                onLoginFinished.onFailure(context.getString(R.string.input_output_error_occured))
+               // onLoginFinished.onFailure(context.getString(R.string.input_output_error_occured))
             } catch (e: JSONException) {
                 e.printStackTrace()
-                onLoginFinished.onFailure(context.getString(R.string.invalid_data_frm_server))
+                //onLoginFinished.onFailure(context.getString(R.string.invalid_data_frm_server))
             }
 
         }
 
         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-            onLoginFinished.onFailure(context.getString(R.string.oops_some_thing_happened_wrong))
+            //onLoginFinished.onFailure(context.getString(R.string.oops_some_thing_happened_wrong))
         }
     })
 }

@@ -19,7 +19,7 @@ class Login : AppCompatActivity(),ILoginView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
-        val button_login=findViewById<Button>(R.id.button_login);
+        val button_login=findViewById<Button>(R.id.button_login)
        initializeDBHelper()
         button_login.setOnClickListener(View.OnClickListener {
             val myIntent = Intent(this@Login, HomeActivity::class.java)

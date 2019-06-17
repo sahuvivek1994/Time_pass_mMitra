@@ -37,32 +37,32 @@ class SettingsPreferenceFragment:PreferenceFragment(),ISettingsView{
     }
     fun linkViewsId(){
         mListPreference=findPreference("language") as ListPreference
-        mListPreference.setOnPreferenceChangeListener(Preference.OnPreferenceChangeListener { preference, value ->
+        mListPreference!!.setOnPreferenceChangeListener(Preference.OnPreferenceChangeListener { preference, value ->
             mSettingsPresentor?.changeLanguage(activity.applicationContext, value.toString())
             activity.recreate()
             true
         })
 
         mPreferencesyncForm= findPreference("sync_form") as Preference
-        mPreferencesyncForm.setOnPreferenceClickListener(Preference.OnPreferenceClickListener {
+        mPreferencesyncForm!!.setOnPreferenceClickListener(Preference.OnPreferenceClickListener {
             mSettingsPresentor?.downloadForms()
             false
         })
 
         mPreferenceCheckUpdate=findPreference("check_update") as Preference
-        mPreferenceCheckUpdate.setOnPreferenceClickListener(Preference.OnPreferenceClickListener {
+        mPreferenceCheckUpdate!!.setOnPreferenceClickListener(Preference.OnPreferenceClickListener {
             mSettingsPresentor?.checkUpdate()
             false
         })
 
         mPreferenceHelpManual=findPreference("help_manual") as Preference
-        mPreferenceHelpManual.setOnPreferenceClickListener(Preference.OnPreferenceClickListener {
+        mPreferenceHelpManual!!.setOnPreferenceClickListener(Preference.OnPreferenceClickListener {
             mSettingsPresentor?.downloadHelpManual()
             false
         })
 
         mPreferenceCheckUpdate = findPreference("logout") as Preference
-        mPreferenceCheckUpdate.setOnPreferenceClickListener(Preference.OnPreferenceClickListener {
+        mPreferenceCheckUpdate!!.setOnPreferenceClickListener(Preference.OnPreferenceClickListener {
             mSettingsPresentor?.logout()
             false
         })
@@ -73,7 +73,7 @@ class SettingsPreferenceFragment:PreferenceFragment(),ISettingsView{
                 .setMessage(R.string.dialog_msg_loss_data_warning)
                 .setPositiveButton(
                     R.string.ok
-                ) { dialog, which -> mSettingsPresentor.restoreData() }.setNegativeButton(
+                ) { dialog, which -> mSettingsPresentor!!.restoreData() }.setNegativeButton(
                     R.string.cancel
                 ) { dialogInterface, i -> }
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -81,7 +81,7 @@ class SettingsPreferenceFragment:PreferenceFragment(),ISettingsView{
             false
         })
         mPreferenceVersion = findPreference("version") as Preference
-        mPreferenceVersion.setSummary(Utility.getAppVersionName(activity))
+        mPreferenceVersion!!.setSummary(Utility.getAppVersionName(activity))
     }
 
     override fun showProgressBar(label: String) {
@@ -93,11 +93,11 @@ class SettingsPreferenceFragment:PreferenceFragment(),ISettingsView{
         mAlertDialogBuilder.setView(dialogView)
         mAlertDialogBuilder.setCancelable(false)
         mProgressDialog = mAlertDialogBuilder.create()
-        mProgressDialog.show()
+        mProgressDialog!!.show()
     }
 
     override fun hideProgressBar() {
-        if (mProgressDialog != null) mProgressDialog.dismiss()
+        if (mProgressDialog != null) mProgressDialog!!.dismiss()
     }
 
     override fun showDialog(title: String, message: String) {
@@ -117,7 +117,7 @@ class SettingsPreferenceFragment:PreferenceFragment(),ISettingsView{
         android.support.v7.app.AlertDialog.Builder(context).setMessage(getString(R.string.dialog_update_available))
             .setPositiveButton(
                 getString(R.string.dialog_install_text)
-            ) { dialogInterface, i -> mSettingsPresentor.downloadApk(url) }
+            ) { dialogInterface, i -> mSettingsPresentor!!.downloadApk(url) }
             .setNegativeButton(
                 getString(R.string.cancel)
             ) { dialogInterface, i -> }
@@ -135,14 +135,14 @@ class SettingsPreferenceFragment:PreferenceFragment(),ISettingsView{
         mAlertDialogBuilder.setView(dialogView)
         mAlertDialogBuilder.setCancelable(false)
         mProgressDialog=mAlertDialogBuilder.create()
-        mProgressDialog.show()
+        mProgressDialog!!.show()
     }
 
     override fun updateApkDownloadProgress(progress: Int) {
         mProgressBar?.setProgress(progress)
     }
     override fun dissmissApkDownloadProgress() {
-        if (mProgressDialog != null) mProgressDialog.dismiss()
+        if (mProgressDialog != null) mProgressDialog!!.dismiss()
     }
 
     override fun showSnackBar(message: String) {

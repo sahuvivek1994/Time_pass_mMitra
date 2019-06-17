@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.LoaderManager
@@ -47,6 +46,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
 import android.content.BroadcastReceiver as BroadcastReceiver1
+import android.os.AsyncTask
 
 class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -55,11 +55,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
     var mSettingsPresentor: SettingsPresentor
     var dataSource = RemoteDataSource()
 
-    constructor(
-        mContext: Context,
-        mOnQueryFinished: ISettingsPresentor.OnQueryFinished,
-        mSettingsPresentor: SettingsPresentor
-    ) {
+    constructor(mContext: Context, mOnQueryFinished: ISettingsPresentor.OnQueryFinished, mSettingsPresentor: SettingsPresentor) {
         this.mContext = mContext
         this.mOnQueryFinished = mOnQueryFinished
         this.mSettingsPresentor = mSettingsPresentor
@@ -70,10 +66,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
         Utility.setApplicationLocale(context, language)
     }
 
-    override fun downloadForms(
-        requestFormModel: RequestFormModel,
-        onFormDownloadFinished: ISettingsInteractor.OnFormDownloadFinished
-    ) {
+    override fun downloadForms(requestFormModel: RequestFormModel, onFormDownloadFinished: ISettingsInteractor.OnFormDownloadFinished) {
         var remoteDataSource: RemoteDataSource = dataSource.getInstance()
         var formDownloadService: FormDownloadService = remoteDataSource.downloadFormService()
         formDownloadService.downloadForms(requestFormModel, onFormDownloadFinished, mContext)
@@ -103,23 +96,24 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
     }
 
-    override fun downloadHelpManual(
-        helpModel: RequestHelpModel,
-        downloadFinished: ISettingsInteractor.onHelpManualDownloadFinished
-    ) {
+    override fun downloadHelpManual(helpModel: RequestHelpModel, downloadFinished: ISettingsInteractor.onHelpManualDownloadFinished) {
         var remoteDataSource: RemoteDataSource = dataSource.getInstance()
         var manualDownloadService: HelpManualDownloadService = dataSource.helpManualDownloadService()
         manualDownloadService.downloadHelpManual(helpModel, downloadFinished, mContext)
     }
 
-    fun deleteHelpData() {
+    fun deleteOldHelpData() {
         Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.FaqTable.TABLE_NAME)
         Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.VideoAnimationTable.TABLE_NAME)
         Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.mMitraCallsTable.TABLE_NAME)
+
+        Utility.getDatabase().execSQL(DatabaseContract.FaqTable.CREATE_TABLE)
+        Utility.getDatabase().execSQL(DatabaseContract.VideoAnimationTable.CREATE_TABLE)
+        Utility.getDatabase().execSQL(DatabaseContract.mMitraCallsTable.CREATE_TABLE)
     }
 
     override fun saveHelpManualData(helpJsonObject: JSONObject) {
-        deleteHelpData()
+        deleteOldHelpData()
         var values = ContentValues()
         Utility.getDatabase().beginTransaction()
         try {
@@ -129,14 +123,8 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                 for (index in 0 until faqSize) {
                     values.clear()
                     val jsonObject = faqJsonArray.getJSONObject(index)
-                    values.put(
-                        DatabaseContract.FaqTable.COLUMN_QUESTION,
-                        jsonObject.optJSONObject("question").optString("languages")
-                    )
-                    values.put(
-                        DatabaseContract.FaqTable.COLUMN_ANSWER,
-                        jsonObject.optJSONObject("answer").optString("languages")
-                    )
+                    values.put(DatabaseContract.FaqTable.COLUMN_QUESTION, jsonObject.optJSONObject("question").optString("languages"))
+                    values.put(DatabaseContract.FaqTable.COLUMN_ANSWER, jsonObject.optJSONObject("answer").optString("languages"))
                     Utility.getDatabase().insert(DatabaseContract.FaqTable.TABLE_NAME, null, values)
                 }
             }
@@ -193,8 +181,8 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
     }
 
     override fun checkReleaseUpdate(onCheckUpdateFinished: ISettingsInteractor.onCheckUpdateFinished) {
-        var remoteDataSource: RemoteDataSource = dataSource.getInstance()
-        var checkUpdateService: CheckUpdateService = dataSource.getCheckUpdateService()
+        val remoteDataSource = dataSource.getInstance()
+        val checkUpdateService = remoteDataSource.getCheckUpdateService()
         checkUpdateService.getUpdateData(onCheckUpdateFinished, mContext)
     }
 
@@ -270,37 +258,28 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
     override fun getHash(type: String): String {
         var cur: Cursor = Utility.getDatabase().rawQuery(
             "SELECT * FROM "
-                    + DatabaseContract.HashTable.TABLE_NAME
+                    + HashTable.TABLE_NAME
                     + " WHERE "
-                    + DatabaseContract.HashTable.COLUMN_ITEM
+                    + HashTable.COLUMN_ITEM
                     + " = ? ", arrayOf(type)
         )
         return if (cur.moveToFirst()) cur.getString(cur.getColumnIndex(DatabaseContract.HashTable.COLUMN_HASH)) else DEFAULT_HASH
 
     }
 
-    override fun downloadRegistrationData(
-        request: RestoreDataRequest,
-        downloadFinished: ISettingsInteractor.OnRegistrationsDownloadFinished
-    ) {
+    override fun downloadRegistrationData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnRegistrationsDownloadFinished) {
         var remoteDataSource: RemoteDataSource = dataSource.getInstance()
         var service: RestoreRegistrationService = remoteDataSource.restoreRegistrationService()
         service.downloadRegistrationData(mContext, request, downloadFinished)
     }
 
-    override fun downloadVisitsData(
-        request: RestoreDataRequest,
-        downloadFinished: ISettingsInteractor.OnVisitsDownloadFinished
-    ) {
+    override fun downloadVisitsData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnVisitsDownloadFinished) {
         var remoteDataSource: RemoteDataSource = dataSource.getInstance()
         var service: RestoreVisitsService = remoteDataSource.restoreVisitsService()
         service.downloadVisitsData(mContext, request, downloadFinished)
     }
 
-    override fun saveDownloadedData(
-        listRegistrations: ArrayList<BeneficiaryDetails>,
-        listVisits: ArrayList<BeneficiariesList>
-    ) {
+    override fun saveDownloadedData(listRegistrations: ArrayList<BeneficiaryDetails>, listVisits: ArrayList<BeneficiariesList>) {
 
         SaveRestoredDataAsyncTask(listRegistrations, listVisits).execute()
     }
@@ -362,7 +341,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
         var option_id: String = ""
         var option_language: String = ""
         var option_messages: String = ""
-        var dependant_ques_messages: String? = ""
+        var dependant_ques_messages: String = ""
         var attr16: String = ""
         var attr17: String = ""
         var vali_req: String = ""
@@ -425,11 +404,8 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                     val questionArray = formkeys.optJSONArray("question")
                     val qstnLength = questionArray.length()
                     for (j in 0 until qstnLength) {
-
                         val main_question_keys = questionArray.getJSONObject(j)
-
                         quesid = main_question_keys.optInt("id")
-
                         setid = main_question_keys.optString("set_id")
                         question_keyword = main_question_keys.optString("keyword")
                         orderno = main_question_keys.optString("order_no")
@@ -518,16 +494,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                             }
                         }
                         //                        dbhelper.insertquestions(Form_id, quesid, question_keyword, orderno, ques_ans_type, setid, ques_lang, messages, calculations, main_question_keys.getInt("orientation"));
-                        saveMainQuestions(
-                            form_id,
-                            quesid,
-                            question_keyword,
-                            ques_ans_type,
-                            ques_lang,
-                            messages,
-                            calculations,
-                            main_question_keys.getInt("orientation")
-                        )
+                        saveMainQuestions(form_id, quesid, question_keyword, ques_ans_type, ques_lang, messages, calculations, main_question_keys.getInt("orientation"))
                     }
 
                 }
@@ -648,19 +615,11 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
         @Throws(JSONException::class)
         fun recursiveDependantCheck(main_ques_options_key: JSONObject, orientation: Int) {
-
-
             option_id = main_ques_options_key.optString("id")
-
             option_keyword = main_ques_options_key.optString("keyword")
-
             depend1 = main_ques_options_key.optString("dependents")
-
             if (main_ques_options_key.optString("messages") != null && main_ques_options_key.optString("messages").length > 0) {
-
                 option_messages = main_ques_options_key.optString("messages")
-
-
             } else {
                 option_messages = ""
             }
@@ -681,7 +640,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                     e.printStackTrace()
                 }
 
-                attr16 = object1?.optString("en")
+                attr16 = object1?.optString("en")!!
 
                 attr17 = object1?.optString("mr")
 
@@ -712,67 +671,91 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                             for (l in 0 until jsonArray5.length()) {
                                 val depandant_ques_option_key = jsonArray5.getJSONObject(l)
 
-                                if (depandant_ques_option_key.optString("messages") != null && depandant_ques_option_key.optString(
-                                        "messages"
-                                    ).length > 0
-                                ) {
+                                if (depandant_ques_option_key.optString("messages") != null &&
+                                    depandant_ques_option_key.optString("messages").length > 0) {
                                     dependant_ques_messages = depandant_ques_option_key.optString("messages").toString()
                                 } else {
                                     dependant_ques_messages = ""
                                 }
 
                                 //                                dbhelper.insertDependantQuestion(Form_id, setid, dependant_ques_key.optString("id"), depandant_ques_option_key.optString("keyword"), "", depandant_ques_option_key.optString("languages"), "", dependant_ques_messages);
-                                saveQuestionOptions(
-                                    Form_id,
-                                    dependant_ques_key.optInt("id"),
-                                    depandant_ques_option_key.optString("keyword"),
-                                    depandant_ques_option_key.optString("languages"),
-                                    dependant_ques_messages
+                                saveQuestionOptions(form_id, dependant_ques_key.optInt("id"), depandant_ques_option_key.optString("keyword"),
+                                    depandant_ques_option_key.optString("languages"), dependant_ques_messages!!
                                 )
 
-                                if (depandant_ques_option_key.optString("action") != null && depandant_ques_option_key.optString(
-                                        "action"
-                                    ).length > 0
-                                ) {
+                                if (depandant_ques_option_key.optString("action") != null &&
+                                    depandant_ques_option_key.optString("action").length > 0) {
                                     val depandant_ques_action_dependant_key =
                                         depandant_ques_option_key.getJSONObject("action")
 
                                     val option_keyword = depandant_ques_option_key.optString("keyword")
 
-                                    actionDependantQuestions(
-                                        depandant_ques_action_dependant_key,
-                                        option_keyword,
-                                        orientation
-                                    )
+                                    actionDependantQuestions(depandant_ques_action_dependant_key, option_keyword, orientation)
                                 }
 
                             }
                         }
 
                         //                        dbhelper.insertDependantquestionlist(option_keyword, dependant_ques_key.optString("id"),Form_id,dependant_ques_key.optString("set_id"), dependant_ques_key.optString("keyword"), dependant_ques_key.optString("answer_type"), ""+depandant_ques_lang,dependant_ques_messages,dependant_ques_key.optString("validation"),dependant_ques_key.optString("order_no"),orientation);
-                        saveDependentQuestions(
-                            option_keyword,
-                            dependant_ques_key.optInt("id"),
-                            Form_id,
-                            dependant_ques_key.optString("keyword"),
-                            dependant_ques_key.optString("answer_type"),
-                            "" + depandant_ques_lang,
-                            dependant_ques_messages,
-                            dependant_ques_key.optString("validation"),
-                            orientation
-                        )
+                        saveDependentQuestions(option_keyword, dependant_ques_key.optInt("id"), form_id,
+                            dependant_ques_key.optString("keyword"), dependant_ques_key.optString("answer_type"),
+                            "" + depandant_ques_lang, dependant_ques_messages!!, dependant_ques_key.optString("validation"), orientation)
                     }
                 }
             }
 
             //            dbhelper.insertDependantQuestion(Form_id,setid, quesid, option_keyword, "", option_language,"",option_messages);
-            saveQuestionOptions(Form_id, quesid, option_keyword, option_language, option_messages)
+            saveQuestionOptions(form_id, quesid, option_keyword, option_language, option_messages)
 
+        }
+
+        fun actionDependantQuestions( depedant_ques_action_dependant_key: JSONObject,option_keyword: String,orientation: Int){
+            if(depedant_ques_action_dependant_key.optJSONArray("question")!=null){
+                val jsonArray4 = depedant_ques_action_dependant_key.optJSONArray("question")
+                for(p in 0 until jsonArray4.length()){
+                    var dependant_ques_key = jsonArray4.getJSONObject(p)
+                    var dependant_ques_lang : JSONObject = dependant_ques_key.getJSONObject("language")
+                    if(dependant_ques_key.optString("messages")!=null && dependant_ques_key.optString("messages").length>0){
+                        dependant_ques_messages= dependant_ques_key.optString("messages")
+                    }
+                    else{
+                        dependant_ques_messages=""
+                    }
+
+                    if(dependant_ques_key.optJSONArray("options")!=null && dependant_ques_key.optJSONArray("options").length()>0){
+                        var jsonArray5 : JSONArray= dependant_ques_key.optJSONArray("options")
+                        for(l in 0 until jsonArray5.length()){
+
+                            var dependant_ques_option_key = jsonArray5.getJSONObject(l)
+
+                            if(dependant_ques_option_key.optString("messages")!=null && dependant_ques_option_key.optString("messages").length>0){
+                                dependant_ques_messages = dependant_ques_option_key.optString("messages").toString()
+                            }
+                            else{
+                                dependant_ques_messages=""
+                            }
+
+                            saveQuestionOptions(form_id, dependant_ques_key.optInt("id"), dependant_ques_option_key.optString("keyword"),
+                                dependant_ques_option_key.optString("languages"), dependant_ques_messages!!)
+
+                            if (dependant_ques_option_key.optString("action").toString() != null && dependant_ques_option_key.optString("action").toString().length > 0) {
+
+                                val recursive_action_dependant_key = dependant_ques_option_key.getJSONObject("action")
+                                val option_keyword = dependant_ques_option_key.optString("keyword")
+                                actionDependantQuestions(recursive_action_dependant_key, option_keyword, orientation)
+                            }
+                        }
+                    }
+
+                    saveDependentQuestions(option_keyword,dependant_ques_key.optInt("id"),form_id,dependant_ques_key.optString("keyword"),
+                        dependant_ques_key.optString("answer_type"),""+dependant_ques_lang,dependant_ques_messages,dependant_ques_key.optString("validation"),orientation)
+                }
+             }
         }
 
     }
 
-    inner class SaveRestoredDataAsyncTask : AsyncTask<ArrayList<Object>, Int, Void>() {
+    inner class SaveRestoredDataAsyncTask (listRegistrations: ArrayList<BeneficiaryDetails>,listVisits: ArrayList<BeneficiariesList>): AsyncTask<ArrayList<Object>, Int, Void>() {
 
         var progressBar: ProgressBar? = null
         var mProgressDialog: AlertDialog? = null
@@ -780,11 +763,6 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
         var listRegistrations: ArrayList<BeneficiaryDetails>? = null
         var listVisits: ArrayList<BeneficiariesList>? = null
 
-
-        constructor(listRegistrations: ArrayList<BeneficiaryDetails>, listVisits: ArrayList<BeneficiariesList>) {
-            this.listRegistrations = listRegistrations
-            this.listVisits = listVisits
-        }
 
 
         override fun onPreExecute() {

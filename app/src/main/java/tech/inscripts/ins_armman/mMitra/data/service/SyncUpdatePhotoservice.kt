@@ -32,7 +32,7 @@ class SyncUpdatePhotoservice {
             override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
                 var jsonResponse: String? = null
                 try {
-                    if (response.body() != null) {
+                    if (response!!.body() != null) {
                         jsonResponse = response.body().string()
                     } else if (response.errorBody() != null)
                         jsonResponse = response.errorBody().string()
