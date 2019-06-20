@@ -4,11 +4,11 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
+import android.net.ConnectivityManager
 import android.view.View
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
-import java.text.AttributedCharacterIterator.Attribute.LANGUAGE
+import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,14 +16,19 @@ public class utility {
 
      val COMMAN_PREF_NAME = "CommonPrefs"
      val Language = "language"
-
+    private var PRIVATE_MODE = 0
 
 
      fun setLocaleInPreference(locale: String, context: Context) {
-        val prefs = context.getSharedPreferences(COMMAN_PREF_NAME, Activity.MODE_PRIVATE)
-        val editor = prefs.edit()
-        editor.putString(Language, locale)
-        editor.commit()
+//        var prefs = context.getSharedPreferences(COMMAN_PREF_NAME, Activity.MODE_PRIVATE)
+//        var editor = prefs.edit()
+//        editor.putString(Language, locale)
+//        editor.commit()
+
+        val sharedPref : SharedPreferences = context.getSharedPreferences(COMMAN_PREF_NAME,PRIVATE_MODE)
+        val editor = sharedPref.edit()
+        editor.putString(Language,locale)
+        editor.apply()
     }
 
     fun getLanguagePreferance(context: Context): String {
@@ -33,7 +38,6 @@ public class utility {
 
     /**
      * change the locale for the app.
-     *
      * @param context
      * @param locale
      */
@@ -41,11 +45,11 @@ public class utility {
         try {
             setLocaleInPreference(locale, context)
 
-            val res = context.applicationContext.resources
+            var res = context.applicationContext.resources
             // Change locale settings in the app.
-            val dm = res.displayMetrics
-            val conf = res.configuration
-            val localeArray = locale.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            var dm = res.displayMetrics
+            var conf = res.configuration
+            var localeArray = locale.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (localeArray.size > 1) {
                 conf.locale = Locale(localeArray[0], localeArray[1])
             } else {
@@ -57,6 +61,9 @@ public class utility {
 
     }
 
+    fun getDatabase(): SQLiteDatabase {
+        return DatabaseManager.getInstance().openDatabase()
+    }
 
 
     fun getCurrentDateTime():String
@@ -84,5 +91,48 @@ public class utility {
 //        icon.mutate()
 //        icon.setDrawableByLayerId(R.id.ic_badge, badge)
 //    }
+
+    /**
+     * @param view         View to animate
+     * @param toVisibility Visibility at the end of animation
+     * @param toAlpha      Alpha at the end of animation
+     * @param duration     Animation duration in ms
+     */
+
+    fun animateView(view :View,toVisibility : Int,toAlpha : Float,duration : Int)
+    {
+        val show = toVisibility == View.VISIBLE
+        if (show) {
+            view.alpha = 0f
+        }
+        view.visibility = View.VISIBLE
+        view.animate()
+            .setDuration(duration.toLong())
+            .alpha(toAlpha)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    view.visibility = toVisibility
+                }
+            })
+    }
+
+    fun hasInternetConnectivity(context: Context):Boolean
+    {
+        var rc = false
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (cm != null) {
+            try {
+                val activeNetworkInfo = cm.activeNetworkInfo
+                if (activeNetworkInfo != null && activeNetworkInfo.isAvailable && activeNetworkInfo.isConnected) {
+                    rc = true
+                }
+            } catch (e: Exception) {
+            }
+
+        }
+        return rc
+
+    }
+
 
 }
