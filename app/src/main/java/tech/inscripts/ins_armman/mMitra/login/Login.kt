@@ -19,7 +19,7 @@ class Login : AppCompatActivity(),ILoginView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
-        val button_login=findViewById<Button>(R.id.buttonLogin)
+        val button_login=findViewById<Button>(R.id.buttonLogin);
        initializeDBHelper()
         button_login.setOnClickListener(View.OnClickListener {
             val myIntent = Intent(this@Login, HomeActivity::class.java)
@@ -31,11 +31,36 @@ class Login : AppCompatActivity(),ILoginView {
         DatabaseManager.initializeInstance(dbHelper)
         DatabaseManager.getInstance().openDatabase()    }
 
-    private var backButtonClick = false
-    override fun onBackPressed() {
-        val a = Intent(Intent.ACTION_MAIN)
-        a.addCategory(Intent.CATEGORY_HOME)
-        a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(a)
+
+    override fun setUsernameError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setPasswordError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun resetErrorMsg() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showDialog(title: String, message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showProgressBar() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideProgressBar() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun openHomeActivity() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setAuthenticationFailedError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
