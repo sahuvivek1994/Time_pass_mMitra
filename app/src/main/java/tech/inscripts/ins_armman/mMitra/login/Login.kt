@@ -30,4 +30,37 @@ class Login : AppCompatActivity(),ILoginView {
         val dbHelper = DBHelper(getContext()?.getApplicationContext())
         DatabaseManager.initializeInstance(dbHelper)
         DatabaseManager.getInstance().openDatabase()    }
+
+
+    override fun setUsernameError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setPasswordError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun resetErrorMsg() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showDialog(title: String, message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showProgressBar() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideProgressBar() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun openHomeActivity() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setAuthenticationFailedError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

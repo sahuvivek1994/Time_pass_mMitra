@@ -27,7 +27,7 @@ import java.util.ArrayList
 
     override fun attachView(view:ILoginView) {
         this.iLoginview = view
-        var loginInter = LoginInteractor(view.getContext())
+      //  var loginInter = LoginInteractor(view.getContext())
 
         if (checkPermissions()) {
             initializeDBHelper()
@@ -93,10 +93,10 @@ import java.util.ArrayList
     }
 
     override fun createRequestBody(username: String, password: String) {
-            mUserDetails = UserDetails()
-            mUserDetails.setusername(username)
-            mUserDetails.setpassword(password)
-            mUserDetails.setShowdata("true")
+//            mUserDetails = UserDetails()
+//            mUserDetails.setusername(username)
+//            mUserDetails.setpassword(password)
+//            mUserDetails.setShowdata("true")
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
