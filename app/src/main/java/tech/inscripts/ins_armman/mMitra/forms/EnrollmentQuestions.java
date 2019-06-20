@@ -190,7 +190,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
     private String mAppLanguage="en";
     private HashMap<String, String> hashMapUserDetails = new HashMap<>();
     GradientDrawable drawableMainQstn, drawableDependentQstn;
-
+private static Utility utility= new Utility();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -633,8 +633,8 @@ public class EnrollmentQuestions extends AppCompatActivity {
                                 // Saving the Enrollment form status as complete and its
                                 // upload status as 0 i.e not uploaded to the server
 //                                dbhelper.saveFormUploadStatus(uniqueId, formID, 0, 1, "", "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
-                                int referenceId = questionInteractor.saveFilledFormStatus(uniqueId, Integer.parseInt(formID), 1, 0, Utility.getCurrentDateTime(),1);//                                dbhelper.insertanswer(womenanswer, formid, uniqueId); // this insert statement is used to insert all the dataSource entered by the user in localDB
-                                questionInteractor.saveQuestionAnswers(womendetails, referenceId, uniqueId, Integer.parseInt(formID), Utility.getCurrentDateTime());
+                                int referenceId = questionInteractor.saveFilledFormStatus(uniqueId, Integer.parseInt(formID), 1, 0, utility.getCurrentDateTime(),1);//                                dbhelper.insertanswer(womenanswer, formid, uniqueId); // this insert statement is used to insert all the dataSource entered by the user in localDB
+                                questionInteractor.saveQuestionAnswers(womendetails, referenceId, uniqueId, Integer.parseInt(formID), utility.getCurrentDateTime());
                                 if(womendetails.containsKey("registration_option") && womendetails.containsValue("direct_reg_child")){
                                     directChildREgistration(uniqueId);
                                 }
@@ -676,7 +676,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
 
         noToRegisterChild = Integer.parseInt(womendetails.get(CHILD_COUNT));
 
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT * FROM "
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM "
                 + DatabaseContract.RegistrationTable.TABLE_NAME
                 + " WHERE "
                 + DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? ", new String[]{uniqueId});
@@ -5160,10 +5160,10 @@ public class EnrollmentQuestions extends AppCompatActivity {
 
             questionInteractor = new QuestionInteractor(EnrollmentQuestions.this);
 
-            mAppLanguage = Utility.getLanguagePreferance(getApplicationContext());
+            mAppLanguage = utility.getLanguagePreferance(getApplicationContext());
             maxautoId = questionInteractor.getFilledFormReferenceId(uniqueId, String.valueOf(formID));
             if (maxautoId == -1) {
-                maxautoId = questionInteractor.saveFilledFormStatus(uniqueId, 1, 0, 0, Utility.getCurrentDateTime(),0);
+                maxautoId = questionInteractor.saveFilledFormStatus(uniqueId, 1, 0, 0, utility.getCurrentDateTime(),0);
             }
             init();
 

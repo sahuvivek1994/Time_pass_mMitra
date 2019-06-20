@@ -25,7 +25,7 @@ import static tech.inscripts.ins_armman.mMitra.utility.Keywords.*;
 public class QuestionInteractor {
 
     private Context mContext;
-
+private static Utility utility= new Utility();
     public QuestionInteractor(Context mContext) {
         this.mContext = mContext;
     }
@@ -34,12 +34,12 @@ public class QuestionInteractor {
             , String lmp, String edd, String address, String dob, String education, String religion, String category, Bitmap bitmap, String motherId, int registrationStatus) {
         ContentValues values = new ContentValues();
 
-        String woman_id = Utility.generateUniqueId();
+        String woman_id = (String) utility.generateUniqueId();
 
         byte[] buffer = null;
         if(bitmap != null) {
             bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
-            buffer = Utility.getImageByteArray(bitmap);
+            buffer = (byte[]) utility.getImageByteArray(bitmap);
         }
 
         values.put(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID, woman_id);
@@ -61,7 +61,7 @@ public class QuestionInteractor {
         values.put(DatabaseContract.RegistrationTable.COLUMN_REGISTRATION_STATUS, registrationStatus);
         values.put(DatabaseContract.RegistrationTable.COLUMN_CREATED_ON, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
 
-        Utility.getDatabase().insert(DatabaseContract.RegistrationTable.TABLE_NAME, null, values);
+        utility.getDatabase().insert(DatabaseContract.RegistrationTable.TABLE_NAME, null, values);
 
         return woman_id;
     }
@@ -83,7 +83,7 @@ public class QuestionInteractor {
             vals.put(DatabaseContract.ReferralTable.COLUMN_NAME_REFERRAL_TYPE, a[5]);
             vals.put(DatabaseContract.ReferralTable.COLUMN_NAME_STATUS, a[6]);
 
-            Utility.getDatabase().insert(DatabaseContract.ReferralTable.TABLE_NAME, null, vals);
+            utility.getDatabase().insert(DatabaseContract.ReferralTable.TABLE_NAME, null, vals);
 
         }
     }
@@ -97,7 +97,7 @@ public class QuestionInteractor {
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_CREATED_ON, createdOn);
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_WAGES_STATUS, wages_status);
 
-        return (int) Utility.getDatabase().insert(DatabaseContract.FilledFormStatusTable.TABLE_NAME, null, values);
+        return (int) utility.getDatabase().insert(DatabaseContract.FilledFormStatusTable.TABLE_NAME, null, values);
     }
 
     public void updateFormCompletionStatus(int id,int wages_status) {
@@ -105,7 +105,7 @@ public class QuestionInteractor {
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_COMPLETION_STATUS, 1);
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_WAGES_STATUS, wages_status);
 
-        Utility.getDatabase().update(DatabaseContract.FilledFormStatusTable.TABLE_NAME
+        utility.getDatabase().update(DatabaseContract.FilledFormStatusTable.TABLE_NAME
                 , values
                 , DatabaseContract.FilledFormStatusTable.COLUMN_ID + " = ? "
                 , new String[]{String.valueOf(id)});
@@ -125,7 +125,7 @@ public class QuestionInteractor {
             values.put(DatabaseContract.QuestionAnswerTable.COLUMN_ANSWER_KEYWORD, entry.getValue());
             values.put(DatabaseContract.QuestionAnswerTable.COLUMN_CREATED_ON, createdOn);
 
-            int row = Utility.getDatabase().update(DatabaseContract.QuestionAnswerTable.TABLE_NAME
+            int row = utility.getDatabase().update(DatabaseContract.QuestionAnswerTable.TABLE_NAME
                     , values
                     , DatabaseContract.QuestionAnswerTable.COLUMN_FORM_ID + " = ? "
                     + " AND "
@@ -134,7 +134,7 @@ public class QuestionInteractor {
                     + DatabaseContract.QuestionAnswerTable.COLUMN_QUESTION_KEYWORD + " = ? "
                     ,new String[]{String.valueOf(formId), womanId, entry.getKey()});
 
-            if (row == 0) Utility.getDatabase().insert(DatabaseContract.QuestionAnswerTable.TABLE_NAME, null, values);
+            if (row == 0) utility.getDatabase().insert(DatabaseContract.QuestionAnswerTable.TABLE_NAME, null, values);
 
 
             values.clear();
@@ -146,7 +146,7 @@ public class QuestionInteractor {
         Visit defaultText = new Visit(mContext.getString(R.string.select));
         optionsList.add(defaultText);
 
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT DISTINCT * FROM "
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * FROM "
                 + DatabaseContract.QuestionOptionsTable.TABLE_NAME
                 + " WHERE "
                 + DatabaseContract.QuestionOptionsTable.COLUMN_FORM_ID
@@ -169,7 +169,7 @@ public class QuestionInteractor {
 
         List<Visit> dependentQuestionsList = new ArrayList<Visit>();
 
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT * FROM "
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM "
                 + DatabaseContract.DependentQuestionsTable.TABLE_NAME
                 + " WHERE "
                 + DatabaseContract.DependentQuestionsTable.COLUMN_FORM_ID
@@ -204,7 +204,7 @@ public class QuestionInteractor {
     }
 
     public String getHighRiskCondition(String optionKeyword) {
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT "
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT "
                 + DatabaseContract.QuestionOptionsTable.COLUMN_MESSAGES
                 + " FROM "
                 + DatabaseContract.QuestionOptionsTable.TABLE_NAME
@@ -218,7 +218,7 @@ public class QuestionInteractor {
     }
 
     public String getDependentQuestionLabel(String optionKeyword) {
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT "
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT "
                 + DatabaseContract.QuestionOptionsTable.COLUMN_OPTION_LABEL
                 + " FROM "
                 + DatabaseContract.QuestionOptionsTable.TABLE_NAME
@@ -239,7 +239,7 @@ String regOption= getRegistrationOption(uniqueId);
         if(regOption.equals("direct_reg_child")){
             if(FormId<clickedFormId){
                 if(FormId==10 || FormId==22){
-                    cursor = Utility.getDatabase().rawQuery("SELECT DISTINCT * "
+                    cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * "
                                     + ", q."
                                     + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
                                     + " AS qstn_id "
@@ -262,11 +262,11 @@ String regOption= getRegistrationOption(uniqueId);
                             , new String[]{formId});
                 }
                 else if(FormId<=18 && FormId>=21){
-                    Utility.getDatabase().rawQuery("SELECT DISTINCT * , q.question_id AS qstn_id  FROM main_questions q  LEFT JOIN validations v  ON  q. question_id =  v. question_id"+
+                    utility.getDatabase().rawQuery("SELECT DISTINCT * , q.question_id AS qstn_id  FROM main_questions q  LEFT JOIN validations v  ON  q. question_id =  v. question_id"+
                             "WHERE  q. form_id =21 and keyword in('child_immunization','measles','vitamin_A_1')",null);
                 }
                 else{
-                cursor = Utility.getDatabase().rawQuery("SELECT DISTINCT * , q.question_id AS qstn_id  FROM main_questions q  LEFT JOIN validations v  ON  q. question_id =  v. question_id" +
+                cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * , q.question_id AS qstn_id  FROM main_questions q  LEFT JOIN validations v  ON  q. question_id =  v. question_id" +
                         " WHERE  q. form_id =" +formId +
                         " and (keyword like'child_immunization' " +
                         " or keyword like 'polio_%'" +
@@ -275,7 +275,7 @@ String regOption= getRegistrationOption(uniqueId);
                         " or keyword like '%valent_vaccine_%')",null);
             }}
             else if(FormId==clickedFormId){
-                cursor = Utility.getDatabase().rawQuery("SELECT DISTINCT * "
+                cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * "
                                 + ", q."
                                 + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
                                 + " AS qstn_id "
@@ -298,7 +298,7 @@ String regOption= getRegistrationOption(uniqueId);
                         , new String[]{formId});
             }
             else{
-                cursor = Utility.getDatabase().rawQuery("SELECT DISTINCT * "
+                cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * "
                                 + ", q."
                                 + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
                                 + " AS qstn_id "
@@ -323,7 +323,7 @@ String regOption= getRegistrationOption(uniqueId);
 
         }
         else {
-            cursor = Utility.getDatabase().rawQuery("SELECT DISTINCT * "
+            cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * "
                             + ", q."
                             + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
                             + " AS qstn_id "
@@ -345,7 +345,7 @@ String regOption= getRegistrationOption(uniqueId);
                             + " = ? "
                     , new String[]{formId});
         }
-        Utility.getDatabase().beginTransaction();
+        utility.getDatabase().beginTransaction();
         while (cursor.moveToNext()) {
 
             Visit visit = new Visit(
@@ -372,15 +372,15 @@ String regOption= getRegistrationOption(uniqueId);
 
             questionList.add(visit);
         }
-        Utility.getDatabase().setTransactionSuccessful();
-        Utility.getDatabase().endTransaction();
+        utility.getDatabase().setTransactionSuccessful();
+        utility.getDatabase().endTransaction();
 
       return questionList;
     }
 
     public HashMap<String, String> fetchUserDetails() {
         HashMap<String, String> hashMapUserDetails = new HashMap<>();
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT * FROM " + DatabaseContract.LoginTable.TABLE_NAME, null);
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM " + DatabaseContract.LoginTable.TABLE_NAME, null);
         if (cursor.moveToFirst()) {
             hashMapUserDetails.put(PHC_NAME, cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_PHC_NAME)));
             hashMapUserDetails.put(AROGYASAKHI_NAME, cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_NAME)));
@@ -392,7 +392,7 @@ String regOption= getRegistrationOption(uniqueId);
 
     public ArrayList<SpinnerItems> fetchVillages() {
         ArrayList<SpinnerItems> spinnerArray = new ArrayList<>();
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT * FROM " + DatabaseContract.VillageTable.TABLE_NAME, null);
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM " + DatabaseContract.VillageTable.TABLE_NAME, null);
        while (cursor.moveToNext()) {
            spinnerArray.add(new SpinnerItems(cursor.getString(cursor.getColumnIndex(DatabaseContract.VillageTable.COLUMN_VILLAGE_ID)),
                    cursor.getString(cursor.getColumnIndex(DatabaseContract.VillageTable.COLUMN_VILLAGE_NAME))));
@@ -402,7 +402,7 @@ String regOption= getRegistrationOption(uniqueId);
 
     public void deleteAnswer(String uniqueId, String formId, String keyword) {
 
-        Utility.getDatabase().delete(DatabaseContract.QuestionAnswerTable.TABLE_NAME
+        utility.getDatabase().delete(DatabaseContract.QuestionAnswerTable.TABLE_NAME
                 , DatabaseContract.QuestionAnswerTable.COLUMN_UNIQUE_ID + " = ? "
                     + " AND " + DatabaseContract.QuestionAnswerTable.COLUMN_FORM_ID + " = ? "
                     + " AND " + DatabaseContract.QuestionAnswerTable.COLUMN_QUESTION_KEYWORD + " = ? "
@@ -410,7 +410,7 @@ String regOption= getRegistrationOption(uniqueId);
     }
 
     public int getFilledFormReferenceId(String uniqueId, String formId) {
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT * FROM "
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM "
                 + DatabaseContract.FilledFormStatusTable.TABLE_NAME
                 + " WHERE "
                 + DatabaseContract.FilledFormStatusTable.COLUMN_UNIQUE_ID + " = ? "
@@ -423,7 +423,7 @@ String regOption= getRegistrationOption(uniqueId);
 
     public HashMap<String, String> getFormFilledData(String uniqueId, int formId) {
         HashMap<String, String> hashMap = new HashMap<>();
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT * FROM "
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM "
                 + DatabaseContract.QuestionAnswerTable.TABLE_NAME
                 + " WHERE "
                 + DatabaseContract.QuestionAnswerTable.COLUMN_UNIQUE_ID + " = ? "
@@ -463,7 +463,7 @@ String regOption= getRegistrationOption(uniqueId);
     }
 
     public Cursor fetchNextVisitFormInfo(String formId) {
-        return Utility.getDatabase().rawQuery(" SELECT "
+        return utility.getDatabase().rawQuery(" SELECT "
                         + " * "
                         + " FROM "
                         + DatabaseContract.FormDetailsTable.TABLE_NAME
@@ -480,7 +480,7 @@ String regOption= getRegistrationOption(uniqueId);
     }
 
     public String getSelectedOptionText(String keyword) {
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT * FROM "
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM "
                 + DatabaseContract.QuestionOptionsTable.TABLE_NAME
                 + " WHERE "
                 + DatabaseContract.QuestionOptionsTable.COLUMN_KEYWORD + " = ? ", new String[]{keyword});
@@ -491,7 +491,7 @@ String regOption= getRegistrationOption(uniqueId);
 
     public HashMap<String, String> getOptionsLabel(String formId) {
         HashMap<String, String> wordList = new HashMap<>();
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT DISTINCT * FROM "
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * FROM "
                 + DatabaseContract.QuestionOptionsTable.TABLE_NAME
                 + " WHERE "
                 + DatabaseContract.QuestionOptionsTable.COLUMN_FORM_ID + " = ? ", new String[]{formId});
@@ -512,7 +512,7 @@ String regOption= getRegistrationOption(uniqueId);
         values.put(DatabaseContract.RegistrationTable.COLUMN_EXPIRED_REASON, deathReason);
         values.put(DatabaseContract.RegistrationTable.COLUMN_CLOSE_STATUS, 1);
 
-        Utility.getDatabase().update(DatabaseContract.RegistrationTable.TABLE_NAME
+        utility.getDatabase().update(DatabaseContract.RegistrationTable.TABLE_NAME
                 , values
                 , DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? "
                 , new String[]{uniqueId});
@@ -523,7 +523,7 @@ String regOption= getRegistrationOption(uniqueId);
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.RegistrationTable.COLUMN_DELIVERY_DATE, deliveryDate);
 
-        Utility.getDatabase().update(DatabaseContract.RegistrationTable.TABLE_NAME
+        utility.getDatabase().update(DatabaseContract.RegistrationTable.TABLE_NAME
                 , values
                 , DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? "
                 , new String[]{uniqueId});
@@ -536,7 +536,7 @@ String regOption= getRegistrationOption(uniqueId);
         byte[] buffer = null;
         if(bitmap != null) {
             bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
-            buffer = Utility.getImageByteArray(bitmap);
+            buffer = utility.getImageByteArray(bitmap);
         }
 
         values.put(DatabaseContract.RegistrationTable.COLUMN_FIRST_NAME, firstName);
@@ -546,7 +546,7 @@ String regOption= getRegistrationOption(uniqueId);
         values.put(DatabaseContract.RegistrationTable.COLUMN_REGISTRATION_STATUS, 1);
         values.put(DatabaseContract.RegistrationTable.COLUMN_IMAGE, buffer);
 
-        Utility.getDatabase().update(DatabaseContract.RegistrationTable.TABLE_NAME
+        utility.getDatabase().update(DatabaseContract.RegistrationTable.TABLE_NAME
                 , values
                 , DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? "
                 , new String[]{uniqueId});
@@ -554,7 +554,7 @@ String regOption= getRegistrationOption(uniqueId);
     }
 
     public String getDob(String uniqueId) {
-        Cursor cursor = Utility.getDatabase().rawQuery("SELECT * "
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT * "
                 + " FROM "
                 + DatabaseContract.RegistrationTable.TABLE_NAME
                 + " WHERE "
@@ -565,7 +565,7 @@ String regOption= getRegistrationOption(uniqueId);
     }
 
     public String firstFilledForm(String uniqueId) {
-        Cursor cursor = Utility.getDatabase().rawQuery("select min(form_id) as form_id from filled_forms_status where unique_id='"+ uniqueId +"' and form_id>1", null);
+        Cursor cursor = utility.getDatabase().rawQuery("select min(form_id) as form_id from filled_forms_status where unique_id='"+ uniqueId +"' and form_id>1", null);
         Log.d("MYCUSTOM","Cursor  " +cursor.getCount()+cursor.getColumnName(0));
         String formId;
         if (cursor.getColumnIndex("form_id")==-1){
@@ -583,7 +583,7 @@ String regOption= getRegistrationOption(uniqueId);
 
     public ArrayList<String> womenHeight(String uniqueId, String formId){
         ArrayList<String> womanHeightData=new ArrayList<String>();
-        Cursor cursor = Utility.getDatabase().rawQuery("select answer_keyword from question_answers where unique_id='"+uniqueId +"'" +
+        Cursor cursor = utility.getDatabase().rawQuery("select answer_keyword from question_answers where unique_id='"+uniqueId +"'" +
                 "and question_keyword in('height_of_women','height_units','height_in_feet') "+" union " +
                 "select answer_keyword from question_answers where unique_id='"+uniqueId+"' and question_keyword='height_units'",null);
         int count= cursor.getCount();
@@ -600,7 +600,7 @@ String regOption= getRegistrationOption(uniqueId);
     }
 
     public static String TTDoseDate(String uniqueId, String formId){
-        Cursor cursor = Utility.getDatabase().rawQuery("select answer_keyword from question_answers where unique_id ='"+ uniqueId+"' and question_keyword= 'mention_tt_1_given_date' and form_id<"+formId,null);
+        Cursor cursor = utility.getDatabase().rawQuery("select answer_keyword from question_answers where unique_id ='"+ uniqueId+"' and question_keyword= 'mention_tt_1_given_date' and form_id<"+formId,null);
         String date="";
         if(cursor!=null && cursor.getCount()!=0) {
             date = cursor.moveToFirst() ? cursor.getString(cursor.getColumnIndex(DatabaseContract.QuestionAnswerTable.COLUMN_ANSWER_KEYWORD)) : "";
@@ -608,7 +608,7 @@ String regOption= getRegistrationOption(uniqueId);
         }
         else
         {
-            Cursor cursor1 = Utility.getDatabase().rawQuery("select created_on from filled_forms_status where unique_id ='"+ uniqueId+"' and form_id="+formId,null);
+            Cursor cursor1 = utility.getDatabase().rawQuery("select created_on from filled_forms_status where unique_id ='"+ uniqueId+"' and form_id="+formId,null);
             cursor1.moveToFirst();
             date=cursor1.getString(cursor1.getColumnIndex(DatabaseContract.FilledFormStatusTable.COLUMN_CREATED_ON));
             date=date.substring(0,10);
@@ -617,7 +617,7 @@ String regOption= getRegistrationOption(uniqueId);
     }
 
     public static String TT1Dose(String uniqueId, Integer formId) {
-        Cursor cursor = Utility.getDatabase().rawQuery("select ifnull(answer_keyword,'tt_1_given_no') as answer_keyword,max(reference_id) from question_answers where unique_id=" + uniqueId + " and question_keyword='tt_1_dose_given' and form_id <" +formId, null);
+        Cursor cursor = utility.getDatabase().rawQuery("select ifnull(answer_keyword,'tt_1_given_no') as answer_keyword,max(reference_id) from question_answers where unique_id=" + uniqueId + " and question_keyword='tt_1_dose_given' and form_id <" +formId, null);
         if(cursor!=null)
             cursor.moveToFirst();
         String ans=cursor.getString(cursor.getColumnIndex(DatabaseContract.QuestionAnswerTable.COLUMN_ANSWER_KEYWORD));
@@ -625,7 +625,7 @@ String regOption= getRegistrationOption(uniqueId);
     }
 
     public String TT2Dose(String uniqueId, Integer formId) {
-        Cursor cursor = Utility.getDatabase().rawQuery("select ifnull(answer_keyword,'tt_2_given_no') as answer_keyword,max(reference_id) from question_answers where unique_id=" + uniqueId + " and question_keyword='tt_2_dose_given' and form_id<" + formId, null);
+        Cursor cursor = utility.getDatabase().rawQuery("select ifnull(answer_keyword,'tt_2_given_no') as answer_keyword,max(reference_id) from question_answers where unique_id=" + uniqueId + " and question_keyword='tt_2_dose_given' and form_id<" + formId, null);
         if(cursor!=null)
             cursor.moveToFirst();
         String ans=cursor.getString(cursor.getColumnIndex(DatabaseContract.QuestionAnswerTable.COLUMN_ANSWER_KEYWORD));
@@ -633,7 +633,7 @@ String regOption= getRegistrationOption(uniqueId);
     }
 
     public String getPrevChildAge(String uniqueId){
-        Cursor cursor = Utility.getDatabase().rawQuery("select answer_keyword from question_answers where question_keyword='child_age' and unique_id='"+uniqueId+"'",null);
+        Cursor cursor = utility.getDatabase().rawQuery("select answer_keyword from question_answers where question_keyword='child_age' and unique_id='"+uniqueId+"'",null);
         int a=cursor.getCount();
         String prevChildAge;
         if(a==0)
@@ -650,11 +650,11 @@ String regOption= getRegistrationOption(uniqueId);
         Cursor cur=null;
         if(flag==1) {
             //flag value 1 is for woman closure form
-            cur = Utility.getDatabase().rawQuery("select * from filled_forms_status where form_id=9 and form_completion_status=1 and unique_id='" + unique_id + "'", null);
+            cur = utility.getDatabase().rawQuery("select * from filled_forms_status where form_id=9 and form_completion_status=1 and unique_id='" + unique_id + "'", null);
        }
        else if(flag==0){
            //flag value 0 is for child closure form
-            cur = Utility.getDatabase().rawQuery("select * from filled_forms_status where form_id=22 and form_completion_status=1 and unique_id='" + unique_id + "'", null);
+            cur = utility.getDatabase().rawQuery("select * from filled_forms_status where form_id=22 and form_completion_status=1 and unique_id='" + unique_id + "'", null);
         }
        int a=cur.getCount();
         String status="false";
@@ -665,7 +665,7 @@ String regOption= getRegistrationOption(uniqueId);
     }
 
    public static String isDeliveryComplete(String unique_id){
-        Cursor cur = Utility.getDatabase().rawQuery("select * from filled_forms_status where form_id=8 and form_completion_status=1 and unique_id='" + unique_id + "'", null);
+        Cursor cur = utility.getDatabase().rawQuery("select * from filled_forms_status where form_id=8 and form_completion_status=1 and unique_id='" + unique_id + "'", null);
         int a=cur.getCount();
         String status="false";
         if(a>0){
@@ -674,7 +674,7 @@ String regOption= getRegistrationOption(uniqueId);
         return status;
     }
     public static String getRegistrationOption(String unique_id){
-        Cursor cur1 = Utility.getDatabase().rawQuery("select answer_keyword from question_answers where question_keyword= 'registration_option' and unique_id IN(select mother_id from registration where unique_id='"+unique_id + "')", null);
+        Cursor cur1 = utility.getDatabase().rawQuery("select answer_keyword from question_answers where question_keyword= 'registration_option' and unique_id IN(select mother_id from registration where unique_id='"+unique_id + "')", null);
         String regOption;
         int a= cur1.getCount();
         cur1.moveToFirst();
@@ -686,7 +686,7 @@ String regOption= getRegistrationOption(uniqueId);
         }return regOption;
     }
     public static int getformStatus(String uniqueId){
-        Cursor cur= Utility.getDatabase().rawQuery("select max(form_id) as form_id  from filled_forms_status" +
+        Cursor cur= utility.getDatabase().rawQuery("select max(form_id) as form_id  from filled_forms_status" +
                 " where unique_id ='"+uniqueId+"' and form_completion_status= 1",null);
         cur.moveToFirst();
     int a;

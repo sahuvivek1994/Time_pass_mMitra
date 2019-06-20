@@ -55,7 +55,7 @@ import static tech.inscripts.ins_armman.mMitra.utility.Keywords.*;
  * This class is used to display ANC Form Questions with answer type dynamically from localDB
  */
 public class AncVisits extends AppCompatActivity {
-
+private static Utility utility=  new Utility();
     private static final String TAG = "AncVisits";
 
     Boolean isIucdRemoved = false, isTTDoseActive = false, isTT1Active = false;
@@ -587,6 +587,7 @@ public class AncVisits extends AppCompatActivity {
      * @return layout (ll)
      */
 
+    @SuppressLint("NewApi")
     public LinearLayout createEdittext(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation, String lengthmax)
     {
 
@@ -737,7 +738,7 @@ public class AncVisits extends AppCompatActivity {
      * @param messages        = this field contains json with multiple highrisk,counselling,referral conditions
      * @return layout (ll)
      */
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "NewApi"})
     public LinearLayout createDate(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation) {
 
         System.out.println("inside method count" + i + "   keyword" + keyword);
@@ -4723,7 +4724,7 @@ public class AncVisits extends AppCompatActivity {
                 questionInteractor.updateDeliveryDetails(uniqueId, deliveryDate);
                 int childCount = Integer.parseInt(womendetails.get(LIVE_CHILDREN_COUNT));
 
-                Cursor cursor = Utility.getDatabase().rawQuery("SELECT * FROM "
+                Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM "
                         + DatabaseContract.RegistrationTable.TABLE_NAME
                         + " WHERE "
                         + DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? ", new String[]{uniqueId});
@@ -4774,10 +4775,10 @@ public class AncVisits extends AppCompatActivity {
     public void StoreClosureForm(String closureType) {
 
             if (closureType.equalsIgnoreCase("Mother")) {
-                questionInteractor.updateClosureDetails(uniqueId, Utility.getCurrentDateTime(), womendetails.get(MOTHER_CLOSE_REASON), womendetails.get(MOTHER_DEATH_DATE), womendetails.get(MOTHER_DEATH_REASON));
+                questionInteractor.updateClosureDetails(uniqueId, utility.getCurrentDateTime(), womendetails.get(MOTHER_CLOSE_REASON), womendetails.get(MOTHER_DEATH_DATE), womendetails.get(MOTHER_DEATH_REASON));
 
             } else if (closureType.equalsIgnoreCase("Child")) {
-                questionInteractor.updateClosureDetails(uniqueId, Utility.getCurrentDateTime(), womendetails.get(CHILD_CLOSE_REASON), womendetails.get(CHILD_DEATH_DATE), womendetails.get(CHILD_DEATH_REASON));
+                questionInteractor.updateClosureDetails(uniqueId, utility.getCurrentDateTime(), womendetails.get(CHILD_CLOSE_REASON), womendetails.get(CHILD_DEATH_DATE), womendetails.get(CHILD_DEATH_REASON));
             }
             wages_status=1;
             questionInteractor.updateFormCompletionStatus(maxautoId,wages_status);
@@ -6013,7 +6014,7 @@ public class AncVisits extends AppCompatActivity {
 
             questionInteractor = new QuestionInteractor(AncVisits.this);
 
-            mAppLanguage = Utility.getLanguagePreferance(getApplicationContext());
+            mAppLanguage = utility.getLanguagePreferance(getApplicationContext());
 
             womanLmp = b.getString(LMP_DATE);
 
@@ -6045,7 +6046,7 @@ public class AncVisits extends AppCompatActivity {
 
             maxautoId = questionInteractor.getFilledFormReferenceId(uniqueId, String.valueOf(FormID));
             if (maxautoId == -1) {
-                maxautoId = questionInteractor.saveFilledFormStatus(uniqueId, FormID, 0, 0, Utility.getCurrentDateTime(),0);
+                maxautoId = questionInteractor.saveFilledFormStatus(uniqueId, FormID, 0, 0, utility.getCurrentDateTime(),0);
             }
 
             previousVisitDetails = questionInteractor.getFormFilledData(uniqueId, (FormID - 1));

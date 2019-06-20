@@ -1,7 +1,11 @@
 package tech.inscripts.ins_armman.mMitra.utility;
 
-public interface Constants {
+/**
+ * Created by lenovo on 24/10/17.
+ */
 
+public interface Constants {
+ static DateUtility dateUtility= new DateUtility();
     String DATE_FORMAT = "dd/MM/yyyy";
     String DATE_FORMAT_DOB = "dd-MM-yyyy";
 
@@ -36,7 +40,7 @@ public interface Constants {
     String QUESTION_KEYWORD = "q_keyword";
     String ANSWER = "ans_keyword";
     String CREATED_ON = "created_on";
-    String DATA = "dataSource";
+    String DATA = "data";
     String REFERRAL = "referral";
     String TYPE = "type";
     String BENEFICIARIES = "beneficiaries";
@@ -62,7 +66,7 @@ public interface Constants {
     String DUE_VISIT_NO = "due_visit_no";
     String SAM = "sam";
     String MAM = "mam";
-    String DAYS_IN_3_YEARS = String.valueOf(DateUtility.getNoOfDaysInYearsPassed(3));
+    String DAYS_IN_3_YEARS = String.valueOf(dateUtility.getNoOfDaysInYearsPassed(3));
     String NAME_SEARCH = "name_search";
     String CHILD_DATA_CHANGED = "child_data_changed";
     String EXTRA_CHILD_DOB = "dob";
@@ -84,7 +88,12 @@ public interface Constants {
     String FROM = "from";
     String FROM_GROWTH_GRAPH_ACTIVTY = "from_growth_graph_activty";
 
-    String DAYS_IN_6_YEARS = String.valueOf(DateUtility.getNoOfDaysInYearsPassed(6));//"2160";
+    ThreadLocal<String> DAYS_IN_6_YEARS = new ThreadLocal<String>() {
+        @Override
+        protected String initialValue() {
+            return String.valueOf(dateUtility.getNoOfDaysInYearsPassed(6));
+        }
+    };//"2160";
     String AGE_IN_DAYS = "age_in_days";
 
     String MALE = "male";
@@ -162,4 +171,4 @@ public interface Constants {
     String BUTTON_GRAPH="graph";
     String BUTTON_WAGES="wages";
     String CHILD_STATUS="child_status"; // it is wages_status
- }
+}

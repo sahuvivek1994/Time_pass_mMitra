@@ -9,7 +9,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import static tech.inscripts.ins_armman.mMitra.utility.DateUtility.convertStringToDate;
 
 
 /**
@@ -17,18 +16,19 @@ import static tech.inscripts.ins_armman.mMitra.utility.DateUtility.convertString
  */
 
 public final class Age {
+private static DateUtility dateUtility = new DateUtility();
 
     private final String dob;
     private String mDateFormat;
     private final Period period;
 
     public Age(String dob, String inputDateFormat) {
-        this(getPeriod(convertStringToDate(dob, inputDateFormat)), dob);
+        this(getPeriod(dateUtility.convertStringToDate(dob, inputDateFormat)), dob);
         this.mDateFormat = inputDateFormat;
     }
 
     public Age(String dob) {
-        this(getPeriod(convertStringToDate(dob)), dob);
+        this(getPeriod(dateUtility.convertStringToDate(dob)), dob);
     }
 
     public Age(int year, int month, int day) {
@@ -36,7 +36,7 @@ public final class Age {
     }
 
     public Age(Date dob) {
-        this(getPeriod(dob), DateUtility.convertCaldroidDateFormat(dob));
+        this(getPeriod(dob), dateUtility.convertCaldroidDateFormat(dob));
     }
 
     public Age(Period period, String dob) {
@@ -65,13 +65,13 @@ public final class Age {
     }
 
     public Date getBirthDate() {
-        return convertStringToDate(dob, mDateFormat);
+        return dateUtility.convertStringToDate(dob, mDateFormat);
     }
 
 
     public boolean isValidAge() {
         Calendar calendar = Calendar.getInstance();
-        DateUtility.setTimePartAsZero(calendar);
+        dateUtility.setTimePartAsZero(calendar);
         Date now = calendar.getTime();
         return !getBirthDate().after(now);
     }
