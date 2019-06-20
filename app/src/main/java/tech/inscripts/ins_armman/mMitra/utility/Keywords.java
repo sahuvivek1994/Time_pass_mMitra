@@ -1,9 +1,5 @@
 package tech.inscripts.ins_armman.mMitra.utility;
 
-/**
- * Created by lenovo on 7/11/17.
- */
-
 public interface Keywords {
     String VILLAGE_NAME = "village_name";
     String PHC_NAME = "phc_name";

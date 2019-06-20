@@ -22,17 +22,17 @@ import tech.inscripts.ins_armman.mMitra.login.Login
 import tech.inscripts.ins_armman.mMitra.settingActivity.ISettingsPresentor.OnQueryFinished
 import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 import tech.inscripts.ins_armman.mMitra.utility.Utility
-import java.lang.Exception
 import java.util.ArrayList
 
 class SettingsPresentor : ISettingsPresentor<ISettingsView>, ISettingsInteractor.OnFormDownloadFinished, ISettingsInteractor.onCheckUpdateFinished
     , ISettingsInteractor.onHelpManualDownloadFinished, ISettingsInteractor.OnRegistrationsDownloadFinished
     , ISettingsInteractor.OnVisitsDownloadFinished {
 
+val utility= Utility()
     private val FETCH_USER_DATA = 101
     private val FETCH_FORM_HASH = 102
 
-    private var mSettingsView: ISettingsView? = null
+    private  var mSettingsView: ISettingsView? = null
     private var mSettingsInteractor: SettingsInteractor? = null
     private var mUsername: String? = null
     private var mPassword:String? = null
@@ -76,81 +76,83 @@ class SettingsPresentor : ISettingsPresentor<ISettingsView>, ISettingsInteractor
 
 
     override fun changeLanguage(context: Context, language: String) {
-    mSettingsInteractor!!.changeLocale(context,language)
+    mSettingsInteractor?.changeLocale(context,language)
     }
 
     override fun downloadForms() {
-        if (Utility.hasInternetConnectivity(mSettingsView!!.getContext())) {
-            mSettingsView!!.showProgressBar(mSettingsView!!.getContext().getString(R.string.downloading_data))
+        val a= mSettingsView?.getContext()
+        val b= utility.hasInternetConnectivity(a)
+        if (b) {
+            mSettingsView?.showProgressBar(mSettingsView?.getContext()?.getString(R.string.downloading_data)!!)
             val details = RequestFormModel()
             details.userName=mUsername
             details.password=mPassword
-            details.setImei(Utility.getDeviceImeiNumber(mSettingsView!!.getContext()))
+            details.setImei(utility.getDeviceImeiNumber(mSettingsView!!.getContext()))
             details.setHash(mSettingsInteractor!!.getHash(HASH_ITEM_FORM))
             details.setShowdata("true")
 
             mSettingsInteractor!!.downloadForms(details, this)
         } else
-            mSettingsView!!.showSnackBar(mSettingsView!!.getContext().getString(R.string.no_internet_connection))
+            mSettingsView?.showSnackBar(mSettingsView?.getContext()?.getString(R.string.no_internet_connection)!!)
     }
 
     override fun downloadHelpManual() {
-        if (Utility.hasInternetConnectivity(mSettingsView!!.getContext())) {
-            mSettingsView!!.showProgressBar(mSettingsView!!.getContext().getString(R.string.downloading_data))
+        if (utility.hasInternetConnectivity(mSettingsView?.getContext())) {
+            mSettingsView?.showProgressBar(mSettingsView!!.getContext().getString(R.string.downloading_data))
             val details = RequestHelpModel()
             details.userName = mUsername
             details.password = mPassword
-            details.setImei(Utility.getDeviceImeiNumber(mSettingsView!!.getContext()))
-            details.setHash(mSettingsInteractor!!.getHash(HASH_ITEM_HELP_MANUAL))
-            mSettingsInteractor!!.downloadHelpManual(details, this)
+            details.setImei(utility.getDeviceImeiNumber(mSettingsView?.getContext()!!))
+            details.setHash(mSettingsInteractor?.getHash(HASH_ITEM_HELP_MANUAL)!!)
+            mSettingsInteractor?.downloadHelpManual(details, this)
         } else
-            mSettingsView!!.showSnackBar(mSettingsView!!.getContext().getString(R.string.no_internet_connection))
+            mSettingsView?.showSnackBar(mSettingsView?.getContext()?.getString(R.string.no_internet_connection)!!)
     }
 
     override fun checkUpdate() {
-        if(Utility.hasInternetConnectivity(mSettingsView!!.context)){
-            mSettingsView!!.showProgressBar(mSettingsView!!.getContext().getString(R.string.looking_for_update))
-            mSettingsInteractor!!.checkReleaseUpdate(this)
-        }else mSettingsView!!.showSnackBar(mSettingsView!!.getContext().getString(R.string.no_internet_connection))
+        if(utility.hasInternetConnectivity(mSettingsView?.getContext())){
+            mSettingsView?.showProgressBar(mSettingsView!!.getContext().getString(R.string.looking_for_update))
+            mSettingsInteractor?.checkReleaseUpdate(this)
+        }else mSettingsView?.showSnackBar(mSettingsView!!.getContext().getString(R.string.no_internet_connection))
     }
 
     override fun downloadApk(apkLink: String) {
-        mSettingsView!!.showApkDownloadProgress()
-        mSettingsInteractor!!.downloadAndSaveApk(apkLink)
+        mSettingsView?.showApkDownloadProgress()
+        mSettingsInteractor?.downloadAndSaveApk(apkLink)
     }
 
     override fun setApkDownloadProgress(progress: Int) {
-        mSettingsView!!.updateApkDownloadProgress(progress)
+        mSettingsView?.updateApkDownloadProgress(progress)
     }
 
     override fun onApkDownloaded() {
-      mSettingsView!!.dissmissApkDownloadProgress()
+      mSettingsView?.dissmissApkDownloadProgress()
     }
 
     override fun logout() {
-        mSettingsInteractor!!.deleteLoginDetails()
-        val intent = Intent(mSettingsView!!.getContext(), Login::class.java)
+        mSettingsInteractor?.deleteLoginDetails()
+        val intent = Intent(mSettingsView?.getContext(), Login::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        mSettingsView!!.context.startActivity(intent)
+        mSettingsView?.getContext()?.startActivity(intent)
     }
 
     override fun restoreData() {
-        if(Utility.hasInternetConnectivity(mSettingsView!!.context)) {
-            mSettingsView!!.showProgressBar(mSettingsView!!.getContext().getString(R.string.downloading_data))
+        if(utility.hasInternetConnectivity(mSettingsView?.getContext())) {
+            mSettingsView?.showProgressBar(mSettingsView!!.getContext().getString(R.string.downloading_data))
             resetDataMemberValues()
             restoreRegistrations(pageCounter)
         }
-        else mSettingsView!!.showSnackBar(mSettingsView!!.getContext().getString(R.string.no_internet_connection))
+        else mSettingsView?.showSnackBar(mSettingsView!!.getContext().getString(R.string.no_internet_connection))
     }
 
     override fun restoreRegistrations(pageNumber: Int) {
-        mRequest!!.setPageNumber(pageNumber)
-        mSettingsInteractor!!.downloadRegistrationData(mRequest, this)
+        mRequest?.setPageNumber(pageNumber)
+        mSettingsInteractor?.downloadRegistrationData(mRequest, this)
     }
 
     override fun restoreVisits(pageNumber: Int) {
         mRequest.setPageNumber(pageNumber)
-        mSettingsInteractor!!.downloadVisitsData(mRequest,this)
+        mSettingsInteractor?.downloadVisitsData(mRequest,this)
     }
 
     override fun restoreReferrals(pageNumber: Int) {
@@ -166,7 +168,7 @@ class SettingsPresentor : ISettingsPresentor<ISettingsView>, ISettingsInteractor
         mRequest = RestoreDataRequest()
         mRequest.userName= mUsername
         mRequest.password= mPassword
-        mRequest.setImei(Utility.getDeviceImeiNumber(mSettingsView!!.context))
+        mRequest.setImei(utility.getDeviceImeiNumber(mSettingsView!!.getContext()))
         mRequest.setLimit(FORM_DOWNLOAD_LIMIT)
 
         pageCounter=1
@@ -177,49 +179,48 @@ class SettingsPresentor : ISettingsPresentor<ISettingsView>, ISettingsInteractor
         listReferral.clear()
     }
 
-    override fun attachView(view: ISettingsView?) {
+    override fun attachView(view: ISettingsView) {
         mSettingsView=view
-        mSettingsInteractor= SettingsInteractor(mSettingsView!!.context,onQueryFinished,this)
-        mSettingsInteractor!!.fetchLoginDetails(FETCH_USER_DATA)
-        mSettingsInteractor!!.fetchFormJsonHash(FETCH_FORM_HASH)
+        mSettingsInteractor= SettingsInteractor(mSettingsView!!.getContext(),onQueryFinished,this)
+        mSettingsInteractor?.fetchLoginDetails(FETCH_USER_DATA)
+        mSettingsInteractor?.fetchFormJsonHash(FETCH_FORM_HASH)
     }
-
     override fun detachView() {
     }
 
     override fun onSuccessFormDownloading(jsonObject: JSONObject, hash: String) {
-        mSettingsView!!.hideProgressBar()
+        mSettingsView?.hideProgressBar()
         var value : Boolean =false
 
         value= jsonObject.get("status") as Boolean
 
         if(!value){
             if(jsonObject.has("response")){
-                mSettingsView!!.showSnackBar(mSettingsView!!.getContext().getString(R.string.forms_already_updated))
+                mSettingsView?.showSnackBar(mSettingsView!!.getContext().getString(R.string.forms_already_updated))
             } else{
                 try{
                 jsonObject.put("hash",hash)
-                mSettingsInteractor!!.saveFormData(jsonObject)
+                mSettingsInteractor?.saveFormData(jsonObject)
             }
             catch(e : JSONException){
                 e.printStackTrace()
-                mSettingsView!!.showSnackBar(mSettingsView!!.getContext().getString(R.string.invalid_data_frm_server))
+                mSettingsView?.showSnackBar(mSettingsView!!.getContext().getString(R.string.invalid_data_frm_server))
             }
             }
         }
         else{
-            mSettingsView!!.showSnackBar(mSettingsView!!.getContext().getString(R.string.forms_already_updated))
+            mSettingsView?.showSnackBar(mSettingsView!!.getContext().getString(R.string.forms_already_updated))
         }
 
     }
 
     override fun onUpdateCheckSuccess(updateModel: UpdateModel) {
-        mSettingsView!!.hideProgressBar()
+        mSettingsView?.hideProgressBar()
         if(!updateModel.getStatus()){
-            mSettingsView!!.showSnackBar(mSettingsView!!.getContext().getString(R.string.dialog_app_updated_text))
+            mSettingsView?.showSnackBar(mSettingsView!!.getContext().getString(R.string.dialog_app_updated_text))
             return
         }
-        val context: Context= mSettingsView!!.context
+        val context: Context= mSettingsView?.getContext()!!
         try{
             val pInfo : PackageInfo= context.packageManager.getPackageInfo(context.packageName,0)
             var versionCode = pInfo.versionCode

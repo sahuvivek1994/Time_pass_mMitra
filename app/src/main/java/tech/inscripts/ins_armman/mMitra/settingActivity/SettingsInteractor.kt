@@ -38,18 +38,17 @@ import tech.inscripts.ins_armman.mMitra.data.model.syncing.QuestionAnswer
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.RequestHelpModel
 import tech.inscripts.ins_armman.mMitra.data.retrofit.RemoteDataSource
 import tech.inscripts.ins_armman.mMitra.data.service.*
-import tech.inscripts.ins_armman.mMitra.utility.Constants
-import tech.inscripts.ins_armman.mMitra.utility.Constants.*
-import tech.inscripts.ins_armman.mMitra.utility.Utility
-import tech.inscripts.ins_armman.mMitra.utility.Utility.getDatabase
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
 import android.content.BroadcastReceiver as BroadcastReceiver1
 import android.os.AsyncTask
+import tech.inscripts.ins_armman.mMitra.utility.Constants
+import tech.inscripts.ins_armman.mMitra.utility.Constants.*
+import tech.inscripts.ins_armman.mMitra.utility.Utility
 
 class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cursor> {
-
+    val utility= Utility()
     var mContext: Context
     var mOnQueryFinished: ISettingsPresentor.OnQueryFinished? = null
     var mSettingsPresentor: SettingsPresentor
@@ -63,7 +62,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
     override fun changeLocale(context: Context, language: String) {
 
-        Utility.setApplicationLocale(context, language)
+        utility.setApplicationLocale(context, language)
     }
 
     override fun downloadForms(requestFormModel: RequestFormModel, onFormDownloadFinished: ISettingsInteractor.OnFormDownloadFinished) {
@@ -103,19 +102,19 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
     }
 
     fun deleteOldHelpData() {
-        Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.FaqTable.TABLE_NAME)
-        Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.VideoAnimationTable.TABLE_NAME)
-        Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.mMitraCallsTable.TABLE_NAME)
+        utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.FaqTable.TABLE_NAME)
+        utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.VideoAnimationTable.TABLE_NAME)
+        utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.mMitraCallsTable.TABLE_NAME)
 
-        Utility.getDatabase().execSQL(DatabaseContract.FaqTable.CREATE_TABLE)
-        Utility.getDatabase().execSQL(DatabaseContract.VideoAnimationTable.CREATE_TABLE)
-        Utility.getDatabase().execSQL(DatabaseContract.mMitraCallsTable.CREATE_TABLE)
+        utility.getDatabase().execSQL(DatabaseContract.FaqTable.CREATE_TABLE)
+        utility.getDatabase().execSQL(DatabaseContract.VideoAnimationTable.CREATE_TABLE)
+        utility.getDatabase().execSQL(DatabaseContract.mMitraCallsTable.CREATE_TABLE)
     }
 
     override fun saveHelpManualData(helpJsonObject: JSONObject) {
         deleteOldHelpData()
         var values = ContentValues()
-        Utility.getDatabase().beginTransaction()
+        utility.getDatabase().beginTransaction()
         try {
             if (helpJsonObject.has("FAQ")) {
                 var faqJsonArray: JSONArray = helpJsonObject.getJSONArray("FAQ")
@@ -125,7 +124,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                     val jsonObject = faqJsonArray.getJSONObject(index)
                     values.put(DatabaseContract.FaqTable.COLUMN_QUESTION, jsonObject.optJSONObject("question").optString("languages"))
                     values.put(DatabaseContract.FaqTable.COLUMN_ANSWER, jsonObject.optJSONObject("answer").optString("languages"))
-                    Utility.getDatabase().insert(DatabaseContract.FaqTable.TABLE_NAME, null, values)
+                    utility.getDatabase().insert(DatabaseContract.FaqTable.TABLE_NAME, null, values)
                 }
             }
 
@@ -138,7 +137,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                     values.put(DatabaseContract.VideoAnimationTable.COLUMN_TYPE, TYPE_ANIMATION)
                     val titleObject = jsonObject.getJSONObject("title").getJSONObject("languages")
                     values.put(DatabaseContract.VideoAnimationTable.COLUMN_TITLE, titleObject.toString())
-                    Utility.getDatabase().insert(DatabaseContract.VideoAnimationTable.TABLE_NAME, null, values)
+                    utility.getDatabase().insert(DatabaseContract.VideoAnimationTable.TABLE_NAME, null, values)
                     values.put(DatabaseContract.VideoAnimationTable.COLUMN_KEYWORD, jsonObject.optString("keyword"))
                 }
             }
@@ -153,7 +152,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                     values.put(DatabaseContract.VideoAnimationTable.COLUMN_KEYWORD, jsonObject.optString("keyword"))
                     val titleObject = jsonObject.getJSONObject("title").getJSONObject("languages")
                     values.put(DatabaseContract.VideoAnimationTable.COLUMN_TITLE, titleObject.toString())
-                    Utility.getDatabase().insert(DatabaseContract.VideoAnimationTable.TABLE_NAME, null, values)
+                    utility.getDatabase().insert(DatabaseContract.VideoAnimationTable.TABLE_NAME, null, values)
                 }
             }
 
@@ -167,7 +166,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                     values.put(DatabaseContract.mMitraCallsTable.COLUMN_LANGUAGE, jsonObject.optString("language"))
                     values.put(DatabaseContract.mMitraCallsTable.COLUMN_KEYWORD, jsonObject.optString("keyword"))
                     values.put(DatabaseContract.mMitraCallsTable.COLUMN_TITLE, jsonObject.optString("title"))
-                    Utility.getDatabase().insert(DatabaseContract.mMitraCallsTable.TABLE_NAME, null, values)
+                    utility.getDatabase().insert(DatabaseContract.mMitraCallsTable.TABLE_NAME, null, values)
                 }
             }
 
@@ -175,8 +174,8 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
         } catch (e: JSONException) {
             e.printStackTrace()
         } finally {
-            Utility.getDatabase().setTransactionSuccessful()
-            Utility.getDatabase().endTransaction()
+            utility.getDatabase().setTransactionSuccessful()
+            utility.getDatabase().endTransaction()
         }
     }
 
@@ -256,7 +255,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
     }
 
     override fun getHash(type: String): String {
-        var cur: Cursor = Utility.getDatabase().rawQuery(
+        var cur: Cursor = utility.getDatabase().rawQuery(
             "SELECT * FROM "
                     + HashTable.TABLE_NAME
                     + " WHERE "
@@ -288,24 +287,24 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
         val values = ContentValues()
         values.put(HashTable.COLUMN_HASH, hash)
         values.put(HashTable.COLUMN_ITEM, item)
-        val cursor = Utility.getDatabase().rawQuery(
+        val cursor = utility.getDatabase().rawQuery(
             "SELECT * FROM " + HashTable.TABLE_NAME + " WHERE " + HashTable.COLUMN_ITEM + " = ? ",
             arrayOf(item)
         )
         if (cursor.moveToFirst()) {
-            Utility.getDatabase().update(HashTable.TABLE_NAME, values, HashTable.COLUMN_ITEM + " = ? ", arrayOf(item))
+            utility.getDatabase().update(HashTable.TABLE_NAME, values, HashTable.COLUMN_ITEM + " = ? ", arrayOf(item))
         } else {
-            Utility.getDatabase().insert(HashTable.TABLE_NAME, null, values)
+            utility.getDatabase().insert(HashTable.TABLE_NAME, null, values)
         }
     }
 
     override fun deleteLoginDetails() {
-        Utility.getDatabase().delete(LoginTable.TABLE_NAME, null, null)
-        Utility.getDatabase().delete(VillageTable.TABLE_NAME, null, null)
+        utility.getDatabase().delete(LoginTable.TABLE_NAME, null, null)
+        utility.getDatabase().delete(VillageTable.TABLE_NAME, null, null)
     }
 
     override fun onCreateLoader(p0: Int, bundle: Bundle?): Loader<Cursor> {
-        val sqLiteDatabase = getDatabase()
+        val sqLiteDatabase = utility.getDatabase()
         val queryType = bundle!!.getString(QUERY_TYPE)
         if (queryType != null && queryType.equals(LocalDataSource.QueryType.RAW.name, ignoreCase = true)) {
             return GenericCursorLoader(mContext, sqLiteDatabase, bundle, LocalDataSource.QueryType.RAW)
@@ -378,7 +377,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
         }
 
         override fun doInBackground(vararg jsonObjects: JSONObject?): Void? {
-            Utility.getDatabase().beginTransaction()
+            utility.getDatabase().beginTransaction()
             deleteOldFormData()
             var jsonObject = jsonObjects[0]
             try {
@@ -505,17 +504,17 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
         }
 
         fun deleteOldFormData() {
-            Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DependentQuestionsTable.TABLE_NAME)
-            Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + FormDetailsTable.TABLE_NAME)
-            Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + MainQuestionsTable.TABLE_NAME)
-            Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + QuestionOptionsTable.TABLE_NAME)
-            Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + ValidationsTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DependentQuestionsTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + FormDetailsTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + MainQuestionsTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + QuestionOptionsTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + ValidationsTable.TABLE_NAME)
 
-            Utility.getDatabase().execSQL(FormDetailsTable.CREATE_TABLE)
-            Utility.getDatabase().execSQL(MainQuestionsTable.CREATE_TABLE)
-            Utility.getDatabase().execSQL(DependentQuestionsTable.CREATE_TABLE)
-            Utility.getDatabase().execSQL(QuestionOptionsTable.CREATE_TABLE)
-            Utility.getDatabase().execSQL(ValidationsTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(FormDetailsTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(MainQuestionsTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(DependentQuestionsTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(QuestionOptionsTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(ValidationsTable.CREATE_TABLE)
         }
 
 
@@ -527,7 +526,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             values.put(FormDetailsTable.COLUMN_TO_WEEKS, form.toDays)
             values.put(FormDetailsTable.COLUMN_ORDER_ID, form.orderId)
 
-            Utility.getDatabase().insert(FormDetailsTable.TABLE_NAME, null, values)
+            utility.getDatabase().insert(FormDetailsTable.TABLE_NAME, null, values)
         }
 
         fun saveValidationData(
@@ -550,7 +549,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             values.put(ValidationsTable.COLUMN_DISPLAY_CONDITION, displayCondition)
             values.put(ValidationsTable.COLUMN_AVOID_REPETETIONS, avoidRepetition)
 
-            Utility.getDatabase().insertWithOnConflict(
+            utility.getDatabase().insertWithOnConflict(
                 ValidationsTable.TABLE_NAME,
                 null,
                 values, SQLiteDatabase.CONFLICT_IGNORE
@@ -571,7 +570,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             values.put(MainQuestionsTable.COLUMN_CALCULATION, calculations)
             values.put(MainQuestionsTable.COLUMN_ORIENTATION, orientation)
 
-            Utility.getDatabase().insert(MainQuestionsTable.TABLE_NAME, null, values)
+            utility.getDatabase().insert(MainQuestionsTable.TABLE_NAME, null, values)
         }
 
         fun saveDependentQuestions(
@@ -597,7 +596,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             values.put(DependentQuestionsTable.COLUMN_VALIDATIONS, validation)
             values.put(DependentQuestionsTable.COLUMN_ORIENTATION, orientation)
 
-            Utility.getDatabase().insert(DatabaseContract.DependentQuestionsTable.TABLE_NAME, null, values)
+            utility.getDatabase().insert(DatabaseContract.DependentQuestionsTable.TABLE_NAME, null, values)
         }
 
         fun saveQuestionOptions(formId: Int, questionId: Int, keyword: String, optionLabel: String, messages: String) {
@@ -610,7 +609,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             values.put(QuestionOptionsTable.COLUMN_OPTION_LABEL, optionLabel)
             values.put(QuestionOptionsTable.COLUMN_MESSAGES, messages)
 
-            Utility.getDatabase().insert(DatabaseContract.QuestionOptionsTable.TABLE_NAME, null, values)
+            utility.getDatabase().insert(DatabaseContract.QuestionOptionsTable.TABLE_NAME, null, values)
         }
 
         @Throws(JSONException::class)
@@ -785,7 +784,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
         override fun doInBackground(vararg params: ArrayList<Object>?): Void? {
             deleteOldData()
-            Utility.getDatabase().beginTransaction()
+            utility.getDatabase().beginTransaction()
             for (details in listRegistrations!!) {
                 saveRegistrations(details)
                 publishProgress(++mProgress)
@@ -796,8 +795,8 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                 publishProgress(++mProgress)
             }
 
-            Utility.getDatabase().setTransactionSuccessful()
-            Utility.getDatabase().endTransaction()
+            utility.getDatabase().setTransactionSuccessful()
+            utility.getDatabase().endTransaction()
             return null
         }
 
@@ -852,7 +851,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                     e.message
                 }
             }
-            Utility.getDatabase().insert(RegistrationTable.TABLE_NAME, null, values)
+            utility.getDatabase().insert(RegistrationTable.TABLE_NAME, null, values)
         }
 
         fun saveVisits(data: BeneficiariesList) {
@@ -865,7 +864,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                 values.put(DatabaseContract.FilledFormStatusTable.COLUMN_CREATED_ON, list.createdOn)
 
                 val referenceId =
-                    Utility.getDatabase().insert(DatabaseContract.FilledFormStatusTable.TABLE_NAME, null, values) as Int
+                    utility.getDatabase().insert(DatabaseContract.FilledFormStatusTable.TABLE_NAME, null, values) as Int
 
                 for (questionAnswer in list.questionAnswers!!) {
                     saveQuestionAnswers(referenceId, data.uniqueId, list.formId, questionAnswer)
@@ -881,21 +880,21 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             values.put(DatabaseContract.QuestionAnswerTable.COLUMN_QUESTION_KEYWORD, questionAnswer.keyword)
             values.put(DatabaseContract.QuestionAnswerTable.COLUMN_ANSWER_KEYWORD, questionAnswer.answer)
             values.put(DatabaseContract.QuestionAnswerTable.COLUMN_CREATED_ON, questionAnswer.createdOn)
-            Utility.getDatabase().insert(DatabaseContract.QuestionAnswerTable.TABLE_NAME, null, values)
+            utility.getDatabase().insert(DatabaseContract.QuestionAnswerTable.TABLE_NAME, null, values)
         }
 
         fun deleteOldData() {
-            Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + RegistrationTable.TABLE_NAME)
-            Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + FilledFormStatusTable.TABLE_NAME)
-            Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + QuestionAnswerTable.TABLE_NAME)
-            Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + ReferralTable.TABLE_NAME)
-            Utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + ChildGrowthTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + RegistrationTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + FilledFormStatusTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + QuestionAnswerTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + ReferralTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + ChildGrowthTable.TABLE_NAME)
 
-            Utility.getDatabase().execSQL(RegistrationTable.CREATE_TABLE)
-            Utility.getDatabase().execSQL(FilledFormStatusTable.CREATE_TABLE)
-            Utility.getDatabase().execSQL(QuestionAnswerTable.CREATE_TABLE)
-            Utility.getDatabase().execSQL(ReferralTable.CREATE_TABLE)
-            Utility.getDatabase().execSQL(ChildGrowthTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(RegistrationTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(FilledFormStatusTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(QuestionAnswerTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(ReferralTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(ChildGrowthTable.CREATE_TABLE)
         }
     }
 

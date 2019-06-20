@@ -1,7 +1,6 @@
 package tech.inscripts.ins_armman.mMitra.data.service
 
 import android.content.Context
-import com.google.gson.JsonObject
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
@@ -9,12 +8,12 @@ import retrofit2.Call
 import retrofit2.Response
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.RequestFormModel
-import tech.inscripts.ins_armman.mMitra.data.model.syncing.RequestHelpModel
 import tech.inscripts.ins_armman.mMitra.settingActivity.ISettingsInteractor
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.io.IOException
 
 class FormDownloadService {
+   val utility = Utility()
     var formDownloadServiceAPI : FormDownloadServiceAPI ?=null
 
     constructor(formDownloadServiceAPI: FormDownloadServiceAPI?) {
@@ -32,7 +31,7 @@ class FormDownloadService {
 
                 override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
                     try{
-                    var loginJsonResponse : String?=null
+                    var loginJsonResponse : String =""
                     if(response!!.body()!=null){
                         loginJsonResponse = response.body().string()
                     }
@@ -40,7 +39,7 @@ class FormDownloadService {
                         loginJsonResponse = response.errorBody().string()
                     }
                     val loginJsonObject = JSONObject(loginJsonResponse)
-                    onFormDownloadFinished.onSuccessFormDownloading(loginJsonObject,Utility.mdFive(loginJsonResponse))
+                    onFormDownloadFinished.onSuccessFormDownloading(loginJsonObject,utility.mdFive(loginJsonResponse))
                     }
                     catch (e : IOException){
                         e.printStackTrace()

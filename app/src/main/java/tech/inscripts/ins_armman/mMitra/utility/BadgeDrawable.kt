@@ -39,23 +39,13 @@ class BadgeDrawable(context: Context) : Drawable() {
         }
 
         val bounds = bounds
-        //		float width = bounds.right - bounds.left;
-        //		float height = bounds.bottom - bounds.top;
         val width = 45.5.toFloat()
         val height = 45.5.toFloat()
 
-        //Log.d(TAG,"Width : " + width + " Height : " +height);
-
-        // Position the badge in the top-right quadrant of the icon.
-        //		float radius = ((Math.min(width, height) / 2) - 1) / 2;
-        //		float centerX = width - radius - 1;
-        //		float centerY = radius + 1;
 
         val radius = (Math.min(width, height) / 2 - 1) / 2
         val centerX = 25.5.toFloat()
         val centerY = 6.5.toFloat()
-
-        //Log.d(TAG,"Radius : " + radius + " centerX : " + centerX + " centerY : " +centerY);
 
         // Draw badge circle.
         canvas.drawCircle(centerX, centerY, radius, mBadgePaint)
@@ -84,11 +74,9 @@ class BadgeDrawable(context: Context) : Drawable() {
     }
 
     override fun setAlpha(alpha: Int) {
-        // do nothing
     }
 
     override fun setColorFilter(cf: ColorFilter?) {
-        // do nothing
     }
 
     override fun getOpacity(): Int {

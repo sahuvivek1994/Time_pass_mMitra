@@ -6,12 +6,12 @@ import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
-import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.UserDetails
 import tech.inscripts.ins_armman.mMitra.login.LoginInteractor
 import java.io.IOException
 
-class AuthService(cgit reateApiService: Any?) {
+class AuthService {
+
     private var loginServiceAPI: LoginServiceAPI? = null
 
 

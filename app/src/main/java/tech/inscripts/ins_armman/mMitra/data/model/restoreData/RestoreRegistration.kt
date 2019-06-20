@@ -15,6 +15,6 @@ class RestoreRegistration {
     }
 
     fun getRegistrationData(): ArrayList<BeneficiaryDetails> {
-        return this!!.registrationData!!
+        return this.registrationData!!
     }
 }
