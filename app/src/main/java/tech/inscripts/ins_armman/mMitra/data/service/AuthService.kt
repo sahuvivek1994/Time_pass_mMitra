@@ -11,7 +11,7 @@ import tech.inscripts.ins_armman.mMitra.data.model.UserDetails
 import tech.inscripts.ins_armman.mMitra.login.LoginInteractor
 import java.io.IOException
 
-class AuthService(createApiService: Any?) {
+class AuthService(cgit reateApiService: Any?) {
     private var loginServiceAPI: LoginServiceAPI? = null
 
 
