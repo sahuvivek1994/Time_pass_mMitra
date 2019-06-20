@@ -1,7 +1,8 @@
 package tech.inscripts.ins_armman.mMitra.utility;
 
 /**
- * Created by Amol on 11/10/17.
+ * This interface is used for attachedView and detch function to follow mvp structure
+ * @author vivek & juilee on 2/05/2019
  */
 
 public interface IBasePresenter<V> {
