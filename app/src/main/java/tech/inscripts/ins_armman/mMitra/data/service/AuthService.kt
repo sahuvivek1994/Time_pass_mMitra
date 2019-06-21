@@ -14,12 +14,12 @@ class AuthService {
 
     private var loginServiceAPI: LoginServiceAPI? = null
 
-
-    fun AuthService(loginServiceAPI: LoginServiceAPI) {
+    constructor(loginServiceAPI: LoginServiceAPI?) {
         this.loginServiceAPI = loginServiceAPI
     }
 
-    fun getAuthentication(userDetails: UserDetails,onLoadFinished : LoginInteractor.OnLoadFinished,context: Context){
+
+    fun getAuthentication(userDetails: UserDetails,context: Context){
 if(userDetails!=null){
     val responseBodyCall : Call<ResponseBody> = loginServiceAPI!!.getAuthentication(userDetails)
     responseBodyCall.enqueue(object : retrofit2.Callback<ResponseBody> {

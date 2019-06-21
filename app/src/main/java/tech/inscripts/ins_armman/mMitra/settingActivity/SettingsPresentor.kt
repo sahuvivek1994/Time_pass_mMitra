@@ -91,7 +91,7 @@ val utility= Utility()
             details.setHash(mSettingsInteractor!!.getHash(HASH_ITEM_FORM))
             details.setShowdata("true")
 
-            mSettingsInteractor!!.downloadForms(details, this)
+            mSettingsInteractor?.downloadForms(details, this)
         } else
             mSettingsView?.showSnackBar(mSettingsView?.getContext()?.getString(R.string.no_internet_connection)!!)
     }

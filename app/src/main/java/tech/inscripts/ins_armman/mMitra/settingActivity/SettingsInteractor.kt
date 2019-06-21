@@ -82,7 +82,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
     override fun fetchFormJsonHash(id: Int) {
         var bundle = Bundle()
-        bundle.putString(Constants.QUERY_ARGS_TABLE_NAME, DatabaseContract.LoginTable.TABLE_NAME)
+        bundle.putString(Constants.QUERY_ARGS_TABLE_NAME, DatabaseContract.HashTable.TABLE_NAME)
         bundle.putString(Constants.QUERY_ARGS_PROJECTION, null)
         bundle.putString(Constants.QUERY_ARGS_SELECTION, null)
         bundle.putString(Constants.QUERY_ARGS_SELECTION_ARGS, null)
@@ -314,7 +314,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {
-        mOnQueryFinished!!.onSuccess(data, loader.id)
+        mOnQueryFinished?.onSuccess(data, loader.id)
 
     }
 
@@ -771,13 +771,13 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             val textView = dialogView.findViewById<TextView>(R.id.textView_label)
             progressBar = dialogView.findViewById(R.id.progressBar)
             textView.setText(R.string.saving_forms)
-            progressBar!!.isIndeterminate = false
-            progressBar!!.max = listRegistrations!!.size + listVisits!!.size
+            progressBar?.isIndeterminate = false
+            progressBar?.max = listRegistrations!!.size + listVisits!!.size
             val mAlertDialogBuilder = AlertDialog.Builder(mContext)
             mAlertDialogBuilder.setView(dialogView)
             mAlertDialogBuilder.setCancelable(false)
             mProgressDialog = mAlertDialogBuilder.create()
-            mProgressDialog!!.show()
+            mProgressDialog?.show()
 
 
         }
@@ -802,12 +802,12 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
         override fun onProgressUpdate(vararg values: Int?) {
             super.onProgressUpdate(*values)
-            progressBar!!.progress = values[0]!!
+            progressBar?.progress = values[0]!!
         }
 
         override fun onPostExecute(result: Void?) {
             super.onPostExecute(result)
-            mProgressDialog!!.dismiss()
+            mProgressDialog?.dismiss()
         }
 
 

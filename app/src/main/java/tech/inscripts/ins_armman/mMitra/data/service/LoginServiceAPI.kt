@@ -11,5 +11,5 @@ import tech.inscripts.ins_armman.mMitra.data.model.UserDetails
 interface LoginServiceAPI {
     @Headers("Content-Type: application/json")
     @POST(AUTHENTICATE)
-    abstract fun getAuthentication(@Body userDetails: UserDetails): Call<ResponseBody>
+    fun getAuthentication(@Body userDetails: UserDetails): Call<ResponseBody>
 }

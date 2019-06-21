@@ -33,6 +33,8 @@ val utility= Utility()
         super.onCreate(savedInstanceState)
         addPreferencesFromResource(R.xml.pref_settings)
         initId()
+       settingsPresentor = SettingsPresentor()
+        settingsPresentor.attachView(this)
     }
 @SuppressLint("NewApi")
 fun initId() {

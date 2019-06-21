@@ -22,7 +22,7 @@ class FormDownloadService {
 
 
     fun downloadForms(requestFormModel: RequestFormModel,onFormDownloadFinished : ISettingsInteractor.OnFormDownloadFinished,context: Context){
-        if(requestFormModel == null){
+        if(requestFormModel != null){
             val responseBodyCall : Call<ResponseBody> = formDownloadServiceAPI!!.downloadFormJson(requestFormModel)
             responseBodyCall.enqueue(object : retrofit2.Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
