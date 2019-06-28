@@ -253,7 +253,7 @@ if(jsonObject.has("response")) {
 
     override fun onSuccessRegistrationsDownloading(registration: RestoreRegistration) {
         if(registration.getTotal()>0){
-            listRegistrations.addAll(registration!!.getRegistrationData())
+            registration.getRegistrationData()?.let { listRegistrations.addAll(it) }
             if(!totalPagesCalculated){
                 totalPagesCalculated= true
                 totalPages = Math.ceil(registration.getTotal() as Double / FORM_DOWNLOAD_LIMIT as Double).toInt()
