@@ -256,7 +256,8 @@ if(jsonObject.has("response")) {
             registration.getRegistrationData()?.let { listRegistrations.addAll(it) }
             if(!totalPagesCalculated){
                 totalPagesCalculated= true
-                totalPages = Math.ceil(registration.getTotal() as Double / FORM_DOWNLOAD_LIMIT as Double).toInt()
+                //totalPages = Math.ceil(registration.getTotal() as Double / FORM_DOWNLOAD_LIMIT as Double).toInt()
+                totalPages = Math.ceil((registration.getTotal()).toDouble() / (FORM_DOWNLOAD_LIMIT).toDouble()).toInt()
             }
         }
         if(pageCounter<totalPages){
@@ -272,10 +273,10 @@ if(jsonObject.has("response")) {
 
     override fun onSuccessVisitsDownloading(visits: RestoreVisits) {
         if(visits.getTotal()>0){
-            listVisits.addAll(visits.getBeneficiariesLists()!!)
+            visits.getBeneficiariesLists()?.let { listVisits.addAll(it) }
             if(!totalPagesCalculated){
                 totalPagesCalculated =true
-                totalPages=Math.ceil(visits.getTotal() as Double / FORM_DOWNLOAD_LIMIT as Double).toInt()
+                totalPages=Math.ceil((visits.getTotal()).toDouble() / (FORM_DOWNLOAD_LIMIT).toDouble() ).toInt()
             }
         }
 
