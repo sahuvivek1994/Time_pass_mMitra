@@ -6,9 +6,8 @@ import com.google.gson.annotations.SerializedName
 import java.util.ArrayList
 
 
-open class UserDetails {
 
-class UserDetails {
+ open class UserDetails {
 
     @SerializedName("username")
     var userName: String? = null
@@ -36,7 +35,7 @@ class UserDetails {
         this.password = pass
     }
 
-    fun setusername(user: String)
+   public  fun setusername(user: String)
     {
         this.userName = user
     }
@@ -59,4 +58,4 @@ class UserDetails {
     }
 
 
-}
+

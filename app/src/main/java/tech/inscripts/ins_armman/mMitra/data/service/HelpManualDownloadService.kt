@@ -3,15 +3,19 @@ package tech.inscripts.ins_armman.mMitra.data.service
 import android.content.Context
 import okhttp3.ResponseBody
 import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.RequestHelpModel
 import tech.inscripts.ins_armman.mMitra.settingActivity.ISettingsInteractor
+import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.io.IOException
 
 class HelpManualDownloadService {
     private var mDownloadServiceApi: HelpManualDownloadServiceApi?=null
+
+    val utility = Utility()
 
     constructor(mDownloadServiceApi: HelpManualDownloadServiceApi?) {
         this.mDownloadServiceApi = mDownloadServiceApi
@@ -19,8 +23,8 @@ class HelpManualDownloadService {
 
     fun downloadHelpManual(helpModel : RequestHelpModel, onHelpManualDownloadFinished: ISettingsInteractor.onHelpManualDownloadFinished,context: Context ){
         if(helpModel!=null){
-           val responseBodyCall : Call<ResponseBody> = mDownloadServiceApi!!.downloadHelpManualJson(helpModel)
-            responseBodyCall.enqueue(object : retrofit2.Callback<ResponseBody>{
+           val responseBodyCall : Call<ResponseBody>? = mDownloadServiceApi?.downloadHelpManualJson(helpModel)
+            responseBodyCall?.enqueue(object : retrofit2.Callback<ResponseBody>{
                 override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
                     onHelpManualDownloadFinished.onFailure(context.getString(R.string.oops_some_thing_happened_wrong))
                 }
@@ -33,6 +37,8 @@ try{
     else if(response!!.body()!=null){
         loginJsonResponse=response.errorBody().string()
     }
+    val loginJsonObject = JSONObject(loginJsonResponse)
+    onHelpManualDownloadFinished.onSuccessDownloadedHelpManual(loginJsonObject, utility.mdFive(loginJsonResponse!!))
 }
 catch(e:IOException){
     onHelpManualDownloadFinished.onFailure(context.getString(R.string.input_output_error_occured))
