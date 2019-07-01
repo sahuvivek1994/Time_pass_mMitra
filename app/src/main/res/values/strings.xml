@@ -267,7 +267,11 @@
     <string name="no_high_risk_woman_msg">No high risk Woman found</string>
     <string name="no_high_risk_child_msg">No high risk Child found</string>
     <string name="pending_label_text">Pending</string>
-    <string name="incomplete_visit">Incomplete visit</string>
+    <string name="incomplete_visit">incompletre visits</string>
+    <string name="btn_registration">REGISTRATION</string>
+    <string name="btn_incomplete_visit">INCOMPLETE VISITS</string>
+    <string name="btn_complete_visit">COMPLETE VISITS</string>
+    <string name="btn_user_details">USER DETAILS</string>
     <string name="total_visits">Total visits</string>
     <string name="due_visits">Due visits</string>
     <string name="overdue_visits">Overdue visits</string>

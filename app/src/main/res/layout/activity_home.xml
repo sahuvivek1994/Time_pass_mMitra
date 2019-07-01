@@ -96,7 +96,7 @@ android:background="@color/white">
             android:layout_height="wrap_content"
             android:id="@+id/guideline11" app:layout_constraintGuide_percent="0.46"/>
     <TextView
-            android:text="REGISTRATION"
+            android:text="@string/btn_registration"
             android:gravity="center"
             android:textStyle="bold"
             app:fontFamily="serif"
@@ -110,7 +110,7 @@ android:background="@color/white">
             android:layout_marginRight="4dp" app:layout_constraintBottom_toTopOf="@+id/guideline11"
             app:layout_constraintVertical_bias="0.0"/>
     <TextView
-            android:text="INCOMPLETE FROM"
+            android:text="@string/btn_incomplete_visit"
             android:gravity="center"
             android:textStyle="bold"
             app:fontFamily="serif"
@@ -133,7 +133,7 @@ android:background="@color/white">
             android:layout_height="wrap_content"
             android:id="@+id/guideline13" app:layout_constraintGuide_percent="0.82"/>
     <TextView
-            android:text="COMPLETE FORM"
+            android:text="@string/btn_complete_visit"
             android:gravity="center"
             android:textStyle="bold"
             app:fontFamily="serif"
@@ -146,7 +146,7 @@ android:background="@color/white">
             app:layout_constraintTop_toTopOf="@+id/guideline12" app:layout_constraintBottom_toTopOf="@+id/guideline13"
             app:layout_constraintVertical_bias="0.0"/>
     <TextView
-            android:text="USER DETAILS"
+            android:text="@string/btn_user_details"
             android:gravity="center"
             android:textStyle="bold"
             app:fontFamily="serif"

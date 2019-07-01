@@ -25,11 +25,11 @@ class RestoreVisitsService {
             }
 
             override fun onResponse(call: Call<RestoreVisits>?, response: Response<RestoreVisits>?) {
-                if (response!!.code() == 200) {
+                if (response?.code() == 200) {
                     downloadFinished.onSuccessVisitsDownloading(response.body())
                 } else {
                     try {
-                        downloadFinished.onFailure(response.errorBody().string())
+                        response?.errorBody()?.string()?.let { downloadFinished.onFailure(it) }
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }

@@ -264,6 +264,10 @@
     <string name="no_high_risk_child_msg">कोणताही उच्च जोखिम बालक सापडला नाही</string>
     <string name="pending_label_text">प्रलंबित</string>
     <string name="incomplete_visit">अपूर्ण भेटी</string>
+    <string name="btn_registration">नोंदणी</string>
+    <string name="btn_incomplete_visit">अपूर्ण भेटी</string>
+    <string name="btn_complete_visit">पूर्ण भेटी</string>
+    <string name="btn_user_details">वापरकर्ता तपशील</string>
     <string name="total_visits">एकूण भेटी</string>
     <string name="due_visits">अपेक्षित भेटी</string>
     <string name="overdue_visits">राहिलेल्या भेटी</string>
