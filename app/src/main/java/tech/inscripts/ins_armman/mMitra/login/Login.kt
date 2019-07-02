@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import kotlinx.android.synthetic.main.login.*
 import tech.inscripts.ins_armman.mMitra.HomeActivity
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
@@ -19,11 +20,20 @@ class Login : AppCompatActivity(),ILoginView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
-        val button_login=findViewById<Button>(R.id.buttonLogin);
+        val button_login=findViewById<Button>(R.id.buttonLogin)
        initializeDBHelper()
         button_login.setOnClickListener(View.OnClickListener {
-            val myIntent = Intent(this@Login, HomeActivity::class.java)
-            startActivity(myIntent)
+           val username =  username_editText.text.toString()
+            val password = password_editText.text.toString()
+            if(username.equals(""))
+            {
+                setUsernameError()
+            }
+            else if(password.equals(""))
+            {
+                setPasswordError()
+            }
+
         } )
     }
     fun initializeDBHelper() {
@@ -33,11 +43,13 @@ class Login : AppCompatActivity(),ILoginView {
 
 
     override fun setUsernameError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        username_editText.setText("Please Enter Username")
+    //    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun setPasswordError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        password_editText.setText("Please enter password")
+      //  TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun resetErrorMsg() {
@@ -57,6 +69,8 @@ class Login : AppCompatActivity(),ILoginView {
     }
 
     override fun openHomeActivity() {
+        val myIntent = Intent(this@Login, HomeActivity::class.java)
+        startActivity(myIntent)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
