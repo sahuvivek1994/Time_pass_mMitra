@@ -1,8 +1,11 @@
 package tech.inscripts.ins_armman.mMitra.login
+
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Button
 import kotlinx.android.synthetic.main.login.*
@@ -10,46 +13,61 @@ import tech.inscripts.ins_armman.mMitra.HomeActivity
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
+import tech.inscripts.ins_armman.mMitra.utility.utility
 
-class Login : AppCompatActivity(),ILoginView {
+class Login : AppCompatActivity(), ILoginView {
 
     override fun getContext(): Context {
-       return this
+        return this
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
-        val button_login=findViewById<Button>(R.id.buttonLogin)
-       initializeDBHelper()
+
+        val button_login = findViewById<Button>(R.id.buttonLogin)
+
+        val loginPresenter = LoginPresenter()
+
+        val uti = utility()
+        val applicationLanguage = uti.getLanguagePreferance(applicationContext)
+        if (applicationLanguage.isEmpty()) {
+            uti.setApplicationLocale(applicationContext, "en")
+        } else {
+            uti.setApplicationLocale(applicationContext, applicationLanguage)
+        }
+
+        loginPresenter.attachView(this)
+
+        initializeDBHelper()
         button_login.setOnClickListener(View.OnClickListener {
-           val username =  username_editText.text.toString()
-            val password = password_editText.text.toString()
-            if(username.equals(""))
-            {
+            val username = edittext_username.text.toString()
+            val password = edittext_pass.text.toString()
+            if (username.equals("")) {
                 setUsernameError()
-            }
-            else if(password.equals(""))
-            {
+            } else if (password.equals("")) {
                 setPasswordError()
             }
 
-        } )
+        })
     }
+
     fun initializeDBHelper() {
-        val dbHelper = DBHelper(getContext()?.getApplicationContext())
+        val dbHelper = DBHelper(getContext().applicationContext)
         DatabaseManager.initializeInstance(dbHelper)
-        DatabaseManager.getInstance().openDatabase()    }
+        DatabaseManager.getInstance().openDatabase()
+    }
 
 
     override fun setUsernameError() {
-        username_editText.setText("Please Enter Username")
-    //    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        edittext_username.setText("Please Enter Username")
+        //    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun setPasswordError() {
-        password_editText.setText("Please enter password")
-      //  TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        edittext_pass.setText("Please enter password")
+        //  TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun resetErrorMsg() {
@@ -57,7 +75,21 @@ class Login : AppCompatActivity(),ILoginView {
     }
 
     override fun showDialog(title: String, message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val builder: AlertDialog.Builder
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert)
+        } else {
+            builder = AlertDialog.Builder(getContext())
+        }
+        builder.setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(R.string.yes) { dialog, which ->
+                // continue with delete
+            }
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
+
+        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun showProgressBar() {

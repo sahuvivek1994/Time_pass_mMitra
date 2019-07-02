@@ -21,11 +21,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context) {
         super(context, DB_LOCATION
                 + File.separator + DATABASE_NAME, null, DATABASE_VERSION);
-
+ /*
         File fileGuide = new File(USER_GUIDE_DIRECTORY);
         if (!fileGuide.exists()) fileGuide.mkdirs();
 
-        /*File fileAnim = new File(ANIMATION_DIRECTORY);
+       File fileAnim = new File(ANIMATION_DIRECTORY);
         if (!fileAnim.exists()) fileAnim.mkdirs();
 
         File fileCalls = new File(M_MITRA_CALLS_DIRECTORY);
@@ -35,7 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(LoginTable.CREATE_TABLE);
-        db.execSQL(VillageTable.CREATE_TABLE);
+      //  db.execSQL(VillageTable.CREATE_TABLE);
         db.execSQL(FormDetailsTable.CREATE_TABLE);
         db.execSQL(MainQuestionsTable.CREATE_TABLE);
         db.execSQL(DependentQuestionsTable.CREATE_TABLE);
@@ -43,13 +43,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(ValidationsTable.CREATE_TABLE);
         db.execSQL(HashTable.CREATE_TABLE);
         db.execSQL(RegistrationTable.CREATE_TABLE);
-        db.execSQL(ReferralTable.CREATE_TABLE);
+    //    db.execSQL(ReferralTable.CREATE_TABLE);
         db.execSQL(QuestionAnswerTable.CREATE_TABLE);
         db.execSQL(FilledFormStatusTable.CREATE_TABLE);
-        db.execSQL(ChildGrowthTable.CREATE_TABLE);
+     //   db.execSQL(ChildGrowthTable.CREATE_TABLE);
         db.execSQL(VideoAnimationTable.CREATE_TABLE);
         db.execSQL(FaqTable.CREATE_TABLE);
-        db.execSQL(mMitraCallsTable.CREATE_TABLE);
+     //   db.execSQL(mMitraCallsTable.CREATE_TABLE);
     }
 
     @Override
@@ -57,9 +57,9 @@ public class DBHelper extends SQLiteOpenHelper {
         if (oldVersion <= 2) {
             Log.i(TAG, "onUpgrade: version: 2");
             db.execSQL("DROP TABLE IF EXISTS " + FilledFormStatusTable.TABLE_NAME);
-            db.execSQL("DROP TABLE IF EXISTS " + ChildGrowthTable.TABLE_NAME);
+      //      db.execSQL("DROP TABLE IF EXISTS " + ChildGrowthTable.TABLE_NAME);
             db.execSQL("DROP TABLE IF EXISTS " + QuestionAnswerTable.TABLE_NAME);
-            db.execSQL("DROP TABLE IF EXISTS " + ReferralTable.TABLE_NAME);
+     //       db.execSQL("DROP TABLE IF EXISTS " + ReferralTable.TABLE_NAME);
             db.execSQL("DROP TABLE IF EXISTS " + RegistrationTable.TABLE_NAME);
             onCreate(db);
         }
