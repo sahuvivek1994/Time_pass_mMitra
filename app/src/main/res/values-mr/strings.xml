@@ -298,6 +298,7 @@
     <string name="rep_total_visits">एकूण भेटी</string>
     <string name="rep_due_visits">अपेक्षित भेटी</string>
     <string name="rep_overdue_visits">राहिलेल्या भेटी</string>
+    <string name="Reg_women_com">एकही संपूर्ण भेट सापडली नाही</string>
     <string-array name="filterTypes">
         <item>एकूण अहवाल</item>
         <item>शेवटच्या 30 दिवसांचा अहवाल</item>

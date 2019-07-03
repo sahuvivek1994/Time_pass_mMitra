@@ -84,7 +84,7 @@
     <string name="title_english">English</string>
     <string name="title_marathi">मराठी</string>
     <string name="title_hindi">हिंदी</string>
-
+    <string name="Reg_women_com">No complete Visit Found</string>
     <string-array name="languages">
         <item>@string/title_english</item>
         <item>@string/title_marathi</item>

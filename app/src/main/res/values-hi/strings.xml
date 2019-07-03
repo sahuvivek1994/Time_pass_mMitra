@@ -300,6 +300,7 @@
     <string name="rep_total_visits">TOTAL VISITS</string>
     <string name="rep_due_visits">DUE VISITS</string>
     <string name="rep_overdue_visits">OVERDUE VISITS</string>
+    <string name="Reg_women_com">No complete Visit Found</string>
     <string-array name="filterTypes">
         <item>Overall Report</item>
         <item>Last 30 days Report</item>

@@ -49,8 +49,8 @@ class Utility {
         editor.commit()
     }
 
-    fun getLanguagePreferance(context: Context): String {
-        val prefs = context.getSharedPreferences(COMMAN_PREF_NAME, Activity.MODE_PRIVATE)
+    fun getLanguagePreferance(context: Context?): String {
+        val prefs = context!!.getSharedPreferences(COMMAN_PREF_NAME, Activity.MODE_PRIVATE)
         return prefs.getString(Language, "")
     }
 

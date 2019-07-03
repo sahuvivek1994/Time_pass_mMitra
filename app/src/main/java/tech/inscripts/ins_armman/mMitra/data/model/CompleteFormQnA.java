@@ -1,4 +1,4 @@
-package tech.inscripts.ins_armman.mMitra.data.model.syncing;
+package tech.inscripts.ins_armman.mMitra.data.model;
 
 public class CompleteFormQnA {
 String questionKeyword;
