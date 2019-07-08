@@ -15,9 +15,9 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
     var mContext : Context?=null
     private var mWomenList: List<IncompleteFilledForm>? = null
     private lateinit var mOnItemClickListener: IncompleteFormsAdapter.onItemClickListener
-    var obj = ViewHolder()
+   // var obj = ViewHolder()
 
-    constructor(mContext: Context?, mWomenList: List<IncompleteFilledForm>?,mOnItemClickListener :IncompleteFormsAdapter.onItemClickListener) : super() {
+    constructor(mContext: Context?, mWomenList: List<IncompleteFilledForm>?,mOnItemClickListener :onItemClickListener) : this() {
         this.mContext = mContext
         this.mWomenList = mWomenList
         this.mOnItemClickListener = mOnItemClickListener
@@ -43,7 +43,7 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        constructor() : this()
+        //constructor()
 
         internal var textViewName: TextView
         internal var incompleteVisitlabel: TextView? = null

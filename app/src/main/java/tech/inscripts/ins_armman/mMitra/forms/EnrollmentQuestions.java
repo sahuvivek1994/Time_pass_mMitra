@@ -54,7 +54,7 @@ import static tech.inscripts.ins_armman.mMitra.utility.Keywords.VILLAGE_NAME;
 
 /**
  * This class is used to display questions of registration forms dynamically from the localDB.
- * After entering all dataSource the answer's are saved in local db and based on lmp date she would be directed to either ANC forms or pnc.
+ * After entering all dataSource the answer's are saved in local dbHelper and based on lmp date she would be directed to either ANC forms or pnc.
  */
 public class EnrollmentQuestions extends AppCompatActivity {
 
@@ -1961,7 +1961,7 @@ private static Utility utility= new Utility();
         /**
          * This if condition is used to check if the question contains any dependant question.
          */
-//        optionList = dbhelper.getANCEnglishoptions(quesid);  // this db statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
+//        optionList = dbhelper.getANCEnglishoptions(quesid);  // this dbHelper statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
         optionList = questionInteractor.getQuestionOptions(quesid, formID);
 
         //final RadioButton[] rb = new RadioButton[2];
@@ -2383,7 +2383,7 @@ private static Utility utility= new Utility();
         }
 
 //        if (i == 1) {
-//            optionList = dbhelper.dependantgetANCEnglishoptions(quesid);  // this db statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
+//            optionList = dbhelper.dependantgetANCEnglishoptions(quesid);  // this dbHelper statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
 //        } else {
 //            optionList = dbhelper.getANCEnglishoptions(quesid);
 //        }

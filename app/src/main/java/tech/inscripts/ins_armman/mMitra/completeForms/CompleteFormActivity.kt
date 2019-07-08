@@ -64,7 +64,11 @@ class CompleteFormActivity : AppCompatActivity(),ICompleteFormView,CompleteForms
     }
 
     override fun itemClicked(v: View, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onResume() {
+        super.onResume()
+        completedPresenter.getListCompleteForm()
     }
 
     override fun onDestroy() {

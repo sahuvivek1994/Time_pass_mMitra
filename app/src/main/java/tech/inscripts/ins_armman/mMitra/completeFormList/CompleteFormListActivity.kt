@@ -56,7 +56,7 @@ class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,Compl
     }
 
     override fun getContext(): Context {
-    return null!!
+    return this
     }
 
     override fun onDestroy() {

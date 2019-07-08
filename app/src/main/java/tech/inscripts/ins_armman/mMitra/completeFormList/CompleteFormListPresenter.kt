@@ -9,7 +9,6 @@ class CompleteFormListPresenter : ICompleteFormListPresenter<CompleteFormListAct
     internal var view: ICompleteFormListView? = null
     internal lateinit var interactor: CompleteFormListInteractor
     internal var formDetails = ArrayList<CompleteFormQnA>()
-    internal var childNumber = ArrayList<CompleteFormQnA>()
     internal var formId = 0
     internal var count = 0
     internal var c = 0
@@ -24,7 +23,6 @@ class CompleteFormListPresenter : ICompleteFormListPresenter<CompleteFormListAct
                 val obj = CompleteFormQnA()
                 obj.formName = res!!.getString(res!!.getColumnIndex("visit_name"))
                 obj.form_id = res!!.getInt(res!!.getColumnIndex("form_id"))
-                var formId = res!!.getInt(res!!.getColumnIndex("form_id"))
                 formDetails.add(obj)
             } while (res!!.moveToNext())
         }

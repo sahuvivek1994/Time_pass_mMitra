@@ -51,7 +51,7 @@ class CompleteFormAdapter() : RecyclerView.Adapter<CompleteFormAdapter.ViewHolde
     public fun setClickListener(clickListener : ClickListener){
         this.clickListener=clickListener
     }
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CompleteFormAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(mContext).inflate(R.layout.activity_form_list_item, parent, false)
         return ViewHolder(view)
     }
@@ -62,10 +62,11 @@ class CompleteFormAdapter() : RecyclerView.Adapter<CompleteFormAdapter.ViewHolde
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val c = mDetails?.get(position)
-        form_id = mDetails?.get(position)?.form_id!!
-        try {
-            val obj = JSONObject(c?.formName)
+        val c :CompleteFormQnA  = mDetails?.get(position) as CompleteFormQnA
+        holder.txtformName?.setText(c.formName)
+
+        /*try {
+            var obj : JSONObject = JSONObject(c?.formName)
             language = utility.getLanguagePreferance(mContext)
             if (language.isEmpty()) {
                 utility.setApplicationLocale(mContext, "en")
@@ -74,22 +75,11 @@ class CompleteFormAdapter() : RecyclerView.Adapter<CompleteFormAdapter.ViewHolde
             }
             formName = obj.getString(this.language)
             formName = formName.toUpperCase()
-            val count = 0
-
-            if (form_id >= 1 && form_id <= 5 || form_id == 10) {
-                holder.formName?.setText(formName)
-            }
-
+            holder.txtformName?.setText(formName)
 
         } catch (e: JSONException) {
             e.printStackTrace()
-        }
-
-        var a = 0
-        while (a < mDetails?.size!!) {
-            println("formList$mDetails")
-            a++
-        }
+        }*/
     }
 
     public interface ClickListener{
@@ -97,10 +87,10 @@ class CompleteFormAdapter() : RecyclerView.Adapter<CompleteFormAdapter.ViewHolde
     }
     //
     inner public class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
-        var formName : TextView?=null
+        internal var txtformName: TextView?=null
 
         constructor(itemView: View, formName: TextView?) : this(itemView) {
-            this.formName = itemView.findViewById(R.id.tvFormName)
+            this.txtformName = itemView.findViewById(R.id.tvFormName)
         }
         override fun onClick(v: View) {
             var intent = Intent(mContext, CompleteFormDetailsActivity::class.java)

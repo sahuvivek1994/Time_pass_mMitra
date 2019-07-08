@@ -1952,7 +1952,7 @@ private static Utility utility=  new Utility();
         /**
          * This if condition is used to check if the question contains any dependant question.
          */
-//        optionList = dbhelper.getANCEnglishoptions(quesid);  // this db statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
+//        optionList = dbhelper.getANCEnglishoptions(quesid);  // this dbHelper statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
         optionList = questionInteractor.getQuestionOptions(quesid, String.valueOf(FormID));
 
         final RadioGroup rg = new RadioGroup(this); //create the RadioGroup
@@ -2533,7 +2533,7 @@ private static Utility utility=  new Utility();
         }
 
        /* if (i == 1) {
-            optionList = dbhelper.dependantgetANCEnglishoptions(quesid);  // this db statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
+            optionList = dbhelper.dependantgetANCEnglishoptions(quesid);  // this dbHelper statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
         } else {
 //            optionList = dbhelper.getANCEnglishoptions(quesid);
         }*/
@@ -5978,7 +5978,7 @@ private static Utility utility=  new Utility();
             decimalFormat.applyPattern("#.00");
             //System.out.println("ANC Visit NAME++++++"+b.getString("ANCVisit"));
 
-            //formid= dbhelper.getSelectedAncForm(b.getString("ANCVisit")); // gets id of the form after passing visit_name (eg.ANC Visit1 id is 2 in db)
+            //formid= dbhelper.getSelectedAncForm(b.getString("ANCVisit")); // gets id of the form after passing visit_name (eg.ANC Visit1 id is 2 in dbHelper)
             uniqueId = b.getString(UNIQUE_ID);
             clickedFormId = b.getInt(clickedForm);
                 formid = b.getString(FORM_ID);

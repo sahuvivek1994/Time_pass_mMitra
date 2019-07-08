@@ -143,7 +143,7 @@ class Utility {
         var c=getUserId()
         var d: String=""
         if(true)
-            d=a as String +b +c
+            d=a.toString() +b +c
         return d
     }
 

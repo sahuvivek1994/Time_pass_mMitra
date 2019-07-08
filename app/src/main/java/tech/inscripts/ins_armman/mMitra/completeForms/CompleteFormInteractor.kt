@@ -9,13 +9,13 @@ class CompleteFormInteractor : ICompleteInteractor{
     private var mContext: Context ?= null
     private var dbHelper: DBHelper?=null
 
-    constructor(mContext: Context?, dbHelper: DBHelper?) {
+    constructor(mContext: Context?) {
         this.mContext = mContext
-        this.dbHelper = dbHelper
+        this.dbHelper = DBHelper(mContext)
     }
 
-    override fun fetchListCompleteForm(): Cursor {
-    return null
+    override fun fetchListCompleteForm(): Cursor? {
+    return dbHelper?.getcompleteFormListList()
     }
 
 }

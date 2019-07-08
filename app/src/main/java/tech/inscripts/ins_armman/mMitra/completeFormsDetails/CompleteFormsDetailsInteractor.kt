@@ -13,11 +13,11 @@ class CompleteFormsDetailsInteractor : ICompleteFormsDetailsInteractor {
         this.db = DBHelper(mContext)
     }
 
-    override fun displayFormDetails(id: String, form_id: Int): Cursor {
+    override fun displayFormDetails(unique_id: String, form_id: Int): Cursor {
         return db.getCompleteFormDetails(unique_id, form_id)
     }
 
-    override fun displayForm6Details(id: String, form_id: Int): Cursor {
+    override fun displayForm6Details(unique_id: String, form_id: Int): Cursor {
         return db.getForm6Details(unique_id, form_id)
     }
 }
