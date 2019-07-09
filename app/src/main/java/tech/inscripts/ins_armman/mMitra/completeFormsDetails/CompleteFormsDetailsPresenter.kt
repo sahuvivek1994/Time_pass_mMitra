@@ -11,8 +11,8 @@ class CompleteFormsDetailsPresenter : ICompleteFormsDetailsPresenter<CompleteFor
 
 
     override fun attachView(view: CompleteFormDetailsActivity) {
-        this.completeFormView = completeFormView
-        this.interactor = CompleteFormsDetailsInteractor(completeFormView?.getContext()!!)
+        this.completeFormView = view
+        this.interactor = CompleteFormsDetailsInteractor(view?.getContext()!!)
     }
 
     override fun detachView() {
@@ -20,21 +20,7 @@ class CompleteFormsDetailsPresenter : ICompleteFormsDetailsPresenter<CompleteFor
     }
 
     override fun displayFIlledForm(unique_id: String, form_id: Int) {
-        if (form_id == 6) {
-            val cur = interactor?.displayForm6Details(unique_id, form_id)
-            if (cur != null && cur.moveToFirst()) {
-                do {
-                    val completeFormQnA = CompleteFormQnA()
-                    completeFormQnA.question = cur.getString(cur.getColumnIndex("question_label"))
-                    completeFormQnA.answer = cur.getString(cur.getColumnIndex("answer_keyword"))
-                    val que = cur.getString(cur.getColumnIndex("question_label"))
-                    val ans = cur.getString(cur.getColumnIndex("answer_keyword"))
-                    formDetails.add(completeFormQnA)
-                    println("question :$que\nanswer :$ans")
-                } while (cur.moveToNext())
-            }
-        } else {
-            val cur = interactor?.displayFormDetails(unique_id, form_id)
+        val cur = interactor?.displayFormDetails(unique_id, form_id)
             if (cur != null && cur.moveToFirst()) {
                 do {
                     val completeFormQnA = CompleteFormQnA()
@@ -56,7 +42,6 @@ class CompleteFormsDetailsPresenter : ICompleteFormsDetailsPresenter<CompleteFor
                     println("question :$que\nanswer :$ans")
                 } while (cur.moveToNext())
             }
-        }
 
         if (!formDetails.isEmpty()) {
             completeFormView?.getFormdetails(formDetails)

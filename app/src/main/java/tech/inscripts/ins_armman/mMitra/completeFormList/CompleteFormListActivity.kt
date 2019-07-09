@@ -6,30 +6,30 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.view.View
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.model.CompleteFormQnA
 import java.util.ArrayList
 
-class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,CompleteFormAdapter.ClickListener {
+class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,FormListAdapter.ClickListener {
 
     internal var qnaList: ArrayList<CompleteFormQnA>? = null
     internal lateinit var recyclerView: RecyclerView
     internal lateinit var db: DBHelper
-    internal lateinit var adapter: CompleteFormAdapter
+    internal lateinit var adapter: FormListAdapter
     internal lateinit var presentor: CompleteFormListPresenter
-    internal var childNoList = ArrayList<CompleteFormQnA>()
     internal lateinit var id: String
     internal lateinit var name:String
-
     internal var form_id: Int = 0
-    internal var childId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_completed_forms_list)
-        setTitle("Filled Form List")
+        val toolbar = findViewById<Toolbar>(R.id.include)
+        toolbar.setTitle("Filled Form List")
+        setSupportActionBar(toolbar)
         recyclerView= findViewById(R.id.recyclerView)
         db = DBHelper(this)
         presentor= CompleteFormListPresenter()
@@ -47,7 +47,7 @@ class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,Compl
 
 
     override fun getData(formDetails: ArrayList<CompleteFormQnA>) {
-        adapter = CompleteFormAdapter(this,id,form_id,formDetails)
+        adapter = FormListAdapter(this,id,form_id,formDetails)
         recyclerView.adapter = adapter
         adapter.setClickListener(this)
     }

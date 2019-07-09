@@ -15,8 +15,8 @@ class CompleteFormListInteractor : ICompleteFormListInteractor {
     }
 
 
-    override fun getCompleteFormList(): Cursor {
-    return dbHelper.getFormsList()
+    override fun getCompleteFormList(unique_mother_id : String): Cursor {
+    return dbHelper.getFormsList(unique_mother_id)
     }
 
 

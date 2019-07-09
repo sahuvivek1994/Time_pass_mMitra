@@ -17,7 +17,7 @@ class CompleteFormListPresenter : ICompleteFormListPresenter<CompleteFormListAct
     internal lateinit var formName:String
 
     override fun getCompleteFormList(unique_mother_id: String) {
-        res = interactor.getCompleteFormList()
+        res = interactor.getCompleteFormList(unique_mother_id)
         if ((res != null) and res!!.moveToFirst()) {
             do {
                 val obj = CompleteFormQnA()

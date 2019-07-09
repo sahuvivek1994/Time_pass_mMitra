@@ -62,7 +62,7 @@ class HomeActivity : AppCompatActivity(),View.OnClickListener {
             when (item.getItemId()) {
                 R.id.action_settings -> startActivity(Intent(this@HomeActivity, Settings::class.java))
 
-                // R.id.action_sync -> mPresenter.fetchRegistrationData()
+               //  R.id.action_sync -> mPresenter.fetchRegistrationData()
             }
         }
         return super.onOptionsItemSelected(item)

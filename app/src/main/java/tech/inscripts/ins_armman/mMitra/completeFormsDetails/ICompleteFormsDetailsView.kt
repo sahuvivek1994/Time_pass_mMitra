@@ -5,6 +5,6 @@ import tech.inscripts.ins_armman.mMitra.data.model.CompleteFormQnA
 import java.util.ArrayList
 
 interface ICompleteFormsDetailsView {
-    abstract fun getContext(): Context
-    abstract fun getFormdetails(formDetails: ArrayList<CompleteFormQnA>)
+     fun getContext(): Context
+     fun getFormdetails(formDetails: ArrayList<CompleteFormQnA>)
 }

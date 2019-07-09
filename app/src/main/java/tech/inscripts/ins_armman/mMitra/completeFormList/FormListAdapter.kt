@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_form_list_item.view.*
 import org.json.JSONException
 import org.json.JSONObject
 import tech.inscripts.ins_armman.mMitra.R
@@ -15,8 +16,7 @@ import tech.inscripts.ins_armman.mMitra.data.model.CompleteFormQnA
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
 
-class CompleteFormAdapter() : RecyclerView.Adapter<CompleteFormAdapter.ViewHolder>() {
-
+class FormListAdapter() : RecyclerView.Adapter<FormListAdapter.ViewHolder>() {
 
     internal lateinit var mContext: Context
     internal lateinit var language: String
@@ -25,12 +25,11 @@ class CompleteFormAdapter() : RecyclerView.Adapter<CompleteFormAdapter.ViewHolde
     internal var form_id: Int = 0
     var utility = Utility()
 
-    internal var status = 0
     internal lateinit var uniqueId: String
     internal var name:String? = null
     internal var pos = 0
     private var mDetails: ArrayList<CompleteFormQnA>?=null
-    private var clickListener: CompleteFormAdapter.ClickListener? = null
+    private var clickListener:ClickListener? = null
 
     constructor(mContext: Context, participant_id: String, form_id: Int, mDetails: ArrayList<CompleteFormQnA>?) : this() {
         this.mContext = mContext
@@ -38,35 +37,20 @@ class CompleteFormAdapter() : RecyclerView.Adapter<CompleteFormAdapter.ViewHolde
         this.form_id = form_id
         this.mDetails = mDetails
     }
-
-
-    override fun getItemId(position: Int): Long {
-        return super.getItemId(position)
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-    }
-
-    public fun setClickListener(clickListener : ClickListener){
-        this.clickListener=clickListener
-    }
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
-        val view = LayoutInflater.from(mContext).inflate(R.layout.activity_form_list_item, parent, false)
+        val view = LayoutInflater.from(mContext).inflate(R.layout.activity_incomplete_list, parent, false)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return mDetails!!.size
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val c :CompleteFormQnA  = mDetails?.get(position) as CompleteFormQnA
-        holder.txtformName?.setText(c.formName)
-
-        /*try {
-            var obj : JSONObject = JSONObject(c?.formName)
+        try {
+            var obj = JSONObject(c?.formName)
+            println("formNAme : " + obj)
             language = utility.getLanguagePreferance(mContext)
             if (language.isEmpty()) {
                 utility.setApplicationLocale(mContext, "en")
@@ -74,32 +58,46 @@ class CompleteFormAdapter() : RecyclerView.Adapter<CompleteFormAdapter.ViewHolde
                 utility.setApplicationLocale(mContext, language)
             }
             formName = obj.getString(this.language)
+            println("formNAme : " + formName)
             formName = formName.toUpperCase()
+            println("formNAme : " + formName)
             holder.txtformName?.setText(formName)
 
         } catch (e: JSONException) {
             e.printStackTrace()
-        }*/
+        }
     }
 
-    public interface ClickListener{
+    /*override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return super.getItemId(position)
+    }*/
+
+     fun setClickListener(clickListener : ClickListener){
+        this.clickListener=clickListener
+    }
+
+     interface ClickListener{
         fun itemClicked(view : View, position : Int)
     }
-    //
-    inner public class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         internal var txtformName: TextView?=null
 
-        constructor(itemView: View, formName: TextView?) : this(itemView) {
+        init {
+            itemView.setOnClickListener(this)
             this.txtformName = itemView.findViewById(R.id.tvFormName)
         }
+
         override fun onClick(v: View) {
             var intent = Intent(mContext, CompleteFormDetailsActivity::class.java)
             if (clickListener != null) {
                 clickListener!!.itemClicked(v, position)
                 val formId = mDetails?.get(position)?.getForm_id()
-                // if (formId >= 1 && formId <= 9 || formId == 10) {
                 uniqueId = participant_id
-                //  }
                 intent.putExtra("unique_id", uniqueId)
                 intent.putExtra("form_id", formId)
                 mContext.startActivity(intent)

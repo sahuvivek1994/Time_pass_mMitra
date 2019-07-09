@@ -256,8 +256,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 " JOIN main_questions ON question_answers.question_keyword=main_questions.keyword " +
                 "WHERE question_answers.unique_id='"+unique_id+"' and question_answers.form_id="+form_id,null);
     }
-    public Cursor getFormsList(){
-        return utility.getDatabase().rawQuery("select visit_name,form_id from form_details group by(form_id) order by cast(form_id as int) asc",null);
+    public Cursor getFormsList(String unique_id){
+        //return utility.getDatabase().rawQuery("select visit_name,form_id from form_details group by(form_id) order by cast(form_id as int) asc",null);
+        return utility.getDatabase().rawQuery("select form_id,visit_name from form_details \n" +
+                "where form_id in(select form_id from filled_forms_status where form_completion_status=1 " +
+                "and unique_id='"+ unique_id +"') order by cast(form_id as int) asc",null);
     }
     public Cursor getIncompleteFormList(String unique_id){
         return utility.getDatabase().rawQuery("select filled_forms_status.form_id,visit_name" +

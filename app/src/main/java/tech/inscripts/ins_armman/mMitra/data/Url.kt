@@ -5,7 +5,8 @@ interface Url {
 
         //API V2 added after dataSource sync error message structure changed
 
-        val BASE_URL = "http://arogyasakhi.armman.org/API/V2/"
+       // val BASE_URL = "http://arogyasakhi.armman.org/API/V2/"
+        val BASE_URL = "http://app.mmitra.org/m-mitraCohortSion/API/"
         //    String BASE_URL = "http://192.168.0.101/ArogyaSakhi-API/V2/";
 
         const val AUTHENTICATE = "authenticate"
