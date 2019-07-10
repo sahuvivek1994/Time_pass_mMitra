@@ -121,10 +121,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView2" android:textStyle="bold"
+            android:indeterminateDrawable="@drawable/scrollview_outline"
             android:textSize="36sp" app:fontFamily="sans-serif-medium" android:layout_marginTop="28dp"
             app:layout_constraintTop_toBottomOf="@+id/imageView3" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="@+id/guideline3" android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp"
             android:textColor="#BC941616" app:layout_constraintHorizontal_bias="0.477"/>
+    <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="256dp"
+            android:layout_height="245dp"
+            android:id="@+id/progressBarLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="170dp"
+            android:layout_marginRight="170dp"
+            android:indeterminateDrawable="@drawable/scrollview_outline"
+            android:layout_marginBottom="288dp" app:layout_constraintBottom_toTopOf="@+id/guideline6"
+            app:layout_constraintWidth_percent="0.7"
+            android:layout_marginTop="200dp" app:layout_constraintTop_toTopOf="@+id/guideline"
+            android:layout_marginStart="170dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="170dp" app:layout_constraintHorizontal_bias="0.4"
+            app:layout_constraintVertical_bias="0.0" android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

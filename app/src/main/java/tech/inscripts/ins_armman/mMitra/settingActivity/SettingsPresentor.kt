@@ -190,7 +190,16 @@ val utility= Utility()
 
     override fun onSuccessFormDownloading(jsonObject: JSONObject, hash: String) {
         mSettingsView?.hideProgressBar()
-        var value : Boolean =false
+
+        mSettingsInteractor?.saveFormData(jsonObject)
+
+        mSettingsView?.hideProgressBar()
+
+        /**
+         * Code commented of hash check it will get uncomment for new version in which hash will be used on server side also
+         */
+
+        /*var value : Boolean =false
 
         value= jsonObject.get("status") as Boolean
 
@@ -211,7 +220,7 @@ val utility= Utility()
         else{
             mSettingsView?.showSnackBar(mSettingsView!!.getContext().getString(R.string.forms_already_updated))
         }
-
+*/
     }
 
     override fun onUpdateCheckSuccess(updateModel: UpdateModel) {
