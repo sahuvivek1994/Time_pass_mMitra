@@ -61,22 +61,14 @@ class FormListAdapter() : RecyclerView.Adapter<FormListAdapter.ViewHolder>() {
             println("formNAme : " + formName)
             formName = formName.toUpperCase()
             println("formNAme : " + formName)
-            holder.txtformName?.setText(formName)
+            holder.txtformName.text = formName
 
         } catch (e: JSONException) {
             e.printStackTrace()
         }
     }
 
-    /*override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-    }
-
-    override fun getItemId(position: Int): Long {
-        return super.getItemId(position)
-    }*/
-
-     fun setClickListener(clickListener : ClickListener){
+    fun setClickListener(clickListener : ClickListener){
         this.clickListener=clickListener
     }
 
@@ -85,11 +77,11 @@ class FormListAdapter() : RecyclerView.Adapter<FormListAdapter.ViewHolder>() {
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
-        internal var txtformName: TextView?=null
+        internal var txtformName: TextView=itemView.findViewById(R.id.textview_name)
 
         init {
             itemView.setOnClickListener(this)
-            this.txtformName = itemView.findViewById(R.id.tvFormName)
+
         }
 
         override fun onClick(v: View) {

@@ -14,7 +14,7 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
 
     var mContext : Context?=null
     private var mWomenList: List<IncompleteFilledForm>? = null
-    private lateinit var mOnItemClickListener: IncompleteFormsAdapter.onItemClickListener
+    private lateinit var mOnItemClickListener:onItemClickListener
    // var obj = ViewHolder()
 
     constructor(mContext: Context?, mWomenList: List<IncompleteFilledForm>?,mOnItemClickListener :onItemClickListener) : this() {
@@ -32,6 +32,9 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
         return mWomenList!!.size
     }
 
+    fun swapDataList(womenList : List<IncompleteFilledForm>){
+        this.mWomenList=womenList
+    }
     override fun onBindViewHolder(holder: IncompleteFormsAdapter.ViewHolder, i: Int) {
         holder.bindData(mWomenList!!.get(i))
 
@@ -45,26 +48,17 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //constructor()
 
-        internal var textViewName: TextView
-        internal var incompleteVisitlabel: TextView? = null
-        internal var constraintLayout: ConstraintLayout
-
-        init {
-            textViewName = itemView.findViewById(R.id.textview_name)
-            constraintLayout = itemView.findViewById(R.id.constraint_layout_root)
-        }
+         var textViewName: TextView = itemView.findViewById(R.id.textview_name)
+         var incompleteVisitlabel: TextView? = null
+         var constraintLayout: ConstraintLayout = itemView.findViewById(R.id.constraint_layout_root)
 
         fun bindData(listModel: IncompleteFilledForm?) {
             if (listModel != null) {
-                textViewName.setText(listModel!!.name)
-
+                textViewName.text = listModel!!.name
 
                 constraintLayout.setOnClickListener {
                     var formIdToOpen = Integer.parseInt(listModel!!.formId)
-                    if (listModel!!.formCompleteStatus === 1)
-                        if (formIdToOpen != 10) {
-                            formIdToOpen = formIdToOpen + 1
-                        }
+                    formIdToOpen += 1
                     mOnItemClickListener?.onItemClick(listModel!!.uniqueId, formIdToOpen)
                 }
             }

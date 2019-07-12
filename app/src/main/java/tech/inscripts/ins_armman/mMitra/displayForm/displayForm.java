@@ -1,25 +1,25 @@
-/*
-package tech.inscripts.ins_armman.mMitra.forms;
+package tech.inscripts.ins_armman.mMitra.displayForm;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.*;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.*;
@@ -35,8 +35,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import tech.inscripts.ins_armman.mMitra.HomeActivity;
 import tech.inscripts.ins_armman.mMitra.R;
-import tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract;
+import tech.inscripts.ins_armman.mMitra.forms.*;
+import tech.inscripts.ins_armman.mMitra.utility.TelephonyInfo;
 import tech.inscripts.ins_armman.mMitra.utility.Utility;
 
 import java.io.File;
@@ -46,27 +48,26 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static tech.inscripts.ins_armman.mMitra.forms.EnrollmentQuestions.MEDIA_TYPE_IMAGE;
-import static tech.inscripts.ins_armman.mMitra.forms.EnrollmentQuestions.MEDIA_TYPE_VIDEO;
 import static tech.inscripts.ins_armman.mMitra.utility.Constants.*;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.*;
 
 
-*/
 /**
  * This class is used to display ANC Form Questions with answer type dynamically from localDB
- *//*
+ *
+ * @author Aniket & Vivek  Created on 4/9/2018
+ */
+public class displayForm extends AppCompatActivity {
 
-public class AncVisits extends AppCompatActivity {
-private static Utility utility=  new Utility();
+   Utility utilityObj = new Utility();
     private static final String TAG = "AncVisits";
-
+    public boolean isAncPncEdit = false;
+    public boolean noDialogFirst = false;
     Boolean isIucdRemoved = false, isTTDoseActive = false, isTT1Active = false;
     Boolean isParticipantMissLmp = false;
     Boolean isParticipantPregnant = false;
     Boolean isParticipantInfertile = false;
     FrameLayout Frame;
-
     Button next, previous, Hash;
     LinearLayout.LayoutParams lp1, lp, lpHorizontal, segmentedBtnLp, lparams, layoutParamQuestion;
     ScrollView.LayoutParams sp1;
@@ -74,7 +75,8 @@ private static Utility utility=  new Utility();
     ScrollView scroll, scroll_temp;
     Context ctx = this;
     int counter;
-    private QuestionInteractor questionInteractor;
+    int number_of_children = 0;
+    int child_entry_counter = 1;
     int scrollcounter = 0;
     Date SystemDate, selectedDate;
     SimpleDateFormat formatter;
@@ -83,7 +85,7 @@ private static Utility utility=  new Utility();
     HashMap<String, String> womendetails = new HashMap<>();
     HashMap<String, String> previousVisitDetails = new HashMap<>();
     HashMap<String, String> storeEnteredData = new HashMap<>();
-    HashMap<String, String> Backup_answerTyped1 = new HashMap<>(); // is used to insert the entered dataSource into localDB
+    HashMap<String, String> Backup_answerTyped1 = new HashMap<>(); // is used to insert the entered data into localDB
     TreeMap<String, String> validationlist = new TreeMap<>();    //TreeMap contains compulsory questions keyword and their answers
     TreeMap<String, Integer> NextButtonvalidationlist = new TreeMap<>();  // TreeMap is used to check how many compulsory questions are there on one single page
     ConcurrentHashMap<String, String> dependantquestion = new ConcurrentHashMap<>();
@@ -92,26 +94,22 @@ private static Utility utility=  new Utility();
     List<Visit> optionList = null; // is used to check whether the question contains dependant question
     List<Visit> dependantoptionList = null; // is used to check whether the question contains dependant question
     List<Visit> dependantList = null; // is used to retireve dependant question for the selected button
-
     List<String> removeDependentQuestion = new ArrayList<>();
     String formid, language;
     String womanLmp, mamtaCardID;
-    public boolean isAncPncEdit = false;
-    public boolean noDialogFirst = false;
     int progresscount, womenDeliveryDays, Migrant;
     ProgressBar progress;
     List<String> chechboxlist = new ArrayList<>();
     HashMap<String, String> layoutids = new HashMap<>();
     Pattern pattern;
-    String Optionlanguage,regOption;
-    int layoutcounter = 0,clickedFormId,current_form_id;;
-    String clickedForm;
+    String Optionlanguage;
+    int layoutcounter = 0;
     String PreviousQuesAnswertype;
     TreeMap<Integer, Integer> runtimevalidationlist = new TreeMap<>();// this treemap is used to store all scroll id's associated for edittext
-    List<CalculateVisit> calculatevisitList = null;
-    List<CalculateVisit> calculatePncVisitList = null;
-    List<CalculateVisit> calculateChildCareVisitList = null;
-    List<CalculateVisit> calculatevisitList1 = null;
+    //    List<CalculateVisit> calculatevisitList = null;
+//    List<CalculateVisit> calculatePncVisitList = null;
+//    List<CalculateVisit> calculateChildCareVisitList = null;
+//    List<CalculateVisit> calculatevisitList1 = null;
     int Highriskmin, Highriskmax, Refferriskmin, Refferriskmax;
     HashMap<String, String> highrisklist = new HashMap<>();
     HashMap<String, String> referrallist = new HashMap<>();
@@ -126,7 +124,7 @@ private static Utility utility=  new Utility();
     HashMap<String, String> ConditionLists = new HashMap<>();
     List<Visits> StoredCounsellingRanges = null;
     List<Visits> StoredPatientVisitSummaryRanges = null;
-    String deliveryDate, motherClosureDate, childClosureDate,TT1Dose="",TT2Dose="",TTDose1Date="";
+    String deliveryDate, motherClosureDate, childClosureDate;
     Double range_min;
     Double range_max;
     String range_lang;
@@ -137,7 +135,6 @@ private static Utility utility=  new Utility();
     boolean HighriskStatus = false;
     boolean RefferalStatus = false;
     boolean SaveFormStatus = false;
-    int wages_status;
     boolean ImportantDialogStatus = false;
     String serverDate;
     List<String> tempdependantStore = new ArrayList<>();
@@ -162,7 +159,6 @@ private static Utility utility=  new Utility();
     SimpleDateFormat newDateFormat;
     TimePickerDialog mTimePicker;
     Integer mamtaCardPresent;
-    Integer firstForm;
     ProgressDialog progressDialog;
     NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
     DecimalFormat decimalFormat = (DecimalFormat) nf;
@@ -170,7 +166,7 @@ private static Utility utility=  new Utility();
     String pageCountText;
     TextView textViewTotalPgCount;
     String visitId;
-    List<ListClass> womenData = null;
+    // List<ListClass> womenData = null;
     InputFilter filter = new InputFilter() {
         public CharSequence filter(CharSequence source, int start, int end,
                                    Spanned dest, int dstart, int dend) {
@@ -183,32 +179,28 @@ private static Utility utility=  new Utility();
         }
 
     };
+    GradientDrawable drawableMainQstn, drawableDependentQstn;
+    HashMap<String, String> hashMapVideoNamePath = new HashMap<>();
+    private QuestionInteractor questionInteractor;
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private SimpleDateFormat serverdateFormatter;
     private String serverdefaultdateFormatter;
-    private List<ListClass> recieveListOverDueCount = new ArrayList<>();
-    private List<ListClass> recieveListDueCount = new ArrayList<>();
+    //    private List<ListClass> recieveListOverDueCount = new ArrayList<>();
+//    private List<ListClass> recieveListDueCount = new ArrayList<>();
     private int overDueVisitsCount, dueVisitsCount;
     private String uniqueId = "";
+    private String childUniqueId = "";
+    private ArrayList<String> childsUniqueIds;
     private String mAppLanguage;
-    GradientDrawable drawableMainQstn, drawableDependentQstn;
-    HashMap<String, String> hashMapVideoNamePath = new HashMap<>();
-    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
-    private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
-    String Name;
-    private Uri fileUri;
-    Bitmap photo;
-    ImageView iv;
-    */
-/**
+
+    /**
      * This method gives the next visit date of the ANM
      *
      * @param lmp      = lmp of the woman
      * @param no_weeks = days of the next visit
      * @return next visit date in string format
-     *//*
-
+     */
     public static String nextvisitdate(String lmp, String no_weeks) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat DMYFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
@@ -248,7 +240,6 @@ private static Utility utility=  new Utility();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anc_cc_visit);
-
         new DisplayQuestions().execute();
 
     }
@@ -339,27 +330,17 @@ private static Utility utility=  new Utility();
 
                     break;
 
-                case "date":
+                /*case "date":
 
                     if (womendetails.containsKey(split_str[2].trim())) {
                         String date_cal = expression.substring(expression.indexOf("(") + 1, expression.length() - 1);
 
                         date_cal = date_cal.replace(split_str[2].trim(), serverdateFormatter.format(dateFormatter.parse(womendetails.get(split_str[2].trim()))));
 
-                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                        Calendar c= Calendar.getInstance();
-                        try {
-                            c.setTime(simpleDateFormat.parse(date_cal));
-                        }
-                        catch(Exception e){
-                        }
-
-                        //Date maxDate = new StringToTime(serverdefaultdateFormatter + " - 028 days");
-                        result=serverdateFormatter.format(c.getTime());
-                      //  result = String.valueOf(serverdateFormatter.format(new StringToTime(date_cal)));
+                        result = String.valueOf(serverdateFormatter.format(new StringToTime(date_cal)));
 
                         if (result != null) {
-                            String dt = dateFormatter.format(c.getTime());
+                            String dt = dateFormatter.format(new StringToTime(date_cal));
                             womendetails.put(split_str[0].trim(), dt);
                             textOnLabel = textOnLabel.replace(split_str[0].trim(), dt);
                         } else
@@ -368,7 +349,7 @@ private static Utility utility=  new Utility();
                         textOnLabel = textOnLabel.replace(split_str[0].trim(), getString(R.string.no_data));
 
                     break;
-
+*/
                 case "todays_date":
 
                     result = serverdefaultdateFormatter;
@@ -430,17 +411,26 @@ private static Utility utility=  new Utility();
 
     public void NextButtonValidations() {
         try {
+            if (Backup_answerTyped1.containsKey("child_count")) {
+                SQLiteDatabase db = utilityObj.getDatabase();
+                db.beginTransaction();
+               // questionInteractor.deleteExisitingChild(uniqueId);
+                for (int i = 0; i < Integer.valueOf(Backup_answerTyped1.get("child_count")); i++) {
+                    childUniqueId = questionInteractor.saveRegistrationDetails("", "", "", "", "", "", uniqueId, 0);
+                }
+                db.setTransactionSuccessful();
+                db.endTransaction();
+            }
+
             int counter = 0;
             int totalpagecondition = 0;
             Boolean isCompulsoryQstnInFocus = false;
             int pageno = scrollId.get(scrollcounter);
 
-            */
-/**
+            /**
              * before going to next page check if validations field present on that page is filled or not.
              * Hashmap iterator is used for this purpose to check how many validations are their on single page.
-             *//*
-
+             */
             for (Map.Entry<String, Integer> entry : NextButtonvalidationlist.entrySet()) {
                 entry.getKey();
                 entry.getValue();
@@ -450,12 +440,10 @@ private static Utility utility=  new Utility();
                     if (entry.getValue() == pageno) {
                         totalpagecondition++;
 
-                        */
-/**
+                        /**
                          * validationlist is a TreeMap where questions which are compulsory its's keyword and answer is stored.
                          * if a specific answer is not stored for that keyword that means question is not answered by the user.
-                         *//*
-
+                         */
                         if (validationlist.get(entry.getKey()) != null && validationlist.get(entry.getKey()).length() > 0) {
                             counter++;
                         } else {
@@ -497,17 +485,23 @@ private static Utility utility=  new Utility();
                 }
             }
 
-            */
-/**
+            /**
              * this if condition is used to check whether total compulsory question on that page is answered or not.
              * if totalpagecondition matches with counter no. that means all the complusory questions are answered.
-             *//*
-
+             */
 
             if (totalpagecondition == counter) {
-                previous.setVisibility(View.VISIBLE);
 
-                questionInteractor.saveQuestionAnswers(Backup_answerTyped1, maxautoId, uniqueId, Integer.parseInt(formid), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
+                if (Backup_answerTyped1.containsKey("child_name"))
+                  //  questionInteractor.updateChildRegistration(Backup_answerTyped1.get("child_name"), childUniqueId);
+
+                previous.setVisibility(View.VISIBLE);
+                if (!formid.equals("6") && !formid.equals("7")
+                        && !formid.equals("8") && !formid.equals("9"))
+                    questionInteractor.saveQuestionAnswers(Backup_answerTyped1, maxautoId, uniqueId, Integer.parseInt(formid), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
+                else
+                    questionInteractor.saveQuestionAnswers(Backup_answerTyped1, maxautoId, childUniqueId, Integer.parseInt(formid), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
+
 
                 Backup_answerTyped1.clear();
 
@@ -517,39 +511,43 @@ private static Utility utility=  new Utility();
                 scrollcounter++;
                 parentid++;
 
-                */
-/**
+                /**
                  * this if is used to check whether last layout for the question is reached or not.
                  * scrollcounter gets updated after clicking on next button
                  * if scrollcounter values goes above Total layouts textViewCount(c) then saveform() is called.
-                 *//*
-
+                 */
                 if (scrollcounter > layoutcounter - 1) {
                     scrollcounter = layoutcounter - 1;
                     System.out.println("inside if condition+++++++" + scrollcounter);
                     scroll_temp = (ScrollView) Frame.findViewById(Integer.parseInt(String.valueOf(scrollId.get(scrollcounter))));
                     scroll_temp.setVisibility(View.VISIBLE);
 
+
+                    questionInteractor.updateFormCompletionStatus(maxautoId);
+                    //TODO: Remove all currentTable code from project
+//                    questionInteractor.currentFormUpdate(uniqueId, FormID);
+                    //   questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(FIRST_NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER));
                     if (!ImportantDialogStatus) {
                         ImportantNote_Dialog();
-                    } else if (!HighriskStatus) {
+                    }
+                    /*else if (!HighriskStatus) {
                         highriskdialog();
                     } else if (!RefferalStatus) {
                         referraldialog();
                     } else if (!SaveFormStatus) {
                         saveForm();
-                    } else {
-                        CalculateVisit calculateVisit;
-                        calculateVisit = questionInteractor.getNextVisitOf(formid);
-                        if (calculateVisit != null ) {
-                            if (nextvisitdate(womanLmp, Integer.toString(calculateVisit.getFromWeek())) != null && nextvisitdate(womanLmp, Integer.toString(calculateVisit.getFromWeek())).length() > 0) {
-                                NextVisit_dialog(calculateVisit.getANCVisit(), nextvisitdate(womanLmp, Integer.toString(calculateVisit.getFromWeek())), "NextVisit");
-                            }
-                        } else {
-                            NextVisit_dialog("", "", "");
-                        }
+                    }*/
+                    else {
+//                        CalculateVisit calculateVisit;
+//                        calculateVisit = questionInteractor.getNextVisitOf(formid);
+//                        if (calculateVisit != null ) {
+//                            if (nextvisitdate(womanLmp, Integer.toString(calculateVisit.getFromWeek())) != null && nextvisitdate(womanLmp, Integer.toString(calculateVisit.getFromWeek())).length() > 0) {
+//                                NextVisit_dialog(calculateVisit.getANCVisit(), nextvisitdate(womanLmp, Integer.toString(calculateVisit.getFromWeek())), "NextVisit");
+//                            }
+//                        } else {
+//                            NextVisit_dialog("", "", "");
+//                        }
                     }
-
 
 
                 } else {
@@ -577,7 +575,7 @@ private static Utility utility=  new Utility();
 
 
             } else {
-                Toast.makeText(getApplicationContext(), AncVisits.this.getString(R.string.Toast_msg_for_compulsory), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), displayForm.this.getString(R.string.Toast_msg_for_compulsory), Toast.LENGTH_LONG).show();
             }
 
         } catch (Exception e) {
@@ -586,33 +584,28 @@ private static Utility utility=  new Utility();
 
     }
 
-    */
-/**
+    /**
      * THis method is used to create edittext dynamically
      *
-     *
-     * @param i = for loop counter
-     * @param language = question text
-     * @param formid = formid
-     * @param setid = setid of the question
-     * @param keyword = question keyword
+     * @param i               = for loop counter
+     * @param language        = question text
+     * @param formid          = formid
+     * @param setid           = setid of the question
+     * @param keyword         = question keyword
      * @param validationfield = this field describes whether question is compulsory or not
-     * @param messages = this field contains json with multiple highrisk,counselling,referral conditions
+     * @param messages        = this field contains json with multiple highrisk,counselling,referral conditions
      * @return layout (ll)
-     *//*
+     */
 
-
-    @SuppressLint("NewApi")
-    public LinearLayout createEdittext(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation, String lengthmax)
-    {
+    public LinearLayout createEdittext(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation, String lengthmax) {
 
 
         System.out.println("inside createEdittext count" + i + "   keyword" + keyword);
-        Boolean isCompulsory=false;
+        Boolean isCompulsory = false;
 
         try {
             JSONObject obj = new JSONObject(language);
-            language=obj.getString(mAppLanguage);
+            language = obj.getString(mAppLanguage);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -624,7 +617,7 @@ private static Utility utility=  new Utility();
         tv.setTextSize(getResources().getDimension(R.dimen.text_size_medium));
         tv.setTextColor(getResources().getColor(R.color.text_color));
         tv.setLayoutParams(lp);
-        edittextID=edittextID+1;
+        edittextID = edittextID + 1;
         final EditText et = new EditText(this);
 
         //et.setText("edittextNo"+i);
@@ -637,22 +630,18 @@ private static Utility utility=  new Utility();
         et.setSingleLine(true);
 //		et.setPadding(20, 20, 20, 20);
 
-        if(lengthmax != null && lengthmax.length()>0)
-        {
-            et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(Integer.parseInt(lengthmax))});
+        if (lengthmax != null && lengthmax.length() > 0) {
+            et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Integer.parseInt(lengthmax))});
         }
 
         runtimevalidationlist.put(et.getId(), scrollID);
 
 
-
-        */
-/**
+        /**
          * This if condition is used to check whether the validation is required or not.
          * if validation is present then its answer is stored in validationlist treemap which is used to next when next button is clicked
          * scroll id is saved in NextButtonvalidationlist treemap to identify how many complusory questions are present on that page
-         *//*
-
+         */
         if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
             tv.setError("");
             validationlist.put("" + et.getTag(), et.getText().toString().trim());
@@ -660,11 +649,9 @@ private static Utility utility=  new Utility();
 
         }
 
-        */
-/**
-         * this if condition is used to display the dataSource which is already entered by the woman
-         *//*
-
+        /**
+         * this if condition is used to display the data which is already entered by the woman
+         */
         if (womendetails.containsKey(keyword)) {
             et.setText(womendetails.get(keyword));
 
@@ -680,7 +667,6 @@ private static Utility utility=  new Utility();
         if (messages != null && messages.length() > 0) {
             ConditionLists.put(keyword, messages);
         }
-
 
 
         et.addTextChangedListener(new TextWatcher() {
@@ -699,7 +685,7 @@ private static Utility utility=  new Utility();
             @Override
             public void afterTextChanged(Editable arg0) {
                 womendetails.put(keyword, et.getText().toString().trim());   // this hashmap is used to store
-                Backup_answerTyped1.put(keyword, et.getText().toString().trim()); // this hashmap is used to insert dataSource in Backup_AnswerEntered
+                Backup_answerTyped1.put(keyword, et.getText().toString().trim()); // this hashmap is used to insert data in Backup_AnswerEntered
 
 
                 if (validationlist.containsKey(keyword)) {
@@ -745,8 +731,7 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    */
-/**
+    /**
      * THis method is used to create Date Field dynamically
      *
      * @param i               = for loop counter
@@ -757,9 +742,7 @@ private static Utility utility=  new Utility();
      * @param validationfield = this field describes whether question is compulsory or not
      * @param messages        = this field contains json with multiple highrisk,counselling,referral conditions
      * @return layout (ll)
-     *//*
-
-    @SuppressLint({"ClickableViewAccessibility", "NewApi"})
+     */
     public LinearLayout createDate(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation) {
 
         System.out.println("inside method count" + i + "   keyword" + keyword);
@@ -797,24 +780,20 @@ private static Utility utility=  new Utility();
 
         runtimevalidationlist.put(et.getId(), scrollID);
 
-        */
-/**
+        /**
          * This if condition is used to check whether the validation is required or not.
          * if validation is present then its answer is stored in validationlist treemap which is used to next when next button is clicked
          * scroll id is saved in NextButtonvalidationlist treemap to identify how many complusory questions are present on that page
-         *//*
-
+         */
         if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
             tv.setError("");
             validationlist.put("" + et.getTag(), et.getText().toString());
             NextButtonvalidationlist.put("" + et.getTag(), scroll.getId());
         }
 
-        */
-/**
-         * this if condition is used to display the dataSource which is already entered by the woman
-         *//*
-
+        /**
+         * this if condition is used to display the data which is already entered by the woman
+         */
 
 
         if (womendetails.containsKey(keyword)) {
@@ -858,7 +837,7 @@ private static Utility utility=  new Utility();
                 validationlist.put("" + et.getTag(), et.getText().toString());
                 break;
 
-            case CHILD_DOB:
+           /* case CHILD_DOB:
 
                 String deliveryStatus = questionInteractor.getDob(uniqueId);
                 try {
@@ -875,7 +854,7 @@ private static Utility utility=  new Utility();
                 Backup_answerTyped1.put(keyword, deliveryStatus);
                 validationlist.put("" + et.getTag(), et.getText().toString());
 
-                break;
+                break;*/
 
             case "visit_date":
                 et.setText(defaultdate);
@@ -974,7 +953,7 @@ private static Utility utility=  new Utility();
                         }
 
                         womendetails.put(keyword, serverDate);
-                        Backup_answerTyped1.put(keyword, serverDate); // this hashmap is used to insert dataSource in Backup_AnswerEntered
+                        Backup_answerTyped1.put(keyword, serverDate); // this hashmap is used to insert data in Backup_AnswerEntered
 
 //						if (validationlist.containsKey(et.getTag()))
 //						{
@@ -1029,8 +1008,7 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    */
-/**
+    /**
      * THis method is used to create time Field dynamically
      *
      * @param i               = for loop counter
@@ -1041,8 +1019,7 @@ private static Utility utility=  new Utility();
      * @param validationfield = this field describes whether question is compulsory or not
      * @param messages        = this field contains json with multiple highrisk,counselling,referral conditions
      * @return layout (ll)
-     *//*
-
+     */
     public LinearLayout createTime(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation) {
 
         System.out.println("inside method count" + i + "   keyword" + keyword);
@@ -1080,13 +1057,11 @@ private static Utility utility=  new Utility();
 
         runtimevalidationlist.put(et.getId(), scrollID);
 
-        */
-/**
+        /**
          * This if condition is used to check whether the validation is required or not.
          * if validation is present then its answer is stored in validationlist treemap which is used to next when next button is clicked
          * scroll id is saved in NextButtonvalidationlist treemap to identify how many complusory questions are present on that page
-         *//*
-
+         */
         if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
             tv.setError("");
             validationlist.put("" + et.getTag(), et.getText().toString());
@@ -1094,11 +1069,9 @@ private static Utility utility=  new Utility();
 
         }
 
-        */
-/**
-         * this if condition is used to display the dataSource which is already entered by the woman
-         *//*
-
+        /**
+         * this if condition is used to display the data which is already entered by the woman
+         */
         if (womendetails.containsKey(keyword)) {
             et.setText(womendetails.get(keyword));
 
@@ -1136,7 +1109,6 @@ private static Utility utility=  new Utility();
                 return false;
 
 
-
             }
 
             public void showDatePicker() {
@@ -1146,7 +1118,7 @@ private static Utility utility=  new Utility();
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
 
-                mTimePicker = new TimePickerDialog(AncVisits.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(displayForm.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         //et.setText( selectedHour + ":" + selectedMinute);
@@ -1179,7 +1151,7 @@ private static Utility utility=  new Utility();
             @Override
             public void afterTextChanged(Editable arg0) {
                 womendetails.put(keyword, et.getText().toString());
-                Backup_answerTyped1.put(keyword, et.getText().toString()); // this hashmap is used to insert dataSource in Backup_AnswerEntered
+                Backup_answerTyped1.put(keyword, et.getText().toString()); // this hashmap is used to insert data in Backup_AnswerEntered
 
                 if (et.getText().toString().length() <= 0) {
                     tv.setError("");
@@ -1220,8 +1192,7 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    */
-/**
+    /**
      * This method is used to create int dynamically
      *
      * @param answerType          = for loop counter
@@ -1245,15 +1216,8 @@ private static Utility utility=  new Utility();
      * @param Counsellingmsg      = counselling range and messages
      * @param messages            = = this field contains json with multiple highrisk,counselling,referral conditions
      * @return ll
-     *//*
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public LinearLayout createInt(String answerType, String language, final String formid, final String setid, final String keyword,
-                                  final String validationfield, final String validationcondition, String validationmsg,
-                                  final String Lengthmin, final String Lengthmax, String Lengthmsg, final String Rangemin,
-                                  final String Rangemax, String Rangemsg, final String HighRiskRange, final String HighRiskLang,
-                                  final String RefferalRange, final String ReferralLang, final String Counsellingmsg,
-                                  String messages, String displayCondition, int scrollID, final int orientation) {
+     */
+    public LinearLayout createInt(String answerType, String language, final String formid, final String setid, final String keyword, final String validationfield, final String validationcondition, String validationmsg, final String Lengthmin, final String Lengthmax, String Lengthmsg, final String Rangemin, final String Rangemax, String Rangemsg, final String HighRiskRange, final String HighRiskLang, final String RefferalRange, final String ReferralLang, final String Counsellingmsg, String messages, String displayCondition, int scrollID, final int orientation) {
 
         System.out.println("inside method count" + answerType + "   keyword" + keyword);
 
@@ -1342,40 +1306,13 @@ private static Utility utility=  new Utility();
                 tv.setError(null);
 
                 womendetails.put(keyword, "" + gestAge);
-                Backup_answerTyped1.put(keyword, ""+ gestAge);
+                Backup_answerTyped1.put(keyword, "" + gestAge);
                 validationlist.put(keyword, et.getText().toString());
                 break;
 
             case "bmi":
                 et.setEnabled(false);
                 break;
-
-            case "height_units":
-            et.setEnabled(false);
-            tv.setError(null);
-            ArrayList<String> womanhHeightData=questionInteractor.womenHeight(uniqueId,formid);
-            String height= womanhHeightData.get(0);
-            String height_units=womanhHeightData.get(1);
-                if(height.equals("-1")){
-                    et.setText("NA");
-                }
-                else {
-                    et.setText(height);
-                }
-
-            if(height_units.equals("height_units_cm")){
-                tv.setText("height in cm");
-                tv.setError(null);
-
-                womendetails.put("height_of_women",""+height);
-            }
-            else{
-                tv.setText("height in feet");
-                tv.setError(null);
-                womendetails.put("height_in_feet",""+height);
-            }
-                break;
-
         }
 
 
@@ -1383,42 +1320,31 @@ private static Utility utility=  new Utility();
 
         HighRiskRangelist.put("" + et.getId(), HighRiskRange);
         ReferralRangelist.put("" + et.getId(), RefferalRange);
-        */
-/**
+        /**
          * This if condition is used to check whether the validation is required or not.
          * if validation is present then its answer is stored in validationlist treemap which is used to next when next button is clicked
          * scroll id is saved in NextButtonvalidationlist treemap to identify how many complusory questions are present on that page
-         *//*
+         */
 
-       if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
-            if(keyword.equals("height_units")|| keyword.equals("height_of_women")
-                    || keyword.equals("height_in_feet")) {
-                et.setError(null);
-                tv.setError(null);
-                validationlist.remove("height_units");
-                NextButtonvalidationlist.remove("height_units");
+        if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
+            if (validationmsg != null && validationmsg.length() > 0) {
+                et.setError(validationmsg);
+            } else {
+                et.setError(displayForm.this.getString(R.string.default_validation_msg));
             }
-            else {
-                if (validationmsg != null && validationmsg.length() > 0) {
-                    et.setError(validationmsg);
-                } else {
-                    et.setError(AncVisits.this.getString(R.string.default_validation_msg));
-                }
-                tv.setError("");
-                validationlist.put("" + et.getTag(), et.getText().toString());
-                NextButtonvalidationlist.put("" + et.getTag(), scroll.getId());
-            }
+            tv.setError("");
+            validationlist.put("" + et.getTag(), et.getText().toString());
+            NextButtonvalidationlist.put("" + et.getTag(), scroll.getId());
+
         }
 
         if (messages != null && messages.length() > 0) {
             ConditionLists.put(keyword, messages);
         }
 
-        */
-/**
-         * this if condition is used to display the dataSource which is already entered by the woman
-         *//*
-
+        /**
+         * this if condition is used to display the data which is already entered by the woman
+         */
         if (womendetails.containsKey(keyword)) {
             et.setText(womendetails.get(keyword));
             if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
@@ -1436,8 +1362,6 @@ private static Utility utility=  new Utility();
             StorePVSmsgs(messages);
             StorePatientVisitHighRiskDiagnosticValues(womendetails.get(keyword), et, keyword, setid);
         }
-
-
 
 
         if (displayCondition != null && displayCondition.length() > 0 && previousVisitDetails.containsKey(keyword)) {
@@ -1487,14 +1411,10 @@ private static Utility utility=  new Utility();
             public void afterTextChanged(Editable arg0) {
 
                 try {
-                        if(keyword.equals("bmi"))
-                        {
-                            //remove bmi calculator
-                        }
-                        else
-                            {
-                                StorePatientVisitHighRiskDiagnosticValues(et.getText().toString(), et, keyword, setid);
-                            }
+
+                    StorePatientVisitHighRiskDiagnosticValues(et.getText().toString(), et, keyword, setid);
+
+
                     System.out.println("createInt onFocusChange" + et.getId());
                     womendetails.put(keyword, et.getText().toString());
                     Backup_answerTyped1.put(keyword, et.getText().toString());
@@ -1619,7 +1539,7 @@ private static Utility utility=  new Utility();
                             //System.out.println(HighRiskLang);
                             //et.setError("In High Risk");
 
-                            highrisklist.put("" + et.getId(), "" + formid + delimeter + keyword + delimeter + et.getId() +delimeter + HighRiskLang);
+                            highrisklist.put("" + et.getId(), "" + formid + delimeter + keyword + delimeter + et.getId() + delimeter + HighRiskLang);
 
                             //	highrisklist.put(quesid, "" + formid + Common.delimeter + setid + Common.delimeter + keyword + Common.delimeter + rb.getTag() + Common.delimeter + main_ques_options_key.optString("languages").toString() + Common.delimeter + "highrisk" + Common.delimeter + "0");
 
@@ -1669,7 +1589,6 @@ private static Utility utility=  new Utility();
                     case "weight_of_women":
                     case "height_of_women":
                     case "height_in_feet":
-                    case "height_units":
 
                         if (womendetails.containsKey("weight_of_women") && womendetails.containsKey("height_of_women")) {
                             womanWeight = Double.parseDouble(womendetails.get("weight_of_women"));
@@ -1717,256 +1636,8 @@ private static Utility utility=  new Utility();
 
 
     }
-    */
-/**
-     * THis method is used to create photo capture Field dynamically
-     *
-     * @param i                   = for loop counter
-     * @param language            = question text
-     * @param formid              = formid
-     * @param keyword             = question keyword
-     * @param validationfield     = this field describes whether question is compulsory or not
-     * @param validationcondition = this field describes whether the question contains any condition for validation
-     * @param validationmsg       = this field gives the error msg.
-     * @param displayCondition
-     * @return layout (ll)
-     *//*
 
-
-    public LinearLayout createCapturePhoto(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, final String validationcondition, final String validationmsg, String messages, String displayCondition) {
-        iv = new ImageView(this);
-        final Button capture = new Button(this);
-        TextView tv = new TextView(this);
-
-        System.out.println("inside createEdittext count" + i + "   keyword" + keyword + "set id +++" + setid + "language==" + language);
-
-        if (messages != null && messages.length() > 0) {
-            ConditionLists.put(keyword, messages);
-        }
-
-        try {
-            System.out.println("language = " + language);
-            JSONObject obj = new JSONObject(language);
-            language = obj.getString(mAppLanguage);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        tv.setText("" + language);
-        tv.setId(textId + 1);
-        // tv.setGravity(Gravity.CENTER);
-        tv.setTextSize(getResources().getDimension(R.dimen.text_size_medium));
-        tv.setTextColor(getResources().getColor(R.color.text_color));
-        tv.setTag(keyword);
-        tv.setLayoutParams(lp);
-
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 450);
-        layoutParams.setMargins(30, 30, 30, 30);
-        layoutParams.gravity = Gravity.CENTER;
-        iv.setLayoutParams(layoutParams);
-
-        capture.setText(AncVisits.this.getString(R.string.capture_photo_text));
-        capture.setTextColor(Color.WHITE);
-        capture.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        capture.setPadding(32, 16, 32, 16);
-        capture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                captureImage();
-            }
-        });
-
-        LinearLayout.LayoutParams btnlayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        btnlayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        capture.setLayoutParams(btnlayoutParams);
-
-//        ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 710));
-
-        ll.addView(tv);
-        ll.addView(iv);
-        ll.addView(capture);
-
-        return ll;
-    }
-
-    */
-/**
-     * This method is used to call camera function
-     *//*
-
-    private void captureImage() {
-
-        Name = "" + womendetails.get("lname") + " " + womendetails.get("hname") + " " + womendetails.get("surname");
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
-    }
-
-    */
-/**
-     * Receiving activity result method will be called after closing the camera
-     *//*
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // if the result is capturing Image
-        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-
-                photo = (Bitmap) data.getExtras().get("dataSource");
-                iv.setImageBitmap(photo);
-                LinearLayout sanket = (LinearLayout) iv.getParent();
-                TextView tvs = (TextView) sanket.getChildAt(0);
-                tvs.setError(null);
-                validationlist.put("woman_capture_photo", "photo Captured");
-
-            } else if (resultCode == RESULT_CANCELED) {
-                // user cancelled Image capture
-                */
-/*Toast.makeText(getApplicationContext(),
-                        "User cancelled image capture", Toast.LENGTH_SHORT)
-                        .show();*//*
-
-            } else {
-                // failed to capture image
-                */
-/*Toast.makeText(getApplicationContext(),
-                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();*//*
-
-            }
-        } else if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                // video successfully recorded
-                // preview the recorded video
-                previewVideo();
-            } else if (resultCode == RESULT_CANCELED) {
-                // user cancelled recording
-                */
-/*Toast.makeText(getApplicationContext(),
-                        "User cancelled video recording", Toast.LENGTH_SHORT)
-                        .show();*//*
-
-            } else {
-                // failed to record video
-                */
-/*Toast.makeText(getApplicationContext(),
-                        "Sorry! Failed to record video", Toast.LENGTH_SHORT)
-                        .show();*//*
-
-            }
-        }
-    }
-
-    */
-/**
-     * Display image from a path to ImageView
-     *//*
-
-    private void previewCapturedImage() {
-        try {
-            // hide video preview
-
-
-            iv.setVisibility(View.VISIBLE);
-
-            // bimatp factory
-            BitmapFactory.Options options = new BitmapFactory.Options();
-
-            // downsizing image as it throws OutOfMemory Exception for larger
-            // images
-            options.inSampleSize = 8;
-
-//			Matrix matrix = new Matrix();
-//			matrix.postRotate(90);
-////			bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(HomePage._uri));
-////			bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-////			i.setImageBitmap(bitmap);
-
-            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
-                    options);
-
-            iv.setImageBitmap(bitmap);
-            iv.setRotation(90);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    */
-/**
-     * Previewing recorded video
-     *//*
-
-    private void previewVideo() {
-        try {
-            // hide image preview
-            iv.setVisibility(View.GONE);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    */
-/**
-     * ------------ Helper Methods ----------------------
-     * *//*
-
-
-    */
-/**
-     * Creating file uri to store image/video
-     *//*
-
-    public Uri getOutputMediaFileUri(int type) {
-        return Uri.fromFile(getOutputMediaFile(type));
-    }
-
-    */
-/**
-     * returning image / video
-     *//*
-
-    private File getOutputMediaFile(int type) {
-
-        // External sdcard location
-        File mediaStorageDir = new File(
-                Environment.getExternalStorageDirectory() + "/MCTS/Photos");
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-//                Log.d(IMAGE_DIRECTORY_NAME, "Oops! Failed create "
-//                        + IMAGE_DIRECTORY_NAME + " directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(new Date());
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                    + Name + ".png");
-
-        } else if (type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                    + "VID_" + timeStamp + ".mp4");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
-    }
-
-
-
-
-    */
-/**
+    /**
      * THis method is used to create RAdio field dynamically
      *
      * @param i               = for loop counter
@@ -1979,8 +1650,7 @@ private static Utility utility=  new Utility();
      * @param messages        = = this field contains json with multiple highrisk,counselling,referral conditions
      * @param avoidRepetition
      * @return layout (ll)
-     *//*
-
+     */
     public LinearLayout createRadio(int i, final String quesid, String language, final String setid, final String keyword, String validationfield, final String formid, String messages, final String displayCondition, final int scrollID, final int orientation, String avoidRepetition) {
 
         //iron_sucrose_injection_given || hb_level
@@ -2012,12 +1682,10 @@ private static Utility utility=  new Utility();
 
         radiogroup = radiogroup + 1;
 
-        */
-/**
+        /**
          * This if condition is used to check if the question contains any dependant question.
-         *//*
-
-//        optionList = dbhelper.getANCEnglishoptions(quesid);  // this dbHelper statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
+         */
+//        optionList = dbhelper.getANCEnglishoptions(quesid);  // this db statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
         optionList = questionInteractor.getQuestionOptions(quesid, String.valueOf(FormID));
 
         final RadioGroup rg = new RadioGroup(this); //create the RadioGroup
@@ -2041,45 +1709,16 @@ private static Utility utility=  new Utility();
         ll.addView(tv);
 
 
-        */
-/**
+        /**
          * This if condition is used to check whether the validation is required or not.
          * if validation is present then its answer is stored in validationlist treemap which is used to next when next button is clicked
          * scroll id is saved in NextButtonvalidationlist treemap to identify how many complusory questions are present on that page
-         *//*
-
+         */
         if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
-            if (keyword.equals("tt_1_dose_given")) {
-                if(TT1Dose!=null) {
-                    if (TT1Dose.equals("tt_1_given_yes") && FormID > firstForm && firstForm != 1 && FormID != firstForm)
-                        isCompulsory = false;
-                }
-            } else if (keyword.equals("tt_2_dose_given")) {
-                if(FormID==firstForm){
-                    isCompulsory = false;
-                }
-                else if(TT1Dose==null || TT1Dose.equals("tt_1_given_no")  && FormID>firstForm && firstForm!=1 && FormID!=firstForm){
-                    isCompulsory = false;
-                }
-            }
-            else if(keyword.equals("tt_booster_given")){
-                if(FormID==firstForm){
-                    isCompulsory = false;
-                }
-                else if(TT1Dose.equals("tt_1_given_no") && TT2Dose.equals("tt_2_given_no") ){
-                    isCompulsory = false;
-                }
-                else if(TT1Dose.equals("tt_1_given_yes") && TT2Dose.equals("tt_2_given_no")){
-                    isCompulsory = false;
-                }
-            }
-
-            else {
-                tv.setError("");
-                validationlist.put(keyword, "");
-                NextButtonvalidationlist.put(keyword, scroll.getId());
-                isCompulsory = true;
-            }
+            tv.setError("");
+            validationlist.put(keyword, "");
+            NextButtonvalidationlist.put(keyword, scroll.getId());
+            isCompulsory = true;
         } else {
             isCompulsory = false;
         }
@@ -2090,11 +1729,9 @@ private static Utility utility=  new Utility();
         if (optionList.size() < 4) {
             ll.addView(rg);
 
-            */
-/**
+            /**
              * This for loop is used to display the radio buttons for the given question
-             *//*
-
+             */
             for (int k = 1; k < optionList.size(); k++) {
                 radio = radio + 1;
 
@@ -2125,35 +1762,9 @@ private static Utility utility=  new Utility();
                         PregnancyStatus = rb.getTag().toString();
                         int id = rg.getCheckedRadioButtonId();
                         int parentId = (((ViewGroup) rb.getParent()).getId()); //parentTag
-                        final String clickedRB=rb.getTag().toString();
-                        Log.d("RadioButtonClicked : ",""+rb.getTag().toString());
 
-
-                        */
-/** this logic is for checking whether woman has migrated or not
-                         and if yes then to close her current ANC visit.*//*
-
-                        if(keyword.equals("has_women_migrated")){
-                            switch(clickedRB)
-                            {
-                                case "has_women_migrated_yes":
-                                    Backup_answerTyped1.put(keyword,clickedRB);
-                                    Log.d("RadioButtonClicked : ",""+rb.getTag().toString() +"  checkedId  "+clickedRB);
-                                    next.setEnabled(false);
-                                    questionInteractor.saveQuestionAnswers(Backup_answerTyped1, maxautoId, uniqueId, Integer.parseInt(formid), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
-                                    saveForm();
-                                    break;
-
-                                case "has_women_migrated_no":
-                                    Backup_answerTyped1.put(keyword,clickedRB);
-                                    next.setEnabled(true);
-                                    break;
-
-                            }
-                        }
-                        if (PregnancyStatus.equals("close_no") || PregnancyStatus.equals("erase_the_case_no") || PregnancyStatus.equals("ec_close_no"))
-                        {
-                            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(AncVisits.this, R.style.AppCompatAlertDialogStyle);
+                        if (PregnancyStatus.equals("close_no") || PregnancyStatus.equals("erase_the_case_no") || PregnancyStatus.equals("ec_close_no")) {
+                            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(displayForm.this, R.style.AppCompatAlertDialogStyle);
                             builder.setCancelable(false);
                             builder.setTitle(R.string.back_form);
                             builder.setMessage(R.string.back_form_message);
@@ -2177,18 +1788,16 @@ private static Utility utility=  new Utility();
                             builder.show();
                         }
 
-                        onClickButtonFunctionality(rb, v, quesid, keyword, setid, id, tv, formid, optionList, displayCondition, "" + runtimevalidationlist.get(rg.getId()), isCompulsory, orientation);
+                        onClickButtonFunctionality(rb, v, quesid, keyword, setid, 1, tv, formid, optionList, displayCondition, "" + runtimevalidationlist.get(rg.getId()), isCompulsory, orientation);
 
 
-                       */
-/* if (v.getTag().toString().equals("FA_stock_yes")) {
+                       /* if (v.getTag().toString().equals("FA_stock_yes")) {
                             //get
                             // IfaTablets((LinearLayout) v.getParent().getParent().getParent());
 
 
                             formulaFATablet(getGestationalAgeWeek(defaultdate, womanLmp), (LinearLayout) v.getParent().getParent().getParent());
-                        }*//*
-
+                        }*/
 
                         if (v.getTag().toString().equals("do_you_have_enough_stock_of_ifa_tablet_yes")) {
                             getIfaTablets((LinearLayout) v.getParent().getParent().getParent());
@@ -2225,7 +1834,7 @@ private static Utility utility=  new Utility();
                 } else {
                     System.out.println("vaccinations " + keyword + " false");
                 }
-                System.out.println("keyword "+keyword+" ##1");
+                System.out.println("keyword " + keyword + " ##1");
                 if (displayCondition != null && displayCondition.length() > 0 && previousVisitDetails.containsKey(keyword)) {
                     if (optionList.get(k).getKeyword().equals(previousVisitDetails.get(keyword))) {
                         rb.setChecked(true);
@@ -2270,8 +1879,7 @@ private static Utility utility=  new Utility();
         NextButtonvalidationlist.remove(ll.getTag());
     }
 
-    */
-/**
+    /**
      * THis method is used to create customize dropdown widget dynamically
      *
      * @param quesid             = question id of the registration
@@ -2282,8 +1890,7 @@ private static Utility utility=  new Utility();
      * @param formid             = formid
      * @param multipleoptionlist = list of options which is to be displayed in dropdown
      * @param isCompulsory
-     *//*
-
+     */
     public void multipleRadioButton(final String quesid, final String keyword, final String setid, final int id, final TextView tv, final String formid, List<Visit> multipleoptionlist, String displayCondition, final String pageScrollId, final Boolean isCompulsory, final int orientation) {
 
         final int[] multiplecounter = {0};
@@ -2291,7 +1898,7 @@ private static Utility utility=  new Utility();
         System.out.println("womendetails.containsKey(keyword)" + womendetails.containsKey(keyword));
 
         List<String> optionsList = new ArrayList<>();
-        optionsList.add(AncVisits.this.getString(R.string.dropdown_text));
+        optionsList.add(displayForm.this.getString(R.string.dropdown_text));
 
         try {
             for (int k = 1; k <= multipleoptionlist.size(); k++) {
@@ -2356,96 +1963,23 @@ private static Utility utility=  new Utility();
                         }
 
                     }
+                    Log.d("Testiknh", "testing");
 
-                    */
-/**
-                     * I am an alien and i have manipulated the system enough to cause problems.
-                     * If you can detect those, you are saved or else,
-                     * you will see something when you "try" to release the app which will definitely not serve your purpose
-                     *
-                     * Someone has said - "The problem is not the problem; the problem is your attitude about the problem."
-                     *//*
-
-//                    String Messages = dbhelper.getHighRiskConditionForRadio("" + m.getKeyword());
-                    String Messages = questionInteractor.getHighRiskCondition("" + m.getKeyword());
-                    String counsel_message = null;
-
-                    */
-/**
-                     * This logic is used to check whether there is any High risk,Counselling or Diagnostic referral on button click
-                     *//*
-
-
-                    if (Messages != null && Messages.length() > 0) {
-                        StoredHighRiskRanges = new ArrayList<>();
-
-                        JSONObject highRisk_conditions = new JSONObject(Messages);
-                        if (highRisk_conditions.optJSONArray("highrisk") != null) {
-                            JSONArray highRisk_conditionsArray = highRisk_conditions.optJSONArray("highrisk");
-
-                            //System.out.println("jsonArray3 options"+jsonArray3.length());
-                            for (int k = 0; k < highRisk_conditionsArray.length(); k++) {
-                                JSONObject main_ques_options_key = highRisk_conditionsArray.getJSONObject(0);
-                                //System.out.println("main_ques_options_key High risk lang = " + main_ques_options_key.optString("languages").toString());
-
-                                highrisklist.put(quesid, "" + formid + delimeter + setid + delimeter + keyword + delimeter + m.getKeyword() + delimeter + main_ques_options_key.optString("languages").toString() + delimeter + "highrisk" + delimeter + "0");
-
-                            }
-                        } else {
-                            highrisklist.remove(quesid);
+                    /*if (pos != 0) {
+                        String clickKeyword = m.getKeyword();
+                        String checkNullDependentQuestion = QuestionInteractor.getCheckItemSelectedOption(clickKeyword);
+                        if (checkNullDependentQuestion == null) {
+                            removedepentQuestion(view);
                         }
+                    } else {*/
+                        Backup_answerTyped1.remove(keyword);
+                        removedepentQuestion(view);
+                    //}
 
-                        if (highRisk_conditions.optJSONArray("counselling") != null) {
-                            JSONArray counseling_conditionsArray = highRisk_conditions.optJSONArray("counselling");
-                            for (int k = 0; k < counseling_conditionsArray.length(); k++) {
-                                JSONObject main_ques_options_key = counseling_conditionsArray.getJSONObject(0);
-                                counsel_message = main_ques_options_key.optString("languages").toString();
-
-                                if (main_ques_options_key.has("show_popup")) {
-                                    JSONObject obj = new JSONObject(counsel_message);
-                                    String language = obj.getString(mAppLanguage);
-                                    if(!noDialogFirst) {
-                                        criticalCounsellingMsg(language);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (highRisk_conditions.optJSONArray("diagnosticrefer") != null) {
-                            JSONArray diagnosticrefer_conditionsArray = highRisk_conditions.optJSONArray("diagnosticrefer");
-                            for (int k = 0; k < diagnosticrefer_conditionsArray.length(); k++) {
-                                JSONObject diagnosticrefer_options_key = diagnosticrefer_conditionsArray.getJSONObject(0);
-                                highrisklist.put(quesid, "" + formid + delimeter + setid + delimeter + keyword + delimeter + m.getKeyword() + delimeter + diagnosticrefer_options_key.optString("languages").toString() + delimeter + "diagnosticReffer" + delimeter + "0");
-                                referrallist.put(quesid, diagnosticrefer_options_key.optString("languages").toString());
-                            }
-                        } else {
-                            referrallist.remove(quesid);
-                        }
-
-                        if (highRisk_conditions.optJSONArray("patientVisitSummary") != null) {
-                            JSONArray patientVisitSummary_conditionsArray = highRisk_conditions.optJSONArray("patientVisitSummary");
-                            for (int k = 0; k < patientVisitSummary_conditionsArray.length(); k++) {
-                                JSONObject patientVisitSummary_options_key = patientVisitSummary_conditionsArray.getJSONObject(0);
-                                patientvisitlist.put(keyword, patientVisitSummary_options_key.optString("languages").toString());
-
-                            }
-
-                        } else {
-//
-                            patientvisitlist.remove(keyword);
-                        }
-                    } else {
-                        highrisklist.remove(quesid);
-                        referrallist.remove(quesid);
-                        patientvisitlist.remove(keyword);
-                    }
-
-                    */
-/**
+                    /**
                      * This if condition is used to check whether dependant question is present or not
                      * if dependantList size is 0 or null means question does'nt have any dependant question.
-                     *//*
-
+                     */
                     if (dependantList != null && dependantList.size() > 0) {
 
                         if (!dependantKeywordPresent.containsValue("" + m.getKeyword())) {
@@ -2456,15 +1990,13 @@ private static Utility utility=  new Utility();
 
                             dependantKeywordPresent.put(keyword, "" + m.getKeyword());
 
-                            */
-/**
+                            /**
                              * This if condition is used to check whether dependant layout is displayed or not
                              * this is used as a validation that if once the layout is displayed then again
                              * clicking on the same button twice the layout should be displayed only once
                              * for eg. if tt2yes is clicked for the first time then dependant layout should be
                              * displayed but again clicking on it dependant layout should not be displayed.
-                             *//*
-
+                             */
 
                             if (!(MainQuestempstoredependant.containsKey(keyword))) {
                                 // this hashmap is used to store the layout id for
@@ -2473,7 +2005,7 @@ private static Utility utility=  new Utility();
 
                                 layoutids.put("" + m.getKeyword(), "" + ll_sub);
 
-                                displayCounsellingForSpinner(counsel_message, view, keyword);
+                                //  displayCounsellingForSpinner(counsel_message, view, keyword);
 
                                 DisplayDependantQuestions(dependantList);
 
@@ -2483,24 +2015,23 @@ private static Utility utility=  new Utility();
 
                     }
 
-                    displayCounsellingMsg(counsel_message, view, keyword);
+                    //         displayCounsellingMsg(counsel_message, view, keyword);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
 
-                if (pos == 0) {
-                    LinearLayout ll_4 = (LinearLayout) view.getParent().getParent().getParent();
+            public void removedepentQuestion(View view) {
+                LinearLayout ll_4 = (LinearLayout) view.getParent().getParent().getParent();
 
-                    removeDependent(ll_4, keyword);
+                removeDependent(ll_4, keyword);
 
-                    dependantKeywordPresent.remove(keyword);
+                dependantKeywordPresent.remove(keyword);
 
-                    womendetails.remove(keyword);
-                    Backup_answerTyped1.remove(keyword);
+                womendetails.remove(keyword);
+                questionInteractor.deleteAnswer(uniqueId, formid, keyword);
 
-                    questionInteractor.deleteAnswer(uniqueId, formid, keyword);
-                }
             }
 
             @Override
@@ -2554,8 +2085,7 @@ private static Utility utility=  new Utility();
 
     }
 
-    */
-/**
+    /**
      * THis method is used to create Checkbox field dynamically
      *
      * @param i               = for loop counter
@@ -2567,11 +2097,10 @@ private static Utility utility=  new Utility();
      * @param validationfield = this field describes whether question is compulsory or not
      * @param messages        = = this field contains json with multiple highrisk,counselling,referral conditions
      * @return layout (ll)
-     *//*
+     */
 
 
-
-    public LinearLayout createCheckbox(int i, String quesid, final String formid, final String setid, String language, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation) {
+    public LinearLayout createCheckbox(final int i, final String quesid, final String formid, final String setid, String language, final String keyword, final String validationfield, String messages, final String displayCondition, final int scrollID, final int orientation) {
 
         //System.out.println("inside method textViewCount"+i+"   keyword"+keyword);
 
@@ -2617,13 +2146,11 @@ private static Utility utility=  new Utility();
             NextButtonvalidationlist.put(keyword, scroll.getId());
         }
 
-       */
-/* if (i == 1) {
-            optionList = dbhelper.dependantgetANCEnglishoptions(quesid);  // this dbHelper statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
+       /* if (i == 1) {
+            optionList = dbhelper.dependantgetANCEnglishoptions(quesid);  // this db statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
         } else {
 //            optionList = dbhelper.getANCEnglishoptions(quesid);
-        }*//*
-
+        }*/
 
         optionList = questionInteractor.getQuestionOptions(quesid, String.valueOf(FormID));
 
@@ -2659,61 +2186,49 @@ private static Utility utility=  new Utility();
                 @Override
                 public void onClick(View v) {
 
+                    ll_sub = (LinearLayout) v.getParent();
                     hideSoftKeyboard(v);
 
                     int parentId = (((ViewGroup) cb.getParent()).getId());
 
                     if (!view_check.equals(keyword)) {
-                        chechboxlist = new ArrayList<String>();
-
-                        if (womendetails.containsKey(keyword)) {
-                            String getArrayList = String.valueOf(womendetails.get(keyword));
-                            getArrayList = getArrayList.replace("[", "");
-                            getArrayList = getArrayList.replace("]", "");
-
-                            String[] words = getArrayList.split("\\, ");
-
-                            for (String s : words) {
-                                chechboxlist.add("" + s);
-
-                                System.out.println("s is..... = " + s);
-                            }
-                        }
+                        //     chechboxlist = new ArrayList<String>();
                     }
 
                     if (!(chechboxlist.contains(cb.getTag().toString()))) {
                         chechboxlist.add(cb.getTag().toString());
-
+                        if (Backup_answerTyped1.containsKey(keyword)) {
+                            String value = Backup_answerTyped1.get(keyword);
+                            String newValue = value + "," + cb.getTag().toString();
+                            Backup_answerTyped1.put(keyword, newValue);
+                        } else {
+                            Backup_answerTyped1.put(keyword, cb.getTag().toString());
+                        }
                         validationlist.remove(keyword);
                         NextButtonvalidationlist.remove(keyword);
                         tv.setError(null);
 
+                        dependantList = questionInteractor.getDependantQuesList(cb.getTag().toString(), formid, ll_sub, "" + cb.getTag().toString(), "" + scrollID);  // this list is used to get dependant question in english format (parameter"s received are form_id,keyword,answer_type,english_lang)
+                        if (dependantList != null && dependantList.size() > 0) {
+                            if (!(MainQuestempstoredependant.containsKey(cb.getTag().toString()))) {
+                                layoutids.put("" + cb.getTag().toString(), "" + ll_sub);
+                                DisplayDependantQuestions(dependantList);
+                            }
+                        }
                     } else {
+                        LinearLayout ll_4 = (LinearLayout) ll_sub.getParent();
+                        removeDependent(ll_4, cb.getTag().toString());
                         chechboxlist.remove(cb.getTag().toString());
-
                         if (chechboxlist.isEmpty()) {
                             if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
                                 tv.setError("");
                                 validationlist.put(keyword, "");
                                 NextButtonvalidationlist.put(keyword, scroll_temp.getId());
                             }
-                            womendetails.remove(keyword);
-                            Backup_answerTyped1.remove(keyword);
-
-                            questionInteractor.deleteAnswer(uniqueId, formid, keyword);
                         }
                     }
-
-                    womendetails.put(keyword, "" + chechboxlist);
-                    view_check = keyword;
-
-                    Backup_answerTyped1.put(keyword, ""+ chechboxlist); // this treemap is used to insert dataSource in Backup_entered table.
-
-                    ll_sub = (LinearLayout) v.getParent().getParent();
-
                 }
             });
-
 
             if (womendetails.containsKey(keyword)) {
                 System.out.println("Retireve Checkbox list ****" + womendetails.get(keyword));
@@ -2756,16 +2271,14 @@ private static Utility utility=  new Utility();
 
     }
 
-    */
-/**
+    /**
      * This method is used to display video questions and link dynamically
      *
      * @param i=        for loop counter
      * @param language= question text
      * @param Keyword=  question keyword
      * @return ll
-     *//*
-
+     */
     public LinearLayout createVideo(int i, String language, String Keyword, int scrollID) {
         try {
             JSONObject obj = new JSONObject(language);
@@ -2825,8 +2338,7 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    */
-/**
+    /**
      * THis method is used to create Label Field dynamically
      *
      * @param i                   = for loop counter
@@ -2837,8 +2349,7 @@ private static Utility utility=  new Utility();
      * @param validationcondition = this field describes whether the question contains any condition for validation
      * @param validationmsg       = this field gives the error msg.
      * @return layout (ll)
-     *//*
-
+     */
     public LinearLayout createLabel(int i, String language, final String formid, final String keyword, final String validationfield, final String validationcondition, final String validationmsg, String displayCondition, int scrollID, String calculations, String setid) {
 
         System.out.println("inside createEdittext count" + i + "   keyword" + keyword);
@@ -2872,7 +2383,6 @@ private static Utility utility=  new Utility();
         ll.setLayoutParams(lp_label);
         ll.setGravity(Gravity.CENTER);
 
-
         ll.setTag(keyword);
         ll.addView(tv);
 
@@ -2902,12 +2412,10 @@ private static Utility utility=  new Utility();
 
         //villageList=dbhelper.getVillageList();
 
-		*/
-/*LinearLayout.LayoutParams lp_label=new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Frame.getLayoutParams().height));
+		/*LinearLayout.LayoutParams lp_label=new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Frame.getLayoutParams().height));
         lp_label.setMargins(10, 10, 10, 10);
 		ll.setLayoutParams(lp_label);
-		ll.setGravity(Gravity.CENTER);*//*
-
+		ll.setGravity(Gravity.CENTER);*/
 
 
         ll.setTag(keyword);
@@ -2916,11 +2424,9 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    */
-/**
+    /**
      * This method is used to display dependant questions dynamically
-     *//*
-
+     */
     public void DisplayDependantQuestions(List<Visit> dependantList) {
 
 
@@ -2962,7 +2468,7 @@ private static Utility utility=  new Utility();
             switch (qstnData.getAnswerType()) {
 
                 case "video":
-                    ll=createVideo(1, qstnData.getQuestionText(), qstnData.getKeyword(),scroll.getId());
+                    ll = createVideo(1, qstnData.getQuestionText(), qstnData.getKeyword(), scroll.getId());
                     break;
 
                 case "capturephoto":
@@ -2996,7 +2502,7 @@ private static Utility utility=  new Utility();
                     break;
 
                 case "float":
-                    ll=createdependentInt(1, qstnData.getQuestionText(), qstnData.getAnswerType(),qstnData.getParentQstnKeyword(),qstnData.getFormid(),qstnData.getSetId(),qstnData.getKeyword(),qstnData.getValidationCondition(),qstnData.getMessages(),displayCondition,qstnData.getPageScrollId(),qstnData.getOrientation());
+                    ll = createdependentInt(1, qstnData.getQuestionText(), qstnData.getAnswerType(), qstnData.getParentQstnKeyword(), qstnData.getFormid(), qstnData.getSetId(), qstnData.getKeyword(), qstnData.getValidationCondition(), qstnData.getMessages(), displayCondition, qstnData.getPageScrollId(), qstnData.getOrientation());
                     break;
 
                 case "text":
@@ -3021,8 +2527,7 @@ private static Utility utility=  new Utility();
         MainQuestempstoredependant.put(qstnData.getParentQstnKeyword(), tempdependantStore);
     }
 
-    */
-/**
+    /**
      * THis method is used to create dependant edittext dynamically
      *
      * @param i                    = loop id
@@ -3035,8 +2540,7 @@ private static Utility utility=  new Utility();
      * @param validationConditions = validations if present on dependant question
      * @param messages             = this field contains json with multiple highrisk,counselling,referral condition.
      * @return ll
-     *//*
-
+     */
     public LinearLayout createdependentEdittext(int i, String language, final String keyword, final String radiotag, final String formid, final String setid, final String dependantQuesKeyword, final String validationConditions, final String messages, String displayCondition, final String PageScrollID, final int orientation) {
 
 
@@ -3180,8 +2684,7 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    */
-/**
+    /**
      * THis method is used to create dependant date dynamically
      *
      * @param i                    = loop id
@@ -3194,8 +2697,7 @@ private static Utility utility=  new Utility();
      * @param validationConditions = validations if present on dependant question
      * @param messages             = this field contains json with multiple highrisk,counselling,referral conditions
      * @return ll
-     *//*
-
+     */
     public LinearLayout createdependentDate(int i, String language, final String keyword, final String radiotag, final String formid, final String setid, final String dependantQuesKeyword, final String validationConditions, final String messages, String displayCondition, final String PageScrollID, final int orientation) {
 
         System.out.println("inside method count**" + i + "*** keyword**" + keyword + "***radiotag***" + radiotag + "***dependantQuesKeyword**" + dependantQuesKeyword + "***validationConditions***" + validationConditions);
@@ -3354,8 +2856,8 @@ private static Utility utility=  new Utility();
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        Boolean dateOfBirthResult= true;
-                        String dateErrorMsg=getApplicationContext().getString(R.string.exceed_curnt_dt);
+                        Boolean dateOfBirthResult = true;
+                        String dateErrorMsg = getApplicationContext().getString(R.string.exceed_curnt_dt);
 
                         if (SystemDate.compareTo(selectedDate) >= 0 && dateOfBirthResult) {
                             String myFormat = "yyyy-MM-dd"; //In which you need put here
@@ -3457,7 +2959,7 @@ private static Utility utility=  new Utility();
                 }
 
                 for (int i = 0; i < counclingMsgQstnKeywords.size(); i++) {
-                    Log.d(TAG, "if dataSource : " + counclingMsgQstnKeywords.get(i));
+                    Log.d(TAG, "if data : " + counclingMsgQstnKeywords.get(i));
                 }
 
             }
@@ -3568,7 +3070,7 @@ private static Utility utility=  new Utility();
                 Calendar mcurrentTime = Calendar.getInstance();
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
-                mTimePicker = new TimePickerDialog(AncVisits.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(displayForm.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         //et.setText( selectedHour + ":" + selectedMinute);
@@ -3618,7 +3120,6 @@ private static Utility utility=  new Utility();
         });
 
 
-
         if (orientation == 1) {
             ll.setOrientation(LinearLayout.HORIZONTAL);
             tv.setLayoutParams(lpHorizontal);
@@ -3631,13 +3132,12 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    */
-/**
+    /**
      * THis method is used to create dependant int dynamically
      *
      * @param i                    = loop id
      * @param language             = dependant question text
-     * @param answerType              = main question keyword
+     * @param answerType           = main question keyword
      * @param radiotag             = radio tag on which the question is dependant
      * @param formid               = form id current used
      * @param setid                = setid of the question
@@ -3645,8 +3145,7 @@ private static Utility utility=  new Utility();
      * @param validationConditions = validations if present on dependant question
      * @param messages             = this field contains json with multiple highrisk,counselling,referral conditions
      * @return ll
-     *//*
-
+     */
     public LinearLayout createdependentInt(int i, String language, final String answerType, final String radiotag, final String formid, final String setid, final String dependantQuesKeyword, final String validationConditions, final String messages, String displayCondition, final String PageScrollID, final int orientation) {
 
         System.out.println("inside method count createdependentInt **" + i + "*** keyword**" + answerType + "***radiotag***" + radiotag + "***dependantQuesKeyword**" + dependantQuesKeyword + "***validationConditions***" + validationConditions + "*** pageScrollID***" + PageScrollID);
@@ -3695,16 +3194,15 @@ private static Utility utility=  new Utility();
             et.setLayoutParams(lpHorizontal);
         }
 
-        switch (answerType)
-        {
-            case "int" :
+        switch (answerType) {
+            case "int":
                 et.setInputType(InputType.TYPE_CLASS_NUMBER);
                 break;
 
             default:
                 et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-                et.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(4,2)});
+                et.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(4, 2)});
                 break;
         }
 
@@ -3715,7 +3213,6 @@ private static Utility utility=  new Utility();
         final int ScrollPageId = Integer.parseInt(PageScrollID);
 
 
-
         try {
             JSONObject validationobj = new JSONObject(validationConditions);
 
@@ -3724,7 +3221,7 @@ private static Utility utility=  new Utility();
                 if (validationobj.optString("languages") != null && validationobj.optString("languages").length() > 0) {
                     et.setError(validationobj.optString("languages"));
                 } else {
-                    et.setError(AncVisits.this.getString(R.string.default_validation_msg));
+                    et.setError(displayForm.this.getString(R.string.default_validation_msg));
                 }
 
                 tv.setError("");
@@ -3835,6 +3332,10 @@ private static Utility utility=  new Utility();
 
                         if (et.getText().toString() != null && et.getText().length() > 0) {
 
+                            et.setError(null);
+                            tv.setError(null);
+                            validationlist.put("" + et.getTag(), et.getText().toString());
+                            NextButtonvalidationlist.put("" + et.getTag(), ScrollPageId);
 
 //							if ((length_min < et.getText().toString().length()) && (et.getText().toString().length() <= length_max)) {
 //								et.setError(null);
@@ -3872,7 +3373,7 @@ private static Utility utility=  new Utility();
 
                         }
                     }
-                    StorePVSmsgs(messages);
+
                     StorePatientVisitHighRiskDiagnosticValues(et.getText().toString(), et, dependantQuesKeyword, setid);
 
 
@@ -3975,8 +3476,7 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    */
-/**
+    /**
      * THis method is used to create dependant date dynamically
      *
      * @param i                    = loop id
@@ -3989,8 +3489,7 @@ private static Utility utility=  new Utility();
      * @param validationConditions = validations if present on dependant question
      * @param messages             = this field contains json with multiple highrisk,counselling,referral conditions
      * @return ll
-     *//*
-
+     */
 
     public LinearLayout createdependantRadio(int i, final String quesid, String language, final String keyword, final String formid, final String setid, final String dependantQuesKeyword, final String validationConditions, final String messages, String displayCondition, final String PageScrollID, final int orientation) {
 
@@ -4171,12 +3670,12 @@ private static Utility utility=  new Utility();
                         }
 
 //                        String Messages = dbhelper.getHighRiskConditionForRadio("" + rb.getTag());
-                        String Messages = questionInteractor.getHighRiskCondition("" + rb.getTag());
+                        //                      String Messages = questionInteractor.getHighRiskCondition("" + rb.getTag());
 
-                        System.out.println("Messages = " + Messages);
+                        //                    System.out.println("Messages = " + Messages);
 
                         String counsel_message = null;
-                        try {
+                          /*     try {
                             if (Messages != null && Messages.length() > 0) {
                                 StoredHighRiskRanges = new ArrayList<>();
 
@@ -4244,7 +3743,7 @@ private static Utility utility=  new Utility();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
+*/
 
                         displayCounsellingMsg(counsel_message, v, dependantQuesKeyword);
 
@@ -4254,12 +3753,10 @@ private static Utility utility=  new Utility();
                         dependantList = questionInteractor.getDependantQuesList("" + rb.getTag(), formid, ll_sub, dependantQuesKeyword, "" + scroll_temp.getId());
 
 
-                        */
-/**
+                        /**
                          * This if condition is used to check whether dependant question is present or not
                          * if dependantList size is 0 or null means question dosen't have any depandant question.
-                         *//*
-
+                         */
                         if (dependantList != null && dependantList.size() > 0) {
 
                             if (dependantKeywordPresent.containsValue("" + rb.getTag())) {
@@ -4269,13 +3766,11 @@ private static Utility utility=  new Utility();
                                 removeDependent(ll_4, dependantQuesKeyword);
                                 dependantKeywordPresent.put(dependantQuesKeyword, "" + rb.getTag());
 
-                                */
-/**
+                                /**
                                  * This if condition is used to check whether dependant layout is displayed or not
                                  * this is used as a validation that if once the layout is displayed then again clicking on the same button twice the layout should be displayed only once
                                  * for eg. if tt2yes is clicked for the first time then dependant layout should be displayed but again clicking on it dependant layout should not be displayed.
-                                 *//*
-
+                                 */
 
                                 if (!dependantLayout.containsKey(dependantQuesKeyword) && !(MainQuestempstoredependant.containsKey(dependantQuesKeyword))) {
                                     ArrayList tempdependantStore = new ArrayList<String>();
@@ -4327,16 +3822,14 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    */
-/**
+    /**
      * THis method is used to create dependant label dynamically
      *
      * @param i        = loop id
      * @param language = dependant question text
      * @param keyword  = main question keyword
      * @return ll
-     *//*
-
+     */
     public LinearLayout createCounsellingLabel(int i, String language, final String keyword, final String PageScrollID) {
 
         //System.out.println("inside createEdittext textViewCount" + i + "   keyword" + keyword);
@@ -4376,18 +3869,16 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    */
-/**
+    /**
      * This method is used to save the answer's of the woman in local DB.
-     *//*
-
+     */
     public void saveForm() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder
-                .setTitle(AncVisits.this.getString(R.string.save_form))
-                .setMessage(AncVisits.this.getString(R.string.save_form_message))
+                .setTitle(displayForm.this.getString(R.string.save_form))
+                .setMessage(displayForm.this.getString(R.string.save_form_message))
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(AncVisits.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                .setPositiveButton(displayForm.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //finish();
 
@@ -4396,44 +3887,19 @@ private static Utility utility=  new Utility();
 
                         if (FormID <= DELIVERY_FORM_ID) {
                             StoreANCForm();
-                        }  else if (FormID == CHILD_CLOSURE_FORM_ID) {
+                        } else if (FormID == CHILD_CLOSURE_FORM_ID) {
                             StoreClosureForm("Child");
                         } else if (FormID == WOMAN_CLOSURE_FORM_ID) {
                             StoreClosureForm("Mother");
                         } else if (FormID == CC_FIRST_VISIT_ID) {
-                            if(regOption.equals("direct_reg_child")){
-                                if(FormID==clickedFormId){
                             StoreChildCareRegForm();
-                                } else{
-                                    StoreChildCareRegForm();
-                                Intent intent=new Intent(AncVisits.this,AncVisits.class);
-                                    intent.putExtra(clickedForm,clickedFormId);
-                                intent.putExtra(UNIQUE_ID,uniqueId);
-                                intent.putExtra(FORM_ID,formid);
-                                startActivity(intent);
-                            }
-                            }
-                            else{StoreChildCareRegForm();
-                            }
                         } else if (FormID > CC_FIRST_VISIT_ID) {
-                            if(regOption.equals("direct_reg_child")){
-                                storeChildCareForm();
-                               if(FormID<clickedFormId) {
-                                   Intent intent = new Intent(AncVisits.this, AncVisits.class);
-                                   intent.putExtra(UNIQUE_ID, uniqueId);
-                                   intent.putExtra(FORM_ID, formid);
-                                   intent.putExtra(clickedForm,clickedFormId);
-                                    startActivity(intent);
-                               }if(FormID==clickedFormId){
-                                    storeChildCareForm();
-                                }
-                        }else{
-                                storeChildCareForm();
-                            }}
+                            storeChildCareForm();
+                        }
 
                     }
                 })
-                .setNegativeButton(AncVisits.this.getString(R.string.no), new DialogInterface.OnClickListener() {
+                .setNegativeButton(displayForm.this.getString(R.string.no), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //finish();
 
@@ -4443,15 +3909,13 @@ private static Utility utility=  new Utility();
                 .show();
     }
 
-    */
-/**
+    /**
      * This dialog is used to display the next visit date of the ANM
      *
      * @param Next_Visit_name = which is the next vist
      * @param Next_Visit_date = next visit date
      * @param Nextvisit       = Name of the next visit
-     *//*
-
+     */
     // TODO change next visit logic - ArogyaSakhi
     public void NextVisit_dialog(String Next_Visit_name, String Next_Visit_date, String Nextvisit) throws JSONException {
         if (Nextvisit != null && Nextvisit.length() > 0 && Nextvisit.equalsIgnoreCase("NextVisit")) {
@@ -4462,13 +3926,13 @@ private static Utility utility=  new Utility();
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-            builder.setTitle(AncVisits.this.getString(R.string.anc_next_visit))
-                    .setMessage(AncVisits.this.getString(R.string.nextvisit_text_part1) + Next_Visit_name + AncVisits.this.getString(R.string.nextvisit_text_part2) + Next_Visit_date + AncVisits.this.getString(R.string.nextvisit_text_part3))
+            builder.setTitle(displayForm.this.getString(R.string.anc_next_visit))
+                    .setMessage(displayForm.this.getString(R.string.nextvisit_text_part1) + Next_Visit_name + displayForm.this.getString(R.string.nextvisit_text_part2) + Next_Visit_date + displayForm.this.getString(R.string.nextvisit_text_part3))
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(AncVisits.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    .setPositiveButton(displayForm.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //finish();
-                            Toast.makeText(getApplicationContext(), AncVisits.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), displayForm.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
 
                             finish();
 
@@ -4482,7 +3946,7 @@ private static Utility utility=  new Utility();
                     .setTitle(R.string.all_anc_visits_comp_title)
                     .setMessage(R.string.all_anc_visits_comp_msg)
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(AncVisits.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    .setPositiveButton(displayForm.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
 
                             finish();
@@ -4495,149 +3959,338 @@ private static Utility utility=  new Utility();
 
     }
 
-    */
-/**
+    /**
      * This method is used to display patient visit summary dialog with its list
      *
      * @throws JSONException
-     *//*
-
+     */
     public void ImportantNote_Dialog() throws JSONException {
         HashMap<String, String> dependentAnswerMap = questionInteractor.getOptionsLabel(String.valueOf(FormID));
 
         try {
 
-            final Dialog dialog = new Dialog(AncVisits.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.custome_pvs);
-            dialog.setTitle(AncVisits.this.getString(R.string.Important_Note));
-            final LinearLayout ll = (LinearLayout) dialog.findViewById(R.id.linearLayout2);
+            AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+            builder
+                    .setTitle(displayForm.this.getString(R.string.save_form))
+                    .setMessage(displayForm.this.getString(R.string.save_form_message))
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(displayForm.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //finish();
+                            if (number_of_children == 0) {
 
-            patientvisitlist.remove("bmi");
+                                if (FormID > 5) {
+                                    Intent intent = new Intent(displayForm.this, HomeActivity.class);
+                                    startActivity(intent);
+                                } else if (FormID == 10) {
+                                    Intent intent = new Intent(displayForm.this, HomeActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    String formNumber = String.valueOf(FormID + 1);
+                                    Intent intent2 = new Intent(displayForm.this, displayForm.class);
+                                    intent2.putExtra(UNIQUE_ID, uniqueId);
+                                    intent2.putExtra(FORM_ID, formNumber);
+                                    intent2.putExtra("child", "0");
+                                    intent2.putExtra("childcounter", "1");
+                                    startActivity(intent2);
+                                }
 
-            for (Map.Entry<String, String> entry : patientvisitlist.entrySet()) {
-
-                try {
-
-                    JSONObject obj = new JSONObject(entry.getValue());
-
-                    Optionlanguage = obj.getString(mAppLanguage);
-
-                    Log.d(TAG, "OptionLanguage: " + Optionlanguage + " key " + entry.getKey());
-
-                    if (Optionlanguage.contains(entry.getKey())) {
-
-                        if (Optionlanguage.matches(".*[/,=:;-].*")) {
-
-                            String[] splited = Optionlanguage.split("[\\s,/=:;-]+");
-
-                            for (String s : splited) {
-
-                                if (womendetails.containsKey(s.trim())) {
-
-                                    Optionlanguage = Optionlanguage.replace(s.trim(), womendetails.get(s.trim())).trim();
-
-                                    String answerKeyword = Optionlanguage.split(":")[1];
-
-                                    for (Map.Entry answerSet : dependentAnswerMap.entrySet()) {
-
-                                        if (answerKeyword.trim().equals(answerSet.getKey())) {
-
-                                            JSONObject dependentAnsObject = new JSONObject(dependentAnswerMap.get(answerKeyword.trim()));
-
-                                            String answer = dependentAnsObject.getString(mAppLanguage);
-
-                                            Optionlanguage = Optionlanguage.replaceAll(answerKeyword, "  " + answer);
-                                            break;
-
-                                        }
-
+                            } else {
+                                if (child_entry_counter <= number_of_children) {
+                                    if (FormID == 9 && child_entry_counter != number_of_children) {
+                                        Intent intent2 = new Intent(displayForm.this, displayForm.class);
+                                        intent2.putExtra(UNIQUE_ID, uniqueId);
+                                        intent2.putExtra(FORM_ID, "6");
+                                        String no_of_child = String.valueOf(number_of_children);
+                                        String child_entry = String.valueOf(child_entry_counter + 1);
+                                        intent2.putExtra("child", no_of_child);
+                                        intent2.putExtra("childcounter", child_entry);
+                                        startActivity(intent2);
+                                    } else if (FormID == 10) {
+                                        Intent intent = new Intent(displayForm.this, HomeActivity.class);
+                                        startActivity(intent);
+                                    } else if (FormID == 9 && child_entry_counter > number_of_children) {
+                                        String formNumber = String.valueOf(FormID + 1);
+                                        Intent intent2 = new Intent(displayForm.this, displayForm.class);
+                                        intent2.putExtra(UNIQUE_ID, uniqueId);
+                                        intent2.putExtra(FORM_ID, formNumber);
+                                        String no_of_child = String.valueOf(number_of_children);
+                                        String child_entry = String.valueOf(child_entry_counter);
+                                        intent2.putExtra("child", no_of_child);
+                                        intent2.putExtra("childcounter", child_entry);
+                                        startActivity(intent2);
+                                    } else {
+                                        String formNumber = String.valueOf(FormID + 1);
+                                        Intent intent2 = new Intent(displayForm.this, displayForm.class);
+                                        intent2.putExtra(UNIQUE_ID, uniqueId);
+                                        intent2.putExtra(FORM_ID, formNumber);
+                                        String no_of_child = String.valueOf(number_of_children);
+                                        String child_entry = String.valueOf(child_entry_counter);
+                                        intent2.putExtra("child", no_of_child);
+                                        intent2.putExtra("childcounter", child_entry);
+                                        startActivity(intent2);
                                     }
 
                                 }
                             }
-                        } else {
-                            Optionlanguage = Optionlanguage.replace(entry.getKey(), womendetails.get(entry.getKey()));
-                            Log.e("ANCVisit"," In the Important Dialog else "+Optionlanguage);
+
                         }
-                    }
+                    })
+                    .setNegativeButton(displayForm.this.getString(R.string.no), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //finish();
+                        }
+                    })
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    .show();
 
-                CheckBox cb = new CheckBox(AncVisits.this);
-
-                cb.setText(Optionlanguage);
-                cb.setTextSize(20);
-                cb.setPadding(10, 10, 10, 10);
-                ll.addView(cb);
-
-            }
-
-            if (ll.getChildCount() == 0) {
-                ll.setVisibility(View.GONE);
-                final LinearLayout ll1 = (LinearLayout) dialog.findViewById(R.id.linearLayout3);
-                ll1.setVisibility(View.VISIBLE);
-                TextView tv = (TextView) dialog.findViewById(R.id.textView);
-                tv.setVisibility(View.VISIBLE);
-            }
+          /*  final Dialog dialog = new Dialog(displayForm.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.custome_pvs);
+            dialog.setTitle(displayForm.this.getString(R.string.Important_Note));
+//            final LinearLayout ll = (LinearLayout) dialog.findViewById(R.id.linearLayout2);
+//
+//            patientvisitlist.remove("bmi");
+//
+//            for (Map.Entry<String, String> entry : patientvisitlist.entrySet()) {
+//
+//                try {
+//
+//                    JSONObject obj = new JSONObject(entry.getValue());
+//
+//                    Optionlanguage = obj.getString(mAppLanguage);
+//
+//                    Log.d(TAG, "OptionLanguage: " + Optionlanguage + " key " + entry.getKey());
+//
+//                    if (Optionlanguage.contains(entry.getKey())) {
+//
+//                        if (Optionlanguage.matches(".*[/,=:;-].*")) {
+//
+//                            String[] splited = Optionlanguage.split("[\\s,/=:;-]+");
+//
+//                            for (String s : splited) {
+//
+//                                if (womendetails.containsKey(s.trim())) {
+//
+//                                    Optionlanguage = Optionlanguage.replace(s.trim(), womendetails.get(s.trim())).trim();
+//
+//                                    String answerKeyword = Optionlanguage.split(":")[1];
+//
+//                                    for (Map.Entry answerSet : dependentAnswerMap.entrySet()) {
+//
+//                                        if (answerKeyword.trim().equals(answerSet.getKey())) {
+//
+//                                            JSONObject dependentAnsObject = new JSONObject(dependentAnswerMap.get(answerKeyword.trim()));
+//
+//                                            String answer = dependentAnsObject.getString(mAppLanguage);
+//
+//                                            Optionlanguage = Optionlanguage.replaceAll(answerKeyword, "  " + answer);
+//                                            break;
+//
+//                                        }
+//
+//                                    }
+//
+//                                }
+//                            }
+//                        } else {
+//                            Optionlanguage = Optionlanguage.replace(entry.getKey(), womendetails.get(entry.getKey()));
+//                            Log.e("ANCVisit"," In the Important Dialog else "+Optionlanguage);
+//                        }
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                CheckBox cb = new CheckBox(displayForm.this);
+//
+//                cb.setText(Optionlanguage);
+//                cb.setTextSize(20);
+//                cb.setPadding(10, 10, 10, 10);
+//                ll.addView(cb);
+//
+//            }
+//
+//            if (ll.getChildCount() == 0) {
+//                ll.setVisibility(View.GONE);
+//                final LinearLayout ll1 = (LinearLayout) dialog.findViewById(R.id.linearLayout3);
+//                ll1.setVisibility(View.VISIBLE);
+//                TextView tv = (TextView) dialog.findViewById(R.id.textView);
+//                tv.setVisibility(View.VISIBLE);
+//            }
 
             Button referbut = (Button) dialog.findViewById(R.id.referral_button);
             referbut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    dialog.dismiss();
 
-                    int count = ll.getChildCount();
-                    Boolean flag = true;
+                    if (number_of_children == 0) {
 
-                    for (int i = 0; i < count; i++) {
-                        if (ll.getChildAt(i) instanceof CheckBox) {
-                            CheckBox cb = (CheckBox) ll.getChildAt(i);
-                            if (!cb.isChecked()) {
-                                flag = false;
-                                break;
-                            }
-                        }
-                    }
+                        if (FormID > 5) {
+                            Intent intent = new Intent(displayForm.this, MainActivity.class);
+                            startActivity(intent);
+//            AlertDialog.Builder builder = new AlertDialog.Builder(displayForm.this);
+//
+//            LayoutInflater inflater = getLayoutInflater();
+//            View dialogView = inflater.inflate(R.layout.custome_child_dialogbox,null);
+//
+//            // Specify alert dialog is not cancelable/not ignorable
+//            builder.setCancelable(false);
+//
+//            // Set the custom layout as alert dialog view
+//            builder.setView(dialogView);
+//
+//            // Get the custom alert dialog view widgets reference
+//            Button btn_positive = (Button) dialogView.findViewById(R.id.dialog_positive_btn);
+//            Button btn_negative = (Button) dialogView.findViewById(R.id.dialog_negative_btn);
+//            final EditText et_name = (EditText) dialogView.findViewById(R.id.et_no_child);
+//
+//            // Create the alert dialog
+//            final AlertDialog dialog = builder.create();
+//
+//            // Set positive/yes button click listener
+//            btn_positive.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Dismiss the alert dialog
+//                    dialog.cancel();
+//                    number_of_children = Integer.parseInt(et_name.getText().toString());
+//                    if(number_of_children == 0)
+//                    {
+//                        Intent intent = new Intent(displayForm.this, MainActivity.class);
+//                        startActivity(intent);
+//                    }
+//                    else
+//                    {
+//
+//
+//
+//                        String formNumber = String.valueOf(FormID + 1);
+//                        Intent intent2 = new Intent(displayForm.this, displayForm.class);
+//                        intent2.putExtra(UNIQUE_ID, uniqueId);
+//                        intent2.putExtra(FORM_ID, formNumber);
+//                        intent2.putExtra("child",number_of_children);
+//                        intent2.putExtra("childcounter",child_entry_counter);
+//                        startActivity(intent2);
+//                    }
+//                }
+//            });
+//
+//            // Set negative/no button click listener
+//            btn_negative.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    dialog.dismiss();
+//                    Intent intent = new Intent(displayForm.this, MainActivity.class);
+//                    startActivity(intent);
+//                }
+//            });
+//
+//            // Display the custom alert dialog on interface
+//            dialog.show();
 
-                    if (flag) {
-                        Log.e("ANCVisit"," In the Important Dialog in flag "+flag);
-                        if (!HighriskStatus) {
-                            Log.e("ANCVisit"," In the Important Dialog !highriskstatus "+HighriskStatus);
-                            highriskdialog();
-                            dialog.dismiss();
-                            ImportantDialogStatus = true;
+                        } else if (FormID == 10) {
+                            Intent intent = new Intent(displayForm.this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            String formNumber = String.valueOf(FormID + 1);
+                            Intent intent2 = new Intent(displayForm.this, displayForm.class);
+                            intent2.putExtra(UNIQUE_ID, uniqueId);
+                            intent2.putExtra(FORM_ID, formNumber);
+                            intent2.putExtra("child", "0");
+                            intent2.putExtra("childcounter", "1");
+                            startActivity(intent2);
                         }
 
                     } else {
-                        Toast.makeText(AncVisits.this, AncVisits.this.getString(R.string.checkbox_select_msg), Toast.LENGTH_SHORT).show();
+                        if (child_entry_counter <= number_of_children) {
+                            if (FormID == 9 && child_entry_counter != number_of_children) {
+                                Intent intent2 = new Intent(displayForm.this, displayForm.class);
+                                intent2.putExtra(UNIQUE_ID, uniqueId);
+                                intent2.putExtra(FORM_ID, "6");
+                                String no_of_child = String.valueOf(number_of_children);
+                                String child_entry = String.valueOf(child_entry_counter + 1);
+                                intent2.putExtra("child", no_of_child);
+                                intent2.putExtra("childcounter", child_entry);
+                                startActivity(intent2);
+                            } else if (FormID == 10) {
+                                Intent intent = new Intent(displayForm.this, MainActivity.class);
+                                startActivity(intent);
+                            } else if (FormID == 9 && child_entry_counter > number_of_children) {
+                                String formNumber = String.valueOf(FormID + 1);
+                                Intent intent2 = new Intent(displayForm.this, displayForm.class);
+                                intent2.putExtra(UNIQUE_ID, uniqueId);
+                                intent2.putExtra(FORM_ID, formNumber);
+                                String no_of_child = String.valueOf(number_of_children);
+                                String child_entry = String.valueOf(child_entry_counter);
+                                intent2.putExtra("child", no_of_child);
+                                intent2.putExtra("childcounter", child_entry);
+                                startActivity(intent2);
+                            } else {
+                                String formNumber = String.valueOf(FormID + 1);
+                                Intent intent2 = new Intent(displayForm.this, displayForm.class);
+                                intent2.putExtra(UNIQUE_ID, uniqueId);
+                                intent2.putExtra(FORM_ID, formNumber);
+                                String no_of_child = String.valueOf(number_of_children);
+                                String child_entry = String.valueOf(child_entry_counter);
+                                intent2.putExtra("child", no_of_child);
+                                intent2.putExtra("childcounter", child_entry);
+                                startActivity(intent2);
+                            }
+
+                        }
                     }
+
+//                    int count = ll.getChildCount();
+//                    Boolean flag = true;
+//
+//                    for (int i = 0; i < count; i++) {
+//                        if (ll.getChildAt(i) instanceof CheckBox) {
+//                            CheckBox cb = (CheckBox) ll.getChildAt(i);
+//                            if (!cb.isChecked()) {
+//                                flag = false;
+//                                break;
+//                            }
+//                        }
+//                    }
+//
+//                    if (flag) {
+//                        Log.e("ANCVisit"," In the Important Dialog in flag "+flag);
+//                        if (!HighriskStatus) {
+//                            Log.e("ANCVisit"," In the Important Dialog !highriskstatus "+HighriskStatus);
+//                            highriskdialog();
+//                            dialog.dismiss();
+//                            ImportantDialogStatus = true;
+//                        }
+//
+//                    } else {
+//                        Toast.makeText(displayForm.this, displayForm.this.getString(R.string.checkbox_select_msg), Toast.LENGTH_SHORT).show();
+//                    }
 
                 }
             });
 
 
             dialog.show();
-
+*/
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    */
-/**
+    /**
      * This method is used to display high risk dialog with high risk list
-     *//*
-
+     */
     public void highriskdialog() {
-        try {
+       /* try {
             Log.e("ANCVisit"," In the highriskdialog ");
 
-            final Dialog dialog = new Dialog(AncVisits.this);
+            final Dialog dialog = new Dialog(displayForm.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.custome_highrisk);
-            dialog.setTitle(AncVisits.this.getString(R.string.Diagnostic_Test));
+            dialog.setTitle(displayForm.this.getString(R.string.Diagnostic_Test));
             final LinearLayout ll = (LinearLayout) dialog.findViewById(R.id.linearLayout2);
 
             final Iterator<Map.Entry<String, String>> itr2 = highrisklist.entrySet().iterator();
@@ -4723,17 +4376,15 @@ private static Utility utility=  new Utility();
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
-    */
-/**
+    /**
      * This method is used to display diagnostic referral dialog with its list
-     *//*
-
+     */
     public void referraldialog() {
-        try {
+        /*try {
             Log.e("ANCVisit"," In the referraldialog ");
 
             final Dialog dialog = new Dialog(AncVisits.this);
@@ -4819,60 +4470,53 @@ private static Utility utility=  new Utility();
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
-    */
-/**
-     * This method is used to store ANC related dataSource in local DB.
-     *//*
-
+    /**
+     * This method is used to store ANC related data in local DB.
+     */
     public long StoreANCForm() {
         long insertedRowIdReferralWomenTable = -1;
 
         try {
-            wages_status=1;
-            questionInteractor.updateFormCompletionStatus(maxautoId,wages_status);
+
+            questionInteractor.updateFormCompletionStatus(maxautoId);
 
             if (highrisklist.size() > 0) {
+                //TODO: ADD HIGHRISK CODE for CHILD if comes
                 questionInteractor.saveReferralData(highrisklist, uniqueId, formid);
-               */
-/* insertedRowIdReferralWomenTable = dbhelper.inserthighriskwomen(highrisklist, "" + uniqueId, dbhelper.getANMInfo("ANMSubCenterId"), "");
-                dbhelper.updatehighrisklist(uniqueId, "1");*//*
-
+               /* insertedRowIdReferralWomenTable = dbhelper.inserthighriskwomen(highrisklist, "" + uniqueId, dbhelper.getANMInfo("ANMSubCenterId"), "");
+                dbhelper.updatehighrisklist(uniqueId, "1");*/
             }
 
-            if (FormID == DELIVERY_FORM_ID) {
-                String deliveryDate =  womendetails.get(DELIVERY_DATE);
-                questionInteractor.updateDeliveryDetails(uniqueId, deliveryDate);
-                int childCount = Integer.parseInt(womendetails.get(LIVE_CHILDREN_COUNT));
+//            if (FormID == DELIVERY_FORM_ID) {
+//                String deliveryDate = womendetails.get(DELIVERY_DATE);
+//                int childCount = Integer.parseInt(womendetails.get(LIVE_CHILDREN_COUNT));
+//
+//                Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM "
+//                        + DatabaseContract.RegistrationTable.TABLE_NAME
+//                        + " WHERE "
+//                        + DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? ", new String[]{uniqueId});
+//                String address = "", villageId = "", mobNo = "", alternateNo = "";
+//                if (cursor.moveToFirst()) {
+//                    address = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_ADDRESS));
+//                    mobNo = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO));
+//                }
+//
+//                for (int i = 0; i < childCount; i++) {
+//                  //  questionInteractor.saveRegistrationDetails("", "", "", mobNo, alternateNo, villageId, "", "", address, deliveryDate, "", "", "", null, uniqueId, 0);
+//                }
+//
+//
+//            }
 
-                Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM "
-                        + DatabaseContract.RegistrationTable.TABLE_NAME
-                        + " WHERE "
-                        + DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? ", new String[]{uniqueId});
-                String address = "", villageId = "", mobNo = "", alternateNo = "";
-                if (cursor.moveToFirst()) {
-                    address = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_ADDRESS));
-                    villageId = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_VILLAGE_ID));
-                    mobNo = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO));
-                    alternateNo = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_ALTERNATE_NO));
-                }
-
-                for (int i = 0; i < childCount; i++) {
-                    questionInteractor.saveRegistrationDetails("", "", "", mobNo, alternateNo, villageId, "", "", address, deliveryDate, "", "", "", photo, uniqueId, 0);
-                }
-
-
-            }
-
-            Toast.makeText(getApplicationContext(), AncVisits.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), displayForm.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
 
             finish();
 
 
-           */
-/* calculatevisitList = dbhelper.getNextVisit("" + (Integer.parseInt(formid) + 1));
+           /* calculatevisitList = dbhelper.getNextVisit("" + (Integer.parseInt(formid) + 1));
             calculatevisitList1 = dbhelper.getVisitWeek_list();
              if(!isAncPncEdit) {
                  if (calculatevisitList != null && calculatevisitList.size() > 0) {
@@ -4884,49 +4528,43 @@ private static Utility utility=  new Utility();
                  }
              }else{
                  finish();
-             }*//*
-
+             }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
         return insertedRowIdReferralWomenTable;
     }
 
-    */
-/**
-     * This methos is used to store Closure form related dataSource in local DB.
+    /**
+     * This methos is used to store Closure form related data in local DB.
      *
      * @param closureType
-     *//*
-
+     */
     public void StoreClosureForm(String closureType) {
 
-            if (closureType.equalsIgnoreCase("Mother")) {
-                questionInteractor.updateClosureDetails(uniqueId, utility.getCurrentDateTime(), womendetails.get(MOTHER_CLOSE_REASON), womendetails.get(MOTHER_DEATH_DATE), womendetails.get(MOTHER_DEATH_REASON));
+        if (closureType.equalsIgnoreCase("Mother")) {
+            questionInteractor.updateClosureDetails(uniqueId, utilityObj.getCurrentDateTime(), womendetails.get(MOTHER_CLOSE_REASON), womendetails.get(MOTHER_DEATH_DATE), womendetails.get(MOTHER_DEATH_REASON));
 
-            } else if (closureType.equalsIgnoreCase("Child")) {
-                questionInteractor.updateClosureDetails(uniqueId, utility.getCurrentDateTime(), womendetails.get(CHILD_CLOSE_REASON), womendetails.get(CHILD_DEATH_DATE), womendetails.get(CHILD_DEATH_REASON));
-            }
-            wages_status=1;
-            questionInteractor.updateFormCompletionStatus(maxautoId,wages_status);
-            finish();
+        } else if (closureType.equalsIgnoreCase("Child")) {
+            questionInteractor.updateClosureDetails(uniqueId, utilityObj.getCurrentDateTime(), womendetails.get(CHILD_CLOSE_REASON), womendetails.get(CHILD_DEATH_DATE), womendetails.get(CHILD_DEATH_REASON));
+        }
+
+        questionInteractor.updateFormCompletionStatus(maxautoId);
+        finish();
     }
 
-    */
-/**
-     * This methos is used to store registration of the newly born children related dataSource in local DB.
-     *//*
-
+    /**
+     * This methos is used to store registration of the newly born children related data in local DB.
+     */
     public long StoreChildCareRegForm() {
         long insertedRowIdReferralWomenTable = -1;
-        wages_status=0;
-        questionInteractor.updateFormCompletionStatus(maxautoId,wages_status);
+        questionInteractor.updateFormCompletionStatus(maxautoId);
 
         if (highrisklist.size() > 0) {
             questionInteractor.saveReferralData(highrisklist, uniqueId, formid);
         }
 
-        questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(FIRST_NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER),photo);
+        //  questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(FIRST_NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER));
         finish();
         return insertedRowIdReferralWomenTable;
 
@@ -4935,19 +4573,11 @@ private static Utility utility=  new Utility();
     public long storeChildCareForm() {
 
         long insertedRowIdReferralWomenTable = -1;
-        if(FormID<clickedFormId) {
-            wages_status=0;
-            questionInteractor.updateFormCompletionStatus(maxautoId,wages_status);
-        }
-        else if(FormID>=clickedFormId){
-            wages_status=1;
-            questionInteractor.updateFormCompletionStatus(maxautoId,wages_status);
-        }
-        else{
-            wages_status=1;
-            questionInteractor.updateFormCompletionStatus(maxautoId,wages_status);
-        }
+
+        questionInteractor.updateFormCompletionStatus(maxautoId);
+
         if (highrisklist.size() > 0) {
+
             questionInteractor.saveReferralData(highrisklist, uniqueId, formid);
 
         }
@@ -4955,15 +4585,13 @@ private static Utility utility=  new Utility();
         return insertedRowIdReferralWomenTable;
     }
 
-    */
-/**
+    /**
      * This method is used to calculate ANM's visit and delivery date of the women
      *
      * @param currentDate=Sysdate
      * @param WomanLmp=lmp        of the women
      * @return ANM's visit
-     *//*
-
+     */
     public int date(String currentDate, String WomanLmp) {
         String ancvisit = null;
 
@@ -4996,7 +4624,7 @@ private static Utility utility=  new Utility();
             System.out.println("^^^^^^^^^^^^^" + df.format(c3.getTime()));
 //			expec_date=df.format(c3.getTime());
 //
-//			Calendar c4 = Calendar.getDataSource();
+//			Calendar c4 = Calendar.getInstance();
 //			current_reg = datetime.format(c4.getTime());
 
             //get Time in milli seconds
@@ -5061,14 +4689,14 @@ private static Utility utility=  new Utility();
     public void backForm() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder
-                .setTitle(AncVisits.this.getString(R.string.back_form))
-                .setMessage(AncVisits.this.getString(R.string.back_form_message))
+                .setTitle(displayForm.this.getString(R.string.back_form))
+                .setMessage(displayForm.this.getString(R.string.back_form_message))
                 .setIcon(R.mipmap.ic_exitalert)
-                .setPositiveButton(AncVisits.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                .setPositiveButton(displayForm.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                         try {
-
+                            startActivity(new Intent(displayForm.this, HomeActivity.class));
                             finish();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -5076,7 +4704,7 @@ private static Utility utility=  new Utility();
 
                     }
                 })
-                .setNegativeButton(AncVisits.this.getString(R.string.no), new DialogInterface.OnClickListener() {
+                .setNegativeButton(displayForm.this.getString(R.string.no), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //finish();
 
@@ -5091,14 +4719,12 @@ private static Utility utility=  new Utility();
         backForm();
     }
 
-    */
-/**
+    /**
      * This method is used to remove depend questions
      *
      * @param ll_4    = linear layout which is to be removed
      * @param keyword = question keyword
-     *//*
-
+     */
     public void removeDependent(LinearLayout ll_4, String keyword) {
         if (MainQuestempstoredependant.containsKey(keyword)) {
             removeDependentQuestion = MainQuestempstoredependant.get(keyword);
@@ -5135,16 +4761,14 @@ private static Utility utility=  new Utility();
         }
     }
 
-    */
-/**
+    /**
      * This method is used parsed high risk ranges,counselling ranges and patient visit summary ranges.
      *
      * @param validationConditions = validations present on the questions
      * @param messages             = high risk,counselling,referral ranges
      * @param dependantQuesKeyword = keyword of the dependant question
      * @param et                   = edittext field
-     *//*
-
+     */
     public void calculations(String validationConditions, String messages, String dependantQuesKeyword, EditText et) {
         try {
 
@@ -5265,13 +4889,11 @@ private static Utility utility=  new Utility();
         }
     }
 
-    */
-/**
+    /**
      * This method is used to store high risk,counselling, referral ranges and it's error messages after parsing in their respective hash list
      *
      * @param messages = json that contains high risk,counselling, referral ranges and it's error messages.
-     *//*
-
+     */
     public void StorePVSmsgs(String messages) {
         try {
             System.out.println("StorePVSmsgs messages = " + messages);
@@ -5291,7 +4913,7 @@ private static Utility utility=  new Utility();
                         if (main_ques_options_key.getJSONObject("range") != null && main_ques_options_key.getJSONObject("range").length() > 0) {
                             JSONObject parseRangeminmax = main_ques_options_key.getJSONObject("range");
 
-                            Visits highriskcond =new Visits(parseRangeminmax.optDouble("min"),parseRangeminmax.optDouble("max"),main_ques_options_key.optString("languages").toString(),"");
+                            Visits highriskcond = new Visits(parseRangeminmax.optDouble("min"), parseRangeminmax.optDouble("max"), main_ques_options_key.optString("languages").toString(), "");
                             //System.out.println("main_ques_options_key languages = " + main_ques_options_key.optString("languages").toString());;
 
 
@@ -5312,7 +4934,7 @@ private static Utility utility=  new Utility();
                         if (main_ques_options_key.getJSONObject("range") != null && main_ques_options_key.getJSONObject("range").length() > 0) {
                             JSONObject parseRangeminmax = main_ques_options_key.getJSONObject("range");
 
-                            Visits counsellingcond =new Visits(parseRangeminmax.optDouble("min"),parseRangeminmax.optDouble("max"),main_ques_options_key.optString("languages").toString(),main_ques_options_key.optString("show_popup"));
+                            Visits counsellingcond = new Visits(parseRangeminmax.optDouble("min"), parseRangeminmax.optDouble("max"), main_ques_options_key.optString("languages").toString(), main_ques_options_key.optString("show_popup"));
                             //System.out.println("main_ques_options_key languages = " + main_ques_options_key.optString("languages").toString());;
 
 
@@ -5334,11 +4956,10 @@ private static Utility utility=  new Utility();
                         if (patientVisitSummary_conditionsArray_options_key.has("range")) {
                             JSONObject parseRangeminmax = patientVisitSummary_conditionsArray_options_key.getJSONObject("range");
 
-                            Visits patientVisitSummarycond =new Visits(parseRangeminmax.optDouble("min"),parseRangeminmax.optDouble("max"),patientVisitSummary_conditionsArray_options_key.optString("languages").toString(),"");
+                            Visits patientVisitSummarycond = new Visits(parseRangeminmax.optDouble("min"), parseRangeminmax.optDouble("max"), patientVisitSummary_conditionsArray_options_key.optString("languages").toString(), "");
                             StoredPatientVisitSummaryRanges.add(patientVisitSummarycond);
-                        }else
-                        {
-                            Visits patientVisitSummarycond =new Visits(0,0,patientVisitSummary_conditionsArray_options_key.optString("languages").toString(),"");
+                        } else {
+                            Visits patientVisitSummarycond = new Visits(0, 0, patientVisitSummary_conditionsArray_options_key.optString("languages").toString(), "");
                             StoredPatientVisitSummaryRanges.add(patientVisitSummarycond);
                         }
 
@@ -5353,16 +4974,14 @@ private static Utility utility=  new Utility();
         }
     }
 
-    */
-/**
+    /**
      * This method is used to store high risk,counselling, referral  messages in their respective lists so as to display the values in Patient Visit Summary,Patient Visit Summary-HighRisk Referral,Patient Visit Summary-Diagnostic Referral dialogs
      *
      * @param editTextValue = enter value in editText field
      * @param et            = edittext widget
      * @param keyword       = keyword of the question
      * @param setid         = setid of the question.
-     *//*
-
+     */
     public void StorePatientVisitHighRiskDiagnosticValues(String editTextValue, EditText et, String keyword, String setid) {
         if (StoredCounsellingRanges != null && StoredCounsellingRanges.size() > 0) {
             if (editTextValue != null && editTextValue.length() > 0) {
@@ -5419,8 +5038,8 @@ private static Utility utility=  new Utility();
 
                                     counclingMsgQstnKeywords.add(keyword);
 
-                                    if(StoredCounsellingRanges.get(i).getShowPopUp().equalsIgnoreCase("1"))
-                                        if(!noDialogFirst) {
+                                    if (StoredCounsellingRanges.get(i).getShowPopUp().equalsIgnoreCase("1"))
+                                        if (!noDialogFirst) {
                                             criticalCounsellingMsg(language);
                                         }
                                 }
@@ -5594,15 +5213,13 @@ private static Utility utility=  new Utility();
 
     }
 
-    */
-/**
+    /**
      * This method is used to display counselling message on radio button's click.
      *
      * @param counsel_message = counselling message text which is to be displayed
      * @param v               = view on which the layout is dependent on.
      * @param keyword         = keyword of the question.
-     *//*
-
+     */
     public void displayCounsellingMsg(String counsel_message, View v, String keyword) {
 
         if (counclingMsgQstnKeywords.contains(keyword)) {
@@ -5680,20 +5297,18 @@ private static Utility utility=  new Utility();
         }
     }
 
-    */
-/**
+    /**
      * This method is used to calculate gestational age of the women in weeks in every ANC visit.
      *
      * @param currentDate = System date
      * @param WomanLmp    = lmp date of the women
      * @return = age in weeks
-     *//*
-
+     */
     public int getGestationalAgeWeek(String currentDate, String WomanLmp) {
         String ancvisit = null;
 
-        System.out.println("currentDate : "+currentDate);
-        System.out.println("WomanLmp : "+WomanLmp);
+        System.out.println("currentDate : " + currentDate);
+        System.out.println("WomanLmp : " + WomanLmp);
 
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         DateFormat sever_expec_date = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -5718,7 +5333,7 @@ private static Utility utility=  new Utility();
 
 //			System.out.println("toDate = " + toDate);
 //			Date expecDate = df.parse(toDate);
-//			Calendar c3 = Calendar.getDataSource();
+//			Calendar c3 = Calendar.getInstance();
 //			//Change to Calendar Date
 //			c3.setTime(expecDate);
 //			c3.add(Calendar.MONTH, 9);
@@ -5728,7 +5343,7 @@ private static Utility utility=  new Utility();
 //			System.out.println("expec_date = " + expec_date);
 //			Server_expected_date=sever_expec_date.format(c3.getTime());
 //
-//			Calendar c4 = Calendar.getDataSource();
+//			Calendar c4 = Calendar.getInstance();
 //			current_reg = datetime.format(c4.getTime());
 
             //get Time in milli seconds
@@ -5756,14 +5371,12 @@ private static Utility utility=  new Utility();
 
     }
 
-    */
-/**
+    /**
      * This method is used to calculate the formula for FA tablet
      *
      * @param gestionalAge = women gestational age in integer
      * @param ll4          = linear layout on which the calculated value is to be displayed.
-     *//*
-
+     */
     public void formulaFATablet(int gestionalAge, LinearLayout ll4) {
         int FATablet = 98 - (gestionalAge * 7);
         LinearLayout faLayout = (LinearLayout) ll4.findViewWithTag("number_of_fa_tablet");
@@ -5777,13 +5390,11 @@ private static Utility utility=  new Utility();
         validationlist.put("number_of_fa_tablet", "" + FATablet);
     }
 
-    */
-/**
+    /**
      * This method is used to calculate the formula for FA tablet
      *
      * @param ll4 = linear layout on which the calculated value is to be displayed
-     *//*
-
+     */
     public void getIfaTablets(LinearLayout ll4) {
         double hbLevel = Double.parseDouble(womendetails.get("hb_level"));
 
@@ -5869,7 +5480,7 @@ private static Utility utility=  new Utility();
                 public void onClick(View v) {
 
                     System.out.println("v.getTag() = " + v.getTag());
-                    setButtonColor(AncVisits.this, v, (LinearLayout) v.getParent());
+                    setButtonColor(displayForm.this, v, (LinearLayout) v.getParent());
                     onClickButtonFunctionality(button, v, quesid, keyword, setid, id, tv, formid, listOptions, displayCondition, pageScrollId, isCompulsory, orientation);
                 }
             });
@@ -5908,11 +5519,9 @@ private static Utility utility=  new Utility();
 
 //        String Messages = dbhelper.getHighRiskConditionForRadio("" + button.getTag());
         String Messages = questionInteractor.getHighRiskCondition("" + button.getTag());
-        */
-/**
+        /**
          * This logic is used to check whether there is any High risk,Counselling or Diagnostic referral on button click
-         *//*
-
+         */
         try {
             if (Messages != null && Messages.length() > 0) {
                 StoredHighRiskRanges = new ArrayList<>();
@@ -5927,7 +5536,7 @@ private static Utility utility=  new Utility();
                         //System.out.println("main_ques_options_key High risk lang = " + main_ques_options_key.optString("languages").toString());;
 
 
-                        highrisklist.put(quesid, "" + AncVisits.this.formid + delimeter + setid + delimeter + keyword + delimeter + button.getTag() + delimeter + main_ques_options_key.optString("languages").toString() + delimeter + "highrisk" + delimeter + "0");
+                        highrisklist.put(quesid, "" + displayForm.this.formid + delimeter + setid + delimeter + keyword + delimeter + button.getTag() + delimeter + main_ques_options_key.optString("languages").toString() + delimeter + "highrisk" + delimeter + "0");
                         //System.out.println("highrisklist = " + highrisklist);
                     }
                 }
@@ -5945,7 +5554,7 @@ private static Utility utility=  new Utility();
                         if (main_ques_options_key.has("show_popup")) {
                             JSONObject obj = new JSONObject(counsel_message);
                             String language = obj.getString(mAppLanguage);
-                            if(!noDialogFirst) {
+                            if (!noDialogFirst) {
                                 criticalCounsellingMsg(language);
                             }
                         }
@@ -5957,7 +5566,7 @@ private static Utility utility=  new Utility();
                     for (int k = 0; k < diagnosticrefer_conditionsArray.length(); k++) {
                         JSONObject diagnosticrefer_options_key = diagnosticrefer_conditionsArray.getJSONObject(0);
                         //System.out.println("main_ques_options_key Counseling lang = " + diagnosticrefer_options_key.optString("languages").toString());;
-                        highrisklist.put(quesid, "" + AncVisits.this.formid + delimeter + setid + delimeter + keyword + delimeter + button.getTag() + delimeter + diagnosticrefer_options_key.optString("languages").toString() + delimeter + "diagnosticReffer" + delimeter + "0");
+                        highrisklist.put(quesid, "" + displayForm.this.formid + delimeter + setid + delimeter + keyword + delimeter + button.getTag() + delimeter + diagnosticrefer_options_key.optString("languages").toString() + delimeter + "diagnosticReffer" + delimeter + "0");
                         referrallist.put(quesid, diagnosticrefer_options_key.optString("languages").toString());
                         //System.out.println("diagnosticrefer highrisklist = " + highrisklist);
                     }
@@ -5988,7 +5597,8 @@ private static Utility utility=  new Utility();
 
         womendetails.put(keyword, "" + button.getTag());
         Backup_answerTyped1.put(keyword, "" + button.getTag());
-        dependantList = questionInteractor.getDependantQuesList("" + button.getTag(), AncVisits.this.formid, ll_sub, keyword, "" + pageScrollId);  // this list is used to get dependant question in english format (parameter"s received are form_id,keyword,answer_type,english_lang)
+
+        dependantList = questionInteractor.getDependantQuesList("" + button.getTag(), displayForm.this.formid, ll_sub, keyword, "" + pageScrollId);  // this list is used to get dependant question in english format (parameter"s received are form_id,keyword,answer_type,english_lang)
 
         if (counclingMsgQstnKeywords.contains(keyword)) {
 
@@ -6000,12 +5610,10 @@ private static Utility utility=  new Utility();
 
         }
 
-        */
-/**
+        /**
          * This if condition is used to check whether dependant question is present or not
          * if dependantList size is 0 or null means question dosen't have any depandant question.
-         *//*
-
+         */
         if (dependantList != null && dependantList.size() > 0) {
 
             if (!dependantKeywordPresent.containsValue("" + button.getTag())) {
@@ -6016,13 +5624,11 @@ private static Utility utility=  new Utility();
 
                 System.out.println("dependantKeywordPresent 2=....." + dependantKeywordPresent);
 
-                */
-/**
+                /**
                  * This if condition is used to check whether dependant layout is displayed or not
                  * this is used as a validation that if once the layout is displayed then again clicking on the same button twice the layout should be displayed only once
                  * for eg. if tt2yes is clicked for the first time then dependant layout should be displayed but again clicking on it dependant layout should not be displayed.
-                 *//*
-
+                 */
 
                 if (!dependantLayout.containsKey(keyword) && !(MainQuestempstoredependant.containsKey(keyword))) {
                     tempdependantStore = new ArrayList<String>();
@@ -6059,7 +5665,7 @@ private static Utility utility=  new Utility();
                 .setTitle(R.string.counselling_msg_txt)
                 .setMessage(popupMessage)
                 .setIcon(R.mipmap.ic_exitalert)
-                .setPositiveButton(AncVisits.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                .setPositiveButton(displayForm.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
@@ -6067,8 +5673,6 @@ private static Utility utility=  new Utility();
                 .show();
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void setButtonColor(Context context, View view, LinearLayout linearLayout) {
 
         Drawable btnNormalDrawable = ContextCompat.getDrawable(context, R.drawable.btn_normal);
@@ -6115,7 +5719,7 @@ private static Utility utility=  new Utility();
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(AncVisits.this);
+            progressDialog = new ProgressDialog(displayForm.this);
             progressDialog.setMessage(getString(R.string.loading_question));
             progressDialog.setCancelable(false);
             progressDialog.show();
@@ -6131,53 +5735,25 @@ private static Utility utility=  new Utility();
             decimalFormat.applyPattern("#.00");
             //System.out.println("ANC Visit NAME++++++"+b.getString("ANCVisit"));
 
-            //formid= dbhelper.getSelectedAncForm(b.getString("ANCVisit")); // gets id of the form after passing visit_name (eg.ANC Visit1 id is 2 in dbHelper)
+            //formid= dbhelper.getSelectedAncForm(b.getString("ANCVisit")); // gets id of the form after passing visit_name (eg.ANC Visit1 id is 2 in db)
+            formid = b.getString(FORM_ID);
+
+            storePrevAncId = Integer.parseInt(formid);
+            FormID = Integer.parseInt(formid);
+           // number_of_children = Integer.valueOf(b.getString("child"));
+           // child_entry_counter = Integer.valueOf(b.getString("childcounter"));
             uniqueId = b.getString(UNIQUE_ID);
-            clickedFormId = b.getInt(clickedForm);
-                formid = b.getString(FORM_ID);
-                current_form_id = Integer.valueOf(formid);
-                if(clickedFormId == 0) {
-                    clickedFormId = Integer.valueOf(formid);
-                }
-            */
-/**if the registration option is direct child then the*//*
 
-                regOption= QuestionInteractor.getRegistrationOption(uniqueId);
-            if(regOption.equals("direct_reg_child")) {
-                if(clickedFormId!=22){
-                do {
-                    int a = QuestionInteractor.getformStatus(uniqueId);
-                    if (a == 0) {
-                            FormID = 10;
-                            formid = "10";
-                            current_form_id = 10;
-                    } else {
-                        FormID = a + 1;
-                        formid = String.valueOf(FormID);
-                    }
-                    storePrevAncId = FormID;
-                } while (current_form_id > clickedFormId);
-            } else{
-                    formid="22";
-                    FormID=22;
-                }
-            } else{
-                formid = b.getString(FORM_ID);
-                storePrevAncId = Integer.parseInt(formid);
-                FormID = Integer.parseInt(formid);
-            }
 
-            questionInteractor = new QuestionInteractor(AncVisits.this);
-
-            mAppLanguage = utility.getLanguagePreferance(getApplicationContext());
-
+            questionInteractor = new QuestionInteractor(displayForm.this);
+            mAppLanguage = utilityObj.getLanguagePreferance(getApplicationContext());
             womanLmp = b.getString(LMP_DATE);
 
             isAncPncEdit = b.getBoolean("isAncPncEdit");
 
             Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-            String[] projection = {MediaStore.Video.Media.DISPLAY_NAME, MediaStore.Video.VideoColumns.DATA };
-            Cursor c = AncVisits.this.getContentResolver().query(uri, projection, null, null, null);
+            String[] projection = {MediaStore.Video.Media.DISPLAY_NAME, MediaStore.Video.VideoColumns.DATA};
+            Cursor c = displayForm.this.getContentResolver().query(uri, projection, null, null, null);
             if (c != null) {
                 while (c.moveToNext()) {
                     hashMapVideoNamePath.put(c.getString(0).substring(0, c.getString(0).lastIndexOf(".")), c.getString(1));
@@ -6185,8 +5761,7 @@ private static Utility utility=  new Utility();
                 c.close();
             }
 
-
-            if(isAncPncEdit){
+            if (isAncPncEdit) {
                 noDialogFirst = true;
             }
             defaultdate = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
@@ -6199,14 +5774,27 @@ private static Utility utility=  new Utility();
             YMDFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             DMYFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
-            maxautoId = questionInteractor.getFilledFormReferenceId(uniqueId, String.valueOf(FormID));
+            String uniqueIDToUse = uniqueId;
+            /*if (formid.equals("6") || formid.equals("7")
+                    || formid.equals("8") || formid.equals("9")) {
+                childsUniqueIds = questionInteractor.getChildrenUniqueID(uniqueId);
+
+                if (child_entry_counter == 0)
+                    child_entry_counter = 1;
+
+                number_of_children = childsUniqueIds.size();
+                childUniqueId = childsUniqueIds.get(child_entry_counter - 1);
+            */    uniqueIDToUse = childUniqueId;
+            //}
+
+            maxautoId = questionInteractor.getFilledFormReferenceId(uniqueIDToUse, String.valueOf(FormID));
+
             if (maxautoId == -1) {
-                maxautoId = questionInteractor.saveFilledFormStatus(uniqueId, FormID, 0, 0, utility.getCurrentDateTime(),0);
+                maxautoId = questionInteractor.saveFilledFormStatus(uniqueIDToUse, FormID, 0, 0, utilityObj.getCurrentDateTime());
             }
 
-            previousVisitDetails = questionInteractor.getFormFilledData(uniqueId, (FormID - 1));
-            womendetails = questionInteractor.getFormFilledData(uniqueId, FormID);
-
+            previousVisitDetails = questionInteractor.getFormFilledData(uniqueIDToUse, (FormID - 1));
+            womendetails = questionInteractor.getFormFilledData(uniqueIDToUse, FormID);
             Frame = (FrameLayout) findViewById(R.id.frame);
             next = (Button) findViewById(R.id.btnNext);
             previous = (Button) findViewById(R.id.btnpre);
@@ -6257,7 +5845,7 @@ private static Utility utility=  new Utility();
                 e.printStackTrace();
             }
 
-            alertList = questionInteractor.getMainQuestions(String.valueOf(FormID),uniqueId,clickedFormId);
+            alertList = questionInteractor.getMainQuestions(String.valueOf(FormID));
 
             return null;
         }
@@ -6271,42 +5859,25 @@ private static Utility utility=  new Utility();
             drawableMainQstn = new GradientDrawable();
             drawableMainQstn.setShape(GradientDrawable.RECTANGLE);
             drawableMainQstn.setStroke(2, Color.WHITE);
-            drawableMainQstn.setColor(ContextCompat.getColor(AncVisits.this, R.color.main_question_background));
+            drawableMainQstn.setColor(ContextCompat.getColor(displayForm.this, R.color.main_question_background));
 
             drawableDependentQstn = new GradientDrawable();
             drawableDependentQstn.setShape(GradientDrawable.RECTANGLE);
             drawableDependentQstn.setStroke(1, Color.WHITE);
-            drawableDependentQstn.setColor(ContextCompat.getColor(AncVisits.this, R.color.dependent_question_background));
+            drawableDependentQstn.setColor(ContextCompat.getColor(displayForm.this, R.color.dependent_question_background));
 
-*/
-/**this if loop is to check if the child is registered directly.*//*
-
-            if(!regOption.equals("direct_reg_child")) {
-                String firstForm1 = questionInteractor.firstFilledForm(uniqueId);
-                firstForm = Integer.valueOf(firstForm1);
-            }
-            int prevChildAge= Integer.valueOf(questionInteractor.getPrevChildAge(uniqueId));//if value of prevChildAge comes as -1 then that means woman does not have child
-            TT1Dose = questionInteractor.TT1Dose(uniqueId, FormID);
-            TTDose1Date = questionInteractor.TTDoseDate(uniqueId, formid);
-            TT2Dose = questionInteractor.TT2Dose(uniqueId, FormID);
-
-            */
-/**
+            /**
              * For loop for displaying questions for enrollment form which is stored in localDB.
-             *//*
-
+             */
             for (int j = counter; j < alertList.size(); j++) {
 
-*/
 /**
  * Display only 4 questions on the layout if counter goes above 4 break loop and create new layout for further questions
  * if answer_type contains capturephoto then break and loop and include that question on new layout
  *
- *//*
-
-                if (layout_control_counter == 0 || layout_control_counter % 4 == 0 || alertList.get(j).getAnswerType().equalsIgnoreCase("capturephoto") || alertList.get(j).getAnswerType().equalsIgnoreCase("sublabel") || alertList.get(j).getAnswerType().equalsIgnoreCase("label")|| PreviousQuesAnswertype.equals("label"))
-                {
-                    layout_control_counter=0;
+ */
+                if (layout_control_counter == 0 || layout_control_counter % 4 == 0 || alertList.get(j).getAnswerType().equalsIgnoreCase("capturephoto") || alertList.get(j).getAnswerType().equalsIgnoreCase("sublabel") || alertList.get(j).getAnswerType().equalsIgnoreCase("label") || PreviousQuesAnswertype.equals("label")) {
+                    layout_control_counter = 0;
                     layoutcounter++;
                     System.out.println("counter layoutcounter value" + layoutcounter);
                     ll_4layout = new LinearLayout(ctx);
@@ -6318,8 +5889,7 @@ private static Utility utility=  new Utility();
 
                     ll_4layout.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View view)
-                        {
+                        public void onClick(View view) {
                             hideSoftKeyboard(view);
                         }
                     });
@@ -6331,6 +5901,7 @@ private static Utility utility=  new Utility();
                     scroll.addView(ll_4layout);
                     scrollId.add(scroll.getId());
                     parentLayoutchild.put(layoutcounter, ll_4layout);
+
                     Frame.addView(scroll);
                     scroll_temp = scroll;
 
@@ -6342,7 +5913,7 @@ private static Utility utility=  new Utility();
                         }
                     });
 
-                    PreviousQuesAnswertype=alertList.get(j).getAnswerType();
+                    PreviousQuesAnswertype = alertList.get(j).getAnswerType();
 
                 }
 
@@ -6355,127 +5926,25 @@ private static Utility utility=  new Utility();
 
                 ll_4layout.addView(ll);
 
-                */
-/** This  if condition is to check the customised conditions for specific keywords  *//*
-
-
-                if (alertList.get(j).keyword.equals("height_units") && FormID>firstForm && firstForm!=1 && FormID!=firstForm ) {
-                    ArrayList<String> heightDetails= questionInteractor.womenHeight(uniqueId,formid);
-                    String womanHeight=heightDetails.get(0);
-                    if(womanHeight.equals("-1") || womanHeight.isEmpty()) {
-                        alertList.get(j).answerType = "radio";
-                    } else {
-                        alertList.get(j).answerType = "int";
-                    }
-                }
-                else if (alertList.get(j).keyword.equals("tt_1_dose_given")) {
-                    if( prevChildAge>3 && prevChildAge!=-1){
-                        ll_4layout.removeView(ll);
-                        Log.d("TTDose","the woman needs to be given TT booster since her previous child is "+prevChildAge+"");
-                    }
-                    else if(FormID>firstForm && firstForm!=1 && FormID!=firstForm){
-                        if(TT1Dose!=null) {
-                            if (TT1Dose.equals("tt_1_given_yes") && FormID > firstForm && firstForm != 1 && FormID != firstForm)
-                                ll_4layout.removeView(ll);
-                        }
-                    }
-                }
-
-                else if (alertList.get(j).keyword.equals("tt_2_dose_given")) {
-                    if(TT1Dose==null || TT1Dose.equals("tt_1_given_no") && firstForm!=1 && FormID==firstForm){
-                        ll_4layout.removeView(ll);
-                    }
-                    else if (TT1Dose.equals("tt_1_given_yes") && TT2Dose.equals("tt_2_given_yes")) {
-                        Log.d("TTDose","the woman has given both TT1 and TT2 dose");
-                        ll_4layout.removeView(ll);
-                        validationlist.remove(alertList.get(j).keyword);
-                        NextButtonvalidationlist.remove(alertList.get(j).keyword);
-                    }
-                    else if (TT1Dose.equals("tt_1_given_yes") &&  TT2Dose.equals("tt_2_given_no")) {
-                        if( prevChildAge<3 && prevChildAge!=-1){
-                            ll_4layout.removeView(ll);
-                            Log.d("TTDose","the woman needs to be given TT booster since her previous child is "+prevChildAge+"");
-                        }
-                        else if (FormID > firstForm && firstForm != 1 && FormID != firstForm) {
-
-                            */
-/**to display TTDose2 question after 30 days of TTDose1 is given*//*
-
-                            Log.d("TTDose ","tt1date" + TTDose1Date);
-                            DateFormat format= new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                            Date todayDate = new Date();
-                            String currentDate = format.format(todayDate);
-                            String newDate="";
-                            Date newDateToCompare = null;
-                            try {
-                                Date date=format.parse(TTDose1Date);
-                                Calendar calendar= Calendar.getInstance();
-                                calendar.setTime(date);
-                                calendar.add(Calendar.DAY_OF_MONTH,30);
-                                newDate = format.format(calendar.getTime());
-                                Log.d("TTDose ","tt2date" + newDate);
-                                newDateToCompare=format.parse(newDate);
-                                todayDate=format.parse(currentDate);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            if (!newDateToCompare.before(todayDate))
-                            {
-                                Log.d("TTDose ","tt2 should not be given" + newDate+" > "+todayDate);
-                                if (TT1Dose.equals("tt_1_given_yes") && TT2Dose.equals("tt_2_given_yes")
-                                        && FormID > firstForm && firstForm != 1 && FormID != firstForm) {
-                                    ll_4layout.removeView(ll);
-                                }
-                            }
-                            else{
-                                Log.d("TTDose ","tt2 should be given" + newDate+" < "+todayDate);
-                            }
-                        }
-                    }
-
-                }
-                else if(alertList.get(j).keyword.equals("tt_booster_given")){
-                    //either if woman does not have child(-1) or her child's age is below 3 years
-                    if(prevChildAge==-1 || prevChildAge<3){
-                        Log.d("TTDose ", "TTBooster : either woman does not have prev child or the child's age is below 3 years ");
-                        ll_4layout.removeView(ll);
-                    }
-                    //if woman has given TT1 but not TT2 yet
-                    else if( TT1Dose!=null && TT2Dose!=null && prevChildAge>3 ) {
-                        if(TT1Dose.equals("tt_1_given_yes") && TT2Dose.equals("tt_2_given_no")){
-                            Log.d("TTDose ", "TTBooster : woman has not recieved TT2 yet");
-                            ll_4layout.removeView(ll);
-                        }
-                        //if woman has given both TT1 and TT2 but her child's age is below 3 years then she does not need to get TT booster
-                        else if (TT1Dose.equals("tt_1_given_yes") && TT2Dose.equals("tt_2_given_yes") && prevChildAge<3) {
-                            ll_4layout.removeView(ll);
-                            Log.d("TTDose ", "TTBooster : woman has already given TT1 and TT2 dose.");
-                        }
-                    }
-                }
-
-
-
-                switch(alertList.get(j).getAnswerType())
-                {
+                switch (alertList.get(j).getAnswerType()) {
                     case "text":
-                        ll=createEdittext(j,alertList.get(j).getQuestionText(),alertList.get(j).getFormid(),alertList.get(j).getSetid(),alertList.get(j).getKeyword(),alertList.get(j).getValidationfield(),alertList.get(j).getMessages(),alertList.get(j).getDisplayCondition(),scroll.getId(),alertList.get(j).getOrientation(),alertList.get(j).getLengthmax());
+                        ll = createEdittext(j, alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getSetid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getMessages(), alertList.get(j).getDisplayCondition(), scroll.getId(), alertList.get(j).getOrientation(), alertList.get(j).getLengthmax());
                         break;
 
                     case "date":
-                        ll=createDate(j, alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getSetid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(),alertList.get(j).getMessages(),alertList.get(j).getDisplayCondition(),scroll.getId(),alertList.get(j).getOrientation());
+                        ll = createDate(j, alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getSetid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getMessages(), alertList.get(j).getDisplayCondition(), scroll.getId(), alertList.get(j).getOrientation());
                         break;
 
                     case "time":
-                        ll=createTime(j, alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getSetid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(),alertList.get(j).getMessages(),alertList.get(j).getDisplayCondition(),scroll.getId(),alertList.get(j).getOrientation());
+                        ll = createTime(j, alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getSetid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getMessages(), alertList.get(j).getDisplayCondition(), scroll.getId(), alertList.get(j).getOrientation());
                         break;
 
                     case "int":
-                        ll = createInt(alertList.get(j).getAnswerType(), alertList.get(j).getQuestionText(),alertList.get(j).getFormid(),alertList.get(j).getSetid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getValidationCondition(), alertList.get(j).getValidationengmsg(), alertList.get(j).getLengthmin(), alertList.get(j).getLengthmax(), alertList.get(j).getLengthvalidationmsg(), alertList.get(j).getRangemin(), alertList.get(j).getRangemax(), alertList.get(j).getRangevalidationmsg(), alertList.get(j).getHighrisk_range(), alertList.get(j).getHighrisk_lang(), alertList.get(j).getReferral_range(), alertList.get(j).getReferral_lang(), alertList.get(j).getCounselling_lang(),alertList.get(j).getMessages(),alertList.get(j).getDisplayCondition(),scroll.getId(),alertList.get(j).getOrientation());
+                        ll = createInt(alertList.get(j).getAnswerType(), alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getSetid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getValidationCondition(), alertList.get(j).getValidationengmsg(), alertList.get(j).getLengthmin(), alertList.get(j).getLengthmax(), alertList.get(j).getLengthvalidationmsg(), alertList.get(j).getRangemin(), alertList.get(j).getRangemax(), alertList.get(j).getRangevalidationmsg(), alertList.get(j).getHighrisk_range(), alertList.get(j).getHighrisk_lang(), alertList.get(j).getReferral_range(), alertList.get(j).getReferral_lang(), alertList.get(j).getCounselling_lang(), alertList.get(j).getMessages(), alertList.get(j).getDisplayCondition(), scroll.getId(), alertList.get(j).getOrientation());
                         break;
 
                     case "float":
-                        ll = createInt(alertList.get(j).getAnswerType(), alertList.get(j).getQuestionText(),alertList.get(j).getFormid(),alertList.get(j).getSetid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getValidationCondition(), alertList.get(j).getValidationengmsg(), alertList.get(j).getLengthmin(), alertList.get(j).getLengthmax(), alertList.get(j).getLengthvalidationmsg(), alertList.get(j).getRangemin(), alertList.get(j).getRangemax(), alertList.get(j).getRangevalidationmsg(), alertList.get(j).getHighrisk_range(), alertList.get(j).getHighrisk_lang(), alertList.get(j).getReferral_range(), alertList.get(j).getReferral_lang(), alertList.get(j).getCounselling_lang(),alertList.get(j).getMessages(),alertList.get(j).getDisplayCondition(),scroll.getId(),alertList.get(j).getOrientation());
+                        ll = createInt(alertList.get(j).getAnswerType(), alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getSetid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getValidationCondition(), alertList.get(j).getValidationengmsg(), alertList.get(j).getLengthmin(), alertList.get(j).getLengthmax(), alertList.get(j).getLengthvalidationmsg(), alertList.get(j).getRangemin(), alertList.get(j).getRangemax(), alertList.get(j).getRangevalidationmsg(), alertList.get(j).getHighrisk_range(), alertList.get(j).getHighrisk_lang(), alertList.get(j).getReferral_range(), alertList.get(j).getReferral_lang(), alertList.get(j).getCounselling_lang(), alertList.get(j).getMessages(), alertList.get(j).getDisplayCondition(), scroll.getId(), alertList.get(j).getOrientation());
                         break;
 
                     case "radio":
@@ -6483,24 +5952,19 @@ private static Utility utility=  new Utility();
                         break;
 
                     case "select":
-                        ll=createCheckbox(0, alertList.get(j).getQuesid(),alertList.get(j).getFormid(),alertList.get(j).getSetid(), alertList.get(j).getQuestionText(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(),alertList.get(j).getMessages(),alertList.get(j).getDisplayCondition(),scroll.getId(),alertList.get(j).getOrientation());
+                        ll = createCheckbox(0, alertList.get(j).getQuesid(), alertList.get(j).getFormid(), alertList.get(j).getSetid(), alertList.get(j).getQuestionText(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getMessages(), alertList.get(j).getDisplayCondition(), scroll.getId(), alertList.get(j).getOrientation());
                         break;
 
                     case "video":
-                        ll=createVideo(j, alertList.get(j).getQuestionText(), alertList.get(j).getKeyword(),scroll.getId());
+                        ll = createVideo(j, alertList.get(j).getQuestionText(), alertList.get(j).getKeyword(), scroll.getId());
                         break;
 
                     case "label":
-                        ll = createLabel(j, alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getValidationCondition(), alertList.get(j).getValidationengmsg(),alertList.get(j).getDisplayCondition(),scroll.getId(),alertList.get(j).getCalculations(),alertList.get(j).getSetid());
+                        ll = createLabel(j, alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getValidationCondition(), alertList.get(j).getValidationengmsg(), alertList.get(j).getDisplayCondition(), scroll.getId(), alertList.get(j).getCalculations(), alertList.get(j).getSetid());
                         break;
 
                     case "sublabel":
-                        ll = createSubLabel(j, alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getValidationCondition(), alertList.get(j).getValidationengmsg(),alertList.get(j).getDisplayCondition(),scroll.getId());
-                        break;
-
-                    case "capturephoto":
-
-                        ll = createCapturePhoto(j, alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getSetid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getValidationCondition(), alertList.get(j).getValidationengmsg(), alertList.get(j).getMessages(), alertList.get(j).getDisplayCondition());
+                        ll = createSubLabel(j, alertList.get(j).getQuestionText(), alertList.get(j).getFormid(), alertList.get(j).getKeyword(), alertList.get(j).getValidationfield(), alertList.get(j).getValidationCondition(), alertList.get(j).getValidationengmsg(), alertList.get(j).getDisplayCondition(), scroll.getId());
                         break;
 
                     default:
@@ -6519,7 +5983,7 @@ private static Utility utility=  new Utility();
             if (scrollId.isEmpty()) {
                 progressDialog.dismiss();
 
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(AncVisits.this, R.style.AppCompatAlertDialogStyle);
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(displayForm.this, R.style.AppCompatAlertDialogStyle);
                 builder.setTitle(getString(R.string.title_data_not_found));
                 builder.setMessage(getString(R.string.sync_forms_message));
                 builder.setCancelable(false);
@@ -6533,6 +5997,17 @@ private static Utility utility=  new Utility();
                 });
                 builder.show();
             } else {
+
+                String jsonFormName = questionInteractor.getFormNameFromId(FormID);
+                try {
+                    JSONObject textobj = new JSONObject(jsonFormName);
+                    jsonFormName = textobj.getString(mAppLanguage);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                setTitle(jsonFormName);
+
                 scroll_temp = (ScrollView) findViewById(Integer.parseInt(String.valueOf(scrollId.get(scrollcounter))));
                 scroll_temp.setVisibility(View.VISIBLE);
                 previous.setVisibility(View.GONE);
@@ -6583,5 +6058,5 @@ private static Utility utility=  new Utility();
 
     }
 
+
 }
-*/

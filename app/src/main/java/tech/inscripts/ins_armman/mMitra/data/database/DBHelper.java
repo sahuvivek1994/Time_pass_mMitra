@@ -192,7 +192,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getIncompleteFormListList() {
 
         return utility.getDatabase().rawQuery("SELECT * FROM " +
-                "(SELECT current.unique_id,current.form_id,reg.name, current.form_completion_status " +
+                "(SELECT current.unique_id,current.form_id,reg.first_name,reg.middle_name,reg.last_name, current.form_completion_status " +
                 "FROM filled_forms_status AS current " +
                 " JOIN registration AS reg on current.unique_id = reg.unique_id AND (reg.mother_id is null OR reg.mother_id = '') " +
                 " AND current.unique_id NOT IN (SELECT unique_id FROM filled_forms_status WHERE form_id = 10 AND form_completion_status = 1))" +
@@ -228,7 +228,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return utility.getDatabase().rawQuery("SELECT first_name,middle_name,last_name,unique_id FROM " + RegistrationTable.TABLE_NAME + " WHERE mother_id ='" + motherId + "'", null);
     }
 
-    public Cursor getuniqueIdFormId(String uniqueId) {
+    public Cursor getLastCompleteFilledFormId(String uniqueId) {
         return utility.getDatabase().rawQuery("SELECT max(form_id) as form_id FROM " + FilledFormStatusTable.TABLE_NAME + " WHERE unique_id = '" + uniqueId + "' AND form_completion_status = 1", null);
     }
     /*public Cursor getCompleteFormDetails(String unique_id, int form_id) {

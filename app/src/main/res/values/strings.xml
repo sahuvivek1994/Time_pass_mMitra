@@ -45,6 +45,8 @@
     <string name="save_form_message">Do you want to store details of the Form?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="continue_filling_forms">Continue Filling Forms</string>
+    <string name="view_filled_form">View filled Forms</string>
     <string name="Toast_msg_for_formsavesuccessfully">Form Saved Successfully</string>
     <string name="enter_valid_lmp">Please Enter valid Lmp date</string>
     <string name="exceed_curnt_dt">Entered date exceeds current date</string>

@@ -8,7 +8,8 @@
     <string name="enter_password">Please enter password</string>
     <string name="action_settings">सेटिंग</string>
     <string name="sync">Sync</string>
-
+    <string name="continue_filling_forms">फॉर्म भरना जारी रखें</string>
+    <string name="view_filled_form">भरे हुए फॉर्म देखें</string>
     <string name="anc">ए एन सी जाँच</string>
     <string name="pnc">पी एन सी जाँच</string>
     <string name="child">शिशु की देखभाल</string>

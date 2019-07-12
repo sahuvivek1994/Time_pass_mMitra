@@ -15,10 +15,10 @@ import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.completeFilledForm
 
 class CompleteFormActivity : AppCompatActivity(),ICompleteFormView,CompleteFormsAdapter.ClickListener{
-    internal lateinit var completedPresenter: CompleteFormPresenter
-    internal lateinit var mcompleteFormAdapter: CompleteFormsAdapter
-    internal lateinit var mProgressBar: ProgressBar
-    internal lateinit var emptyLayout: RelativeLayout
+     var completedPresenter: CompleteFormPresenter?=null
+     var mcompleteFormAdapter: CompleteFormsAdapter?=null
+     var mProgressBar: ProgressBar?=null
+     var emptyLayout: RelativeLayout?=null
     private var mRecyclerView: RecyclerView? = null
 
 
@@ -38,12 +38,12 @@ class CompleteFormActivity : AppCompatActivity(),ICompleteFormView,CompleteForms
         mRecyclerView?.setLayoutManager(layoutManager)
 
         completedPresenter = CompleteFormPresenter()
-        completedPresenter.attachView(this)    }
+        completedPresenter?.attachView(this) }
 
     override fun setAdapter(mWomenList: List<completeFilledForm>) {
-        mProgressBar.visibility = View.GONE
+        mProgressBar?.visibility = View.GONE
         if(mWomenList==null || mWomenList.size < 1){
-            emptyLayout.visibility=View.VISIBLE
+            emptyLayout?.visibility=View.VISIBLE
             val emptyTextView = findViewById<TextView>(R.id.text_empty_list)
             emptyTextView.setText(R.string.Reg_women_com)
             return
@@ -51,11 +51,11 @@ class CompleteFormActivity : AppCompatActivity(),ICompleteFormView,CompleteForms
         if(mWomenList!=null){
             mcompleteFormAdapter = CompleteFormsAdapter(getContext(),mWomenList)
             mRecyclerView?.setAdapter(mcompleteFormAdapter)
-            mcompleteFormAdapter.setOnClickListener(this)
+            mcompleteFormAdapter?.setOnClickListener(this)
         }
         else{
-            mcompleteFormAdapter.swapDataList(mWomenList)
-            mcompleteFormAdapter.notifyDataSetChanged()
+            mcompleteFormAdapter?.swapDataList(mWomenList)
+            mcompleteFormAdapter?.notifyDataSetChanged()
         }
     }
 
@@ -68,12 +68,12 @@ class CompleteFormActivity : AppCompatActivity(),ICompleteFormView,CompleteForms
 
     override fun onResume() {
         super.onResume()
-        completedPresenter.getListCompleteForm()
+        completedPresenter?.getListCompleteForm()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        completedPresenter.attachView(this)
+        completedPresenter?.attachView(this)
 
     }
 }

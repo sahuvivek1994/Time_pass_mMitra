@@ -12,7 +12,8 @@
     <string name="name_edit_change_successful">मुलाचे नाव यशस्वीरित्या बदलले गेले आहे</string>
     <string name="name_edit_change_unsuccessful">मुलाचे नाव संपादन अयशस्वी झाले,कृपया पुन्हा प्रयत्न करा.</string>
     <string name="error_performing_operation">काही समस्या आली, पुन्हा प्रयत्न करा</string>
-
+    <string name="continue_filling_forms">फॉर्म भरणे सुरु ठेवा</string>
+    <string name="view_filled_form">भरलेले फॉर्म पहा</string>
     <string name="anc">ए एन सी भेटी</string>
     <string name="pnc">पी एन सी भेटी</string>
     <string name="child">बाल संगोपन</string>

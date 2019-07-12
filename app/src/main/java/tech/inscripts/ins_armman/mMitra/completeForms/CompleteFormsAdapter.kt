@@ -52,19 +52,16 @@ class CompleteFormsAdapter() : RecyclerView.Adapter<CompleteFormsAdapter.ViewHol
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        internal var textViewName: TextView
-        internal var constraintLayout: ConstraintLayout
+        var textViewName: TextView=itemView.findViewById(R.id.textview_name)
+        var constraintLayout: ConstraintLayout= itemView.findViewById(R.id.constraint_layout_root)
 
-//constructor() {}
         init {
             itemView.setOnClickListener(this)
-            textViewName = itemView.findViewById(R.id.textview_name)
-            constraintLayout = itemView.findViewById(R.id.constraint_layout_root)
         }
 
         fun bindData(listModel: completeFilledForm?) {
             if (listModel != null) {
-                textViewName.setText(listModel!!.name)
+                textViewName.text = listModel!!.name
             }
         }
 

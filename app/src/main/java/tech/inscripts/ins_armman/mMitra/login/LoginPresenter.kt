@@ -8,7 +8,7 @@ import android.support.v4.content.ContextCompat
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
 import tech.inscripts.ins_armman.mMitra.data.model.UserDetails
-import tech.inscripts.ins_armman.mMitra.utility.utility
+import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
 
  class LoginPresenter : ILoginPresenter<ILoginView> {
@@ -22,7 +22,7 @@ import java.util.ArrayList
         Manifest.permission.CAMERA
     )
      var iLoginview: ILoginView? = null
-     var util = utility()
+     var util = Utility()
      var mUserDetails = UserDetails()
 
     override fun attachView(view:ILoginView) {
