@@ -9,9 +9,9 @@ import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
 import tech.inscripts.ins_armman.mMitra.data.model.UserDetails
 import tech.inscripts.ins_armman.mMitra.utility.Utility
-import java.util.ArrayList
+import java.util.*
 
- class LoginPresenter : ILoginPresenter<ILoginView> {
+class LoginPresenter : ILoginPresenter<ILoginView> {
 
     private val permissions = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -21,19 +21,19 @@ import java.util.ArrayList
         Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.CAMERA
     )
-     var iLoginview: ILoginView? = null
-     var util = Utility()
-     var mUserDetails = UserDetails()
+    var iLoginview: ILoginView? = null
+    var util = Utility()
+    var mUserDetails = UserDetails()
 
-    override fun attachView(view:ILoginView) {
-        this.iLoginview = view
-      //  var loginInter = LoginInteractor(view.getContext())
+    override fun attachView(ilogin: ILoginView) {
+        this.iLoginview = ilogin
+        //   var loginInter = LoginInteractor(ilogin.getContext())
 
         if (checkPermissions()) {
             initializeDBHelper()
         }
 
-  }
+    }
 
     override fun initializeDBHelper() {
         var dbHelper = DBHelper(iLoginview!!.getContext())
@@ -64,31 +64,33 @@ import java.util.ArrayList
     }
 
     override fun getPermissions(listPermissionsNeeded: List<String>) {
-        ActivityCompat.requestPermissions(iLoginview!!.getContext() as Activity, listPermissionsNeeded.toTypedArray(), 1)
+        ActivityCompat.requestPermissions(
+            iLoginview!!.getContext() as Activity,
+            listPermissionsNeeded.toTypedArray(),
+            1
+        )
     }
 
     override fun validateCredentials(username: String, password: String) {
         iLoginview?.resetErrorMsg()
-        if(username.isEmpty())
+        if (username.isEmpty())
             iLoginview?.setUsernameError()
         else if (password.isEmpty())
             iLoginview!!.setPasswordError()
         else
-            loginUser(username,password)
+            loginUser(username, password)
     }
 
     override fun loginUser(username: String, password: String) {
-        if(util.hasInternetConnectivity(iLoginview!!.getContext()))
-        {
+        if (util.hasInternetConnectivity(iLoginview!!.getContext())) {
             iLoginview!!.showProgressBar()
-            createRequestBody(username,password)
+            createRequestBody(username, password)
 //            var iLogInter = ILoginInteractor()
 //            iLogInter.login(mUserDetails,this,iLoginview?.getContext())
-        }else
-        {
+        } else {
             var title = "No internet"
             var message = "No internet connectivity. Please check your network"
-            iLoginview!!.showDialog(title,message)
+            iLoginview!!.showDialog(title, message)
         }
     }
 

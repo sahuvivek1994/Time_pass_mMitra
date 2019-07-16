@@ -3,22 +3,23 @@ package tech.inscripts.ins_armman.mMitra.login
 import android.content.Context
 
 interface ILoginView {
-     fun getContext(): Context
 
-     fun setUsernameError()
+    fun setUsernameError()
 
-     fun setPasswordError()
+    fun setPasswordError()
 
-     fun resetErrorMsg()
+    fun resetErrorMsg()
 
-     fun showDialog(title : String,message : String)
+    fun showDialog(title: String, message: String)
 
-     fun showProgressBar()
+    fun showProgressBar()
 
-     fun hideProgressBar()
+    fun hideProgressBar()
 
-     fun openHomeActivity()
+    fun openHomeActivity()
 
-     fun setAuthenticationFailedError()
+    fun setAuthenticationFailedError()
+
+    fun getContext(): Context
 
 }
