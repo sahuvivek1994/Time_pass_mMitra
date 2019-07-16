@@ -13,33 +13,19 @@ import tech.inscripts.ins_armman.mMitra.HomeActivity
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
-import tech.inscripts.ins_armman.mMitra.utility.Utility
 
 class Login : AppCompatActivity(), ILoginView {
 
     override fun getContext(): Context {
-       return this
+        return this
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
-
-        val button_login = findViewById<Button>(R.id.buttonLogin)
-
-        val loginPresenter = LoginPresenter()
-
-        val uti = Utility()
-        val applicationLanguage = uti.getLanguagePreferance(applicationContext)
-        if (applicationLanguage.isEmpty()) {
-            uti.setApplicationLocale(applicationContext, "en")
-        } else {
-            uti.setApplicationLocale(applicationContext, applicationLanguage)
-        }
-
-        loginPresenter.attachView(this)
-
-        initializeDBHelper()
+        val button_login=findViewById<Button>(R.id.buttonLogin);
+       initializeDBHelper()
         button_login.setOnClickListener(View.OnClickListener {
             val username = edittext_username.text.toString()
             val password = edittext_pass.text.toString()
@@ -51,7 +37,6 @@ class Login : AppCompatActivity(), ILoginView {
 
         })
     }
-
     fun initializeDBHelper() {
         val dbHelper = DBHelper(getContext().applicationContext)
         DatabaseManager.initializeInstance(dbHelper)
