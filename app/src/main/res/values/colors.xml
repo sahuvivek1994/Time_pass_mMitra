@@ -92,5 +92,10 @@
     <color name="value3">#7F9ADD</color>
     <color name="value4">#94D3E6</color>
     <color name="value5">#A886E9CA</color>
+    <color name="primary_dark">#292b3d</color>
+    <color name="graylight">#fafafa</color>
+    <color name="startblue">#09c6df</color>
+    <color name="endblue">#0bcce6</color>
+
 
 </resources>

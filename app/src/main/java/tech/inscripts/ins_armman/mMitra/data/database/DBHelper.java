@@ -6,17 +6,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import tech.inscripts.ins_armman.mMitra.utility.Utility;
 
 import java.io.File;
 
 import static tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract.*;
 
-/**
- * Created by lenovo on 11/10/17.
- */
-
 public class DBHelper extends SQLiteOpenHelper {
     private static final String TAG = DBHelper.class.getSimpleName();
+
+    Utility utility = new Utility();
 
     public DBHelper(Context context) {
         super(context, DB_LOCATION
@@ -188,5 +187,96 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + FilledFormStatusTable.TABLE_NAME +
                     " ADD COLUMN " + FilledFormStatusTable.COLUMN_WAGES_STATUS + INTEGER_TYPE);
         db.execSQL("update filled_forms_status set wages_status=1 where wages_status is null");
+    }
+
+    public Cursor getIncompleteFormListList() {
+
+        return utility.getDatabase().rawQuery("SELECT * FROM " +
+                "(SELECT current.unique_id,current.form_id,reg.first_name,reg.middle_name,reg.last_name, current.form_completion_status " +
+                "FROM filled_forms_status AS current " +
+                " JOIN registration AS reg on current.unique_id = reg.unique_id AND (reg.mother_id is null OR reg.mother_id = '') " +
+                " AND current.unique_id NOT IN (SELECT unique_id FROM filled_forms_status WHERE form_id = 10 AND form_completion_status = 1))" +
+                " GROUP BY unique_id", null);
+    }
+    public String fetchCount() {
+        String status = null;
+
+        String query = "SELECT COUNT(*) AS remaining FROM filled_forms_status WHERE form_sync_status = 0 AND form_completion_status = 1";
+
+        Cursor cursor = utility.getDatabase().rawQuery(query, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            status = cursor.getString(cursor.getColumnIndex("remaining"));
+            cursor.close();
+        } else {
+            status = "0";
+        }
+        return status;
+    }
+
+    public Cursor fetchUserDetails() {
+        String query = "SELECT name,phone_no FROM " + LoginTable.TABLE_NAME;
+        return utility.getDatabase().rawQuery(query, null);
+    }
+
+    public Cursor getcompleteFormListList() {
+
+        return utility.getDatabase().rawQuery("SELECT first_name,middle_name,last_name,unique_id from registration WHERE unique_id IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1 )", null);
+    }
+
+    public Cursor getChildIdFromMotherId(String motherId) {
+        return utility.getDatabase().rawQuery("SELECT first_name,middle_name,last_name,unique_id FROM " + RegistrationTable.TABLE_NAME + " WHERE mother_id ='" + motherId + "'", null);
+    }
+
+    public Cursor getLastCompleteFilledFormId(String uniqueId) {
+        return utility.getDatabase().rawQuery("SELECT max(form_id) as form_id FROM " + FilledFormStatusTable.TABLE_NAME + " WHERE unique_id = '" + uniqueId + "' AND form_completion_status = 1", null);
+    }
+    /*public Cursor getCompleteFormDetails(String unique_id, int form_id) {
+        return utility.getDatabase().rawQuery("SELECT main_questions.question_label," +
+                "question_options.option_label,question_answers.unique_id " +
+                "FROM question_answers" +
+                " JOIN main_questions" +
+                " ON question_answers.question_keyword=main_questions.keyword " +
+                "JOIN question_options" +
+                " ON question_answers.answer_keyword=question_options.keyword " +
+                "WHERE question_answers.unique_id='"+unique_id+"' " +
+                "and question_answers.form_id="+form_id,null);
+    }*/
+
+    /**
+     *form 6 contains question label but does'nt contain answer label so only
+     main_questions and question_answers involved in query and not question_option
+     * @param unique_id=child unique_id
+     * @param form_id=child form_id
+     * @return
+     */
+    public Cursor getForm6Details(String unique_id,int form_id){
+        return utility.getDatabase().rawQuery("SELECT main_questions.question_label,question_answers.answer_keyword,question_answers.unique_id " +
+                "FROM question_answers" +
+                " JOIN main_questions ON question_answers.question_keyword=main_questions.keyword " +
+                "WHERE question_answers.unique_id='"+unique_id+"' and question_answers.form_id="+form_id,null);
+    }
+    public Cursor getFormsList(String unique_id){
+        //return utility.getDatabase().rawQuery("select visit_name,form_id from form_details group by(form_id) order by cast(form_id as int) asc",null);
+        return utility.getDatabase().rawQuery("select form_id,visit_name from form_details \n" +
+                "where form_id in(select form_id from filled_forms_status where form_completion_status=1 " +
+                "and unique_id='"+ unique_id +"') order by cast(form_id as int) asc",null);
+    }
+    public Cursor getIncompleteFormList(String unique_id){
+        return utility.getDatabase().rawQuery("select filled_forms_status.form_id,visit_name" +
+                " from filled_forms_status join form_details on" +
+                " filled_forms_status.form_id=form_details.form_id" +
+                " where unique_id='"+unique_id+"' and form_completion_status=1" +
+                " group by(filled_forms_status.form_id)",null);
+    }
+    public Cursor getCompleteFormDetails(String unique_id, int Form_id)
+    {
+        return utility.getDatabase().rawQuery( "select r.unique_id ,mq.question_label,qo.option_label,qa.answer_keyword,qa.question_keyword" +
+                " from question_answers as qa" +
+                " left join registration as r on r.unique_id=qa.unique_id" +
+                " left join main_questions as mq on mq.keyword = qa.question_keyword" +
+                " left join question_options as qo on qo.keyword = qa.answer_keyword" +
+                " where qa.unique_id='"+unique_id+"'" +
+                " and qa.form_id="+Form_id+" group by(qa.question_keyword)",null);
     }
 }

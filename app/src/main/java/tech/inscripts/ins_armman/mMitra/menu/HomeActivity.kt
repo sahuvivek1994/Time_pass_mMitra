@@ -3,6 +3,7 @@ package tech.inscripts.ins_armman.mMitra
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +13,12 @@ import tech.inscripts.ins_armman.mMitra.completeForms.CompleteFormActivity
 import tech.inscripts.ins_armman.mMitra.forms.EnrollmentQuestions
 import tech.inscripts.ins_armman.mMitra.incompleteForms.IncompleteFormActivity
 import tech.inscripts.ins_armman.mMitra.settingActivity.Settings
+import android.widget.Toast
+import android.support.v4.os.HandlerCompat.postDelayed
+
+
+
+
 
 class HomeActivity : AppCompatActivity(),View.OnClickListener {
 
@@ -55,14 +62,17 @@ class HomeActivity : AppCompatActivity(),View.OnClickListener {
             when (item.getItemId()) {
                 R.id.action_settings -> startActivity(Intent(this@HomeActivity, Settings::class.java))
 
-                // R.id.action_sync -> mPresenter.fetchRegistrationData()
+               //  R.id.action_sync -> mPresenter.fetchRegistrationData()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-       finish()
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+
     }
 }

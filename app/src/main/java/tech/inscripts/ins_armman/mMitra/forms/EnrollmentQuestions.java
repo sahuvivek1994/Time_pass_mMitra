@@ -34,8 +34,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import tech.inscripts.ins_armman.mMitra.HomeActivity;
 import tech.inscripts.ins_armman.mMitra.R;
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract;
+import tech.inscripts.ins_armman.mMitra.displayForm.displayForm;
 import tech.inscripts.ins_armman.mMitra.utility.Utility;
 
 import java.io.File;
@@ -54,10 +56,11 @@ import static tech.inscripts.ins_armman.mMitra.utility.Keywords.VILLAGE_NAME;
 
 /**
  * This class is used to display questions of registration forms dynamically from the localDB.
- * After entering all dataSource the answer's are saved in local db and based on lmp date she would be directed to either ANC forms or pnc.
+ * After entering all dataSource the answer's are saved in local dbHelper and based on lmp date she would be directed to either ANC forms or pnc.
  */
 public class EnrollmentQuestions extends AppCompatActivity {
 
+     Utility utilityObj = new Utility();
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     private static final String TAG = "EnrollmentQuestions";
@@ -68,9 +71,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
     public static String expec_date, woman_gest_age, current_reg, Server_expected_date;
     List<String> chechboxlist = new ArrayList<>();
     int counter;
-    int maxautoId,wages_status;
-    int noToRegisterChild=1;
-//    DBHelper dbhelper;
+    //    DBHelper dbhelper;
     FrameLayout Frame;
     Button next, previous;
     HashMap<String, String> storeEnteredData = new HashMap<>();
@@ -106,7 +107,6 @@ public class EnrollmentQuestions extends AppCompatActivity {
     SimpleDateFormat formatter;
     Date SystemDate, selectedDate;
     String Name;
-    String clickedRB;
     String women_in_highrisk;
     Integer mamtaCardPresent;
     Bitmap photo;
@@ -276,28 +276,17 @@ private static Utility utility= new Utility();
 
                     break;
 
-                case "date":
+               /* case "date":
 
                     if (womendetails.containsKey(split_str[2].trim())) {
                         String date_cal = expression.substring(expression.indexOf("(") + 1, expression.length() - 1);
 
                         date_cal = date_cal.replace(split_str[2].trim(), womendetails.get(split_str[2].trim()));
 
-                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                        Calendar c= Calendar.getInstance();
-                        try {
-                            c.setTime(simpleDateFormat.parse(date_cal));
-                        }
-                        catch(Exception e){
-                        }
-
-                        //Date maxDate = new StringToTime(serverdefaultdateFormatter + " - 028 days");
-                        result=serverdateFormatter.format(c.getTime());
-                       // result = String.valueOf(serverdateFormatter.format(new StringToTime(date_cal)));
+                        result = String.valueOf(serverdateFormatter.format(new StringToTime(date_cal)));
 
                         if (result != null) {
-                            //String dt = dateFormatter.format(new StringToTime(date_cal));
-                            String dt = dateFormatter.format(c.getTime());
+                            String dt = dateFormatter.format(new StringToTime(date_cal));
                             womendetails.put(split_str[0].trim(), dt);
                             textOnLabel = textOnLabel.replace(split_str[0].trim(), dt);
                         } else
@@ -306,7 +295,7 @@ private static Utility utility= new Utility();
                         textOnLabel = textOnLabel.replace(split_str[0].trim(), getString(R.string.no_data));
 
                     break;
-
+*/
                 case "todays_date":
 
                     result = serverdefaultdateFormatter;
@@ -321,7 +310,7 @@ private static Utility utility= new Utility();
 
                 case "current_time":
 
-//                    calendar = Calendar.getDataSource();
+//                    calendar = Calendar.getInstance();
                     result = timeFormat.format(Calendar.getInstance().getTime());
 
                     if (result != null) {
@@ -522,17 +511,13 @@ private static Utility utility= new Utility();
                     scrollcounter = layoutcounter - 1;
                     scroll_temp = (ScrollView) Frame.findViewById(Integer.parseInt(String.valueOf(scrollId.get(scrollcounter))));
                     scroll_temp.setVisibility(View.VISIBLE);
+                    saveform();
+//                    ImportantNote_Dialog("Not_Valid");
 
-                    ImportantNote_Dialog("Not_Valid");
+                } else {
+                    scroll_temp = (ScrollView) Frame.findViewById(Integer.parseInt(String.valueOf(scrollId.get(scrollcounter))));
 
-                }
-                else if(scrollcounter <layoutcounter){
-                    if(womendetails.containsKey("registration_option") && womendetails.containsValue("direct_reg_child")){
-                        saveform(mMigrantStatus);
-                    }
-                    else{
-                        scroll_temp = (ScrollView) Frame.findViewById(Integer.parseInt(String.valueOf(scrollId.get(scrollcounter))));
-                        if (labelKeywirdDetails.containsKey(scroll_temp.getId())) {
+                    if (labelKeywirdDetails.containsKey(scroll_temp.getId())) {
 
                            TextView labelTextView = (TextView) ((LinearLayout) ((LinearLayout) scroll_temp.getChildAt(0)).getChildAt(0)).getChildAt(0);
 
@@ -541,9 +526,9 @@ private static Utility utility= new Utility();
                        }
                        scroll_temp.setVisibility(View.VISIBLE);
 
-                       textViewTotalPgCount.setText((scrollcounter + 1) + pageCountText);
-                       progress.setProgress(scrollcounter + 1);
-                   }
+                    textViewTotalPgCount.setText((scrollcounter + 1) + pageCountText);
+                    progress.setProgress(scrollcounter + 1);
+
                 }
 
 
@@ -591,7 +576,7 @@ private static Utility utility= new Utility();
     /**
      * This method is used to save the entered dataSource by the user in localDB
      */
-    public void saveform(final int migrantStatus) {
+    public void saveform() {
 
         System.out.println("EnrollmentQuestions.saveform");
 
@@ -613,14 +598,13 @@ private static Utility utility= new Utility();
                                         mamtaCardPresent, mMigrantStatus, autoGeneratedECId, "", "",
                                         womendetails.get("ec_household_no"), womendetails.get("ec_husband_name"),
                                         deliveryStatus, "", uniqueId);*/
-                                uniqueId = questionInteractor.saveRegistrationDetails(womendetails.get(FIRST_NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(WOMAN_MOB_NO), womendetails.get(WOMAN_ALTERNATE_NO)
-                                        , villageId, womendetails.get(LMP_DATE_KEYWORD), womendetails.get(EDD), womendetails.get(ADDRESS), womendetails.get(WOMAN_DOB)
-                                        , womendetails.get(EDUCATION), womendetails.get(RELIGION_NAME), womendetails.get(CATEGORY_NAME), photo, "", 1);
+                    uniqueId = questionInteractor.saveRegistrationDetails(womendetails.get(FIRST_NAME), womendetails.get(MIDDLE_NAME), womendetails.get(WOMAN_MOB_NO), womendetails.get(ADDRESS), womendetails.get(WOMAN_DOB)
+                            , womendetails.get(EDUCATION), "", 1);
 
-                                if (highrisklist.size() > 0) {
-//                                    long insertedRowIdReferralWomenTable = dbhelper.inserthighriskwomen(highrisklist, uniqueId, dbhelper.getANMInfo("ANMSubCenterId"), "");
-                                    questionInteractor.saveReferralData(highrisklist, uniqueId, formID);
-                                }
+//                            if (highrisklist.size() > 0) {
+////                                    long insertedRowIdReferralWomenTable = dbhelper.inserthighriskwomen(highrisklist, uniqueId, dbhelper.getANMInfo("ANMSubCenterId"), "");
+//                                questionInteractor.saveReferralData(highrisklist, uniqueId, formID);
+//                            }
 
                                 /*if (photo != null) {
 //                                    dbhelper.insertBitmap(photo, uniqueId);
@@ -630,38 +614,44 @@ private static Utility utility= new Utility();
 //                                String uniqueId = "" + dbhelper.getWomenId();
 
 
-                                // Saving the Enrollment form status as complete and its
-                                // upload status as 0 i.e not uploaded to the server
+                    // Saving the Enrollment form status as complete and its
+                    // upload status as 0 i.e not uploaded to the server
 //                                dbhelper.saveFormUploadStatus(uniqueId, formID, 0, 1, "", "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
-                                int referenceId = questionInteractor.saveFilledFormStatus(uniqueId, Integer.parseInt(formID), 1, 0, utility.getCurrentDateTime(),1);//                                dbhelper.insertanswer(womenanswer, formid, uniqueId); // this insert statement is used to insert all the dataSource entered by the user in localDB
-                                questionInteractor.saveQuestionAnswers(womendetails, referenceId, uniqueId, Integer.parseInt(formID), utility.getCurrentDateTime());
-                                if(womendetails.containsKey("registration_option") && womendetails.containsValue("direct_reg_child")){
-                                    directChildREgistration(uniqueId);
-                                }
+                    int referenceId = questionInteractor.saveFilledFormStatus(uniqueId, Integer.parseInt(formID), 1, 0, utilityObj.getCurrentDateTime());
+//                            int id = questionInteractor.currentFormStatus(uniqueId, Integer.parseInt(formID), 1, utility.getCurrentDateTime());
+
+//                                dbhelper.insertanswer(womenanswer, formid, uniqueId); // this insert statement is used to insert all the data entered by the user in localDB
+                    questionInteractor.saveQuestionAnswers(womendetails, referenceId, uniqueId, Integer.parseInt(formID), utilityObj.getCurrentDateTime());
+
 
 //								dbhelper.insertRegWomen(women.get(1).toString(), women.get(2).toString(), women.get(0).toString(), women.get(3).toString(), women.get(4).toString(),womenAncVisit,women.get(5).toString(),expec_date,"Due");
-                                Toast.makeText(getApplicationContext(), EnrollmentQuestions.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), EnrollmentQuestions.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
 
-                                finish();
-                            }
-                        })
-                        .setNegativeButton(EnrollmentQuestions.this.getString(R.string.no), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //finish();
+                    Intent intent = new Intent(EnrollmentQuestions.this, displayForm.class);
+                    intent.putExtra(UNIQUE_ID, uniqueId);
+                    intent.putExtra(FORM_ID, "2");
+                    intent.putExtra("child", "0");
+                    intent.putExtra("childcounter", "1");
+                    startActivity(intent);
+                    finish();
 
-                                Iterator<Map.Entry<String, String>> itr2 = validationlist.entrySet().iterator();
-                                while (itr2.hasNext()) {
-                                    Map.Entry<String, String> entry = itr2.next();
-                                    entry.getKey();
-                                    entry.getValue();
-                                    System.out.println("validation key" + entry.getKey());
-                                    System.out.println("validation value" + entry.getValue());
-                                }
-                            }
-                        })                        //Do nothing on no
+                }
+            });
+            builder.setNegativeButton(EnrollmentQuestions.this.getString(R.string.no), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    //finish();
 
-                        .show();
-
+                    Iterator<Map.Entry<String, String>> itr2 = validationlist.entrySet().iterator();
+                    while (itr2.hasNext()) {
+                        Map.Entry<String, String> entry = itr2.next();
+                        entry.getKey();
+                        entry.getValue();
+                        System.out.println("validation key" + entry.getKey());
+                        System.out.println("validation value" + entry.getValue());
+                    }
+                }
+            });
+            builder.show();//Do nothing on no
 
 
         } catch (Exception e) {
@@ -669,31 +659,6 @@ private static Utility utility= new Utility();
         }
     }
 
-    public void directChildREgistration(String uniqueId){
-        wages_status=1;
-        questionInteractor.updateFormCompletionStatus(maxautoId,wages_status);
-
-
-        noToRegisterChild = Integer.parseInt(womendetails.get(CHILD_COUNT));
-
-        Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM "
-                + DatabaseContract.RegistrationTable.TABLE_NAME
-                + " WHERE "
-                + DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? ", new String[]{uniqueId});
-        String address = "", villageId = "", mobNo = "", alternateNo = "";
-        if (cursor.moveToFirst()) {
-            address = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_ADDRESS));
-            villageId = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_VILLAGE_ID));
-            mobNo = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO));
-            alternateNo = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_ALTERNATE_NO));
-        }
-        String deliveryDate=womendetails.get(CHILD_DOB);
-        for (int i = 0; i < noToRegisterChild; i++) {
-            questionInteractor.saveRegistrationDetails("", "", "", mobNo, alternateNo, villageId, "", "", address, deliveryDate, "", "", "", null, uniqueId, 0);
-        }
-
-
-    }
 
     /**
      * This method is used to display dialogue box on click of which user will be re-directed to ANC form
@@ -1099,32 +1064,11 @@ private static Utility utility= new Utility();
                             e.printStackTrace();
                         }
 
-                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                        Calendar c= Calendar.getInstance();
-                        Calendar c1= Calendar.getInstance();
-                        try {
-                            c.setTime(simpleDateFormat.parse(serverdefaultdateFormatter));
-                            c1.setTime(simpleDateFormat.parse(serverdefaultdateFormatter));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
                         if (SystemDate.compareTo(selectedDate) >= 0) {
-                            if (keyword.equalsIgnoreCase("lmp_date")) {
-                                c.add(Calendar.DAY_OF_MONTH,-280);
-                                c1.add(Calendar.DAY_OF_MONTH,-28);
-                                String d1=simpleDateFormat.format(c.getTime());
-                                String d2=simpleDateFormat.format(c1.getTime());
-                                Date minDate= null;
-                                Date maxDate= null;
-                                try {
-                                    minDate = simpleDateFormat.parse(d1);
-                                    maxDate=simpleDateFormat.parse(d2);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                                //Date minDate =  new StringToTime(serverdefaultdateFormatter + " - 280 days");
-                                //Date maxDate = new StringToTime(serverdefaultdateFormatter + " - 028 days");
+                            /*if (keyword.equalsIgnoreCase("lmp_date")) {
+
+                                Date minDate = new StringToTime(serverdefaultdateFormatter + " - 280 days");
+                                Date maxDate = new StringToTime(serverdefaultdateFormatter + " - 028 days");
 
                                 if ((selectedDate.after(minDate) || selectedDate.equals(minDate)) && (selectedDate.before(maxDate) || selectedDate.equals(maxDate))) {
                                     lmpvalid = true;
@@ -1137,11 +1081,11 @@ private static Utility utility= new Utility();
                                     et.setError("LMP date should not be less then 1 year or more than 1 year from current date");
                                     validationlist.put("" + et.getTag(), "");
                                 }
-                            } else {
+                            } else {*/
                                 lmpvalid = true;
                                 validationlist.put("" + et.getTag(), et.getText().toString());
                                 et.setError(null);
-                            }
+                            //}
 
                         } else {
                             lmpvalid = false;
@@ -1781,7 +1725,7 @@ private static Utility utility= new Utility();
         ArrayList<SpinnerItems> spinnerArray = new ArrayList<>();
 
         if (keyword.equalsIgnoreCase(VILLAGE_NAME)) {
-            spinnerArray = questionInteractor.fetchVillages();
+            //    spinnerArray = questionInteractor.fetchVillages();
         }
 
         NextButtonvalidationlist.put(keyword, scroll.getId());
@@ -1961,7 +1905,7 @@ private static Utility utility= new Utility();
         /**
          * This if condition is used to check if the question contains any dependant question.
          */
-//        optionList = dbhelper.getANCEnglishoptions(quesid);  // this db statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
+//        optionList = dbhelper.getANCEnglishoptions(quesid);  // this dbHelper statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
         optionList = questionInteractor.getQuestionOptions(quesid, formID);
 
         //final RadioButton[] rb = new RadioButton[2];
@@ -2383,7 +2327,7 @@ private static Utility utility= new Utility();
         }
 
 //        if (i == 1) {
-//            optionList = dbhelper.dependantgetANCEnglishoptions(quesid);  // this db statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
+//            optionList = dbhelper.dependantgetANCEnglishoptions(quesid);  // this dbHelper statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
 //        } else {
 //            optionList = dbhelper.getANCEnglishoptions(quesid);
 //        }
@@ -3009,38 +2953,21 @@ private static Utility utility= new Utility();
                         et.setFocusable(false);
                         String getDate = dateFormatter.format(newDate.getTime());
                         //SendServerDate=serverdateFormatter.format(newDate.getTime());
-                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                        Calendar c= Calendar.getInstance();
-                        Calendar c1= Calendar.getInstance();
                         try {
 
                             //System.out.println("SendServerDate====" + SendServerDate);
                             selectedDate = formatter.parse(getDate);
                             serverDate = serverdateFormatter.format(newDate.getTime());
                             System.out.println("serverDate====" + serverDate);
-                            c.setTime(simpleDateFormat.parse(serverdefaultdateFormatter));
-                            c1.setTime(simpleDateFormat.parse(serverdefaultdateFormatter));
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-
                         if (SystemDate.compareTo(selectedDate) >= 0) {
 
-                            if (dependantQuesKeyword.equalsIgnoreCase("lmp_date")) {
-                                c.add(Calendar.DAY_OF_MONTH,-280);
-                                c1.add(Calendar.DAY_OF_MONTH,-28);
-                                String d1=simpleDateFormat.format(c.getTime());
-                                String d2=simpleDateFormat.format(c1.getTime());
-                                Date minDate= null;
-                                Date maxDate= null;
-                                try {
-                                    minDate = simpleDateFormat.parse(d1);
-                                    maxDate=simpleDateFormat.parse(d2);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                               // Date minDate = new StringToTime(serverdefaultdateFormatter + " - 280 days");
-                               // Date maxDate = new StringToTime(serverdefaultdateFormatter + " - 028 days");
+                           /* if (dependantQuesKeyword.equalsIgnoreCase("lmp_date")) {
+
+                                Date minDate = new StringToTime(serverdefaultdateFormatter + " - 280 days");
+                                Date maxDate = new StringToTime(serverdefaultdateFormatter + " - 028 days");
 
                                 if ((selectedDate.after(minDate) || selectedDate.equals(minDate)) && (selectedDate.before(maxDate) || selectedDate.equals(maxDate))) {
                                     lmpvalid = true;
@@ -3054,7 +2981,7 @@ private static Utility utility= new Utility();
                                     et.setError("LMP date should not be less then 1 year or more than 1 year from current date");
                                     validationlist.put("" + et.getTag(), "");
                                 }
-                            } else {
+                            } else {*/
                                 lmpvalid = true;
                                 String myFormat = "yyyy-MM-dd"; //In which you need put here
                                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -3066,7 +2993,7 @@ private static Utility utility= new Utility();
                                 NextButtonvalidationlist.remove("" + et.getTag());
                                 tv.setError(null);
                                 et.setError(null);
-                            }
+                            //}
 
                         } else {
                             tv.setError("");
@@ -4399,7 +4326,7 @@ private static Utility utility= new Utility();
      * This method is used to display high risk dialog with high risk list
      */
     public void highriskdialog() {
-        try {
+        /*try {
 
             final Dialog dialog = new Dialog(EnrollmentQuestions.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -4478,14 +4405,14 @@ private static Utility utility= new Utility();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+*/
     }
 
     /**
      * This method is used to display diagnostic referral dialog with its list
      */
     public void Diagnostic_TestDialog() {
-        try {
+       /* try {
 
 
             final Dialog dialog = new Dialog(EnrollmentQuestions.this);
@@ -4557,7 +4484,7 @@ private static Utility utility= new Utility();
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 
@@ -4656,29 +4583,31 @@ private static Utility utility= new Utility();
                 @Override
                 public void onClick(View view) {
 
-                    int count = ll.getChildCount();
-                    Boolean flag = true;
-
-                    for (int i = 0; i < count; i++) {
-                        if (ll.getChildAt(i) instanceof CheckBox) {
-                            CheckBox cb = (CheckBox) ll.getChildAt(i);
-                            if (!cb.isChecked()) {
-                                flag = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (flag) {
-                        if (!HighriskStatus) {
-                            highriskdialog();
-                            dialog.dismiss();
-//                            ImportantDialogStatus=true;
-                        }
-
-                    } else {
-                        Toast.makeText(EnrollmentQuestions.this, EnrollmentQuestions.this.getString(R.string.checkbox_select_msg), Toast.LENGTH_SHORT).show();
-                    }
+//                    int count = ll.getChildCount();
+//                    Boolean flag = true;
+//
+//                    for (int i = 0; i < count; i++) {
+//                        if (ll.getChildAt(i) instanceof CheckBox) {
+//                            CheckBox cb = (CheckBox) ll.getChildAt(i);
+//                            if (!cb.isChecked()) {
+//                                flag = false;
+//                                break;
+//                            }
+//                        }
+//                    }
+//
+//                    if (flag) {
+//                        if (!HighriskStatus) {
+//                            highriskdialog();
+//                            dialog.dismiss();
+////                            ImportantDialogStatus=true;
+//                        }
+//
+//                    } else {
+//                        Toast.makeText(EnrollmentQuestions.this, EnrollmentQuestions.this.getString(R.string.checkbox_select_msg), Toast.LENGTH_SHORT).show();
+//                    }
+                    dialog.dismiss();
+                    //   saveform();
 
                 }
             });
@@ -4722,10 +4651,8 @@ private static Utility utility= new Utility();
                             woman_gest_age = null;
                             expec_date = null;
                             current_reg = null;
-                            /*Intent i = new Intent(EnrollmentQuestions.this, AnmHomeActivity.class);
-                            startActivity(i);*/
-                            //ActivityCompat.finishAffinity(EnrollmentQuestions.this);
-
+                            Intent intent = new Intent(EnrollmentQuestions.this, HomeActivity.class);
+                            startActivity(intent);
                             finish();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -5159,19 +5086,14 @@ private static Utility utility= new Utility();
             formID = "1";
 
             questionInteractor = new QuestionInteractor(EnrollmentQuestions.this);
-
-            mAppLanguage = utility.getLanguagePreferance(getApplicationContext());
-            maxautoId = questionInteractor.getFilledFormReferenceId(uniqueId, String.valueOf(formID));
-            if (maxautoId == -1) {
-                maxautoId = questionInteractor.saveFilledFormStatus(uniqueId, 1, 0, 0, utility.getCurrentDateTime(),0);
-            }
+            mAppLanguage = utilityObj.getLanguagePreferance(getApplicationContext());
             init();
 
             ashaList = new ArrayList<>(Arrays.asList("a"));
             hashMapUserDetails = questionInteractor.fetchUserDetails();
 
 //            enrollmentList = dbhelper.getEnglishEnrollment(formID);
-            enrollmentList = questionInteractor.getMainQuestions(formID,uniqueId,0);
+            enrollmentList = questionInteractor.getMainQuestions(formID);
 
             return null;
         }
@@ -5341,12 +5263,23 @@ private static Utility utility= new Utility();
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-
+                        Intent intent = new Intent(EnrollmentQuestions.this, HomeActivity.class);
+                        startActivity(intent);
                         finish();
                     }
                 });
                 builder.show();
             } else {
+                String jsonFormName = questionInteractor.getFormNameFromId(Integer.valueOf(formID));
+                try {
+                    JSONObject textobj = new JSONObject(jsonFormName);
+                    jsonFormName = textobj.getString(mAppLanguage);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                setTitle(jsonFormName);
+
                 scroll_temp = (ScrollView) findViewById(Integer.parseInt(String.valueOf(scrollId.get(scrollcounter))));
                 scroll_temp.setVisibility(View.VISIBLE);
                 previous.setVisibility(View.GONE);

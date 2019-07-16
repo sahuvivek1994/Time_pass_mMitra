@@ -30,32 +30,33 @@ private static Utility utility= new Utility();
         this.mContext = mContext;
     }
 
-    public String saveRegistrationDetails(String firstName, String middleName, String lastName, String mobileNo, String alternateMobileNo, String villageId
-            , String lmp, String edd, String address, String dob, String education, String religion, String category, Bitmap bitmap, String motherId, int registrationStatus) {
+    public String saveRegistrationDetails(String firstName, String middleName, String mobileNo
+            ,String address, String dob, String education,String motherId, int registrationStatus) {
         ContentValues values = new ContentValues();
+
 
         String woman_id = (String) utility.generateUniqueId();
 
         byte[] buffer = null;
-        if(bitmap != null) {
+       /* if(bitmap != null) {
             bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
             buffer = (byte[]) utility.getImageByteArray(bitmap);
-        }
+        }*/
 
         values.put(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID, woman_id);
         values.put(DatabaseContract.RegistrationTable.COLUMN_FIRST_NAME, firstName);
         values.put(DatabaseContract.RegistrationTable.COLUMN_MIDDLE_NAME, middleName);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_LAST_NAME, lastName);
+       // values.put(DatabaseContract.RegistrationTable.COLUMN_LAST_NAME, lastName);
         values.put(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO, mobileNo);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_ALTERNATE_NO, alternateMobileNo);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_VILLAGE_ID, villageId);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE, lmp);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_EDD_DATE, edd);
+       // values.put(DatabaseContract.RegistrationTable.COLUMN_ALTERNATE_NO, alternateMobileNo);
+      //  values.put(DatabaseContract.RegistrationTable.COLUMN_VILLAGE_ID, villageId);
+      //  values.put(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE, lmp);
+       // values.put(DatabaseContract.RegistrationTable.COLUMN_EDD_DATE, edd);
         values.put(DatabaseContract.RegistrationTable.COLUMN_ADDRESS, address);
         values.put(DatabaseContract.RegistrationTable.COLUMN_DOB, dob);
         values.put(DatabaseContract.RegistrationTable.COLUMN_EDUCATION, education);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_RELIGION, religion);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_CATEGORY, category);
+      //  values.put(DatabaseContract.RegistrationTable.COLUMN_RELIGION, religion);
+       // values.put(DatabaseContract.RegistrationTable.COLUMN_CATEGORY, category);
         values.put(DatabaseContract.RegistrationTable.COLUMN_IMAGE, buffer);
         values.put(DatabaseContract.RegistrationTable.COLUMN_MOTHER_ID, motherId);
         values.put(DatabaseContract.RegistrationTable.COLUMN_REGISTRATION_STATUS, registrationStatus);
@@ -88,22 +89,22 @@ private static Utility utility= new Utility();
         }
     }
 
-    public int saveFilledFormStatus(String uniqueId, int formId, int completionStatus, int syncStatus, String createdOn, int wages_status) {
+    public int saveFilledFormStatus(String uniqueId, int formId, int completionStatus, int syncStatus, String createdOn) {
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_UNIQUE_ID, uniqueId);
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_ID, formId);
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_COMPLETION_STATUS, completionStatus);
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_SYNC_STATUS, syncStatus);
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_CREATED_ON, createdOn);
-        values.put(DatabaseContract.FilledFormStatusTable.COLUMN_WAGES_STATUS, wages_status);
+       // values.put(DatabaseContract.FilledFormStatusTable.COLUMN_WAGES_STATUS, wages_status);
 
         return (int) utility.getDatabase().insert(DatabaseContract.FilledFormStatusTable.TABLE_NAME, null, values);
     }
 
-    public void updateFormCompletionStatus(int id,int wages_status) {
+    public void updateFormCompletionStatus(int id) {
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_COMPLETION_STATUS, 1);
-        values.put(DatabaseContract.FilledFormStatusTable.COLUMN_WAGES_STATUS, wages_status);
+       // values.put(DatabaseContract.FilledFormStatusTable.COLUMN_WAGES_STATUS, wages_status);
 
         utility.getDatabase().update(DatabaseContract.FilledFormStatusTable.TABLE_NAME
                 , values
@@ -231,121 +232,31 @@ private static Utility utility= new Utility();
         else return null;
     }
 
-    public List<Visit> getMainQuestions(String formId, String uniqueId, int clickedFormId) {
+    public List<Visit> getMainQuestions(String formId) {
         List<Visit> questionList = new ArrayList<Visit>();
-String regOption= getRegistrationOption(uniqueId);
-  int FormId= Integer.valueOf(formId);
-        Cursor cursor=null;
-        if(regOption.equals("direct_reg_child")){
-            if(FormId<clickedFormId){
-                if(FormId==10 || FormId==22){
-                    cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * "
-                                    + ", q."
-                                    + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
-                                    + " AS qstn_id "
-                                    + " FROM "
-                                    + DatabaseContract.MainQuestionsTable.TABLE_NAME
-                                    + " q "
-                                    + " LEFT JOIN "
-                                    + DatabaseContract.ValidationsTable.TABLE_NAME
-                                    + " v "
-                                    + " ON "
-                                    + " q. "
-                                    + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
-                                    + " = "
-                                    + " v. "
-                                    + DatabaseContract.ValidationsTable.COLUMN_QUESTION_ID
-                                    + " WHERE "
-                                    + " q. "
-                                    + DatabaseContract.MainQuestionsTable.COLUMN_FORM_ID
-                                    + " = ? "
-                            , new String[]{formId});
-                }
-                else if(FormId<=18 && FormId>=21){
-                    utility.getDatabase().rawQuery("SELECT DISTINCT * , q.question_id AS qstn_id  FROM main_questions q  LEFT JOIN validations v  ON  q. question_id =  v. question_id"+
-                            "WHERE  q. form_id =21 and keyword in('child_immunization','measles','vitamin_A_1')",null);
-                }
-                else{
-                cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * , q.question_id AS qstn_id  FROM main_questions q  LEFT JOIN validations v  ON  q. question_id =  v. question_id" +
-                        " WHERE  q. form_id =" +formId +
-                        " and (keyword like'child_immunization' " +
-                        " or keyword like 'polio_%'" +
-                        " or keyword like 'hepatitis_%' " +
-                        " or keyword like 'dpt_%' " +
-                        " or keyword like '%valent_vaccine_%')",null);
-            }}
-            else if(FormId==clickedFormId){
-                cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * "
-                                + ", q."
-                                + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
-                                + " AS qstn_id "
-                                + " FROM "
-                                + DatabaseContract.MainQuestionsTable.TABLE_NAME
-                                + " q "
-                                + " LEFT JOIN "
-                                + DatabaseContract.ValidationsTable.TABLE_NAME
-                                + " v "
-                                + " ON "
-                                + " q. "
-                                + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
-                                + " = "
-                                + " v. "
-                                + DatabaseContract.ValidationsTable.COLUMN_QUESTION_ID
-                                + " WHERE "
-                                + " q. "
-                                + DatabaseContract.MainQuestionsTable.COLUMN_FORM_ID
-                                + " = ? "
-                        , new String[]{formId});
-            }
-            else{
-                cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * "
-                                + ", q."
-                                + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
-                                + " AS qstn_id "
-                                + " FROM "
-                                + DatabaseContract.MainQuestionsTable.TABLE_NAME
-                                + " q "
-                                + " LEFT JOIN "
-                                + DatabaseContract.ValidationsTable.TABLE_NAME
-                                + " v "
-                                + " ON "
-                                + " q. "
-                                + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
-                                + " = "
-                                + " v. "
-                                + DatabaseContract.ValidationsTable.COLUMN_QUESTION_ID
-                                + " WHERE "
-                                + " q. "
-                                + DatabaseContract.MainQuestionsTable.COLUMN_FORM_ID
-                                + " = ? "
-                        , new String[]{formId});
-            }
 
-        }
-        else {
-            cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * "
-                            + ", q."
-                            + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
-                            + " AS qstn_id "
-                            + " FROM "
-                            + DatabaseContract.MainQuestionsTable.TABLE_NAME
-                            + " q "
-                            + " LEFT JOIN "
-                            + DatabaseContract.ValidationsTable.TABLE_NAME
-                            + " v "
-                            + " ON "
-                            + " q. "
-                            + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
-                            + " = "
-                            + " v. "
-                            + DatabaseContract.ValidationsTable.COLUMN_QUESTION_ID
-                            + " WHERE "
-                            + " q. "
-                            + DatabaseContract.MainQuestionsTable.COLUMN_FORM_ID
-                            + " = ? "
-                    , new String[]{formId});
-        }
-        utility.getDatabase().beginTransaction();
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT DISTINCT * "
+                        + ", q."
+                        + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
+                        + " AS qstn_id "
+                        + " FROM "
+                        + DatabaseContract.MainQuestionsTable.TABLE_NAME
+                        + " q "
+                        + " LEFT JOIN "
+                        + DatabaseContract.ValidationsTable.TABLE_NAME
+                        + " v "
+                        + " ON "
+                        + " q. "
+                        + DatabaseContract.MainQuestionsTable.COLUMN_QUESTION_ID
+                        + " = "
+                        + " v. "
+                        + DatabaseContract.ValidationsTable.COLUMN_QUESTION_ID
+                        + " WHERE "
+                        + " q. "
+                        + DatabaseContract.MainQuestionsTable.COLUMN_FORM_ID
+                        + " = ? "
+                , new String[]{formId});
+
         while (cursor.moveToNext()) {
 
             Visit visit = new Visit(
@@ -372,10 +283,8 @@ String regOption= getRegistrationOption(uniqueId);
 
             questionList.add(visit);
         }
-        utility.getDatabase().setTransactionSuccessful();
-        utility.getDatabase().endTransaction();
 
-      return questionList;
+        return questionList;
     }
 
     public HashMap<String, String> fetchUserDetails() {
@@ -562,6 +471,14 @@ String regOption= getRegistrationOption(uniqueId);
                 + " = ? ", new String[]{uniqueId});
 
         return cursor.moveToFirst() ? cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_DOB)) : "";
+    }
+
+    public String getFormNameFromId(int formId) {
+        Cursor cursor = utility.getDatabase().rawQuery("SELECT visit_name FROM form_details WHERE form_id = '" + formId + "' group by form_id", null);
+
+        if (cursor.moveToFirst())
+            return cursor.getString(cursor.getColumnIndex(DatabaseContract.FormDetailsTable.COLUMN_VISIT_NAME));
+        else return null;
     }
 
     public String firstFilledForm(String uniqueId) {

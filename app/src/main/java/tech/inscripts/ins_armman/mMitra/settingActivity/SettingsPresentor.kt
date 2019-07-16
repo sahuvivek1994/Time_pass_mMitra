@@ -190,7 +190,16 @@ val utility= Utility()
 
     override fun onSuccessFormDownloading(jsonObject: JSONObject, hash: String) {
         mSettingsView?.hideProgressBar()
-        var value : Boolean =false
+
+        mSettingsInteractor?.saveFormData(jsonObject)
+
+        mSettingsView?.hideProgressBar()
+
+        /**
+         * Code commented of hash check it will get uncomment for new version in which hash will be used on server side also
+         */
+
+        /*var value : Boolean =false
 
         value= jsonObject.get("status") as Boolean
 
@@ -211,7 +220,7 @@ val utility= Utility()
         else{
             mSettingsView?.showSnackBar(mSettingsView!!.getContext().getString(R.string.forms_already_updated))
         }
-
+*/
     }
 
     override fun onUpdateCheckSuccess(updateModel: UpdateModel) {
@@ -253,10 +262,11 @@ if(jsonObject.has("response")) {
 
     override fun onSuccessRegistrationsDownloading(registration: RestoreRegistration) {
         if(registration.getTotal()>0){
-            registration.getRegistrationData()?.let { listRegistrations.addAll(it) }
+            listRegistrations.addAll(registration.getRegistrationData()!!)
             if(!totalPagesCalculated){
                 totalPagesCalculated= true
-                totalPages = Math.ceil(registration.getTotal() as Double / FORM_DOWNLOAD_LIMIT as Double).toInt()
+                //totalPages = Math.ceil(registration.getTotal() as Double / FORM_DOWNLOAD_LIMIT as Double).toInt()
+                totalPages = Math.ceil((registration.getTotal()).toDouble() / (FORM_DOWNLOAD_LIMIT).toDouble()).toInt()
             }
         }
         if(pageCounter<totalPages){
@@ -272,10 +282,10 @@ if(jsonObject.has("response")) {
 
     override fun onSuccessVisitsDownloading(visits: RestoreVisits) {
         if(visits.getTotal()>0){
-            listVisits.addAll(visits.getBeneficiariesLists()!!)
+            visits.getBeneficiariesLists()?.let { listVisits.addAll(it) }
             if(!totalPagesCalculated){
                 totalPagesCalculated =true
-                totalPages=Math.ceil(visits.getTotal() as Double / FORM_DOWNLOAD_LIMIT as Double).toInt()
+                totalPages=Math.ceil((visits.getTotal()).toDouble() / (FORM_DOWNLOAD_LIMIT).toDouble() ).toInt()
             }
         }
 

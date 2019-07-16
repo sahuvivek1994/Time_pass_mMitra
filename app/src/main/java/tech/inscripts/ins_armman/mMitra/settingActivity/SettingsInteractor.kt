@@ -386,7 +386,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
                 for (i in 0 until length) {
                     val formkeys = formArray.getJSONObject(i)
-                    val visitNameString = formkeys.optString("visit_name")
+                    val visitNameString = formkeys.optString("details")
                     visit_name = visitNameString
 
                     if (visitNameString.contains("languages")) {
@@ -500,7 +500,15 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             } catch (e: JSONException) {
 
             }
+            utility.getDatabase().setTransactionSuccessful()
+            utility.getDatabase().endTransaction()
             return null
+        }
+
+
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+            mProgressDialog?.dismiss()
         }
 
         fun deleteOldFormData() {

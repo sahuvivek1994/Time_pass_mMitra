@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -12,13 +13,13 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.drawable.LayerDrawable
 import android.net.ConnectivityManager
+import android.provider.MediaStore.Video.VideoColumns.LANGUAGE
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import org.joda.time.*
 import tech.inscripts.ins_armman.mMitra.R
-import tech.inscripts.ins_armman.mMitra.data.GraphPoint
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
 import tech.inscripts.ins_armman.mMitra.utility.Constants.*
@@ -34,24 +35,12 @@ import java.util.*
 class Utility {
     var dateUtility = DateUtility()
     val obj_telephonyInfo = TelephonyInfo()
-    var TAG = Utility::class.java.name
     val COMMAN_PREF_NAME = "CommonPrefs"
     val Language = "LANGUAGE"
-    val mDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-    val mDateTimeFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
-    val mDateDisplayFormat: SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
-
-
-    fun setLocaleInPreference(locale: String, context: Context) {
-        val prefs = context.getSharedPreferences(COMMAN_PREF_NAME, Activity.MODE_PRIVATE)
-        val editor = prefs.edit()
-        editor.putString(Language, locale)
-        editor.commit()
-    }
 
     fun getLanguagePreferance(context: Context): String {
         val prefs = context.getSharedPreferences(COMMAN_PREF_NAME, Activity.MODE_PRIVATE)
-        return prefs.getString(Language, "")
+        return prefs.getString(LANGUAGE, "")
     }
 
     /**
@@ -64,10 +53,10 @@ class Utility {
         try {
             setLocaleInPreference(locale, context)
 
-            var res: Resources = context.applicationContext.resources
+            val res = context.applicationContext.resources
             // Change locale settings in the app.
-            var dm: DisplayMetrics = res.displayMetrics
-            val conf: Configuration = res.configuration
+            val dm = res.displayMetrics
+            val conf = res.configuration
             val localeArray = locale.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (localeArray.size > 1) {
                 conf.locale = Locale(localeArray[0], localeArray[1])
@@ -79,6 +68,14 @@ class Utility {
         }
 
     }
+
+    fun setLocaleInPreference(locale: String, context: Context) {
+        var prefs : SharedPreferences = context.getSharedPreferences(COMMAN_PREF_NAME, Activity.MODE_PRIVATE)
+        var editor : SharedPreferences.Editor = prefs.edit()
+        editor.putString(Language, locale)
+        editor.commit()
+    }
+
 
 
     /**
@@ -103,6 +100,10 @@ class Utility {
             })
     }
 
+    fun getCurrentDateTime(): String {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Date())
+    }
+
     fun hasInternetConnectivity(context: Context?): Boolean {
         var rc = false
         val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
@@ -122,7 +123,7 @@ class Utility {
     fun getDeviceImeiNumber(context: Context): ArrayList<String> {
         val telephonyInfo = obj_telephonyInfo.getInstance(context)
         val imeiArray = ArrayList<String>()
-        //        imeiArray.add("867375022232910");
+             //  imeiArray.add("869432026925037");
         if (telephonyInfo.isDualSIM()) {
             imeiArray.add(telephonyInfo.imsiSIM1)
             imeiArray.add(telephonyInfo.imsiSIM2)
@@ -143,7 +144,7 @@ class Utility {
         var c=getUserId()
         var d: String=""
         if(true)
-            d=a as String +b +c
+            d=a.toString() +b +c
         return d
     }
 
@@ -223,29 +224,10 @@ class Utility {
         icon.setDrawableByLayerId(R.id.ic_badge, badge)
     }
 
-    fun getCurrentDateTime(): String {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Date())
-    }
+
 
     fun getDaysBetweenTwoDates(dateOne: String, dateTwo: String): Int {
         return Days.daysBetween(DateTime(dateOne), DateTime(dateTwo)).days
-    }
-
-    fun getMonthForInt(num: Int): String {
-        val cal = Calendar.getInstance()
-        cal.set(Calendar.MONTH, num)
-        val month_date = SimpleDateFormat("MMM", Locale.US)
-        return month_date.format(cal.time)
-    }
-
-    fun getSamMamUsingMUAC(muac: Float, context: Context): String {
-        var samMamStatus = ""
-        if (muac != -1f && muac <= 11.5) {
-            samMamStatus = context.getString(R.string.sam_status)
-        } else if (muac > 11.5 && muac <= 12.5) {
-            samMamStatus = context.getString(R.string.mam_status)
-        }
-        return samMamStatus
     }
 
     fun getAgeInMonths(year: Int, month: Int, day: Int): Int {
@@ -255,37 +237,6 @@ class Utility {
         return period.months
     }
 
-    fun getAgeInMonths(dob: String): Int {
-        val year = dateUtility.getYearFromDate(dob)
-        val month = dateUtility.getMonthFromDate(dob)
-        val day = dateUtility.getDayFromDate(dob)
-        return getAgeInMonths(year, month, day)
-    }
-
-    fun getWeightCategory(weight: Float, graphPoint: GraphPoint): String {
-
-        var weightType = WEIGHT_TYPE_NORMAL_WEIGHT
-
-        val median = graphPoint.getMedian()
-        val _2SD = graphPoint.get_2SD()
-        val _3SD = graphPoint.get_3SD()
-
-        if (weight > median) {
-            //Log.d("****", "Weight:"+weight + "WeightCategory:"+AWWConstants.WEIGHT_TYPE_HIGH_WEIGHT);
-            weightType = WEIGHT_TYPE_HIGH_WEIGHT
-        } else if (weight >= _2SD && weight <= median) {
-            weightType = WEIGHT_TYPE_NORMAL_WEIGHT
-            //Log.d("****", "Weight:"+weight + "WeightCategory:"+AWWConstants.WEIGHT_TYPE_NORMAL_WEIGHT);
-        } else if (weight >= _3SD && weight < _2SD) {
-            weightType = WEIGHT_TYPE_LOW_WEIGHT
-            //Log.d("****", "Weight:"+weight + "WeightCategory:"+AWWConstants.WEIGHT_TYPE_LOW_WEIGHT);
-        } else if (weight < _3SD) {
-            weightType = WEIGHT_TYPE_SEVERELY_LOW_WEIGHT
-            //Log.d("****", "Weight:"+weight + "WeightCategory:"+AWWConstants.WEIGHT_TYPE_SEVERELY_LOW_WEIGHT);
-        }
-
-        return weightType
-    }
 
     /**
      * this method is for child

@@ -8,7 +8,8 @@
     <string name="enter_password">Please enter password</string>
     <string name="action_settings">सेटिंग</string>
     <string name="sync">Sync</string>
-
+    <string name="continue_filling_forms">फॉर्म भरना जारी रखें</string>
+    <string name="view_filled_form">भरे हुए फॉर्म देखें</string>
     <string name="anc">ए एन सी जाँच</string>
     <string name="pnc">पी एन सी जाँच</string>
     <string name="child">शिशु की देखभाल</string>
@@ -266,6 +267,10 @@
     <string name="no_high_risk_child_msg">No high risk Child found</string>
     <string name="pending_label_text">Pending</string>
     <string name="incomplete_visit">incomplete visit</string>
+    <string name="btn_registration">REGISTRATION</string>
+    <string name="btn_incomplete_visit">incomplete visit</string>
+    <string name="btn_complete_visit">पूर्ण भेटी</string>
+    <string name="btn_user_details">वापरकर्ता तपशील</string>
     <string name="total_visits">Total visits</string>
     <string name="due_visits">Due visits</string>
     <string name="overdue_visits">Overdue visits</string>
@@ -296,6 +301,7 @@
     <string name="rep_total_visits">TOTAL VISITS</string>
     <string name="rep_due_visits">DUE VISITS</string>
     <string name="rep_overdue_visits">OVERDUE VISITS</string>
+    <string name="Reg_women_com">No complete Visit Found</string>
     <string-array name="filterTypes">
         <item>Overall Report</item>
         <item>Last 30 days Report</item>

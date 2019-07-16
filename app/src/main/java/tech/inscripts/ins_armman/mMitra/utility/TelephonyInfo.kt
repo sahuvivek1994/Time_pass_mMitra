@@ -32,7 +32,7 @@ class TelephonyInfo {
 
             val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
-            telephonyInfo?.imsiSIM1 = telephonyManager.deviceId
+            telephonyInfo?.imsiSIM1 = "869432026925037"//telephonyManager.deviceId
 
             Log.d(TAG, "getInstance: " + telephonyInfo?.imsiSIM1)
 

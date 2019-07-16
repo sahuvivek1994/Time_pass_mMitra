@@ -1,3 +1,4 @@
+/*
 package tech.inscripts.ins_armman.mMitra.forms;
 
 import android.animation.ObjectAnimator;
@@ -51,9 +52,11 @@ import static tech.inscripts.ins_armman.mMitra.utility.Constants.*;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.*;
 
 
+*/
 /**
  * This class is used to display ANC Form Questions with answer type dynamically from localDB
- */
+ *//*
+
 public class AncVisits extends AppCompatActivity {
 private static Utility utility=  new Utility();
     private static final String TAG = "AncVisits";
@@ -197,13 +200,15 @@ private static Utility utility=  new Utility();
     private Uri fileUri;
     Bitmap photo;
     ImageView iv;
-    /**
+    */
+/**
      * This method gives the next visit date of the ANM
      *
      * @param lmp      = lmp of the woman
      * @param no_weeks = days of the next visit
      * @return next visit date in string format
-     */
+     *//*
+
     public static String nextvisitdate(String lmp, String no_weeks) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat DMYFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
@@ -430,10 +435,12 @@ private static Utility utility=  new Utility();
             Boolean isCompulsoryQstnInFocus = false;
             int pageno = scrollId.get(scrollcounter);
 
-            /**
+            */
+/**
              * before going to next page check if validations field present on that page is filled or not.
              * Hashmap iterator is used for this purpose to check how many validations are their on single page.
-             */
+             *//*
+
             for (Map.Entry<String, Integer> entry : NextButtonvalidationlist.entrySet()) {
                 entry.getKey();
                 entry.getValue();
@@ -443,10 +450,12 @@ private static Utility utility=  new Utility();
                     if (entry.getValue() == pageno) {
                         totalpagecondition++;
 
-                        /**
+                        */
+/**
                          * validationlist is a TreeMap where questions which are compulsory its's keyword and answer is stored.
                          * if a specific answer is not stored for that keyword that means question is not answered by the user.
-                         */
+                         *//*
+
                         if (validationlist.get(entry.getKey()) != null && validationlist.get(entry.getKey()).length() > 0) {
                             counter++;
                         } else {
@@ -488,10 +497,12 @@ private static Utility utility=  new Utility();
                 }
             }
 
-            /**
+            */
+/**
              * this if condition is used to check whether total compulsory question on that page is answered or not.
              * if totalpagecondition matches with counter no. that means all the complusory questions are answered.
-             */
+             *//*
+
 
             if (totalpagecondition == counter) {
                 previous.setVisibility(View.VISIBLE);
@@ -506,11 +517,13 @@ private static Utility utility=  new Utility();
                 scrollcounter++;
                 parentid++;
 
-                /**
+                */
+/**
                  * this if is used to check whether last layout for the question is reached or not.
                  * scrollcounter gets updated after clicking on next button
                  * if scrollcounter values goes above Total layouts textViewCount(c) then saveform() is called.
-                 */
+                 *//*
+
                 if (scrollcounter > layoutcounter - 1) {
                     scrollcounter = layoutcounter - 1;
                     System.out.println("inside if condition+++++++" + scrollcounter);
@@ -573,7 +586,8 @@ private static Utility utility=  new Utility();
 
     }
 
-    /**
+    */
+/**
      * THis method is used to create edittext dynamically
      *
      *
@@ -585,7 +599,8 @@ private static Utility utility=  new Utility();
      * @param validationfield = this field describes whether question is compulsory or not
      * @param messages = this field contains json with multiple highrisk,counselling,referral conditions
      * @return layout (ll)
-     */
+     *//*
+
 
     @SuppressLint("NewApi")
     public LinearLayout createEdittext(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation, String lengthmax)
@@ -631,11 +646,13 @@ private static Utility utility=  new Utility();
 
 
 
-        /**
+        */
+/**
          * This if condition is used to check whether the validation is required or not.
          * if validation is present then its answer is stored in validationlist treemap which is used to next when next button is clicked
          * scroll id is saved in NextButtonvalidationlist treemap to identify how many complusory questions are present on that page
-         */
+         *//*
+
         if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
             tv.setError("");
             validationlist.put("" + et.getTag(), et.getText().toString().trim());
@@ -643,9 +660,11 @@ private static Utility utility=  new Utility();
 
         }
 
-        /**
+        */
+/**
          * this if condition is used to display the dataSource which is already entered by the woman
-         */
+         *//*
+
         if (womendetails.containsKey(keyword)) {
             et.setText(womendetails.get(keyword));
 
@@ -726,7 +745,8 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * THis method is used to create Date Field dynamically
      *
      * @param i               = for loop counter
@@ -737,7 +757,8 @@ private static Utility utility=  new Utility();
      * @param validationfield = this field describes whether question is compulsory or not
      * @param messages        = this field contains json with multiple highrisk,counselling,referral conditions
      * @return layout (ll)
-     */
+     *//*
+
     @SuppressLint({"ClickableViewAccessibility", "NewApi"})
     public LinearLayout createDate(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation) {
 
@@ -776,20 +797,24 @@ private static Utility utility=  new Utility();
 
         runtimevalidationlist.put(et.getId(), scrollID);
 
-        /**
+        */
+/**
          * This if condition is used to check whether the validation is required or not.
          * if validation is present then its answer is stored in validationlist treemap which is used to next when next button is clicked
          * scroll id is saved in NextButtonvalidationlist treemap to identify how many complusory questions are present on that page
-         */
+         *//*
+
         if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
             tv.setError("");
             validationlist.put("" + et.getTag(), et.getText().toString());
             NextButtonvalidationlist.put("" + et.getTag(), scroll.getId());
         }
 
-        /**
+        */
+/**
          * this if condition is used to display the dataSource which is already entered by the woman
-         */
+         *//*
+
 
 
         if (womendetails.containsKey(keyword)) {
@@ -1004,7 +1029,8 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * THis method is used to create time Field dynamically
      *
      * @param i               = for loop counter
@@ -1015,7 +1041,8 @@ private static Utility utility=  new Utility();
      * @param validationfield = this field describes whether question is compulsory or not
      * @param messages        = this field contains json with multiple highrisk,counselling,referral conditions
      * @return layout (ll)
-     */
+     *//*
+
     public LinearLayout createTime(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation) {
 
         System.out.println("inside method count" + i + "   keyword" + keyword);
@@ -1053,11 +1080,13 @@ private static Utility utility=  new Utility();
 
         runtimevalidationlist.put(et.getId(), scrollID);
 
-        /**
+        */
+/**
          * This if condition is used to check whether the validation is required or not.
          * if validation is present then its answer is stored in validationlist treemap which is used to next when next button is clicked
          * scroll id is saved in NextButtonvalidationlist treemap to identify how many complusory questions are present on that page
-         */
+         *//*
+
         if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
             tv.setError("");
             validationlist.put("" + et.getTag(), et.getText().toString());
@@ -1065,9 +1094,11 @@ private static Utility utility=  new Utility();
 
         }
 
-        /**
+        */
+/**
          * this if condition is used to display the dataSource which is already entered by the woman
-         */
+         *//*
+
         if (womendetails.containsKey(keyword)) {
             et.setText(womendetails.get(keyword));
 
@@ -1189,7 +1220,8 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * This method is used to create int dynamically
      *
      * @param answerType          = for loop counter
@@ -1213,7 +1245,8 @@ private static Utility utility=  new Utility();
      * @param Counsellingmsg      = counselling range and messages
      * @param messages            = = this field contains json with multiple highrisk,counselling,referral conditions
      * @return ll
-     */
+     *//*
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public LinearLayout createInt(String answerType, String language, final String formid, final String setid, final String keyword,
                                   final String validationfield, final String validationcondition, String validationmsg,
@@ -1350,11 +1383,13 @@ private static Utility utility=  new Utility();
 
         HighRiskRangelist.put("" + et.getId(), HighRiskRange);
         ReferralRangelist.put("" + et.getId(), RefferalRange);
-        /**
+        */
+/**
          * This if condition is used to check whether the validation is required or not.
          * if validation is present then its answer is stored in validationlist treemap which is used to next when next button is clicked
          * scroll id is saved in NextButtonvalidationlist treemap to identify how many complusory questions are present on that page
-         */
+         *//*
+
        if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
             if(keyword.equals("height_units")|| keyword.equals("height_of_women")
                     || keyword.equals("height_in_feet")) {
@@ -1379,9 +1414,11 @@ private static Utility utility=  new Utility();
             ConditionLists.put(keyword, messages);
         }
 
-        /**
+        */
+/**
          * this if condition is used to display the dataSource which is already entered by the woman
-         */
+         *//*
+
         if (womendetails.containsKey(keyword)) {
             et.setText(womendetails.get(keyword));
             if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
@@ -1680,7 +1717,8 @@ private static Utility utility=  new Utility();
 
 
     }
-    /**
+    */
+/**
      * THis method is used to create photo capture Field dynamically
      *
      * @param i                   = for loop counter
@@ -1692,7 +1730,8 @@ private static Utility utility=  new Utility();
      * @param validationmsg       = this field gives the error msg.
      * @param displayCondition
      * @return layout (ll)
-     */
+     *//*
+
 
     public LinearLayout createCapturePhoto(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, final String validationcondition, final String validationmsg, String messages, String displayCondition) {
         iv = new ImageView(this);
@@ -1750,9 +1789,11 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * This method is used to call camera function
-     */
+     *//*
+
     private void captureImage() {
 
         Name = "" + womendetails.get("lname") + " " + womendetails.get("hname") + " " + womendetails.get("surname");
@@ -1762,9 +1803,11 @@ private static Utility utility=  new Utility();
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
 
-    /**
+    */
+/**
      * Receiving activity result method will be called after closing the camera
-     */
+     *//*
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // if the result is capturing Image
@@ -1780,14 +1823,18 @@ private static Utility utility=  new Utility();
 
             } else if (resultCode == RESULT_CANCELED) {
                 // user cancelled Image capture
-                /*Toast.makeText(getApplicationContext(),
+                */
+/*Toast.makeText(getApplicationContext(),
                         "User cancelled image capture", Toast.LENGTH_SHORT)
-                        .show();*/
+                        .show();*//*
+
             } else {
                 // failed to capture image
-                /*Toast.makeText(getApplicationContext(),
+                */
+/*Toast.makeText(getApplicationContext(),
                         "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();*/
+                        .show();*//*
+
             }
         } else if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -1796,21 +1843,27 @@ private static Utility utility=  new Utility();
                 previewVideo();
             } else if (resultCode == RESULT_CANCELED) {
                 // user cancelled recording
-                /*Toast.makeText(getApplicationContext(),
+                */
+/*Toast.makeText(getApplicationContext(),
                         "User cancelled video recording", Toast.LENGTH_SHORT)
-                        .show();*/
+                        .show();*//*
+
             } else {
                 // failed to record video
-                /*Toast.makeText(getApplicationContext(),
+                */
+/*Toast.makeText(getApplicationContext(),
                         "Sorry! Failed to record video", Toast.LENGTH_SHORT)
-                        .show();*/
+                        .show();*//*
+
             }
         }
     }
 
-    /**
+    */
+/**
      * Display image from a path to ImageView
-     */
+     *//*
+
     private void previewCapturedImage() {
         try {
             // hide video preview
@@ -1841,9 +1894,11 @@ private static Utility utility=  new Utility();
         }
     }
 
-    /**
+    */
+/**
      * Previewing recorded video
-     */
+     *//*
+
     private void previewVideo() {
         try {
             // hide image preview
@@ -1854,20 +1909,26 @@ private static Utility utility=  new Utility();
         }
     }
 
-    /**
+    */
+/**
      * ------------ Helper Methods ----------------------
-     * */
+     * *//*
 
-    /**
+
+    */
+/**
      * Creating file uri to store image/video
-     */
+     *//*
+
     public Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
     }
 
-    /**
+    */
+/**
      * returning image / video
-     */
+     *//*
+
     private File getOutputMediaFile(int type) {
 
         // External sdcard location
@@ -1904,7 +1965,8 @@ private static Utility utility=  new Utility();
 
 
 
-    /**
+    */
+/**
      * THis method is used to create RAdio field dynamically
      *
      * @param i               = for loop counter
@@ -1917,7 +1979,8 @@ private static Utility utility=  new Utility();
      * @param messages        = = this field contains json with multiple highrisk,counselling,referral conditions
      * @param avoidRepetition
      * @return layout (ll)
-     */
+     *//*
+
     public LinearLayout createRadio(int i, final String quesid, String language, final String setid, final String keyword, String validationfield, final String formid, String messages, final String displayCondition, final int scrollID, final int orientation, String avoidRepetition) {
 
         //iron_sucrose_injection_given || hb_level
@@ -1949,10 +2012,12 @@ private static Utility utility=  new Utility();
 
         radiogroup = radiogroup + 1;
 
-        /**
+        */
+/**
          * This if condition is used to check if the question contains any dependant question.
-         */
-//        optionList = dbhelper.getANCEnglishoptions(quesid);  // this db statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
+         *//*
+
+//        optionList = dbhelper.getANCEnglishoptions(quesid);  // this dbHelper statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
         optionList = questionInteractor.getQuestionOptions(quesid, String.valueOf(FormID));
 
         final RadioGroup rg = new RadioGroup(this); //create the RadioGroup
@@ -1976,11 +2041,13 @@ private static Utility utility=  new Utility();
         ll.addView(tv);
 
 
-        /**
+        */
+/**
          * This if condition is used to check whether the validation is required or not.
          * if validation is present then its answer is stored in validationlist treemap which is used to next when next button is clicked
          * scroll id is saved in NextButtonvalidationlist treemap to identify how many complusory questions are present on that page
-         */
+         *//*
+
         if (validationfield != null && validationfield.equalsIgnoreCase("true")) {
             if (keyword.equals("tt_1_dose_given")) {
                 if(TT1Dose!=null) {
@@ -2023,9 +2090,11 @@ private static Utility utility=  new Utility();
         if (optionList.size() < 4) {
             ll.addView(rg);
 
-            /**
+            */
+/**
              * This for loop is used to display the radio buttons for the given question
-             */
+             *//*
+
             for (int k = 1; k < optionList.size(); k++) {
                 radio = radio + 1;
 
@@ -2060,8 +2129,10 @@ private static Utility utility=  new Utility();
                         Log.d("RadioButtonClicked : ",""+rb.getTag().toString());
 
 
-                        /** this logic is for checking whether woman has migrated or not
-                         and if yes then to close her current ANC visit.*/
+                        */
+/** this logic is for checking whether woman has migrated or not
+                         and if yes then to close her current ANC visit.*//*
+
                         if(keyword.equals("has_women_migrated")){
                             switch(clickedRB)
                             {
@@ -2109,13 +2180,15 @@ private static Utility utility=  new Utility();
                         onClickButtonFunctionality(rb, v, quesid, keyword, setid, id, tv, formid, optionList, displayCondition, "" + runtimevalidationlist.get(rg.getId()), isCompulsory, orientation);
 
 
-                       /* if (v.getTag().toString().equals("FA_stock_yes")) {
+                       */
+/* if (v.getTag().toString().equals("FA_stock_yes")) {
                             //get
                             // IfaTablets((LinearLayout) v.getParent().getParent().getParent());
 
 
                             formulaFATablet(getGestationalAgeWeek(defaultdate, womanLmp), (LinearLayout) v.getParent().getParent().getParent());
-                        }*/
+                        }*//*
+
 
                         if (v.getTag().toString().equals("do_you_have_enough_stock_of_ifa_tablet_yes")) {
                             getIfaTablets((LinearLayout) v.getParent().getParent().getParent());
@@ -2197,7 +2270,8 @@ private static Utility utility=  new Utility();
         NextButtonvalidationlist.remove(ll.getTag());
     }
 
-    /**
+    */
+/**
      * THis method is used to create customize dropdown widget dynamically
      *
      * @param quesid             = question id of the registration
@@ -2208,7 +2282,8 @@ private static Utility utility=  new Utility();
      * @param formid             = formid
      * @param multipleoptionlist = list of options which is to be displayed in dropdown
      * @param isCompulsory
-     */
+     *//*
+
     public void multipleRadioButton(final String quesid, final String keyword, final String setid, final int id, final TextView tv, final String formid, List<Visit> multipleoptionlist, String displayCondition, final String pageScrollId, final Boolean isCompulsory, final int orientation) {
 
         final int[] multiplecounter = {0};
@@ -2282,20 +2357,24 @@ private static Utility utility=  new Utility();
 
                     }
 
-                    /**
+                    */
+/**
                      * I am an alien and i have manipulated the system enough to cause problems.
                      * If you can detect those, you are saved or else,
                      * you will see something when you "try" to release the app which will definitely not serve your purpose
                      *
                      * Someone has said - "The problem is not the problem; the problem is your attitude about the problem."
-                     */
+                     *//*
+
 //                    String Messages = dbhelper.getHighRiskConditionForRadio("" + m.getKeyword());
                     String Messages = questionInteractor.getHighRiskCondition("" + m.getKeyword());
                     String counsel_message = null;
 
-                    /**
+                    */
+/**
                      * This logic is used to check whether there is any High risk,Counselling or Diagnostic referral on button click
-                     */
+                     *//*
+
 
                     if (Messages != null && Messages.length() > 0) {
                         StoredHighRiskRanges = new ArrayList<>();
@@ -2361,10 +2440,12 @@ private static Utility utility=  new Utility();
                         patientvisitlist.remove(keyword);
                     }
 
-                    /**
+                    */
+/**
                      * This if condition is used to check whether dependant question is present or not
                      * if dependantList size is 0 or null means question does'nt have any dependant question.
-                     */
+                     *//*
+
                     if (dependantList != null && dependantList.size() > 0) {
 
                         if (!dependantKeywordPresent.containsValue("" + m.getKeyword())) {
@@ -2375,13 +2456,15 @@ private static Utility utility=  new Utility();
 
                             dependantKeywordPresent.put(keyword, "" + m.getKeyword());
 
-                            /**
+                            */
+/**
                              * This if condition is used to check whether dependant layout is displayed or not
                              * this is used as a validation that if once the layout is displayed then again
                              * clicking on the same button twice the layout should be displayed only once
                              * for eg. if tt2yes is clicked for the first time then dependant layout should be
                              * displayed but again clicking on it dependant layout should not be displayed.
-                             */
+                             *//*
+
 
                             if (!(MainQuestempstoredependant.containsKey(keyword))) {
                                 // this hashmap is used to store the layout id for
@@ -2471,7 +2554,8 @@ private static Utility utility=  new Utility();
 
     }
 
-    /**
+    */
+/**
      * THis method is used to create Checkbox field dynamically
      *
      * @param i               = for loop counter
@@ -2483,7 +2567,8 @@ private static Utility utility=  new Utility();
      * @param validationfield = this field describes whether question is compulsory or not
      * @param messages        = = this field contains json with multiple highrisk,counselling,referral conditions
      * @return layout (ll)
-     */
+     *//*
+
 
 
     public LinearLayout createCheckbox(int i, String quesid, final String formid, final String setid, String language, final String keyword, final String validationfield, String messages, String displayCondition, int scrollID, final int orientation) {
@@ -2532,11 +2617,13 @@ private static Utility utility=  new Utility();
             NextButtonvalidationlist.put(keyword, scroll.getId());
         }
 
-       /* if (i == 1) {
-            optionList = dbhelper.dependantgetANCEnglishoptions(quesid);  // this db statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
+       */
+/* if (i == 1) {
+            optionList = dbhelper.dependantgetANCEnglishoptions(quesid);  // this dbHelper statement gets q.keyword,q.answer_type,qi.keyword,qi.dependants,qi.depend_lang_eng,qi.depend_lang_mara,qi.action for that specific quesid in english
         } else {
 //            optionList = dbhelper.getANCEnglishoptions(quesid);
-        }*/
+        }*//*
+
 
         optionList = questionInteractor.getQuestionOptions(quesid, String.valueOf(FormID));
 
@@ -2669,14 +2756,16 @@ private static Utility utility=  new Utility();
 
     }
 
-    /**
+    */
+/**
      * This method is used to display video questions and link dynamically
      *
      * @param i=        for loop counter
      * @param language= question text
      * @param Keyword=  question keyword
      * @return ll
-     */
+     *//*
+
     public LinearLayout createVideo(int i, String language, String Keyword, int scrollID) {
         try {
             JSONObject obj = new JSONObject(language);
@@ -2736,7 +2825,8 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * THis method is used to create Label Field dynamically
      *
      * @param i                   = for loop counter
@@ -2747,7 +2837,8 @@ private static Utility utility=  new Utility();
      * @param validationcondition = this field describes whether the question contains any condition for validation
      * @param validationmsg       = this field gives the error msg.
      * @return layout (ll)
-     */
+     *//*
+
     public LinearLayout createLabel(int i, String language, final String formid, final String keyword, final String validationfield, final String validationcondition, final String validationmsg, String displayCondition, int scrollID, String calculations, String setid) {
 
         System.out.println("inside createEdittext count" + i + "   keyword" + keyword);
@@ -2811,10 +2902,12 @@ private static Utility utility=  new Utility();
 
         //villageList=dbhelper.getVillageList();
 
-		/*LinearLayout.LayoutParams lp_label=new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Frame.getLayoutParams().height));
+		*/
+/*LinearLayout.LayoutParams lp_label=new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Frame.getLayoutParams().height));
         lp_label.setMargins(10, 10, 10, 10);
 		ll.setLayoutParams(lp_label);
-		ll.setGravity(Gravity.CENTER);*/
+		ll.setGravity(Gravity.CENTER);*//*
+
 
 
         ll.setTag(keyword);
@@ -2823,9 +2916,11 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * This method is used to display dependant questions dynamically
-     */
+     *//*
+
     public void DisplayDependantQuestions(List<Visit> dependantList) {
 
 
@@ -2926,7 +3021,8 @@ private static Utility utility=  new Utility();
         MainQuestempstoredependant.put(qstnData.getParentQstnKeyword(), tempdependantStore);
     }
 
-    /**
+    */
+/**
      * THis method is used to create dependant edittext dynamically
      *
      * @param i                    = loop id
@@ -2939,7 +3035,8 @@ private static Utility utility=  new Utility();
      * @param validationConditions = validations if present on dependant question
      * @param messages             = this field contains json with multiple highrisk,counselling,referral condition.
      * @return ll
-     */
+     *//*
+
     public LinearLayout createdependentEdittext(int i, String language, final String keyword, final String radiotag, final String formid, final String setid, final String dependantQuesKeyword, final String validationConditions, final String messages, String displayCondition, final String PageScrollID, final int orientation) {
 
 
@@ -3083,7 +3180,8 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * THis method is used to create dependant date dynamically
      *
      * @param i                    = loop id
@@ -3096,7 +3194,8 @@ private static Utility utility=  new Utility();
      * @param validationConditions = validations if present on dependant question
      * @param messages             = this field contains json with multiple highrisk,counselling,referral conditions
      * @return ll
-     */
+     *//*
+
     public LinearLayout createdependentDate(int i, String language, final String keyword, final String radiotag, final String formid, final String setid, final String dependantQuesKeyword, final String validationConditions, final String messages, String displayCondition, final String PageScrollID, final int orientation) {
 
         System.out.println("inside method count**" + i + "*** keyword**" + keyword + "***radiotag***" + radiotag + "***dependantQuesKeyword**" + dependantQuesKeyword + "***validationConditions***" + validationConditions);
@@ -3532,7 +3631,8 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * THis method is used to create dependant int dynamically
      *
      * @param i                    = loop id
@@ -3545,7 +3645,8 @@ private static Utility utility=  new Utility();
      * @param validationConditions = validations if present on dependant question
      * @param messages             = this field contains json with multiple highrisk,counselling,referral conditions
      * @return ll
-     */
+     *//*
+
     public LinearLayout createdependentInt(int i, String language, final String answerType, final String radiotag, final String formid, final String setid, final String dependantQuesKeyword, final String validationConditions, final String messages, String displayCondition, final String PageScrollID, final int orientation) {
 
         System.out.println("inside method count createdependentInt **" + i + "*** keyword**" + answerType + "***radiotag***" + radiotag + "***dependantQuesKeyword**" + dependantQuesKeyword + "***validationConditions***" + validationConditions + "*** pageScrollID***" + PageScrollID);
@@ -3874,7 +3975,8 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * THis method is used to create dependant date dynamically
      *
      * @param i                    = loop id
@@ -3887,7 +3989,8 @@ private static Utility utility=  new Utility();
      * @param validationConditions = validations if present on dependant question
      * @param messages             = this field contains json with multiple highrisk,counselling,referral conditions
      * @return ll
-     */
+     *//*
+
 
     public LinearLayout createdependantRadio(int i, final String quesid, String language, final String keyword, final String formid, final String setid, final String dependantQuesKeyword, final String validationConditions, final String messages, String displayCondition, final String PageScrollID, final int orientation) {
 
@@ -4151,10 +4254,12 @@ private static Utility utility=  new Utility();
                         dependantList = questionInteractor.getDependantQuesList("" + rb.getTag(), formid, ll_sub, dependantQuesKeyword, "" + scroll_temp.getId());
 
 
-                        /**
+                        */
+/**
                          * This if condition is used to check whether dependant question is present or not
                          * if dependantList size is 0 or null means question dosen't have any depandant question.
-                         */
+                         *//*
+
                         if (dependantList != null && dependantList.size() > 0) {
 
                             if (dependantKeywordPresent.containsValue("" + rb.getTag())) {
@@ -4164,11 +4269,13 @@ private static Utility utility=  new Utility();
                                 removeDependent(ll_4, dependantQuesKeyword);
                                 dependantKeywordPresent.put(dependantQuesKeyword, "" + rb.getTag());
 
-                                /**
+                                */
+/**
                                  * This if condition is used to check whether dependant layout is displayed or not
                                  * this is used as a validation that if once the layout is displayed then again clicking on the same button twice the layout should be displayed only once
                                  * for eg. if tt2yes is clicked for the first time then dependant layout should be displayed but again clicking on it dependant layout should not be displayed.
-                                 */
+                                 *//*
+
 
                                 if (!dependantLayout.containsKey(dependantQuesKeyword) && !(MainQuestempstoredependant.containsKey(dependantQuesKeyword))) {
                                     ArrayList tempdependantStore = new ArrayList<String>();
@@ -4220,14 +4327,16 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * THis method is used to create dependant label dynamically
      *
      * @param i        = loop id
      * @param language = dependant question text
      * @param keyword  = main question keyword
      * @return ll
-     */
+     *//*
+
     public LinearLayout createCounsellingLabel(int i, String language, final String keyword, final String PageScrollID) {
 
         //System.out.println("inside createEdittext textViewCount" + i + "   keyword" + keyword);
@@ -4267,9 +4376,11 @@ private static Utility utility=  new Utility();
         return ll;
     }
 
-    /**
+    */
+/**
      * This method is used to save the answer's of the woman in local DB.
-     */
+     *//*
+
     public void saveForm() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder
@@ -4332,13 +4443,15 @@ private static Utility utility=  new Utility();
                 .show();
     }
 
-    /**
+    */
+/**
      * This dialog is used to display the next visit date of the ANM
      *
      * @param Next_Visit_name = which is the next vist
      * @param Next_Visit_date = next visit date
      * @param Nextvisit       = Name of the next visit
-     */
+     *//*
+
     // TODO change next visit logic - ArogyaSakhi
     public void NextVisit_dialog(String Next_Visit_name, String Next_Visit_date, String Nextvisit) throws JSONException {
         if (Nextvisit != null && Nextvisit.length() > 0 && Nextvisit.equalsIgnoreCase("NextVisit")) {
@@ -4382,11 +4495,13 @@ private static Utility utility=  new Utility();
 
     }
 
-    /**
+    */
+/**
      * This method is used to display patient visit summary dialog with its list
      *
      * @throws JSONException
-     */
+     *//*
+
     public void ImportantNote_Dialog() throws JSONException {
         HashMap<String, String> dependentAnswerMap = questionInteractor.getOptionsLabel(String.valueOf(FormID));
 
@@ -4510,9 +4625,11 @@ private static Utility utility=  new Utility();
         }
     }
 
-    /**
+    */
+/**
      * This method is used to display high risk dialog with high risk list
-     */
+     *//*
+
     public void highriskdialog() {
         try {
             Log.e("ANCVisit"," In the highriskdialog ");
@@ -4610,9 +4727,11 @@ private static Utility utility=  new Utility();
 
     }
 
-    /**
+    */
+/**
      * This method is used to display diagnostic referral dialog with its list
-     */
+     *//*
+
     public void referraldialog() {
         try {
             Log.e("ANCVisit"," In the referraldialog ");
@@ -4703,9 +4822,11 @@ private static Utility utility=  new Utility();
         }
     }
 
-    /**
+    */
+/**
      * This method is used to store ANC related dataSource in local DB.
-     */
+     *//*
+
     public long StoreANCForm() {
         long insertedRowIdReferralWomenTable = -1;
 
@@ -4715,8 +4836,10 @@ private static Utility utility=  new Utility();
 
             if (highrisklist.size() > 0) {
                 questionInteractor.saveReferralData(highrisklist, uniqueId, formid);
-               /* insertedRowIdReferralWomenTable = dbhelper.inserthighriskwomen(highrisklist, "" + uniqueId, dbhelper.getANMInfo("ANMSubCenterId"), "");
-                dbhelper.updatehighrisklist(uniqueId, "1");*/
+               */
+/* insertedRowIdReferralWomenTable = dbhelper.inserthighriskwomen(highrisklist, "" + uniqueId, dbhelper.getANMInfo("ANMSubCenterId"), "");
+                dbhelper.updatehighrisklist(uniqueId, "1");*//*
+
             }
 
             if (FormID == DELIVERY_FORM_ID) {
@@ -4748,7 +4871,8 @@ private static Utility utility=  new Utility();
             finish();
 
 
-           /* calculatevisitList = dbhelper.getNextVisit("" + (Integer.parseInt(formid) + 1));
+           */
+/* calculatevisitList = dbhelper.getNextVisit("" + (Integer.parseInt(formid) + 1));
             calculatevisitList1 = dbhelper.getVisitWeek_list();
              if(!isAncPncEdit) {
                  if (calculatevisitList != null && calculatevisitList.size() > 0) {
@@ -4760,18 +4884,21 @@ private static Utility utility=  new Utility();
                  }
              }else{
                  finish();
-             }*/
+             }*//*
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return insertedRowIdReferralWomenTable;
     }
 
-    /**
+    */
+/**
      * This methos is used to store Closure form related dataSource in local DB.
      *
      * @param closureType
-     */
+     *//*
+
     public void StoreClosureForm(String closureType) {
 
             if (closureType.equalsIgnoreCase("Mother")) {
@@ -4785,9 +4912,11 @@ private static Utility utility=  new Utility();
             finish();
     }
 
-    /**
+    */
+/**
      * This methos is used to store registration of the newly born children related dataSource in local DB.
-     */
+     *//*
+
     public long StoreChildCareRegForm() {
         long insertedRowIdReferralWomenTable = -1;
         wages_status=0;
@@ -4826,13 +4955,15 @@ private static Utility utility=  new Utility();
         return insertedRowIdReferralWomenTable;
     }
 
-    /**
+    */
+/**
      * This method is used to calculate ANM's visit and delivery date of the women
      *
      * @param currentDate=Sysdate
      * @param WomanLmp=lmp        of the women
      * @return ANM's visit
-     */
+     *//*
+
     public int date(String currentDate, String WomanLmp) {
         String ancvisit = null;
 
@@ -4960,12 +5091,14 @@ private static Utility utility=  new Utility();
         backForm();
     }
 
-    /**
+    */
+/**
      * This method is used to remove depend questions
      *
      * @param ll_4    = linear layout which is to be removed
      * @param keyword = question keyword
-     */
+     *//*
+
     public void removeDependent(LinearLayout ll_4, String keyword) {
         if (MainQuestempstoredependant.containsKey(keyword)) {
             removeDependentQuestion = MainQuestempstoredependant.get(keyword);
@@ -5002,14 +5135,16 @@ private static Utility utility=  new Utility();
         }
     }
 
-    /**
+    */
+/**
      * This method is used parsed high risk ranges,counselling ranges and patient visit summary ranges.
      *
      * @param validationConditions = validations present on the questions
      * @param messages             = high risk,counselling,referral ranges
      * @param dependantQuesKeyword = keyword of the dependant question
      * @param et                   = edittext field
-     */
+     *//*
+
     public void calculations(String validationConditions, String messages, String dependantQuesKeyword, EditText et) {
         try {
 
@@ -5130,11 +5265,13 @@ private static Utility utility=  new Utility();
         }
     }
 
-    /**
+    */
+/**
      * This method is used to store high risk,counselling, referral ranges and it's error messages after parsing in their respective hash list
      *
      * @param messages = json that contains high risk,counselling, referral ranges and it's error messages.
-     */
+     *//*
+
     public void StorePVSmsgs(String messages) {
         try {
             System.out.println("StorePVSmsgs messages = " + messages);
@@ -5216,14 +5353,16 @@ private static Utility utility=  new Utility();
         }
     }
 
-    /**
+    */
+/**
      * This method is used to store high risk,counselling, referral  messages in their respective lists so as to display the values in Patient Visit Summary,Patient Visit Summary-HighRisk Referral,Patient Visit Summary-Diagnostic Referral dialogs
      *
      * @param editTextValue = enter value in editText field
      * @param et            = edittext widget
      * @param keyword       = keyword of the question
      * @param setid         = setid of the question.
-     */
+     *//*
+
     public void StorePatientVisitHighRiskDiagnosticValues(String editTextValue, EditText et, String keyword, String setid) {
         if (StoredCounsellingRanges != null && StoredCounsellingRanges.size() > 0) {
             if (editTextValue != null && editTextValue.length() > 0) {
@@ -5455,13 +5594,15 @@ private static Utility utility=  new Utility();
 
     }
 
-    /**
+    */
+/**
      * This method is used to display counselling message on radio button's click.
      *
      * @param counsel_message = counselling message text which is to be displayed
      * @param v               = view on which the layout is dependent on.
      * @param keyword         = keyword of the question.
-     */
+     *//*
+
     public void displayCounsellingMsg(String counsel_message, View v, String keyword) {
 
         if (counclingMsgQstnKeywords.contains(keyword)) {
@@ -5539,13 +5680,15 @@ private static Utility utility=  new Utility();
         }
     }
 
-    /**
+    */
+/**
      * This method is used to calculate gestational age of the women in weeks in every ANC visit.
      *
      * @param currentDate = System date
      * @param WomanLmp    = lmp date of the women
      * @return = age in weeks
-     */
+     *//*
+
     public int getGestationalAgeWeek(String currentDate, String WomanLmp) {
         String ancvisit = null;
 
@@ -5613,12 +5756,14 @@ private static Utility utility=  new Utility();
 
     }
 
-    /**
+    */
+/**
      * This method is used to calculate the formula for FA tablet
      *
      * @param gestionalAge = women gestational age in integer
      * @param ll4          = linear layout on which the calculated value is to be displayed.
-     */
+     *//*
+
     public void formulaFATablet(int gestionalAge, LinearLayout ll4) {
         int FATablet = 98 - (gestionalAge * 7);
         LinearLayout faLayout = (LinearLayout) ll4.findViewWithTag("number_of_fa_tablet");
@@ -5632,11 +5777,13 @@ private static Utility utility=  new Utility();
         validationlist.put("number_of_fa_tablet", "" + FATablet);
     }
 
-    /**
+    */
+/**
      * This method is used to calculate the formula for FA tablet
      *
      * @param ll4 = linear layout on which the calculated value is to be displayed
-     */
+     *//*
+
     public void getIfaTablets(LinearLayout ll4) {
         double hbLevel = Double.parseDouble(womendetails.get("hb_level"));
 
@@ -5761,9 +5908,11 @@ private static Utility utility=  new Utility();
 
 //        String Messages = dbhelper.getHighRiskConditionForRadio("" + button.getTag());
         String Messages = questionInteractor.getHighRiskCondition("" + button.getTag());
-        /**
+        */
+/**
          * This logic is used to check whether there is any High risk,Counselling or Diagnostic referral on button click
-         */
+         *//*
+
         try {
             if (Messages != null && Messages.length() > 0) {
                 StoredHighRiskRanges = new ArrayList<>();
@@ -5851,10 +6000,12 @@ private static Utility utility=  new Utility();
 
         }
 
-        /**
+        */
+/**
          * This if condition is used to check whether dependant question is present or not
          * if dependantList size is 0 or null means question dosen't have any depandant question.
-         */
+         *//*
+
         if (dependantList != null && dependantList.size() > 0) {
 
             if (!dependantKeywordPresent.containsValue("" + button.getTag())) {
@@ -5865,11 +6016,13 @@ private static Utility utility=  new Utility();
 
                 System.out.println("dependantKeywordPresent 2=....." + dependantKeywordPresent);
 
-                /**
+                */
+/**
                  * This if condition is used to check whether dependant layout is displayed or not
                  * this is used as a validation that if once the layout is displayed then again clicking on the same button twice the layout should be displayed only once
                  * for eg. if tt2yes is clicked for the first time then dependant layout should be displayed but again clicking on it dependant layout should not be displayed.
-                 */
+                 *//*
+
 
                 if (!dependantLayout.containsKey(keyword) && !(MainQuestempstoredependant.containsKey(keyword))) {
                     tempdependantStore = new ArrayList<String>();
@@ -5978,7 +6131,7 @@ private static Utility utility=  new Utility();
             decimalFormat.applyPattern("#.00");
             //System.out.println("ANC Visit NAME++++++"+b.getString("ANCVisit"));
 
-            //formid= dbhelper.getSelectedAncForm(b.getString("ANCVisit")); // gets id of the form after passing visit_name (eg.ANC Visit1 id is 2 in db)
+            //formid= dbhelper.getSelectedAncForm(b.getString("ANCVisit")); // gets id of the form after passing visit_name (eg.ANC Visit1 id is 2 in dbHelper)
             uniqueId = b.getString(UNIQUE_ID);
             clickedFormId = b.getInt(clickedForm);
                 formid = b.getString(FORM_ID);
@@ -5986,7 +6139,9 @@ private static Utility utility=  new Utility();
                 if(clickedFormId == 0) {
                     clickedFormId = Integer.valueOf(formid);
                 }
-            /**if the registration option is direct child then the*/
+            */
+/**if the registration option is direct child then the*//*
+
                 regOption= QuestionInteractor.getRegistrationOption(uniqueId);
             if(regOption.equals("direct_reg_child")) {
                 if(clickedFormId!=22){
@@ -6123,7 +6278,9 @@ private static Utility utility=  new Utility();
             drawableDependentQstn.setStroke(1, Color.WHITE);
             drawableDependentQstn.setColor(ContextCompat.getColor(AncVisits.this, R.color.dependent_question_background));
 
-/**this if loop is to check if the child is registered directly.*/
+*/
+/**this if loop is to check if the child is registered directly.*//*
+
             if(!regOption.equals("direct_reg_child")) {
                 String firstForm1 = questionInteractor.firstFilledForm(uniqueId);
                 firstForm = Integer.valueOf(firstForm1);
@@ -6133,16 +6290,20 @@ private static Utility utility=  new Utility();
             TTDose1Date = questionInteractor.TTDoseDate(uniqueId, formid);
             TT2Dose = questionInteractor.TT2Dose(uniqueId, FormID);
 
-            /**
+            */
+/**
              * For loop for displaying questions for enrollment form which is stored in localDB.
-             */
+             *//*
+
             for (int j = counter; j < alertList.size(); j++) {
 
+*/
 /**
  * Display only 4 questions on the layout if counter goes above 4 break loop and create new layout for further questions
  * if answer_type contains capturephoto then break and loop and include that question on new layout
  *
- */
+ *//*
+
                 if (layout_control_counter == 0 || layout_control_counter % 4 == 0 || alertList.get(j).getAnswerType().equalsIgnoreCase("capturephoto") || alertList.get(j).getAnswerType().equalsIgnoreCase("sublabel") || alertList.get(j).getAnswerType().equalsIgnoreCase("label")|| PreviousQuesAnswertype.equals("label"))
                 {
                     layout_control_counter=0;
@@ -6194,7 +6355,9 @@ private static Utility utility=  new Utility();
 
                 ll_4layout.addView(ll);
 
-                /** This  if condition is to check the customised conditions for specific keywords  */
+                */
+/** This  if condition is to check the customised conditions for specific keywords  *//*
+
 
                 if (alertList.get(j).keyword.equals("height_units") && FormID>firstForm && firstForm!=1 && FormID!=firstForm ) {
                     ArrayList<String> heightDetails= questionInteractor.womenHeight(uniqueId,formid);
@@ -6235,7 +6398,9 @@ private static Utility utility=  new Utility();
                         }
                         else if (FormID > firstForm && firstForm != 1 && FormID != firstForm) {
 
-                            /**to display TTDose2 question after 30 days of TTDose1 is given*/
+                            */
+/**to display TTDose2 question after 30 days of TTDose1 is given*//*
+
                             Log.d("TTDose ","tt1date" + TTDose1Date);
                             DateFormat format= new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                             Date todayDate = new Date();
@@ -6419,3 +6584,4 @@ private static Utility utility=  new Utility();
     }
 
 }
+*/

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import tech.inscripts.ins_armman.mMitra.HomeActivity
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
@@ -19,9 +20,11 @@ class Login : AppCompatActivity(),ILoginView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
-        val button_login=findViewById<Button>(R.id.buttonLogin);
+        val button_login=findViewById<Button>(R.id.buttonLogin)
+        var progressBar_login =findViewById<ProgressBar>( R.id.progressBarLogin)
        initializeDBHelper()
         button_login.setOnClickListener(View.OnClickListener {
+            //progressBar_login.visibility= View.VISIBLE
             val myIntent = Intent(this@Login, HomeActivity::class.java)
             startActivity(myIntent)
         } )
@@ -62,5 +65,12 @@ class Login : AppCompatActivity(),ILoginView {
 
     override fun setAuthenticationFailedError() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 }

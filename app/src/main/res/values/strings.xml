@@ -45,6 +45,8 @@
     <string name="save_form_message">Do you want to store details of the Form?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="continue_filling_forms">Continue Filling Forms</string>
+    <string name="view_filled_form">View filled Forms</string>
     <string name="Toast_msg_for_formsavesuccessfully">Form Saved Successfully</string>
     <string name="enter_valid_lmp">Please Enter valid Lmp date</string>
     <string name="exceed_curnt_dt">Entered date exceeds current date</string>
@@ -84,7 +86,7 @@
     <string name="title_english">English</string>
     <string name="title_marathi">मराठी</string>
     <string name="title_hindi">हिंदी</string>
-
+    <string name="Reg_women_com">No complete Visit Found</string>
     <string-array name="languages">
         <item>@string/title_english</item>
         <item>@string/title_marathi</item>
@@ -267,7 +269,11 @@
     <string name="no_high_risk_woman_msg">No high risk Woman found</string>
     <string name="no_high_risk_child_msg">No high risk Child found</string>
     <string name="pending_label_text">Pending</string>
-    <string name="incomplete_visit">Incomplete visit</string>
+    <string name="incomplete_visit">incompletre visits</string>
+    <string name="btn_registration">REGISTRATION</string>
+    <string name="btn_incomplete_visit">INCOMPLETE VISITS</string>
+    <string name="btn_complete_visit">COMPLETE VISITS</string>
+    <string name="btn_user_details">USER DETAILS</string>
     <string name="total_visits">Total visits</string>
     <string name="due_visits">Due visits</string>
     <string name="overdue_visits">Overdue visits</string>
