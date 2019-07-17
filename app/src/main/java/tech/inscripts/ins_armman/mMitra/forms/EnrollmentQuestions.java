@@ -187,7 +187,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
     private int mMigrantStatus = 0;
     private String uniqueId="";
     private QuestionInteractor questionInteractor;
-    private String mAppLanguage="en";
+    public String mAppLanguage = "eng";
     private HashMap<String, String> hashMapUserDetails = new HashMap<>();
     GradientDrawable drawableMainQstn, drawableDependentQstn;
 private static Utility utility= new Utility();
