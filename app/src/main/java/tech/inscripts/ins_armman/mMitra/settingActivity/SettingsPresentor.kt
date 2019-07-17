@@ -85,8 +85,8 @@ val utility= Utility()
         if (b) {
             mSettingsView?.showProgressBar(mSettingsView?.getContext()?.getString(R.string.downloading_data)!!)
             val details = RequestFormModel()
-            details.userName=mUsername
-            details.password=mPassword
+            details.setusername("test_user1")
+            details.setpassword("test_user1")
             details.setImei(utility.getDeviceImeiNumber(mSettingsView!!.getContext()))
             details.setHash(mSettingsInteractor!!.getHash(HASH_ITEM_FORM))
             details.setShowdata("true")

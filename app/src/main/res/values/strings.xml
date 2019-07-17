@@ -94,12 +94,12 @@
     </string-array>
 
     <string-array name="languages_value" translatable="false">
-        <item>en</item>
+        <item>eng</item>
         <item>mr</item>
         <!--<item>hi</item>-->
     </string-array>
 
-    <string name="default_language">en</string>
+    <string name="default_language">eng</string>
 
     <string name="forms_already_updated">Forms already updated</string>
     <string name="visit_history">Visits History</string>

@@ -13,6 +13,7 @@ import tech.inscripts.ins_armman.mMitra.HomeActivity
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
+import tech.inscripts.ins_armman.mMitra.utility.Utility
 
 class Login : AppCompatActivity(), ILoginView {
 
@@ -24,15 +25,30 @@ class Login : AppCompatActivity(), ILoginView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
-        val button_login=findViewById<Button>(R.id.buttonLogin);
+
+        val uti = Utility()
+        val applicationLanguage = uti.getLanguagePreferance(applicationContext)
+        if(applicationLanguage.isEmpty())
+        {
+            uti.setApplicationLocale(applicationContext,"eng")
+        }
+        else
+        {
+            uti.setApplicationLocale(applicationContext,applicationLanguage)
+        }
+
        initializeDBHelper()
-        button_login.setOnClickListener(View.OnClickListener {
+        buttonLogin.setOnClickListener(View.OnClickListener {
             val username = edittext_username.text.toString()
             val password = edittext_pass.text.toString()
             if (username.equals("")) {
                 setUsernameError()
             } else if (password.equals("")) {
                 setPasswordError()
+            }
+            else
+            {
+                openHomeActivity()
             }
 
         })
@@ -87,7 +103,6 @@ class Login : AppCompatActivity(), ILoginView {
     override fun openHomeActivity() {
         val myIntent = Intent(this@Login, HomeActivity::class.java)
         startActivity(myIntent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun setAuthenticationFailedError() {

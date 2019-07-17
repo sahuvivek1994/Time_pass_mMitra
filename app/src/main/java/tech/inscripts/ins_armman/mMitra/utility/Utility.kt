@@ -40,7 +40,7 @@ class Utility {
 
     fun getLanguagePreferance(context: Context): String {
         val prefs = context.getSharedPreferences(COMMAN_PREF_NAME, Activity.MODE_PRIVATE)
-        return prefs.getString(LANGUAGE, "")
+        return prefs.getString(LANGUAGE, "eng")
     }
 
     /**
