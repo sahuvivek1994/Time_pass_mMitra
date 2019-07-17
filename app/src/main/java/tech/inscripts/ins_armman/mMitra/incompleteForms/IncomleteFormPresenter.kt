@@ -19,10 +19,7 @@ var space= " "
         var cursor : Cursor = interactor?.getIncompleteFormList()!!
         if(cursor!=null && cursor.moveToFirst()){
             do{
-               var fName=cursor.getString(cursor.getColumnIndex("first_name"))
-               var mName=cursor.getString(cursor.getColumnIndex("middle_name"))
-               var lName=cursor.getString(cursor.getColumnIndex("last_name"))
-               var name= fName+space+mName+space+lName
+               var name=cursor.getString(cursor.getColumnIndex("name"))
                 womenList.add(
                     IncompleteFilledForm(
                         cursor.getString(cursor.getColumnIndex("unique_id")),

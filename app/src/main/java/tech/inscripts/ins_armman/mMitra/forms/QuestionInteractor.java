@@ -30,33 +30,27 @@ private static Utility utility= new Utility();
         this.mContext = mContext;
     }
 
-    public String saveRegistrationDetails(String firstName, String middleName, String mobileNo
-            ,String address, String dob, String education,String motherId, int registrationStatus) {
+    public String saveRegistrationDetails(String name, String mobileNo
+            , String lmp, String edd, String address, String dob, String education, String religion, Bitmap bitmap, String motherId, int registrationStatus) {
         ContentValues values = new ContentValues();
 
-
-        String woman_id = (String) utility.generateUniqueId();
+        String woman_id =  utility.generateUniqueId();
 
         byte[] buffer = null;
-       /* if(bitmap != null) {
+        if(bitmap != null) {
             bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
-            buffer = (byte[]) utility.getImageByteArray(bitmap);
-        }*/
+            buffer = utility.getImageByteArray(bitmap);
+        }
 
         values.put(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID, woman_id);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_FIRST_NAME, firstName);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_MIDDLE_NAME, middleName);
-       // values.put(DatabaseContract.RegistrationTable.COLUMN_LAST_NAME, lastName);
+        values.put(DatabaseContract.RegistrationTable.COLUMN_NAME, name);
         values.put(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO, mobileNo);
-       // values.put(DatabaseContract.RegistrationTable.COLUMN_ALTERNATE_NO, alternateMobileNo);
-      //  values.put(DatabaseContract.RegistrationTable.COLUMN_VILLAGE_ID, villageId);
-      //  values.put(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE, lmp);
-       // values.put(DatabaseContract.RegistrationTable.COLUMN_EDD_DATE, edd);
+        values.put(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE, lmp);
+        values.put(DatabaseContract.RegistrationTable.COLUMN_EDD_DATE, edd);
         values.put(DatabaseContract.RegistrationTable.COLUMN_ADDRESS, address);
         values.put(DatabaseContract.RegistrationTable.COLUMN_DOB, dob);
         values.put(DatabaseContract.RegistrationTable.COLUMN_EDUCATION, education);
-      //  values.put(DatabaseContract.RegistrationTable.COLUMN_RELIGION, religion);
-       // values.put(DatabaseContract.RegistrationTable.COLUMN_CATEGORY, category);
+        values.put(DatabaseContract.RegistrationTable.COLUMN_RELIGION, religion);
         values.put(DatabaseContract.RegistrationTable.COLUMN_IMAGE, buffer);
         values.put(DatabaseContract.RegistrationTable.COLUMN_MOTHER_ID, motherId);
         values.put(DatabaseContract.RegistrationTable.COLUMN_REGISTRATION_STATUS, registrationStatus);
@@ -428,7 +422,7 @@ private static Utility utility= new Utility();
 
     }
 
-    public void updateDeliveryDetails(String uniqueId, String deliveryDate) {
+    /*public void updateDeliveryDetails(String uniqueId, String deliveryDate) {
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.RegistrationTable.COLUMN_DELIVERY_DATE, deliveryDate);
 
@@ -437,9 +431,9 @@ private static Utility utility= new Utility();
                 , DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? "
                 , new String[]{uniqueId});
 
-    }
+    }*/
 
-    public void updateChildRegistrationDetails(String uniqueId, String firstName, String middleName, String lastName, String gender, Bitmap bitmap) {
+    /*public void updateChildRegistrationDetails(String uniqueId, String firstName, String middleName, String lastName, String gender, Bitmap bitmap) {
         ContentValues values = new ContentValues();
 
         byte[] buffer = null;
@@ -461,7 +455,7 @@ private static Utility utility= new Utility();
                 , new String[]{uniqueId});
 
     }
-
+*/
     public String getDob(String uniqueId) {
         Cursor cursor = utility.getDatabase().rawQuery("SELECT * "
                 + " FROM "

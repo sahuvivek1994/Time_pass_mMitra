@@ -133,26 +133,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     " ADD COLUMN " + FilledFormStatusTable.COLUMN_FAILURE_REASON + TEXT_TYPE);
         }
 
-        if (!isColumnExist(db, ReferralTable.TABLE_NAME, ReferralTable.COLUMN_FAILURE_STATUS)) {
-            db.execSQL("ALTER TABLE " + ReferralTable.TABLE_NAME +
-                    " ADD COLUMN " + ReferralTable.COLUMN_FAILURE_STATUS + INTEGER_TYPE + " DEFAULT 0");
-        }
-
-        if (!isColumnExist(db, ReferralTable.TABLE_NAME, ReferralTable.COLUMN_FAILURE_REASON)) {
-            db.execSQL("ALTER TABLE " + ReferralTable.TABLE_NAME +
-                    " ADD COLUMN " + ReferralTable.COLUMN_FAILURE_REASON + TEXT_TYPE);
-        }
-
-        if (!isColumnExist(db, ChildGrowthTable.TABLE_NAME, ChildGrowthTable.COLUMN_FAILURE_STATUS)) {
-            db.execSQL("ALTER TABLE " + ChildGrowthTable.TABLE_NAME +
-                    " ADD COLUMN " + ChildGrowthTable.COLUMN_FAILURE_STATUS + INTEGER_TYPE + " DEFAULT 0");
-        }
-
-        if (!isColumnExist(db, ChildGrowthTable.TABLE_NAME, ChildGrowthTable.COLUMN_FAILURE_REASON)) {
-            db.execSQL("ALTER TABLE " + ChildGrowthTable.TABLE_NAME +
-                    " ADD COLUMN " + ChildGrowthTable.COLUMN_FAILURE_REASON + TEXT_TYPE);
-        }
-
         if (!isColumnExist(db, RegistrationTable.TABLE_NAME, RegistrationTable.COLUMN_UPDATE_IMAGE_STATUS))
             db.execSQL("ALTER TABLE " + RegistrationTable.TABLE_NAME +
                     " ADD COLUMN " + RegistrationTable.COLUMN_UPDATE_IMAGE_STATUS + TEXT_TYPE + " DEFAULT 1");
@@ -192,7 +172,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getIncompleteFormListList() {
 
         return utility.getDatabase().rawQuery("SELECT * FROM " +
-                "(SELECT current.unique_id,current.form_id,reg.first_name,reg.middle_name,reg.last_name, current.form_completion_status " +
+                "(SELECT current.unique_id,current.form_id,reg.name, current.form_completion_status " +
                 "FROM filled_forms_status AS current " +
                 " JOIN registration AS reg on current.unique_id = reg.unique_id AND (reg.mother_id is null OR reg.mother_id = '') " +
                 " AND current.unique_id NOT IN (SELECT unique_id FROM filled_forms_status WHERE form_id = 10 AND form_completion_status = 1))" +
@@ -221,11 +201,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getcompleteFormListList() {
 
-        return utility.getDatabase().rawQuery("SELECT first_name,middle_name,last_name,unique_id from registration WHERE unique_id IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1 )", null);
-    }
-
-    public Cursor getChildIdFromMotherId(String motherId) {
-        return utility.getDatabase().rawQuery("SELECT first_name,middle_name,last_name,unique_id FROM " + RegistrationTable.TABLE_NAME + " WHERE mother_id ='" + motherId + "'", null);
+        return utility.getDatabase().rawQuery("SELECT name,unique_id from registration WHERE unique_id IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1 )", null);
     }
 
     public Cursor getLastCompleteFilledFormId(String uniqueId) {

@@ -411,7 +411,7 @@ public class displayForm extends AppCompatActivity {
 
     public void NextButtonValidations() {
         try {
-            if (Backup_answerTyped1.containsKey("child_count")) {
+            /*if (Backup_answerTyped1.containsKey("child_count")) {
                 SQLiteDatabase db = utilityObj.getDatabase();
                 db.beginTransaction();
                // questionInteractor.deleteExisitingChild(uniqueId);
@@ -421,7 +421,7 @@ public class displayForm extends AppCompatActivity {
                 db.setTransactionSuccessful();
                 db.endTransaction();
             }
-
+*/
             int counter = 0;
             int totalpagecondition = 0;
             Boolean isCompulsoryQstnInFocus = false;
@@ -496,11 +496,12 @@ public class displayForm extends AppCompatActivity {
                   //  questionInteractor.updateChildRegistration(Backup_answerTyped1.get("child_name"), childUniqueId);
 
                 previous.setVisibility(View.VISIBLE);
-                if (!formid.equals("6") && !formid.equals("7")
+                /*if (!formid.equals("6") && !formid.equals("7")
                         && !formid.equals("8") && !formid.equals("9"))
                     questionInteractor.saveQuestionAnswers(Backup_answerTyped1, maxautoId, uniqueId, Integer.parseInt(formid), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
                 else
-                    questionInteractor.saveQuestionAnswers(Backup_answerTyped1, maxautoId, childUniqueId, Integer.parseInt(formid), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
+                */
+                questionInteractor.saveQuestionAnswers(Backup_answerTyped1, maxautoId, childUniqueId, Integer.parseInt(formid), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
 
 
                 Backup_answerTyped1.clear();
@@ -526,7 +527,7 @@ public class displayForm extends AppCompatActivity {
                     questionInteractor.updateFormCompletionStatus(maxautoId);
                     //TODO: Remove all currentTable code from project
 //                    questionInteractor.currentFormUpdate(uniqueId, FormID);
-                    //   questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(FIRST_NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER));
+                    //   questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER));
                     if (!ImportantDialogStatus) {
                         ImportantNote_Dialog();
                     }
@@ -3885,9 +3886,9 @@ public class displayForm extends AppCompatActivity {
 
                         SaveFormStatus = true;
 
-                        if (FormID <= DELIVERY_FORM_ID) {
+                      //  if (FormID <= DELIVERY_FORM_ID) {
                             StoreANCForm();
-                        } else if (FormID == CHILD_CLOSURE_FORM_ID) {
+                        /*} else if (FormID == CHILD_CLOSURE_FORM_ID) {
                             StoreClosureForm("Child");
                         } else if (FormID == WOMAN_CLOSURE_FORM_ID) {
                             StoreClosureForm("Mother");
@@ -3895,7 +3896,7 @@ public class displayForm extends AppCompatActivity {
                             StoreChildCareRegForm();
                         } else if (FormID > CC_FIRST_VISIT_ID) {
                             storeChildCareForm();
-                        }
+                        }*/
 
                     }
                 })
@@ -4564,7 +4565,7 @@ public class displayForm extends AppCompatActivity {
             questionInteractor.saveReferralData(highrisklist, uniqueId, formid);
         }
 
-        //  questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(FIRST_NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER));
+        //  questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER));
         finish();
         return insertedRowIdReferralWomenTable;
 

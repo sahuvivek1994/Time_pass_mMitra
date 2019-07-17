@@ -209,21 +209,15 @@ public final class DatabaseContract {
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_UNIQUE_ID = "unique_id";
         public static final String COLUMN_MOTHER_ID = "mother_id";
-        public static final String COLUMN_FIRST_NAME = "first_name";
-        public static final String COLUMN_MIDDLE_NAME = "middle_name";
-        public static final String COLUMN_LAST_NAME = "last_name";
+        public static final String COLUMN_NAME = "name";
         public static final String COLUMN_ADDRESS = "address";
         public static final String COLUMN_DOB = "dob";
         public static final String COLUMN_GENDER = "gender";
         public static final String COLUMN_MOBILE_NO = "phone_no";
-        public static final String COLUMN_ALTERNATE_NO = "alternate_no";
-        public static final String COLUMN_VILLAGE_ID = "village_id";
         public static final String COLUMN_EDUCATION = "education";
         public static final String COLUMN_RELIGION = "religion";
-        public static final String COLUMN_CATEGORY = "category";
         public static final String COLUMN_LMP_DATE = "lmp_date";
         public static final String COLUMN_EDD_DATE = "edd";
-        public static final String COLUMN_DELIVERY_DATE = "delivery_date";
         public static final String COLUMN_CREATED_ON = "created_on";
         public static final String COLUMN_CLOSE_STATUS = "close_status";
         public static final String COLUMN_CLOSE_DATE = "close_date";
@@ -245,21 +239,15 @@ public final class DatabaseContract {
                 COLUMN_ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
                 COLUMN_UNIQUE_ID + TEXT_TYPE + COMMA_SEP +
                 COLUMN_MOTHER_ID + TEXT_TYPE + COMMA_SEP +
-                COLUMN_FIRST_NAME + TEXT_TYPE + COMMA_SEP +
-                COLUMN_MIDDLE_NAME + TEXT_TYPE + COMMA_SEP +
-                COLUMN_LAST_NAME + TEXT_TYPE + COMMA_SEP +
+                COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                 COLUMN_ADDRESS + TEXT_TYPE + COMMA_SEP +
                 COLUMN_DOB + TEXT_TYPE + COMMA_SEP +
                 COLUMN_GENDER + TEXT_TYPE + COMMA_SEP +
                 COLUMN_MOBILE_NO + TEXT_TYPE + COMMA_SEP +
-                COLUMN_ALTERNATE_NO + TEXT_TYPE + COMMA_SEP +
-                COLUMN_VILLAGE_ID + TEXT_TYPE + COMMA_SEP +
                 COLUMN_EDUCATION + TEXT_TYPE + COMMA_SEP +
                 COLUMN_RELIGION + TEXT_TYPE + COMMA_SEP +
-                COLUMN_CATEGORY + TEXT_TYPE + COMMA_SEP +
                 COLUMN_LMP_DATE + TEXT_TYPE + COMMA_SEP +
                 COLUMN_EDD_DATE + TEXT_TYPE + COMMA_SEP +
-                COLUMN_DELIVERY_DATE + TEXT_TYPE + COMMA_SEP +
                 COLUMN_CREATED_ON + TEXT_TYPE + COMMA_SEP +
                 COLUMN_CLOSE_STATUS + INTEGER_TYPE + " DEFAULT 0" + COMMA_SEP +
                 COLUMN_CLOSE_DATE + TEXT_TYPE + COMMA_SEP +

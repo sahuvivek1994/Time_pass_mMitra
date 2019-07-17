@@ -4926,7 +4926,7 @@ private static Utility utility=  new Utility();
             questionInteractor.saveReferralData(highrisklist, uniqueId, formid);
         }
 
-        questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(FIRST_NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER),photo);
+        questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER),photo);
         finish();
         return insertedRowIdReferralWomenTable;
 

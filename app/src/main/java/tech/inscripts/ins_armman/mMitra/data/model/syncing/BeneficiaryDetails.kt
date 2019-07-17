@@ -7,7 +7,7 @@ class BeneficiaryDetails {
    /* @SerializedName(RegistrationTable.COLUMN_UNIQUE_ID)
     private var uniqueId: String = ""
     @SerializedName(RegistrationTable.COLUMN_FIRST_NAME)
-    private var firstName: String = ""
+    private var name: String = ""
     @SerializedName(RegistrationTable.COLUMN_MIDDLE_NAME)
     private var middleName:String = ""
     @SerializedName(RegistrationTable.COLUMN_LAST_NAME)
@@ -58,12 +58,8 @@ class BeneficiaryDetails {
 
     @SerializedName(RegistrationTable.COLUMN_UNIQUE_ID)
     private var uniqueId: String? = null
-    @SerializedName(RegistrationTable.COLUMN_FIRST_NAME)
-    private var firstName: String? = null
-    @SerializedName(RegistrationTable.COLUMN_MIDDLE_NAME)
-    private var middleName: String? = null
-    @SerializedName(RegistrationTable.COLUMN_LAST_NAME)
-    private var lastName: String? = null
+    @SerializedName(RegistrationTable.COLUMN_NAME)
+    var name: String? = null
     @SerializedName(RegistrationTable.COLUMN_ADDRESS)
     private var address: String? = null
     @SerializedName(RegistrationTable.COLUMN_LMP_DATE)
@@ -140,15 +136,7 @@ class BeneficiaryDetails {
     }
 
     fun setFirstName(firstName: String) {
-        this.firstName = firstName
-    }
-
-    fun setMiddleName(middleName: String) {
-        this.middleName = middleName
-    }
-
-    fun setLastName(lastName: String) {
-        this.lastName = lastName
+        this.name = firstName
     }
 
     fun setAddress(address: String) {
@@ -204,15 +192,7 @@ class BeneficiaryDetails {
     }
 
     fun getFirstName(): String? {
-        return firstName
-    }
-
-    fun getMiddleName(): String? {
-        return middleName
-    }
-
-    fun getLastName(): String? {
-        return lastName
+        return name
     }
 
     fun getAddress(): String? {
@@ -318,9 +298,7 @@ class BeneficiaryDetails {
     override fun toString(): String {
         return "BeneficiaryDetails{" +
                 "uniqueId='" + uniqueId + '\''.toString() +
-                ", firstName='" + firstName + '\''.toString() +
-                ", middleName='" + middleName + '\''.toString() +
-                ", lastName='" + lastName + '\''.toString() +
+                ", name='" + name + '\''.toString() +
                 ", address='" + address + '\''.toString() +
                 ", lmp='" + lmp + '\''.toString() +
                 ", edd='" + edd + '\''.toString() +
