@@ -17,7 +17,6 @@ import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreRegistrati
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreVisits
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.BeneficiaryDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.Referral
-import tech.inscripts.ins_armman.mMitra.data.model.syncing.RequestHelpModel
 import tech.inscripts.ins_armman.mMitra.login.Login
 import tech.inscripts.ins_armman.mMitra.settingActivity.ISettingsPresentor.OnQueryFinished
 import tech.inscripts.ins_armman.mMitra.utility.Constants.*
@@ -25,7 +24,7 @@ import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
 
 class SettingsPresentor : ISettingsPresentor<ISettingsView>, ISettingsInteractor.OnFormDownloadFinished, ISettingsInteractor.onCheckUpdateFinished
-    , ISettingsInteractor.onHelpManualDownloadFinished, ISettingsInteractor.OnRegistrationsDownloadFinished
+    , ISettingsInteractor.OnRegistrationsDownloadFinished
     , ISettingsInteractor.OnVisitsDownloadFinished {
 
 val utility= Utility()
@@ -96,19 +95,6 @@ val utility= Utility()
             mSettingsView?.showSnackBar(mSettingsView?.getContext()?.getString(R.string.no_internet_connection)!!)
     }
 
-    override fun downloadHelpManual() {
-        if (utility.hasInternetConnectivity(mSettingsView?.getContext())) {
-            mSettingsView?.showProgressBar(mSettingsView!!.getContext().getString(R.string.downloading_data))
-            val details = RequestHelpModel()
-            details.userName = mUsername
-            details.password = mPassword
-            details.setImei(utility.getDeviceImeiNumber(mSettingsView?.getContext()!!))
-            details.setHash(mSettingsInteractor?.getHash(HASH_ITEM_HELP_MANUAL)!!)
-            mSettingsInteractor?.downloadHelpManual(details, this)
-        } else
-            mSettingsView?.showSnackBar(mSettingsView?.getContext()?.getString(R.string.no_internet_connection)!!)
-    }
-
     override fun checkUpdate() {
         if(utility.hasInternetConnectivity(mSettingsView?.getContext())){
             mSettingsView?.showProgressBar(mSettingsView!!.getContext().getString(R.string.looking_for_update))
@@ -155,19 +141,10 @@ val utility= Utility()
         mSettingsInteractor?.downloadVisitsData(mRequest,this)
     }
 
-    override fun restoreReferrals(pageNumber: Int) {
-        mRequest.setPageNumber(pageNumber)
-
-    }
-
-    override fun restoreGrowthMonitorings(pageNumber: Int) {
-
-    }
-
     override fun resetDataMemberValues() {
         mRequest = RestoreDataRequest()
-        mRequest.userName= mUsername
-        mRequest.password= mPassword
+        mRequest.userName= mUsername!!
+        mRequest.password= mPassword!!
         mRequest.setImei(utility.getDeviceImeiNumber(mSettingsView!!.getContext()))
         mRequest.setLimit(FORM_DOWNLOAD_LIMIT)
 
@@ -244,22 +221,6 @@ val utility= Utility()
     }
 
 
-    override fun onSuccessDownloadedHelpManual(jsonObject: JSONObject, hash: String) {
-if(jsonObject.has("response")) {
-    mSettingsView!!.showSnackBar(mSettingsView!!.getContext().getString(R.string.help_manual_already_updated))
-}else{
-     try{
-         jsonObject.put("hash",hash)
-         mSettingsInteractor!!.saveHelpManualData(jsonObject)
-     }   catch (e: JSONException){
-         e.printStackTrace()
-         mSettingsView!!.showSnackBar(mSettingsView!!.getContext().getString(R.string.invalid_data_frm_server))
-     }
-    }
-        mSettingsView!!.hideProgressBar()
-    }
-
-
     override fun onSuccessRegistrationsDownloading(registration: RestoreRegistration) {
         if(registration.getTotal()>0){
             listRegistrations.addAll(registration.getRegistrationData()!!)
@@ -287,16 +248,6 @@ if(jsonObject.has("response")) {
                 totalPagesCalculated =true
                 totalPages=Math.ceil((visits.getTotal()).toDouble() / (FORM_DOWNLOAD_LIMIT).toDouble() ).toInt()
             }
-        }
-
-        if(pageCounter<totalPages){
-            restoreReferrals(++pageCounter)
-        }
-        else{
-            pageCounter=1
-            totalPages=0
-            totalPagesCalculated=false
-            restoreReferrals(pageCounter)
         }
     }
 

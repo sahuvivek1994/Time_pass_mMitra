@@ -7,15 +7,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.drawable.LayerDrawable
 import android.net.ConnectivityManager
 import android.provider.MediaStore.Video.VideoColumns.LANGUAGE
 import android.util.Base64
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import org.joda.time.*
@@ -123,13 +120,13 @@ class Utility {
     fun getDeviceImeiNumber(context: Context): ArrayList<String> {
         val telephonyInfo = obj_telephonyInfo.getInstance(context)
         val imeiArray = ArrayList<String>()
-             //  imeiArray.add("869432026925037");
-        if (telephonyInfo.isDualSIM()) {
+               imeiArray.add("869432026925037")
+        /*if (telephonyInfo.isDualSIM()) {
             imeiArray.add(telephonyInfo.imsiSIM1)
             imeiArray.add(telephonyInfo.imsiSIM2)
         } else {
             imeiArray.add(telephonyInfo.imsiSIM1)
-        }
+        }*/
 
         return imeiArray
     }
@@ -298,17 +295,6 @@ class Utility {
     fun hideKeyboard(context: Context, view: View) {
         val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    fun getVillageName(villageId: String): String {
-        val cursor = getDatabase().rawQuery(
-            "SELECT * FROM "
-                    + DatabaseContract.VillageTable.TABLE_NAME
-                    + " WHERE "
-                    + DatabaseContract.VillageTable.COLUMN_VILLAGE_ID + " = ? ", arrayOf(villageId)
-        )
-
-        return if (cursor.moveToFirst()) cursor.getString(cursor.getColumnIndex(DatabaseContract.VillageTable.COLUMN_VILLAGE_NAME)) else villageId
     }
 
     fun getAppVersionName(context: Context): String {

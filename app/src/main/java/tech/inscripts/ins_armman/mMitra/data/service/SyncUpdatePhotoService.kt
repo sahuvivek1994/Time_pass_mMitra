@@ -18,7 +18,7 @@ class SyncUpdatePhotoService {
         this.mPhotoServiceApi = mPhotoServiceApi
     }
 
-    fun syncUpdatePhotoDetails(updateImageModel: UpdateImageModel,updatedPhotoSync: IHomeActivityInteractor.onUpdatedPhotoSync){
+    fun syncUpdatePhotoDetails(updateImageModel: UpdateImageModel,updatedPhotoSync: IHomeActivityInteractor.OnUpdatedPhotoSync){
         Log.d("SyncUpdatePhotoService", "SyncUpdatePhotoService start request")
         val responseBodyCall = mPhotoServiceApi!!.SyncUpdatePhotoDetails(updateImageModel)
         responseBodyCall.enqueue(object:retrofit2.Callback<ResponseBody>{

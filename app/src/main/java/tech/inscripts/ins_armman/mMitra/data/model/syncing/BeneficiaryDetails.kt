@@ -59,39 +59,23 @@ class BeneficiaryDetails {
     @SerializedName(RegistrationTable.COLUMN_UNIQUE_ID)
     private var uniqueId: String? = null
     @SerializedName(RegistrationTable.COLUMN_NAME)
-    var name: String? = null
+    private var name: String? = null
     @SerializedName(RegistrationTable.COLUMN_ADDRESS)
     private var address: String? = null
     @SerializedName(RegistrationTable.COLUMN_LMP_DATE)
     private var lmp: String? = null
-    @SerializedName(RegistrationTable.COLUMN_EDD_DATE)
-    private var edd: String? = null
     @SerializedName(RegistrationTable.COLUMN_MOBILE_NO)
     private var mobNo: String? = null
-    @SerializedName(RegistrationTable.COLUMN_ALTERNATE_NO)
-    private var alternateNo: String? = null
     @SerializedName(RegistrationTable.COLUMN_EDUCATION)
     private var education: String? = null
-    @SerializedName(RegistrationTable.COLUMN_RELIGION)
-    private var religion: String? = null
-    @SerializedName(RegistrationTable.COLUMN_CATEGORY)
-    private var category: String? = null
-    @SerializedName(RegistrationTable.COLUMN_VILLAGE_ID)
-    private var villageId: String? = null
-    @SerializedName(RegistrationTable.COLUMN_DOB)
+    @SerializedName(RegistrationTable.COLUMN_AGE)
     private var dob: String? = null
     @SerializedName(RegistrationTable.COLUMN_IMAGE)
     private var image: String? = null
     @SerializedName(RegistrationTable.COLUMN_CREATED_ON)
     private var createdOn: String? = null
-    @SerializedName(RegistrationTable.COLUMN_MOTHER_ID)
-    private var motherId: String? = null
-    @SerializedName(RegistrationTable.COLUMN_GENDER)
-    private var gender: String? = null
-    @SerializedName(RegistrationTable.COLUMN_DELIVERY_DATE)
-    private var deliveryDate: String? = null
-    @SerializedName("closure_status")
-    private var closeStatus: Int = 0
+    @SerializedName(RegistrationTable.COLUMN_MARITAL_STATUS)
+    private var marital_status: String? = null
     @SerializedName(RegistrationTable.COLUMN_CLOSE_DATE)
     private var closeDate: String? = null
     @SerializedName(RegistrationTable.COLUMN_CLOSE_REASON)
@@ -101,43 +85,30 @@ class BeneficiaryDetails {
     @SerializedName(RegistrationTable.COLUMN_EXPIRED_REASON)
     private var expiredReason: String? = null
 
-    @SerializedName("child_status")
-    internal var child_status: String=""
 
             /*@SerializedName(DATA)
     private ArrayList<QuestionAnswer> dataSource;
     @SerializedName(REFERRAL)
     private ArrayList<Referral> referral; fun getDeliveryDate(): String? {
-        return deliveryDate
+        return marital_status
     }*/
 
     fun getDeliveryDate() : String?{
-        return deliveryDate
+        return marital_status
     }
 
     fun setDeliveryDate(deliveryDate: String) {
-        this.deliveryDate = deliveryDate
-    }
-
-    fun getGender(): String? {
-        return gender
-    }
-
-    fun setGender(gender: String) {
-        this.gender = gender
-    }
-
-    fun setMotherId(motherId: String) {
-        this.motherId = motherId
+        this.marital_status = deliveryDate
     }
 
     fun setUniqueId(uniqueId: String) {
         this.uniqueId = uniqueId
     }
 
-    fun setFirstName(firstName: String) {
-        this.name = firstName
+    fun setName(name: String) {
+        this.name = name
     }
+
 
     fun setAddress(address: String) {
         this.address = address
@@ -147,33 +118,15 @@ class BeneficiaryDetails {
         this.lmp = lmp
     }
 
-    fun setEdd(edd: String) {
-        this.edd = edd
-    }
 
     fun setMobNo(mobNo: String) {
         this.mobNo = mobNo
-    }
-
-    fun setAlternateNo(alternateNo: String) {
-        this.alternateNo = alternateNo
     }
 
     fun setEducation(education: String) {
         this.education = education
     }
 
-    fun setReligion(religion: String) {
-        this.religion = religion
-    }
-
-    fun setCategory(category: String) {
-        this.category = category
-    }
-
-    fun setVillageId(villageId: String) {
-        this.villageId = villageId
-    }
 
     fun setImage(image: String) {
         this.image = image
@@ -191,7 +144,7 @@ class BeneficiaryDetails {
         return uniqueId
     }
 
-    fun getFirstName(): String? {
+    fun getName(): String? {
         return name
     }
 
@@ -203,33 +156,15 @@ class BeneficiaryDetails {
         return lmp
     }
 
-    fun getEdd(): String? {
-        return edd
-    }
-
     fun getMobNo(): String? {
         return mobNo
-    }
-
-    fun getAlternateNo(): String? {
-        return alternateNo
     }
 
     fun getEducation(): String? {
         return education
     }
 
-    fun getReligion(): String? {
-        return religion
-    }
 
-    fun getCategory(): String? {
-        return category
-    }
-
-    fun getVillageId(): String? {
-        return villageId
-    }
 
     fun getDob(): String? {
         return dob
@@ -241,18 +176,6 @@ class BeneficiaryDetails {
 
     fun getCreatedOn(): String? {
         return createdOn
-    }
-
-    fun getMotherId(): String? {
-        return motherId
-    }
-
-    fun getCloseStatus(): Int {
-        return closeStatus
-    }
-
-    fun setCloseStatus(closeStatus: Int) {
-        this.closeStatus = closeStatus
     }
 
     fun getCloseDate(): String? {
@@ -287,29 +210,18 @@ class BeneficiaryDetails {
         this.expiredReason = expiredReason
     }
 
-    fun getChild_status(): String {
-        return child_status
-    }
-
-    fun setChild_status(child_status: String) {
-        this.child_status = child_status
-    }
-
     override fun toString(): String {
         return "BeneficiaryDetails{" +
                 "uniqueId='" + uniqueId + '\''.toString() +
                 ", name='" + name + '\''.toString() +
+                //", middleName='" + middleName + '\''.toString() +
+                //", lastName='" + lastName + '\''.toString() +
                 ", address='" + address + '\''.toString() +
                 ", lmp='" + lmp + '\''.toString() +
-                ", edd='" + edd + '\''.toString() +
+                ", marital_status='" + marital_status + '\''.toString() +
                 ", mobNo='" + mobNo + '\''.toString() +
-                ", alternateNo='" + alternateNo + '\''.toString() +
                 ", education='" + education + '\''.toString() +
-                ", religion='" + religion + '\''.toString() +
-                ", category='" + category + '\''.toString() +
-                ", villageId='" + villageId + '\''.toString() +
-                ", dob='" + dob + '\''.toString() +
-                ", image='" + image + '\''.toString() +
+              //  ", image='" + image + '\''.toString() +
                 ", createdOn='" + createdOn + '\''.toString() +
                 '}'.toString()
     }

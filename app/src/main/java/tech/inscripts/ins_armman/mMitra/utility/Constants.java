@@ -33,7 +33,7 @@ public interface Constants {
     String MOTHER_NAME = "mother_name";
     String AGE_IN_MONTHS = "age_in_months";
     String VILLAGE_NAME = "village_name";
-    String NAME = "name";
+    String NAME = "firstName";
 
     // Form syncing keys
     String FORM_ID = "form_id";

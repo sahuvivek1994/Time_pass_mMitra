@@ -45,13 +45,7 @@ return FormDownloadService(createApiService(FormDownloadServiceAPI::class.java))
         return SyncFormService(createApiService(SyncFormServiceApi::class.java))
     }
 
-    fun helpManualDownloadService() : HelpManualDownloadService{
-        return HelpManualDownloadService(createApiService(HelpManualDownloadServiceApi::class.java))
-    }
 
-    fun syncReferralService(): SyncReferralService {
-        return SyncReferralService(createApiService(SyncReferralServiceApi::class.java))
-    }
 
     fun restoreRegistrationService(): RestoreRegistrationService {
         return RestoreRegistrationService(createApiService(RestoreRegistrationServiceApi::class.java))
@@ -61,9 +55,7 @@ return FormDownloadService(createApiService(FormDownloadServiceAPI::class.java))
         return RestoreVisitsService(createApiService(RestoreVisitsServiceAPI::class.java))
     }
 
-    fun restoreReferralService(): RestoreReferralService {
-        return RestoreReferralService(createApiService(RestoreReferralServiceAPI::class.java))
-    }
+
 
     fun syncUpdatePhotoService(): SyncUpdatePhotoService {
         return SyncUpdatePhotoService(createApiService(SyncUpdatePhotoServiceApi::class.java))

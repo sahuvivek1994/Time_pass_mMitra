@@ -67,7 +67,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
     private static final String TAG = "EnrollmentQuestions";
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
-    // directory name to store captured images and videos
+    // directory firstName to store captured images and videos
     private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
     public static String expec_date, woman_gest_age, current_reg, Server_expected_date;
     List<String> chechboxlist = new ArrayList<>();
@@ -593,8 +593,8 @@ private static Utility utility= new Utility();
                                 //finish();
 
                                 uniqueId = questionInteractor.saveRegistrationDetails(womendetails.get(WOMAN_NAME), womendetails.get(WOMAN_MOB_NO)
-                                        , womendetails.get(LMP_DATE_KEYWORD), womendetails.get(ADDRESS), womendetails.get(WOMAN_DOB)
-                                        , womendetails.get(EDUCATION), womendetails.get(MARITAL_STATUS), womendetails.get(HOUSE_TYPE), photo, "", 1);
+                                        , womendetails.get(LMP_DATE_KEYWORD), womendetails.get(ADDRESS), womendetails.get(WOMAN_AGE)
+                                        , womendetails.get(EDUCATION), womendetails.get(MARITAL_STATUS), photo, 1,womendetails.get(WOMAN_DOB));
 
 
                                 /**
@@ -610,8 +610,6 @@ private static Utility utility= new Utility();
                     Intent intent = new Intent(EnrollmentQuestions.this, displayForm.class);
                     intent.putExtra(UNIQUE_ID, uniqueId);
                     intent.putExtra(FORM_ID, "2");
-                    intent.putExtra("child", "0");
-                    intent.putExtra("childcounter", "1");
                     startActivity(intent);
                     finish();
 
@@ -3958,7 +3956,7 @@ private static Utility utility= new Utility();
             }
         }
 
-        // Create a media file name
+        // Create a media file firstName
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
         File mediaFile;

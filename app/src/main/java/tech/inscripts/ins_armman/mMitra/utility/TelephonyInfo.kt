@@ -36,7 +36,7 @@ class TelephonyInfo {
 
             Log.d(TAG, "getInstance: " + telephonyInfo?.imsiSIM1)
 
-            telephonyInfo?.imsiSIM2 = ""
+            telephonyInfo?.imsiSIM2 = "869432026925037"
 
             try {
                 telephonyInfo?.imsiSIM1 = getDeviceIdBySlot(context, "getDeviceIdGemini", 0)
@@ -48,7 +48,7 @@ class TelephonyInfo {
                     telephonyInfo?.imsiSIM1 =  getDeviceIdBySlot(context, "getDeviceId", 0)
                     telephonyInfo?.imsiSIM2 = getDeviceIdBySlot(context, "getDeviceId", 1)
                 } catch (e1: GeminiMethodNotFoundException) {
-                    //Call here for next manufacturer's predicted method name if you wish
+                    //Call here for next manufacturer's predicted method firstName if you wish
                     e1.printStackTrace()
                 }
             }
@@ -67,7 +67,7 @@ class TelephonyInfo {
                     telephonyInfo?.isSIM1Ready = getSIMStateBySlot(context, "getSimState", 0)
                     telephonyInfo?.isSIM2Ready = getSIMStateBySlot(context, "getSimState", 1)
                 } catch (e1: GeminiMethodNotFoundException) {
-                    //Call here for next manufacturer's predicted method name if you wish
+                    //Call here for next manufacturer's predicted method firstName if you wish
                     e1.printStackTrace()
                 }
             }

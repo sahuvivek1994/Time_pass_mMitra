@@ -41,7 +41,6 @@ import tech.inscripts.ins_armman.mMitra.data.service.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
-import android.content.BroadcastReceiver as BroadcastReceiver1
 import android.os.AsyncTask
 import tech.inscripts.ins_armman.mMitra.utility.Constants
 import tech.inscripts.ins_armman.mMitra.utility.Constants.*
@@ -95,89 +94,12 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
     }
 
-    override fun downloadHelpManual(helpModel: RequestHelpModel, downloadFinished: ISettingsInteractor.onHelpManualDownloadFinished) {
-        var remoteDataSource: RemoteDataSource = dataSource.getInstance()
-        var manualDownloadService: HelpManualDownloadService = dataSource.helpManualDownloadService()
-        manualDownloadService.downloadHelpManual(helpModel, downloadFinished, mContext)
-    }
 
     fun deleteOldHelpData() {
         utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.FaqTable.TABLE_NAME)
-        utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.VideoAnimationTable.TABLE_NAME)
-        utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.mMitraCallsTable.TABLE_NAME)
 
         utility.getDatabase().execSQL(DatabaseContract.FaqTable.CREATE_TABLE)
-        utility.getDatabase().execSQL(DatabaseContract.VideoAnimationTable.CREATE_TABLE)
-        utility.getDatabase().execSQL(DatabaseContract.mMitraCallsTable.CREATE_TABLE)
-    }
-
-    override fun saveHelpManualData(helpJsonObject: JSONObject) {
-        deleteOldHelpData()
-        var values = ContentValues()
-        utility.getDatabase().beginTransaction()
-        try {
-            if (helpJsonObject.has("FAQ")) {
-                var faqJsonArray: JSONArray = helpJsonObject.getJSONArray("FAQ")
-                var faqSize = faqJsonArray.length()
-                for (index in 0 until faqSize) {
-                    values.clear()
-                    val jsonObject = faqJsonArray.getJSONObject(index)
-                    values.put(DatabaseContract.FaqTable.COLUMN_QUESTION, jsonObject.optJSONObject("question").optString("languages"))
-                    values.put(DatabaseContract.FaqTable.COLUMN_ANSWER, jsonObject.optJSONObject("answer").optString("languages"))
-                    utility.getDatabase().insert(DatabaseContract.FaqTable.TABLE_NAME, null, values)
-                }
-            }
-
-            if (helpJsonObject.has("Animation")) {
-                var animJsonArray: JSONArray = helpJsonObject.getJSONArray("Animation")
-                var animSize = animJsonArray.length()
-                for (index in 0 until animSize) {
-                    values.clear()
-                    var jsonObject = animJsonArray.getJSONObject(index)
-                    values.put(DatabaseContract.VideoAnimationTable.COLUMN_TYPE, TYPE_ANIMATION)
-                    val titleObject = jsonObject.getJSONObject("title").getJSONObject("languages")
-                    values.put(DatabaseContract.VideoAnimationTable.COLUMN_TITLE, titleObject.toString())
-                    utility.getDatabase().insert(DatabaseContract.VideoAnimationTable.TABLE_NAME, null, values)
-                    values.put(DatabaseContract.VideoAnimationTable.COLUMN_KEYWORD, jsonObject.optString("keyword"))
-                }
-            }
-
-            if (helpJsonObject.has("Video")) {
-                val videoJsonArray = helpJsonObject.getJSONArray("Video")
-                val videoSize = videoJsonArray.length()
-                for (index in 0 until videoSize) {
-                    values.clear()
-                    val jsonObject = videoJsonArray.getJSONObject(index)
-                    values.put(DatabaseContract.VideoAnimationTable.COLUMN_TYPE, TYPE_VIDEO)
-                    values.put(DatabaseContract.VideoAnimationTable.COLUMN_KEYWORD, jsonObject.optString("keyword"))
-                    val titleObject = jsonObject.getJSONObject("title").getJSONObject("languages")
-                    values.put(DatabaseContract.VideoAnimationTable.COLUMN_TITLE, titleObject.toString())
-                    utility.getDatabase().insert(DatabaseContract.VideoAnimationTable.TABLE_NAME, null, values)
-                }
-            }
-
-            if (helpJsonObject.has("mMitra_calls")) {
-                val callsJsonArray = helpJsonObject.getJSONArray("mMitra_calls")
-                val callSize = callsJsonArray.length()
-                for (index in 0 until callSize) {
-                    values.clear()
-                    val jsonObject = callsJsonArray.getJSONObject(index)
-                    values.put(DatabaseContract.mMitraCallsTable.COLUMN_ORDER_NO, jsonObject.optInt("order_no"))
-                    values.put(DatabaseContract.mMitraCallsTable.COLUMN_LANGUAGE, jsonObject.optString("language"))
-                    values.put(DatabaseContract.mMitraCallsTable.COLUMN_KEYWORD, jsonObject.optString("keyword"))
-                    values.put(DatabaseContract.mMitraCallsTable.COLUMN_TITLE, jsonObject.optString("title"))
-                    utility.getDatabase().insert(DatabaseContract.mMitraCallsTable.TABLE_NAME, null, values)
-                }
-            }
-
-            addOrUpdateFormHash(HASH_ITEM_HELP_MANUAL, helpJsonObject.optString("hash"))
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        } finally {
-            utility.getDatabase().setTransactionSuccessful()
-            utility.getDatabase().endTransaction()
         }
-    }
 
     override fun checkReleaseUpdate(onCheckUpdateFinished: ISettingsInteractor.onCheckUpdateFinished) {
         val remoteDataSource = dataSource.getInstance()
@@ -300,7 +222,6 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
     override fun deleteLoginDetails() {
         utility.getDatabase().delete(LoginTable.TABLE_NAME, null, null)
-        utility.getDatabase().delete(VillageTable.TABLE_NAME, null, null)
     }
 
     override fun onCreateLoader(p0: Int, bundle: Bundle?): Loader<Cursor> {
@@ -822,20 +743,18 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
         fun saveRegistrations(data: BeneficiaryDetails) {
             val values = ContentValues()
             values.put(RegistrationTable.COLUMN_UNIQUE_ID, data.getUniqueId())
-            values.put(RegistrationTable.COLUMN_NAME, data.name)
+            values.put(RegistrationTable.COLUMN_NAME, data.getName())
+            //values.put(RegistrationTable.COLUMN_MNAME, data.middleName)
+           // values.put(RegistrationTable.COLUMN_LNAME, data.lastName)
             values.put(RegistrationTable.COLUMN_MOBILE_NO, data.getMobNo())
             values.put(RegistrationTable.COLUMN_LMP_DATE, data.getLmp())
-            values.put(RegistrationTable.COLUMN_EDD_DATE, data.getEdd())
             values.put(RegistrationTable.COLUMN_ADDRESS, data.getAddress())
-            values.put(RegistrationTable.COLUMN_DOB, data.getDob())
+            values.put(RegistrationTable.COLUMN_AGE, data.getDob())
             values.put(RegistrationTable.COLUMN_EDUCATION, data.getEducation())
-            values.put(RegistrationTable.COLUMN_RELIGION, data.getReligion())
-            values.put(RegistrationTable.COLUMN_MOTHER_ID, data.getMotherId())
-            values.put(RegistrationTable.COLUMN_GENDER, data.getGender())
             values.put(RegistrationTable.COLUMN_REGISTRATION_STATUS, 1)
             values.put(RegistrationTable.COLUMN_SYNC_STATUS, 1)
             values.put(RegistrationTable.COLUMN_CREATED_ON, data.getCreatedOn())
-            values.put(RegistrationTable.COLUMN_CLOSE_STATUS, data.getCloseStatus())
+           // values.put(RegistrationTable.COLUMN_CLOSE_STATUS, data.getCloseStatus())
             values.put(RegistrationTable.COLUMN_CLOSE_DATE, data.getCloseDate())
             values.put(RegistrationTable.COLUMN_CLOSE_REASON, data.getCloseReason())
             values.put(RegistrationTable.COLUMN_EXPIRED_DATE, data.getExpiredDate())
@@ -879,9 +798,9 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             values.put(DatabaseContract.QuestionAnswerTable.COLUMN_REFERENCE_ID, referenceId)
             values.put(DatabaseContract.QuestionAnswerTable.COLUMN_UNIQUE_ID, uniqueId)
             values.put(DatabaseContract.QuestionAnswerTable.COLUMN_FORM_ID, formId)
-            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_QUESTION_KEYWORD, questionAnswer.keyword)
-            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_ANSWER_KEYWORD, questionAnswer.answer)
-            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_CREATED_ON, questionAnswer.createdOn)
+            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_QUESTION_KEYWORD, questionAnswer.getKeyword())
+            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_ANSWER_KEYWORD, questionAnswer.getAnswer())
+            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_CREATED_ON, questionAnswer.getCreatedOn())
             utility.getDatabase().insert(DatabaseContract.QuestionAnswerTable.TABLE_NAME, null, values)
         }
 
@@ -889,15 +808,11 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + RegistrationTable.TABLE_NAME)
             utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + FilledFormStatusTable.TABLE_NAME)
             utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + QuestionAnswerTable.TABLE_NAME)
-            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + ReferralTable.TABLE_NAME)
-            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + ChildGrowthTable.TABLE_NAME)
 
             utility.getDatabase().execSQL(RegistrationTable.CREATE_TABLE)
             utility.getDatabase().execSQL(FilledFormStatusTable.CREATE_TABLE)
             utility.getDatabase().execSQL(QuestionAnswerTable.CREATE_TABLE)
-            utility.getDatabase().execSQL(ReferralTable.CREATE_TABLE)
-            utility.getDatabase().execSQL(ChildGrowthTable.CREATE_TABLE)
-        }
+}
     }
 
 }

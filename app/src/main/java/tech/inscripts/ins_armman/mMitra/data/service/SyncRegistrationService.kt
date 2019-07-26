@@ -19,7 +19,7 @@ class SyncRegistrationService {
         this.serviceApi = serviceApi
     }
 
-    fun syncRegistrationDetails(registrationDetails : SyncRegistrationDetails, onDataSync : IHomeActivityInteractor.onDataSync,context: Context){
+    fun syncRegistrationDetails(registrationDetails : SyncRegistrationDetails, onDataSync : IHomeActivityInteractor.OnDataSync,context: Context){
         val responsebodyCall : Call<ResponseBody> = serviceApi!!.SyncRegistrationDetails(registrationDetails)
         responsebodyCall.enqueue(object : retrofit2.Callback<ResponseBody>{
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {

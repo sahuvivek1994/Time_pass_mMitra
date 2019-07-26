@@ -8,8 +8,7 @@ import android.os.Environment;
 
 public final class DatabaseContract {
     public static final String DATABASE_NAME = "mMitra_Cohort.sr";
-    public static final int DATABASE_VERSION = 7
-            ;
+    public static final int DATABASE_VERSION = 1;
     public static final String DB_LOCATION = Environment.getExternalStorageDirectory() +"/mMitra_Cohort";
     public static final String TEXT_TYPE = " TEXT";
     public static final String BLOB_TYPE = " BLOB";
@@ -24,7 +23,7 @@ public final class DatabaseContract {
     public static final class LoginTable {
         public static final String TABLE_NAME = "login";
         public static final String COLUMN_USER_ID = "user_id";
-        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_NAME = "firstName";
         public static final String COLUMN_USERNAME = "username";
         public static final String COLUMN_PASSWORD = "password";
         public static final String COLUMN_PHONE_NO = "phone_no";
@@ -54,20 +53,6 @@ public final class DatabaseContract {
                 COLUMN_TALUKA_NAME + TEXT_TYPE + COMMA_SEP +
                 COLUMN_PHC_ID + TEXT_TYPE + COMMA_SEP +
                 COLUMN_PHC_NAME + TEXT_TYPE + ")";
-    }
-
-    public static final class VillageTable {
-        public static final String TABLE_NAME = "villages";
-        public static final String COLUMN_VILLAGE_ID = "id";
-        public static final String COLUMN_VILLAGE_NAME = "name";
-        public static final String COLUMN_VILLAGE_CODE = "code";
-
-        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                "(" +
-                COLUMN_VILLAGE_ID + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_VILLAGE_NAME + TEXT_TYPE + COMMA_SEP +
-                COLUMN_VILLAGE_CODE + TEXT_TYPE +
-                ")";
     }
 
     public static final class FormDetailsTable {
@@ -208,16 +193,16 @@ public final class DatabaseContract {
         public static final String TABLE_NAME = "registration";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_UNIQUE_ID = "unique_id";
-        public static final String COLUMN_MOTHER_ID = "mother_id";
         public static final String COLUMN_NAME = "name";
+       // public static final String COLUMN_MNAME = "middle_name";
+       // public static final String COLUMN_LNAME = "last_name";
         public static final String COLUMN_ADDRESS = "address";
         public static final String COLUMN_DOB = "dob";
-        public static final String COLUMN_GENDER = "gender";
+        public static final String COLUMN_AGE = "age";
         public static final String COLUMN_MOBILE_NO = "phone_no";
         public static final String COLUMN_EDUCATION = "education";
-        public static final String COLUMN_RELIGION = "religion";
         public static final String COLUMN_LMP_DATE = "lmp_date";
-        public static final String COLUMN_EDD_DATE = "edd";
+        public static final String COLUMN_MARITAL_STATUS = "marital_status";
         public static final String COLUMN_CREATED_ON = "created_on";
         public static final String COLUMN_CLOSE_STATUS = "close_status";
         public static final String COLUMN_CLOSE_DATE = "close_date";
@@ -238,16 +223,16 @@ public final class DatabaseContract {
                 "(" +
                 COLUMN_ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
                 COLUMN_UNIQUE_ID + TEXT_TYPE + COMMA_SEP +
-                COLUMN_MOTHER_ID + TEXT_TYPE + COMMA_SEP +
                 COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
+               // COLUMN_MNAME + TEXT_TYPE + COMMA_SEP +
+              //  COLUMN_LNAME + TEXT_TYPE + COMMA_SEP +
                 COLUMN_ADDRESS + TEXT_TYPE + COMMA_SEP +
                 COLUMN_DOB + TEXT_TYPE + COMMA_SEP +
-                COLUMN_GENDER + TEXT_TYPE + COMMA_SEP +
+                COLUMN_AGE + TEXT_TYPE + COMMA_SEP +
                 COLUMN_MOBILE_NO + TEXT_TYPE + COMMA_SEP +
                 COLUMN_EDUCATION + TEXT_TYPE + COMMA_SEP +
-                COLUMN_RELIGION + TEXT_TYPE + COMMA_SEP +
                 COLUMN_LMP_DATE + TEXT_TYPE + COMMA_SEP +
-                COLUMN_EDD_DATE + TEXT_TYPE + COMMA_SEP +
+                COLUMN_MARITAL_STATUS + TEXT_TYPE + COMMA_SEP +
                 COLUMN_CREATED_ON + TEXT_TYPE + COMMA_SEP +
                 COLUMN_CLOSE_STATUS + INTEGER_TYPE + " DEFAULT 0" + COMMA_SEP +
                 COLUMN_CLOSE_DATE + TEXT_TYPE + COMMA_SEP +
@@ -263,39 +248,7 @@ public final class DatabaseContract {
                 ")";
     }
 
-    public static final class ReferralTable {
 
-        public static final String TABLE_NAME = "referral";
-        public static final String COLUMN_UNIQUE_ID = "unique_id";
-        public static final String COLUMN_NAME_FORM_ID = "form_id";
-        public static final String COLUMN_NAME_HIGH_RISK_KEYWORD = "highrisk_keyword";
-        public static final String COLUMN_NAME_HIGH_RISK_ANSWER = "highrisk_answer";
-        public static final String COLUMN_NAME_REFERRAL_TYPE = "referral_type";
-        public static final String COLUMN_NAME_STATUS = "referral_status";
-        public static final String COLUMN_NAME_REFERRAL_DATE = "referred_date";
-        public static final String COLUMN_NAME_REFERRED_TO = "referred_to";
-        public static final String COLUMN_SUBMIT_STATUS = "submit_status";/* 0 means this has not been uploaded to the server since last change made. 1 means uploaded to the server*/
-        /*COLUMN_FAILURE_STATUS and COLUMN_FAILURE_REASON column is to maintain
-            dataSource sync failure status and reason
-         */
-        public static final String COLUMN_FAILURE_STATUS = "failure_status";
-        public static final String COLUMN_FAILURE_REASON = "failure_reason";
-
-        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                "(" +
-                COLUMN_UNIQUE_ID + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NAME_FORM_ID + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NAME_HIGH_RISK_KEYWORD + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NAME_HIGH_RISK_ANSWER + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NAME_REFERRAL_TYPE + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NAME_REFERRAL_DATE + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NAME_REFERRED_TO + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NAME_STATUS + INTEGER_TYPE + " DEFAULT 0" + COMMA_SEP +
-                COLUMN_SUBMIT_STATUS + INTEGER_TYPE + " DEFAULT 0" + COMMA_SEP +
-                COLUMN_FAILURE_STATUS + INTEGER_TYPE + " DEFAULT 0 " + COMMA_SEP +
-                COLUMN_FAILURE_REASON + TEXT_TYPE +
-                ")";
-    }
 
     public static final class QuestionAnswerTable {
         public static final String TABLE_NAME = "question_answers";
@@ -345,44 +298,6 @@ public final class DatabaseContract {
                 ")";
     }
 
-    public static final class ChildGrowthTable {
-        public static final String TABLE_NAME = "GrowthMonitoring";
-        public static final String COLUMN_SERIAL_ID = "serial_id";
-//        public static final String COLUMN_MEMBER_ID = "member_id";
-        //public static final String COLUMN_AWW_ID = "aww_id";
-//        public static final String COLUMN_AWW_ID = "anganwadi_id";
-        //public static final String COLUMN_ASHA_ID = "asha_id";
-//        public static final String COLUMN_LOGIN_ID = "login_id";
-//        public static final String COLUMN_LOGIN_TYPE = "login_type";
-        public static final String COLUMN_MONTH = "month";
-        public static final String COLUMN_YEAR = "year";
-        public static final String COLUMN_CREATED_ON = "created_on";
-        public static final String COLUMN_HEIGHT = "height";
-        public static final String COLUMN_WEIGHT = "weight";
-        public static final String COLUMN_MUAC = "muac";
-        public static final String COLUMN_NEW_UNIQUE_ID = "uniqueId";
-        public static final String COLUMN_SUBMIT_STATUS = "submit_status";
-        /*COLUMN_FAILURE_STATUS and COLUMN_FAILURE_REASON column is to maintain
-            dataSource sync failure status and reason
-         */
-        public static final String COLUMN_FAILURE_STATUS = "failure_status";
-        public static final String COLUMN_FAILURE_REASON = "failure_reason";
-
-        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                "(" +
-                COLUMN_SERIAL_ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
-                COLUMN_MONTH + TEXT_TYPE + COMMA_SEP +
-                COLUMN_YEAR + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_CREATED_ON + TEXT_TYPE + COMMA_SEP +
-                COLUMN_HEIGHT + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_WEIGHT + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_MUAC + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_NEW_UNIQUE_ID + TEXT_TYPE + COMMA_SEP +
-                COLUMN_SUBMIT_STATUS + INTEGER_TYPE + " DEFAULT 0" + COMMA_SEP +
-                COLUMN_FAILURE_STATUS + INTEGER_TYPE + " DEFAULT 0 " + COMMA_SEP +
-                COLUMN_FAILURE_REASON + TEXT_TYPE +
-                ")";
-    }
 
     public static final class FaqTable {
         public static final String TABLE_NAME = "faq";
@@ -397,37 +312,4 @@ public final class DatabaseContract {
                 COLUMN_ANSWER + TEXT_TYPE +
                 ")";
     }
-
-    public static final class VideoAnimationTable {
-        public static final String TABLE_NAME = "video_animation";
-        public static final String COLUMN_ID = "id";
-        public static final String COLUMN_TYPE = "type";
-        public static final String COLUMN_KEYWORD = "keyword";
-        public static final String COLUMN_TITLE = "title";
-
-        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                "(" +
-                COLUMN_ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
-                COLUMN_TYPE + TEXT_TYPE + COMMA_SEP +
-                COLUMN_KEYWORD + TEXT_TYPE + COMMA_SEP +
-                COLUMN_TITLE + TEXT_TYPE +
-                ")";
     }
-
-    public static final class mMitraCallsTable {
-        public static final String TABLE_NAME = "mMitra_calls";
-        public static final String COLUMN_ORDER_NO = "order_no";
-        public static final String COLUMN_LANGUAGE = "language";
-        public static final String COLUMN_KEYWORD = "keyword";
-        public static final String COLUMN_TITLE = "title";
-
-        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                "(" +
-                COLUMN_ORDER_NO + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_LANGUAGE + TEXT_TYPE + COMMA_SEP +
-                COLUMN_KEYWORD + TEXT_TYPE + COMMA_SEP +
-                COLUMN_TITLE + TEXT_TYPE +
-                ")";
-    }
-
-}

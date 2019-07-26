@@ -38,7 +38,7 @@ class IncompleteFormActivity : AppCompatActivity(),IIncompleteFormView{
         toolbar.setTitle("Incomplete Forms")
         mProgressBar = findViewById(R.id.child_list_progress_bar)
         emptyLayout = findViewById(R.id.empty_list_layout)
-recyclerView=findViewById(R.id.recycler_view)
+        recyclerView=findViewById(R.id.recycler_view)
         var layoutManager = LinearLayoutManager(this@IncompleteFormActivity)
         var itemDecoration = DividerItemDecoration(this,DividerItemDecoration.VERTICAL)
         recyclerView?.apply {
@@ -69,7 +69,6 @@ recyclerView=findViewById(R.id.recycler_view)
         mProgressBar?.visibility= View.GONE
         if(mWomenList == null || mWomenList.size<1){
             empty_list_layout.visibility=View.VISIBLE
-            text_empty_list.text= R.string.Reg_women.toString()
             return
         }
 
@@ -84,6 +83,7 @@ recyclerView=findViewById(R.id.recycler_view)
                                 .setMessage("do you want to continue filling the incomplete forms ?")
                                 .setPositiveButton(this@IncompleteFormActivity.getString(R.string.continue_filling_forms)
                                 ) { dialog, which ->
+                                   //presenter?.getUniqueIdFormId(uniqueId)
                                     openActivity(unique_id, form_id)
                                 }
                                 .setNegativeButton(this@IncompleteFormActivity.getString(R.string.view_filled_form)

@@ -90,11 +90,11 @@ public class Visits
 
     // Bitmap images;
 
-//    public Visits(String id, String images, String name, String village)
+//    public Visits(String id, String images, String firstName, String village)
 //    {
 //
 //        this.id = id;
-//        this.name = name;
+//        this.firstName = firstName;
 //        this.village = village;
 //        this.images = images;
 //
@@ -316,7 +316,7 @@ public class Visits
     public String toString() {
         return "Visits{" +
                 "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+                ", firstName='" + name + '\'' +
                 ", village='" + village + '\'' +
                 ", images='" + images + '\'' +
                 ", anmUsername='" + anmUsername + '\'' +

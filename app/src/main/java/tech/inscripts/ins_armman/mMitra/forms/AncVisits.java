@@ -1944,7 +1944,7 @@ private static Utility utility=  new Utility();
             }
         }
 
-        // Create a media file name
+        // Create a media file firstName
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
         File mediaFile;

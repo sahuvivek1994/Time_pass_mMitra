@@ -17,7 +17,7 @@ class SyncFormService {
         this.mFormServiceApi = mFormServiceApi
     }
 
-    fun syncForms(formDetails: FormDetails,onFormSync : IHomeActivityInteractor.onFormSync,context: Context){
+    fun syncForms(formDetails: FormDetails,onFormSync : IHomeActivityInteractor.OnFormSync,context: Context){
        var responseBodyCall : Call<ResponseBody> = mFormServiceApi!!.syncFormDetails(formDetails)
         responseBodyCall.enqueue(object : retrofit2.Callback<ResponseBody>{
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {

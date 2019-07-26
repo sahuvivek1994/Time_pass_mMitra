@@ -411,17 +411,6 @@ public class displayForm extends AppCompatActivity {
 
     public void NextButtonValidations() {
         try {
-            /*if (Backup_answerTyped1.containsKey("child_count")) {
-                SQLiteDatabase db = utilityObj.getDatabase();
-                db.beginTransaction();
-               // questionInteractor.deleteExisitingChild(uniqueId);
-                for (int i = 0; i < Integer.valueOf(Backup_answerTyped1.get("child_count")); i++) {
-                    childUniqueId = questionInteractor.saveRegistrationDetails("", "", "", "", "", "", uniqueId, 0);
-                }
-                db.setTransactionSuccessful();
-                db.endTransaction();
-            }
-*/
             int counter = 0;
             int totalpagecondition = 0;
             Boolean isCompulsoryQstnInFocus = false;
@@ -492,16 +481,12 @@ public class displayForm extends AppCompatActivity {
 
             if (totalpagecondition == counter) {
 
-                if (Backup_answerTyped1.containsKey("child_name"))
+                //if (Backup_answerTyped1.containsKey("child_name"))
                   //  questionInteractor.updateChildRegistration(Backup_answerTyped1.get("child_name"), childUniqueId);
 
                 previous.setVisibility(View.VISIBLE);
-                /*if (!formid.equals("6") && !formid.equals("7")
-                        && !formid.equals("8") && !formid.equals("9"))
-                    questionInteractor.saveQuestionAnswers(Backup_answerTyped1, maxautoId, uniqueId, Integer.parseInt(formid), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
-                else
-                */
-                questionInteractor.saveQuestionAnswers(Backup_answerTyped1, maxautoId, childUniqueId, Integer.parseInt(formid), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
+
+                questionInteractor.saveQuestionAnswers(Backup_answerTyped1, maxautoId, uniqueId, Integer.parseInt(formid), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
 
 
                 Backup_answerTyped1.clear();
@@ -530,14 +515,9 @@ public class displayForm extends AppCompatActivity {
                     //   questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER));
                     if (!ImportantDialogStatus) {
                         ImportantNote_Dialog();
-                    }
-                    /*else if (!HighriskStatus) {
-                        highriskdialog();
-                    } else if (!RefferalStatus) {
-                        referraldialog();
                     } else if (!SaveFormStatus) {
                         saveForm();
-                    }*/
+                    }
                     else {
 //                        CalculateVisit calculateVisit;
 //                        calculateVisit = questionInteractor.getNextVisitOf(formid);
@@ -3615,7 +3595,7 @@ public class displayForm extends AppCompatActivity {
                         List<Visit> dependantList = null;
 
 
-                        if (FormID == 32) {
+                        /*if (FormID == 32) {
                             String tag = rb.getTag().toString();
 
                             switch (tag) {
@@ -3658,7 +3638,7 @@ public class displayForm extends AppCompatActivity {
                                 default:
                                     break;
                             }
-                        }
+                        }*/
 
                         rb.setChecked(true);
                         womendetails.put(dependantQuesKeyword, "" + rb.getTag());
@@ -3978,63 +3958,17 @@ public class displayForm extends AppCompatActivity {
                     .setPositiveButton(displayForm.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //finish();
-                            if (number_of_children == 0) {
 
-                                if (FormID > 5) {
-                                    Intent intent = new Intent(displayForm.this, HomeActivity.class);
-                                    startActivity(intent);
-                                } else if (FormID == 10) {
+                                if (FormID >= 2) {
                                     Intent intent = new Intent(displayForm.this, HomeActivity.class);
                                     startActivity(intent);
                                 } else {
-                                    String formNumber = String.valueOf(FormID + 1);
-                                    Intent intent2 = new Intent(displayForm.this, displayForm.class);
-                                    intent2.putExtra(UNIQUE_ID, uniqueId);
-                                    intent2.putExtra(FORM_ID, formNumber);
-                                    intent2.putExtra("child", "0");
-                                    intent2.putExtra("childcounter", "1");
-                                    startActivity(intent2);
-                                }
-
-                            } else {
-                                if (child_entry_counter <= number_of_children) {
-                                    if (FormID == 9 && child_entry_counter != number_of_children) {
-                                        Intent intent2 = new Intent(displayForm.this, displayForm.class);
-                                        intent2.putExtra(UNIQUE_ID, uniqueId);
-                                        intent2.putExtra(FORM_ID, "6");
-                                        String no_of_child = String.valueOf(number_of_children);
-                                        String child_entry = String.valueOf(child_entry_counter + 1);
-                                        intent2.putExtra("child", no_of_child);
-                                        intent2.putExtra("childcounter", child_entry);
-                                        startActivity(intent2);
-                                    } else if (FormID == 10) {
-                                        Intent intent = new Intent(displayForm.this, HomeActivity.class);
-                                        startActivity(intent);
-                                    } else if (FormID == 9 && child_entry_counter > number_of_children) {
                                         String formNumber = String.valueOf(FormID + 1);
                                         Intent intent2 = new Intent(displayForm.this, displayForm.class);
                                         intent2.putExtra(UNIQUE_ID, uniqueId);
                                         intent2.putExtra(FORM_ID, formNumber);
-                                        String no_of_child = String.valueOf(number_of_children);
-                                        String child_entry = String.valueOf(child_entry_counter);
-                                        intent2.putExtra("child", no_of_child);
-                                        intent2.putExtra("childcounter", child_entry);
-                                        startActivity(intent2);
-                                    } else {
-                                        String formNumber = String.valueOf(FormID + 1);
-                                        Intent intent2 = new Intent(displayForm.this, displayForm.class);
-                                        intent2.putExtra(UNIQUE_ID, uniqueId);
-                                        intent2.putExtra(FORM_ID, formNumber);
-                                        String no_of_child = String.valueOf(number_of_children);
-                                        String child_entry = String.valueOf(child_entry_counter);
-                                        intent2.putExtra("child", no_of_child);
-                                        intent2.putExtra("childcounter", child_entry);
                                         startActivity(intent2);
                                     }
-
-                                }
-                            }
-
                         }
                     })
                     .setNegativeButton(displayForm.this.getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -4045,433 +3979,9 @@ public class displayForm extends AppCompatActivity {
 
                     .show();
 
-          /*  final Dialog dialog = new Dialog(displayForm.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.custome_pvs);
-            dialog.setTitle(displayForm.this.getString(R.string.Important_Note));
-//            final LinearLayout ll = (LinearLayout) dialog.findViewById(R.id.linearLayout2);
-//
-//            patientvisitlist.remove("bmi");
-//
-//            for (Map.Entry<String, String> entry : patientvisitlist.entrySet()) {
-//
-//                try {
-//
-//                    JSONObject obj = new JSONObject(entry.getValue());
-//
-//                    Optionlanguage = obj.getString(mAppLanguage);
-//
-//                    Log.d(TAG, "OptionLanguage: " + Optionlanguage + " key " + entry.getKey());
-//
-//                    if (Optionlanguage.contains(entry.getKey())) {
-//
-//                        if (Optionlanguage.matches(".*[/,=:;-].*")) {
-//
-//                            String[] splited = Optionlanguage.split("[\\s,/=:;-]+");
-//
-//                            for (String s : splited) {
-//
-//                                if (womendetails.containsKey(s.trim())) {
-//
-//                                    Optionlanguage = Optionlanguage.replace(s.trim(), womendetails.get(s.trim())).trim();
-//
-//                                    String answerKeyword = Optionlanguage.split(":")[1];
-//
-//                                    for (Map.Entry answerSet : dependentAnswerMap.entrySet()) {
-//
-//                                        if (answerKeyword.trim().equals(answerSet.getKey())) {
-//
-//                                            JSONObject dependentAnsObject = new JSONObject(dependentAnswerMap.get(answerKeyword.trim()));
-//
-//                                            String answer = dependentAnsObject.getString(mAppLanguage);
-//
-//                                            Optionlanguage = Optionlanguage.replaceAll(answerKeyword, "  " + answer);
-//                                            break;
-//
-//                                        }
-//
-//                                    }
-//
-//                                }
-//                            }
-//                        } else {
-//                            Optionlanguage = Optionlanguage.replace(entry.getKey(), womendetails.get(entry.getKey()));
-//                            Log.e("ANCVisit"," In the Important Dialog else "+Optionlanguage);
-//                        }
-//                    }
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                CheckBox cb = new CheckBox(displayForm.this);
-//
-//                cb.setText(Optionlanguage);
-//                cb.setTextSize(20);
-//                cb.setPadding(10, 10, 10, 10);
-//                ll.addView(cb);
-//
-//            }
-//
-//            if (ll.getChildCount() == 0) {
-//                ll.setVisibility(View.GONE);
-//                final LinearLayout ll1 = (LinearLayout) dialog.findViewById(R.id.linearLayout3);
-//                ll1.setVisibility(View.VISIBLE);
-//                TextView tv = (TextView) dialog.findViewById(R.id.textView);
-//                tv.setVisibility(View.VISIBLE);
-//            }
-
-            Button referbut = (Button) dialog.findViewById(R.id.referral_button);
-            referbut.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-
-                    if (number_of_children == 0) {
-
-                        if (FormID > 5) {
-                            Intent intent = new Intent(displayForm.this, MainActivity.class);
-                            startActivity(intent);
-//            AlertDialog.Builder builder = new AlertDialog.Builder(displayForm.this);
-//
-//            LayoutInflater inflater = getLayoutInflater();
-//            View dialogView = inflater.inflate(R.layout.custome_child_dialogbox,null);
-//
-//            // Specify alert dialog is not cancelable/not ignorable
-//            builder.setCancelable(false);
-//
-//            // Set the custom layout as alert dialog view
-//            builder.setView(dialogView);
-//
-//            // Get the custom alert dialog view widgets reference
-//            Button btn_positive = (Button) dialogView.findViewById(R.id.dialog_positive_btn);
-//            Button btn_negative = (Button) dialogView.findViewById(R.id.dialog_negative_btn);
-//            final EditText et_name = (EditText) dialogView.findViewById(R.id.et_no_child);
-//
-//            // Create the alert dialog
-//            final AlertDialog dialog = builder.create();
-//
-//            // Set positive/yes button click listener
-//            btn_positive.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Dismiss the alert dialog
-//                    dialog.cancel();
-//                    number_of_children = Integer.parseInt(et_name.getText().toString());
-//                    if(number_of_children == 0)
-//                    {
-//                        Intent intent = new Intent(displayForm.this, MainActivity.class);
-//                        startActivity(intent);
-//                    }
-//                    else
-//                    {
-//
-//
-//
-//                        String formNumber = String.valueOf(FormID + 1);
-//                        Intent intent2 = new Intent(displayForm.this, displayForm.class);
-//                        intent2.putExtra(UNIQUE_ID, uniqueId);
-//                        intent2.putExtra(FORM_ID, formNumber);
-//                        intent2.putExtra("child",number_of_children);
-//                        intent2.putExtra("childcounter",child_entry_counter);
-//                        startActivity(intent2);
-//                    }
-//                }
-//            });
-//
-//            // Set negative/no button click listener
-//            btn_negative.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    dialog.dismiss();
-//                    Intent intent = new Intent(displayForm.this, MainActivity.class);
-//                    startActivity(intent);
-//                }
-//            });
-//
-//            // Display the custom alert dialog on interface
-//            dialog.show();
-
-                        } else if (FormID == 10) {
-                            Intent intent = new Intent(displayForm.this, MainActivity.class);
-                            startActivity(intent);
-                        } else {
-                            String formNumber = String.valueOf(FormID + 1);
-                            Intent intent2 = new Intent(displayForm.this, displayForm.class);
-                            intent2.putExtra(UNIQUE_ID, uniqueId);
-                            intent2.putExtra(FORM_ID, formNumber);
-                            intent2.putExtra("child", "0");
-                            intent2.putExtra("childcounter", "1");
-                            startActivity(intent2);
-                        }
-
-                    } else {
-                        if (child_entry_counter <= number_of_children) {
-                            if (FormID == 9 && child_entry_counter != number_of_children) {
-                                Intent intent2 = new Intent(displayForm.this, displayForm.class);
-                                intent2.putExtra(UNIQUE_ID, uniqueId);
-                                intent2.putExtra(FORM_ID, "6");
-                                String no_of_child = String.valueOf(number_of_children);
-                                String child_entry = String.valueOf(child_entry_counter + 1);
-                                intent2.putExtra("child", no_of_child);
-                                intent2.putExtra("childcounter", child_entry);
-                                startActivity(intent2);
-                            } else if (FormID == 10) {
-                                Intent intent = new Intent(displayForm.this, MainActivity.class);
-                                startActivity(intent);
-                            } else if (FormID == 9 && child_entry_counter > number_of_children) {
-                                String formNumber = String.valueOf(FormID + 1);
-                                Intent intent2 = new Intent(displayForm.this, displayForm.class);
-                                intent2.putExtra(UNIQUE_ID, uniqueId);
-                                intent2.putExtra(FORM_ID, formNumber);
-                                String no_of_child = String.valueOf(number_of_children);
-                                String child_entry = String.valueOf(child_entry_counter);
-                                intent2.putExtra("child", no_of_child);
-                                intent2.putExtra("childcounter", child_entry);
-                                startActivity(intent2);
-                            } else {
-                                String formNumber = String.valueOf(FormID + 1);
-                                Intent intent2 = new Intent(displayForm.this, displayForm.class);
-                                intent2.putExtra(UNIQUE_ID, uniqueId);
-                                intent2.putExtra(FORM_ID, formNumber);
-                                String no_of_child = String.valueOf(number_of_children);
-                                String child_entry = String.valueOf(child_entry_counter);
-                                intent2.putExtra("child", no_of_child);
-                                intent2.putExtra("childcounter", child_entry);
-                                startActivity(intent2);
-                            }
-
-                        }
-                    }
-
-//                    int count = ll.getChildCount();
-//                    Boolean flag = true;
-//
-//                    for (int i = 0; i < count; i++) {
-//                        if (ll.getChildAt(i) instanceof CheckBox) {
-//                            CheckBox cb = (CheckBox) ll.getChildAt(i);
-//                            if (!cb.isChecked()) {
-//                                flag = false;
-//                                break;
-//                            }
-//                        }
-//                    }
-//
-//                    if (flag) {
-//                        Log.e("ANCVisit"," In the Important Dialog in flag "+flag);
-//                        if (!HighriskStatus) {
-//                            Log.e("ANCVisit"," In the Important Dialog !highriskstatus "+HighriskStatus);
-//                            highriskdialog();
-//                            dialog.dismiss();
-//                            ImportantDialogStatus = true;
-//                        }
-//
-//                    } else {
-//                        Toast.makeText(displayForm.this, displayForm.this.getString(R.string.checkbox_select_msg), Toast.LENGTH_SHORT).show();
-//                    }
-
-                }
-            });
-
-
-            dialog.show();
-*/
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * This method is used to display high risk dialog with high risk list
-     */
-    public void highriskdialog() {
-       /* try {
-            Log.e("ANCVisit"," In the highriskdialog ");
-
-            final Dialog dialog = new Dialog(displayForm.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.custome_highrisk);
-            dialog.setTitle(displayForm.this.getString(R.string.Diagnostic_Test));
-            final LinearLayout ll = (LinearLayout) dialog.findViewById(R.id.linearLayout2);
-
-            final Iterator<Map.Entry<String, String>> itr2 = highrisklist.entrySet().iterator();
-            while (itr2.hasNext()) {
-                final Map.Entry<String, String> entry = itr2.next();
-                entry.getKey();
-                entry.getValue();
-
-//				System.out.println("entry.getKey() = " + entry.getKey());
-//				System.out.println("entry.getValue() = " + entry.getValue());
-
-                String myString = entry.getValue();
-
-                System.out.println("myString" + myString);
-                String[] a = myString.split(delimeter);
-
-                System.out.println("a[5] = " + a[5]);
-                System.out.println("a[4] = " + a[4]);
-                if (a[5].equalsIgnoreCase("highrisk")) {
-                    try {
-                        JSONObject obj = new JSONObject(a[4]);
-                        Optionlanguage = obj.getString(mAppLanguage);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    CheckBox cb = new CheckBox(AncVisits.this);
-
-                    cb.setText(Optionlanguage);
-                    cb.setTextSize(20);
-                    cb.setPadding(10, 10, 10, 10);
-                    ll.addView(cb);
-
-
-                }
-
-
-            }
-
-            if (ll.getChildCount() == 0) {
-                ll.setVisibility(View.GONE);
-                final LinearLayout ll1 = (LinearLayout) dialog.findViewById(R.id.linearLayout3);
-                ll1.setVisibility(View.VISIBLE);
-                TextView tv = (TextView) dialog.findViewById(R.id.textView);
-                tv.setVisibility(View.VISIBLE);
-            }
-
-            Button referbut = (Button) dialog.findViewById(R.id.high_risk_button);
-            referbut.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    int count = ll.getChildCount();
-                    Boolean flag = true;
-
-                    for (int i = 0; i < count; i++) {
-                        if (ll.getChildAt(i) instanceof CheckBox) {
-                            CheckBox cb = (CheckBox) ll.getChildAt(i);
-                            if (!cb.isChecked()) {
-                                flag = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (flag) {
-                        Log.e("ANCVisit"," In the if flag "+flag);
-
-                        referraldialog();
-                        dialog.dismiss();
-                        HighriskStatus = true;
-                        System.out.println("inside of if flag");
-
-                    } else {
-                        Toast.makeText(AncVisits.this, AncVisits.this.getString(R.string.checkbox_select_msg), Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
-
-
-            dialog.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-    }
-
-    /**
-     * This method is used to display diagnostic referral dialog with its list
-     */
-    public void referraldialog() {
-        /*try {
-            Log.e("ANCVisit"," In the referraldialog ");
-
-            final Dialog dialog = new Dialog(AncVisits.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.custome_referrallist);
-            dialog.setTitle(R.string.Diagnostic_Test);
-            final LinearLayout ll = (LinearLayout) dialog.findViewById(R.id.linearLayout2);
-            System.out.println("ll value" + ll);
-            //View openDialog = (View) findViewById(R.id.linearLayout2);
-            //add checkboxes
-//    for(int i = 0; i < 6; i++) {
-//       CheckBox cb = new CheckBox(EnrollmentQuestions.this);
-//       cb.setText("Dynamic Checkbox " + i);
-//       cb.setId(i + 6);
-//       System.out.println("CheckBox value" + cb);
-//       ll.addView(cb);
-//    }
-            System.out.println("referrallist.size() = " + referrallist.size());
-            Log.e("ANCVisit"," In the referraldialog referrallist.size() "+referrallist.size() +" -- list -- "+referrallist);
-            final Iterator<Map.Entry<String, String>> itr2 = referrallist.entrySet().iterator();
-            while (itr2.hasNext()) {
-                final Map.Entry<String, String> entry = itr2.next();
-                entry.getKey();
-                entry.getValue();
-
-                try {
-                    JSONObject obj = new JSONObject(entry.getValue());
-                    Optionlanguage = obj.getString(mAppLanguage);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                CheckBox cb = new CheckBox(ctx);
-
-                cb.setText(Optionlanguage);
-                cb.setTextSize(20);
-                cb.setPadding(10, 10, 10, 10);
-
-
-                ll.addView(cb);
-
-            }
-
-            if (ll.getChildCount() == 0) {
-                ll.setVisibility(View.GONE);
-                TextView tv = (TextView) dialog.findViewById(R.id.textView);
-                tv.setVisibility(View.VISIBLE);
-            }
-
-            Button referbut = (Button) dialog.findViewById(R.id.referral_button);
-            referbut.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    int count = ll.getChildCount();
-                    Boolean flag = true;
-
-                    for (int i = 0; i < count; i++) {
-                        if (ll.getChildAt(i) instanceof CheckBox) {
-                            CheckBox cb = (CheckBox) ll.getChildAt(i);
-                            if (!cb.isChecked()) {
-                                flag = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (flag) {
-                        Log.e("ANCVisit"," In the referraldialog flag "+ flag);
-
-                        saveForm();
-                        dialog.dismiss();
-                        RefferalStatus = true;
-                    } else {
-                        Toast.makeText(AncVisits.this, AncVisits.this.getString(R.string.checkbox_select_msg), Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
-
-
-            dialog.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
     /**
@@ -4486,50 +3996,11 @@ public class displayForm extends AppCompatActivity {
 
             if (highrisklist.size() > 0) {
                 //TODO: ADD HIGHRISK CODE for CHILD if comes
-                questionInteractor.saveReferralData(highrisklist, uniqueId, formid);
-               /* insertedRowIdReferralWomenTable = dbhelper.inserthighriskwomen(highrisklist, "" + uniqueId, dbhelper.getANMInfo("ANMSubCenterId"), "");
-                dbhelper.updatehighrisklist(uniqueId, "1");*/
-            }
-
-//            if (FormID == DELIVERY_FORM_ID) {
-//                String deliveryDate = womendetails.get(DELIVERY_DATE);
-//                int childCount = Integer.parseInt(womendetails.get(LIVE_CHILDREN_COUNT));
-//
-//                Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM "
-//                        + DatabaseContract.RegistrationTable.TABLE_NAME
-//                        + " WHERE "
-//                        + DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? ", new String[]{uniqueId});
-//                String address = "", villageId = "", mobNo = "", alternateNo = "";
-//                if (cursor.moveToFirst()) {
-//                    address = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_ADDRESS));
-//                    mobNo = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO));
-//                }
-//
-//                for (int i = 0; i < childCount; i++) {
-//                  //  questionInteractor.saveRegistrationDetails("", "", "", mobNo, alternateNo, villageId, "", "", address, deliveryDate, "", "", "", null, uniqueId, 0);
-//                }
-//
-//
-//            }
-
+               }
             Toast.makeText(getApplicationContext(), displayForm.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
 
             finish();
 
-
-           /* calculatevisitList = dbhelper.getNextVisit("" + (Integer.parseInt(formid) + 1));
-            calculatevisitList1 = dbhelper.getVisitWeek_list();
-             if(!isAncPncEdit) {
-                 if (calculatevisitList != null && calculatevisitList.size() > 0) {
-                     if (nextvisitdate(womanLmp, Integer.toString(calculatevisitList.get(0).getFromWeek())) != null && nextvisitdate(womanLmp, Integer.toString(calculatevisitList.get(0).getFromWeek())).length() > 0) {
-                         NextVisit_dialog(calculatevisitList.get(0).getANCVisit(), nextvisitdate(womanLmp, Integer.toString(calculatevisitList.get(0).getFromWeek())), "NextVisit");
-                     }
-                 } else {
-                     NextVisit_dialog("", "", "");
-                 }
-             }else{
-                 finish();
-             }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -4554,37 +4025,6 @@ public class displayForm extends AppCompatActivity {
         finish();
     }
 
-    /**
-     * This methos is used to store registration of the newly born children related data in local DB.
-     */
-    public long StoreChildCareRegForm() {
-        long insertedRowIdReferralWomenTable = -1;
-        questionInteractor.updateFormCompletionStatus(maxautoId);
-
-        if (highrisklist.size() > 0) {
-            questionInteractor.saveReferralData(highrisklist, uniqueId, formid);
-        }
-
-        //  questionInteractor.updateChildRegistrationDetails(uniqueId, womendetails.get(NAME), womendetails.get(MIDDLE_NAME), womendetails.get(LAST_NAME), womendetails.get(GENDER));
-        finish();
-        return insertedRowIdReferralWomenTable;
-
-    }
-
-    public long storeChildCareForm() {
-
-        long insertedRowIdReferralWomenTable = -1;
-
-        questionInteractor.updateFormCompletionStatus(maxautoId);
-
-        if (highrisklist.size() > 0) {
-
-            questionInteractor.saveReferralData(highrisklist, uniqueId, formid);
-
-        }
-        finish();
-        return insertedRowIdReferralWomenTable;
-    }
 
     /**
      * This method is used to calculate ANM's visit and delivery date of the women
@@ -5741,8 +5181,6 @@ public class displayForm extends AppCompatActivity {
 
             storePrevAncId = Integer.parseInt(formid);
             FormID = Integer.parseInt(formid);
-           // number_of_children = Integer.valueOf(b.getString("child"));
-           // child_entry_counter = Integer.valueOf(b.getString("childcounter"));
             uniqueId = b.getString(UNIQUE_ID);
 
 
@@ -5785,7 +5223,8 @@ public class displayForm extends AppCompatActivity {
 
                 number_of_children = childsUniqueIds.size();
                 childUniqueId = childsUniqueIds.get(child_entry_counter - 1);
-            */    uniqueIDToUse = childUniqueId;
+            */
+           // uniqueIDToUse = childUniqueId;
             //}
 
             maxautoId = questionInteractor.getFilledFormReferenceId(uniqueIDToUse, String.valueOf(FormID));

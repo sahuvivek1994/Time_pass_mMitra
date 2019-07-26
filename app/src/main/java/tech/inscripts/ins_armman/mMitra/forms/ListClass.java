@@ -76,9 +76,9 @@ public class ListClass implements Serializable {
 
     public ListClass(String women_id, String name, String mob_no, String women_village, String expec_delivery_date, String string, String ancVisit, String visit_id, String motherID, String lastVisit, int highRiskStatus, String houseHoldId, String husbandName) {
         this.ListText = women_id; // womanID
-        this.value = name;       // name
+        this.value = name;       // firstName
         this.tagID = mob_no;
-        this.locationId = women_village; // village name
+        this.locationId = women_village; // village firstName
         this.Color = expec_delivery_date;
         this.id = string;                 // lmp||delivery-date
         this.Recipeid = ancVisit;     // Visit Name
@@ -147,9 +147,9 @@ public class ListClass implements Serializable {
 
     public ListClass(String listtext, String value, String tagID, String locationId, String color, String id, String Recipeid, String SystemNo, String womenMotherId) {
         this.ListText = listtext; // womanID
-        this.value = value;       // name
+        this.value = value;       // firstName
         this.tagID = tagID;
-        this.locationId = locationId; // village name
+        this.locationId = locationId; // village firstName
         this.Color = color;
         this.id = id;                 // lmp||delivery-date
         this.Recipeid = Recipeid;     // Visit Name

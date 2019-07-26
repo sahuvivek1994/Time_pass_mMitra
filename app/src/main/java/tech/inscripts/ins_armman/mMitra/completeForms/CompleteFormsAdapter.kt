@@ -71,7 +71,7 @@ class CompleteFormsAdapter() : RecyclerView.Adapter<CompleteFormsAdapter.ViewHol
                  clickListener?.itemClicked(v, position)
                  val i = mWomenList?.size
                  intent.putExtra("id", mWomenList?.get(position)?.unique_id)
-                 intent.putExtra("name", mWomenList?.get(position)?.name)
+                 intent.putExtra("firstName", mWomenList?.get(position)?.name)
              }
              mContext?.startActivity(intent)
          }

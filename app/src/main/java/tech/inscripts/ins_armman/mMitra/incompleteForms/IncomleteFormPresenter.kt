@@ -17,21 +17,25 @@ class IncomleteFormPresenter : IIncompleteFormPresenter<IncompleteFormActivity> 
 var space= " "
         var womenList : ArrayList<IncompleteFilledForm> =ArrayList()
         var cursor : Cursor = interactor?.getIncompleteFormList()!!
-        if(cursor!=null && cursor.moveToFirst()){
-            do{
-               var name=cursor.getString(cursor.getColumnIndex("name"))
-                womenList.add(
-                    IncompleteFilledForm(
-                        cursor.getString(cursor.getColumnIndex("unique_id")),
-                        name,
-                        cursor.getString(cursor.getColumnIndex("form_id")),
-                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_COMPLETION_STATUS))
+       var a= cursor.count
+        if(a!=null || a>0) {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    var name = cursor.getString(cursor.getColumnIndex("name"))
+                    womenList.add(
+                        IncompleteFilledForm(
+                            cursor.getString(cursor.getColumnIndex("unique_id")),
+                            name,
+                            cursor.getString(cursor.getColumnIndex("form_id")),
+                            cursor.getInt(cursor.getColumnIndex(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_COMPLETION_STATUS))
+                        )
                     )
-                )
-            }while(cursor.moveToNext())
+                } while (cursor.moveToNext())
+            }
+            incompleteView?.setAdapter(womenList)
         }
-        incompleteView?.setAdapter(womenList)
-
+        else
+            incompleteView?.setAdapter(womenList)
     }
 
     override fun getUniqueIdFormId(uniqueId: String) {

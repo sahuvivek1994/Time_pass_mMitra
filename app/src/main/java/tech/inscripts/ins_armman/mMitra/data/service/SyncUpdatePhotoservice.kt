@@ -20,7 +20,7 @@ class SyncUpdatePhotoservice {
         this.mPhotoserviceApi = mPhotoserviceApi
     }
 
-    fun syncUpdatePhotoDetails(updateImageModel: UpdateImageModel,updatedPhotoSync: IHomeActivityInteractor.onUpdatedPhotoSync){
+    fun syncUpdatePhotoDetails(updateImageModel: UpdateImageModel,updatedPhotoSync: IHomeActivityInteractor.OnUpdatedPhotoSync){
         Log.d("SyncUpdatePhotoService","SyncUpdatePhotoService start request")
         var responseBosyCall = mPhotoserviceApi!!.SyncUpdatePhotoDetails(updateImageModel)
         responseBosyCall.enqueue(object :retrofit2.Callback<ResponseBody>{
