@@ -16,8 +16,8 @@ interface ISettingsInteractor {
      fun fetchLoginDetails(id: Int)
      fun fetchFormJsonHash(id: Int)
      fun saveFormData(formJsonObject: JSONObject)
-     fun downloadHelpManual(helpModel: RequestHelpModel, downloadFinished: onHelpManualDownloadFinished)
-     fun saveHelpManualData(formJsonObject: JSONObject)
+     //fun downloadHelpManual(helpModel: RequestHelpModel, downloadFinished: onHelpManualDownloadFinished)
+     //fun saveHelpManualData(formJsonObject: JSONObject)
      fun checkReleaseUpdate(onCheckUpdateFinished: onCheckUpdateFinished)
      fun downloadAndSaveApk(apkLink: String)
      fun getHash(type: String): String
@@ -44,10 +44,10 @@ interface ISettingsInteractor {
         fun onFailure(message: String)
     }
 
-    interface onHelpManualDownloadFinished {
+    /*interface onHelpManualDownloadFinished {
         fun onSuccessDownloadedHelpManual(jsonObject: JSONObject, hash: String)
         fun onFailure(message: String)
-    }
+    }*/
 
     interface OnRegistrationsDownloadFinished {
         fun onSuccessRegistrationsDownloading(registration: RestoreRegistration)
@@ -59,10 +59,6 @@ interface ISettingsInteractor {
         fun onFailure(message: String)
     }
 
-    interface OnReferralDownloadFinished {
-        fun onSuccessReferralDownloading(referral: RestoreReferral)
-        fun onFailure(message: String)
-    }
 
    /* interface OnGrowthMonitoringFinished {
         fun onSuccessGrowthMonitoringDownloading(growthMonitoring: RestoreGrowthMonitoring)

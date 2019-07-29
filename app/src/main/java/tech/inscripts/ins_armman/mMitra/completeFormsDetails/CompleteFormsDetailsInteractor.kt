@@ -17,7 +17,4 @@ class CompleteFormsDetailsInteractor : ICompleteFormsDetailsInteractor {
         return db.getCompleteFormDetails(unique_id, form_id)
     }
 
-    override fun displayForm6Details(unique_id: String, form_id: Int): Cursor {
-        return db.getForm6Details(unique_id, form_id)
-    }
 }

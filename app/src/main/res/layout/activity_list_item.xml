@@ -14,7 +14,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:cardCornerRadius="25dp"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0" android:layout_marginBottom="4dp" android:layout_marginTop="4dp">
 
         <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -27,7 +27,6 @@
                     android:gravity="left|center"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:fontFamily="casual"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:text="question"
                     app:layout_constraintStart_toEndOf="@+id/imageView11" android:layout_marginStart="4dp"
@@ -46,7 +45,7 @@
                     android:gravity="left|center"
                     android:text="answer"
                     android:textSize="18sp"
-                    app:fontFamily="monospace"
+                    android:singleLine="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/tvQuestion"
                     app:layout_constraintHorizontal_bias="0.0"

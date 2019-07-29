@@ -58,7 +58,7 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
 
                 constraintLayout.setOnClickListener {
                     var formIdToOpen = Integer.parseInt(listModel!!.formId)
-                    formIdToOpen += 1
+                    //formIdToOpen += 1
                     mOnItemClickListener?.onItemClick(listModel!!.uniqueId, formIdToOpen)
                 }
             }

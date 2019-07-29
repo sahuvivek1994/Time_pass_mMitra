@@ -27,7 +27,7 @@ class UpdateModel {
     class Data {
         @SerializedName("id")
         var id: String=""
-        @SerializedName("name")
+        @SerializedName("firstName")
         var name: String=""
         @SerializedName("versionName")
         var versionName: String=""

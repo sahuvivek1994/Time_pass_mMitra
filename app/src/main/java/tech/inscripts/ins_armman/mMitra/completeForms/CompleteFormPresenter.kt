@@ -14,11 +14,7 @@ class CompleteFormPresenter : ICompleteFormPresenter<CompleteFormActivity> {
       var cursor : Cursor? = completeFormInteractor?.fetchListCompleteForm()
         if (cursor != null && cursor.moveToFirst())
             do {
-                var fName = cursor.getString(cursor.getColumnIndex("first_name"))
-                var mName = cursor.getString(cursor.getColumnIndex("middle_name"))
-                var lName = cursor.getString(cursor.getColumnIndex("last_name"))
-                var space = " "
-                var fullName= fName+space+mName+space+lName
+                var fullName = cursor.getString(cursor.getColumnIndex("name"))
                 womenList.add(
                     completeFilledForm(fullName,cursor.getString(cursor.getColumnIndex("unique_id"))))
             } while (cursor.moveToNext())

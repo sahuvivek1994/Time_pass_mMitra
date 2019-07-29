@@ -262,7 +262,7 @@
     <string name="name_edit_change_unsuccessful">The child name edit failed</string>
     <string name="error_performing_operation">There was some problem</string>
     <string name="pro_img_already_updated_msg">Profile image already Updated</string>
-    <string name="Reg_women">No Registered Women Found</string>
+    <string name="Reg_women">No Women Found</string>
     <string name="empty_child_list_text">No Child Registered</string>
     <string name="no_child_found">No Child Found</string>
     <string name="no_result_found">%s result found</string>

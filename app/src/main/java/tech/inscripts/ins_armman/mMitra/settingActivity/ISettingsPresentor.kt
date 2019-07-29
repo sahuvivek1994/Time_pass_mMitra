@@ -7,7 +7,7 @@ import tech.inscripts.ins_armman.mMitra.utility.IBasePresenter
 interface ISettingsPresentor<V>:IBasePresenter<V> {
      fun changeLanguage(context: Context, language: String)
      fun downloadForms()
-     fun downloadHelpManual()
+     //fun downloadHelpManual()
      fun checkUpdate()
      fun downloadApk(apkLink: String)
      fun setApkDownloadProgress(progress: Int)
@@ -16,8 +16,8 @@ interface ISettingsPresentor<V>:IBasePresenter<V> {
      fun restoreData()
      fun restoreRegistrations(pageNumber: Int)
      fun restoreVisits(pageNumber: Int)
-     fun restoreReferrals(pageNumber: Int)
-     fun restoreGrowthMonitorings(pageNumber: Int)
+    // fun restoreReferrals(pageNumber: Int)
+    // fun restoreGrowthMonitorings(pageNumber: Int)
      fun resetDataMemberValues()
 
     interface OnQueryFinished {

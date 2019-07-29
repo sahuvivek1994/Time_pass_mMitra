@@ -39,7 +39,7 @@ class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,FormL
         recyclerView.itemAnimator = DefaultItemAnimator()
 
         id = intent.getStringExtra("id")
-        //name = intent.getStringExtra("name")
+        //firstName = intent.getStringExtra("firstName")
         form_id = intent.getIntExtra("form_id", 0)
         presentor.getCompleteFormList(id)
 

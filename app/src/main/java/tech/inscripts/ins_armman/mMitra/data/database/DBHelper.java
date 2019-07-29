@@ -46,7 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(QuestionAnswerTable.CREATE_TABLE);
         db.execSQL(FilledFormStatusTable.CREATE_TABLE);
      //   db.execSQL(ChildGrowthTable.CREATE_TABLE);
-        db.execSQL(VideoAnimationTable.CREATE_TABLE);
+        //db.execSQL(VideoAnimationTable.CREATE_TABLE);
         db.execSQL(FaqTable.CREATE_TABLE);
      //   db.execSQL(mMitraCallsTable.CREATE_TABLE);
     }
@@ -133,26 +133,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     " ADD COLUMN " + FilledFormStatusTable.COLUMN_FAILURE_REASON + TEXT_TYPE);
         }
 
-        if (!isColumnExist(db, ReferralTable.TABLE_NAME, ReferralTable.COLUMN_FAILURE_STATUS)) {
-            db.execSQL("ALTER TABLE " + ReferralTable.TABLE_NAME +
-                    " ADD COLUMN " + ReferralTable.COLUMN_FAILURE_STATUS + INTEGER_TYPE + " DEFAULT 0");
-        }
-
-        if (!isColumnExist(db, ReferralTable.TABLE_NAME, ReferralTable.COLUMN_FAILURE_REASON)) {
-            db.execSQL("ALTER TABLE " + ReferralTable.TABLE_NAME +
-                    " ADD COLUMN " + ReferralTable.COLUMN_FAILURE_REASON + TEXT_TYPE);
-        }
-
-        if (!isColumnExist(db, ChildGrowthTable.TABLE_NAME, ChildGrowthTable.COLUMN_FAILURE_STATUS)) {
-            db.execSQL("ALTER TABLE " + ChildGrowthTable.TABLE_NAME +
-                    " ADD COLUMN " + ChildGrowthTable.COLUMN_FAILURE_STATUS + INTEGER_TYPE + " DEFAULT 0");
-        }
-
-        if (!isColumnExist(db, ChildGrowthTable.TABLE_NAME, ChildGrowthTable.COLUMN_FAILURE_REASON)) {
-            db.execSQL("ALTER TABLE " + ChildGrowthTable.TABLE_NAME +
-                    " ADD COLUMN " + ChildGrowthTable.COLUMN_FAILURE_REASON + TEXT_TYPE);
-        }
-
         if (!isColumnExist(db, RegistrationTable.TABLE_NAME, RegistrationTable.COLUMN_UPDATE_IMAGE_STATUS))
             db.execSQL("ALTER TABLE " + RegistrationTable.TABLE_NAME +
                     " ADD COLUMN " + RegistrationTable.COLUMN_UPDATE_IMAGE_STATUS + TEXT_TYPE + " DEFAULT 1");
@@ -189,15 +169,22 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("update filled_forms_status set wages_status=1 where wages_status is null");
     }
 
+    /**
+     * this funtion gives the list of women whose forms are incompletely filled
+     * @return
+     */
     public Cursor getIncompleteFormListList() {
 
-        return utility.getDatabase().rawQuery("SELECT * FROM " +
-                "(SELECT current.unique_id,current.form_id,reg.first_name,reg.middle_name,reg.last_name, current.form_completion_status " +
+        String query="select c.unique_id,c.form_id,r.name,c.form_completion_status from filled_forms_status as c join registration as r  on c.unique_id=r.unique_id and form_completion_status=0 group by c.unique_id";
+        return utility.getDatabase().rawQuery(query,null);
+        /*return utility.getDatabase().rawQuery("SELECT * FROM " +
+                "(SELECT current.unique_id,current.form_id,reg.firstName, current.form_completion_status " +
                 "FROM filled_forms_status AS current " +
-                " JOIN registration AS reg on current.unique_id = reg.unique_id AND (reg.mother_id is null OR reg.mother_id = '') " +
-                " AND current.unique_id NOT IN (SELECT unique_id FROM filled_forms_status WHERE form_id = 10 AND form_completion_status = 1))" +
-                " GROUP BY unique_id", null);
+                " JOIN registration AS reg on current.unique_id = reg.unique_id " +
+                " AND current.unique_id NOT IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1))" +
+                " GROUP BY unique_id", null);*/
     }
+
     public String fetchCount() {
         String status = null;
 
@@ -221,13 +208,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getcompleteFormListList() {
 
-        return utility.getDatabase().rawQuery("SELECT first_name,middle_name,last_name,unique_id from registration WHERE unique_id IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1 )", null);
+        return utility.getDatabase().rawQuery("SELECT name,unique_id from registration WHERE unique_id IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1 and form_id >= 2 )", null);
     }
 
-    public Cursor getChildIdFromMotherId(String motherId) {
-        return utility.getDatabase().rawQuery("SELECT first_name,middle_name,last_name,unique_id FROM " + RegistrationTable.TABLE_NAME + " WHERE mother_id ='" + motherId + "'", null);
-    }
-
+    /**
+     * this method gives the last completely filled form id to open the next form in incomplete form module
+     * @param uniqueId
+     * @return
+     */
     public Cursor getLastCompleteFilledFormId(String uniqueId) {
         return utility.getDatabase().rawQuery("SELECT max(form_id) as form_id FROM " + FilledFormStatusTable.TABLE_NAME + " WHERE unique_id = '" + uniqueId + "' AND form_completion_status = 1", null);
     }
@@ -243,32 +231,35 @@ public class DBHelper extends SQLiteOpenHelper {
                 "and question_answers.form_id="+form_id,null);
     }*/
 
-    /**
+   /* *//**
      *form 6 contains question label but does'nt contain answer label so only
      main_questions and question_answers involved in query and not question_option
      * @param unique_id=child unique_id
      * @param form_id=child form_id
      * @return
-     */
+     *//*
     public Cursor getForm6Details(String unique_id,int form_id){
         return utility.getDatabase().rawQuery("SELECT main_questions.question_label,question_answers.answer_keyword,question_answers.unique_id " +
                 "FROM question_answers" +
                 " JOIN main_questions ON question_answers.question_keyword=main_questions.keyword " +
                 "WHERE question_answers.unique_id='"+unique_id+"' and question_answers.form_id="+form_id,null);
-    }
+    }*/
+
+
     public Cursor getFormsList(String unique_id){
         //return utility.getDatabase().rawQuery("select visit_name,form_id from form_details group by(form_id) order by cast(form_id as int) asc",null);
-        return utility.getDatabase().rawQuery("select form_id,visit_name from form_details \n" +
+        return utility.getDatabase().rawQuery("select form_id,visit_name from form_details " +
                 "where form_id in(select form_id from filled_forms_status where form_completion_status=1 " +
                 "and unique_id='"+ unique_id +"') order by cast(form_id as int) asc",null);
     }
-    public Cursor getIncompleteFormList(String unique_id){
+    /*public Cursor getIncompleteFormList(String unique_id){
         return utility.getDatabase().rawQuery("select filled_forms_status.form_id,visit_name" +
                 " from filled_forms_status join form_details on" +
                 " filled_forms_status.form_id=form_details.form_id" +
                 " where unique_id='"+unique_id+"' and form_completion_status=1" +
                 " group by(filled_forms_status.form_id)",null);
-    }
+    }*/
+
     public Cursor getCompleteFormDetails(String unique_id, int Form_id)
     {
         return utility.getDatabase().rawQuery( "select r.unique_id ,mq.question_label,qo.option_label,qa.answer_keyword,qa.question_keyword" +
