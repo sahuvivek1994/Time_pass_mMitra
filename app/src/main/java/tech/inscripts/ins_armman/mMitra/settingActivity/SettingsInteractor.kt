@@ -300,7 +300,6 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
     override fun deleteLoginDetails() {
         utility.getDatabase().delete(LoginTable.TABLE_NAME, null, null)
-        utility.getDatabase().delete(VillageTable.TABLE_NAME, null, null)
     }
 
     override fun onCreateLoader(p0: Int, bundle: Bundle?): Loader<Cursor> {

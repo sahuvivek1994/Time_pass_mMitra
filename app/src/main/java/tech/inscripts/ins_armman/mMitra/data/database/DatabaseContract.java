@@ -28,15 +28,7 @@ public final class DatabaseContract {
         public static final String COLUMN_USERNAME = "username";
         public static final String COLUMN_PASSWORD = "password";
         public static final String COLUMN_PHONE_NO = "phone_no";
-        public static final String COLUMN_ALTERNATE_PHONE_NO = "alternate_phone_no";
-        public static final String COLUMN_STATE_ID = "state_id";
-        public static final String COLUMN_STATE_NAME = "state_name";
-        public static final String COLUMN_DISTRICT_ID = "district_id";
-        public static final String COLUMN_DISTRICT_NAME = "district_name";
-        public static final String COLUMN_TALUKA_ID = "taluka_id";
-        public static final String COLUMN_TALUKA_NAME = "taluka_name";
-        public static final String COLUMN_PHC_ID = "phc_id";
-        public static final String COLUMN_PHC_NAME = "phc_name";
+
 
         public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
                 "( " +
@@ -44,16 +36,7 @@ public final class DatabaseContract {
                 COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                 COLUMN_USERNAME + TEXT_TYPE + COMMA_SEP +
                 COLUMN_PASSWORD + TEXT_TYPE + COMMA_SEP +
-                COLUMN_PHONE_NO + TEXT_TYPE + COMMA_SEP +
-                COLUMN_ALTERNATE_PHONE_NO + TEXT_TYPE + COMMA_SEP +
-                COLUMN_STATE_ID + TEXT_TYPE + COMMA_SEP +
-                COLUMN_STATE_NAME + TEXT_TYPE + COMMA_SEP +
-                COLUMN_DISTRICT_ID + TEXT_TYPE + COMMA_SEP +
-                COLUMN_DISTRICT_NAME + TEXT_TYPE + COMMA_SEP +
-                COLUMN_TALUKA_ID + TEXT_TYPE + COMMA_SEP +
-                COLUMN_TALUKA_NAME + TEXT_TYPE + COMMA_SEP +
-                COLUMN_PHC_ID + TEXT_TYPE + COMMA_SEP +
-                COLUMN_PHC_NAME + TEXT_TYPE + ")";
+                COLUMN_PHONE_NO + TEXT_TYPE + COMMA_SEP + ")";
     }
 
     public static final class VillageTable {

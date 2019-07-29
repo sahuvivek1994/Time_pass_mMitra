@@ -6,7 +6,7 @@ import tech.inscripts.ins_armman.mMitra.data.model.UserDetails
 
 interface ILoginInteractor {
 
-    fun saveUserDetails()
+    fun saveUserDetails(username: String, password: String, jsonObject: JSONObject)
 
     fun login(userDetails:UserDetails,onLoginFinished:OnLoginFinished,context:Context)
 
@@ -16,7 +16,7 @@ interface ILoginInteractor {
 
     interface OnLoginFinished
     {
-            fun onSucess(jsonObject: JSONObject)
+            fun onSuccess(jsonObject: JSONObject)
 
             fun onFailure(message:String)
     }

@@ -5,13 +5,16 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import org.json.JSONObject
+import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
 import tech.inscripts.ins_armman.mMitra.data.model.UserDetails
+import tech.inscripts.ins_armman.mMitra.utility.Constants.AUTHENTICATION_FAILED
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.*
 
-class LoginPresenter : ILoginPresenter<ILoginView> {
+class LoginPresenter : ILoginPresenter<ILoginView>, ILoginInteractor.OnLoginFinished {
 
     private val permissions = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -24,10 +27,12 @@ class LoginPresenter : ILoginPresenter<ILoginView> {
     var iLoginview: ILoginView? = null
     var util = Utility()
     var mUserDetails = UserDetails()
+    var iLogInteractor = LoginInteractor()
+    var utility=Utility()
 
     override fun attachView(ilogin: ILoginView) {
         this.iLoginview = ilogin
-        //   var loginInter = LoginInteractor(ilogin.getContext())
+        var loginInter = LoginInteractor()
 
         if (checkPermissions()) {
             initializeDBHelper()
@@ -85,8 +90,7 @@ class LoginPresenter : ILoginPresenter<ILoginView> {
         if (util.hasInternetConnectivity(iLoginview!!.getContext())) {
             iLoginview!!.showProgressBar()
             createRequestBody(username, password)
-//            var iLogInter = ILoginInteractor()
-//            iLogInter.login(mUserDetails,this,iLoginview?.getContext())
+            iLogInteractor.login(mUserDetails,this,iLoginview?.getContext()!!)
         } else {
             var title = "No internet"
             var message = "No internet connectivity. Please check your network"
@@ -95,19 +99,60 @@ class LoginPresenter : ILoginPresenter<ILoginView> {
     }
 
     override fun createRequestBody(username: String, password: String) {
-//            mUserDetails = UserDetails()
-//            mUserDetails.setusername(username)
-//            mUserDetails.setpassword(password)
-//            mUserDetails.setShowdata("true")
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            mUserDetails = UserDetails()
+            mUserDetails.setusername(username)
+            mUserDetails.setpassword(password)
+         mUserDetails.setImei(utility.getDeviceImeiNumber(iLoginview?.getContext()!!))
+            mUserDetails.setShowdata("true")
     }
 
     override fun checkIfUserAlreadyLoggedIn() {
+        try{
+            if(iLogInteractor.userAlreadyLoggedIn()){
+                iLoginview?.openHomeActivity()
+            }
+        }
+        catch(e : IllegalStateException){
+            checkPermissions()
+            initializeDBHelper()
+            checkIfUserAlreadyLoggedIn()
+        }
 
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun detachView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onSuccess(jsonObject: JSONObject){
+       if (jsonObject.has("response")){
+               when (jsonObject.optString("response")) {
+                   "AUTHENTICATION_SUCCESS" -> {
+                       iLogInteractor.saveUserDetails(mUserDetails.userName!!, mUserDetails.password!!, jsonObject)
+                       iLoginview?.hideProgressBar()
+                       iLoginview?.openHomeActivity()
+                   }
+                   AUTHENTICATION_FAILED -> {
+                       iLoginview?.hideProgressBar()
+                       iLoginview?.showDialog(iLoginview?.getContext()?.getString(R.string.error)!!,
+                           iLoginview?.getContext()?.getString(R.string.authentication_failed)!!)
+                       iLoginview?.setAuthenticationFailedError()
+                   }
+                   else -> {
+                       iLoginview?.hideProgressBar()
+                       iLoginview?.showDialog(
+                           iLoginview?.getContext()?.getString(R.string.error)!!,
+                           iLoginview?.getContext()?.getString(R.string.response_not_found)!!
+                       )
+                   }
+               }
+       }else{
+         iLoginview?.hideProgressBar()
+           iLoginview?.showDialog(iLoginview?.getContext()?.getString(R.string.error)!!, iLoginview?.getContext()!!.getString(R.string.response_not_found))
+       }
+    }
+
+    override fun onFailure(message: String) {
+        iLoginview?.hideProgressBar()
+        iLoginview?.showDialog("Error",message)
     }
 }
