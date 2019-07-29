@@ -14,11 +14,14 @@ import java.util.ArrayList
     @SerializedName("password")
     var password: String = ""
     @SerializedName("imei")
-   // private var imei: ArrayList<String>? = null
-    private var imei: String = ""
+    private var imei: ArrayList<String>? = null
+    //private var imei: String = ""
+
     @SerializedName("showdata")
     private var showdata: String? = null
 
+     @SerializedName("userId")
+     private var userId: String? = null
 
 
     fun setShowdata(showdata: String) {
@@ -26,14 +29,14 @@ import java.util.ArrayList
     }
 
 
-    /*fun setImei(imei: ArrayList<String>?) {
+    fun setImei(imei: ArrayList<String>?) {
         this.imei = imei
-    }*/
+    }
 
-     fun setImei(imei: String) {
+     /*fun setImei(imei: String) {
          this.imei = imei
 
-     }
+     }*/
     fun setpassword(pass: String)
     {
         this.password = pass
@@ -44,6 +47,13 @@ import java.util.ArrayList
         this.userName = user
     }
 
+     fun setUserId(userId : String)
+     {
+         this.userId=userId
+     }
+     fun getUserId(): String? {
+         return userId
+     }
 
 
 

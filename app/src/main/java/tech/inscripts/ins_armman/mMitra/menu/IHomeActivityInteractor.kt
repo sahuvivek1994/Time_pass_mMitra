@@ -43,7 +43,7 @@ interface IHomeActivityInteractor  {
     }
 
     interface OnFormSync{
-        fun onSuccessFullySyncRegData(jsonObjectResponse : JSONObject)
+        fun onSuccessfullySyncForm(jsonObject : JSONObject)
         fun onFailure(message : String)
     }
 

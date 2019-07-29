@@ -7,7 +7,7 @@ interface Url {
 
        // val BASE_URL = "http://arogyasakhi.armman.org/API/V2/"
         //val BASE_URL = "http://app.mmitra.org/m-mitraCohortSion/API/"
-          //  var BASE_URL = "http://192.168.0.60/m-mitraCohortSion/API/"
+       //var BASE_URL = "http://192.168.0.60/m-mitraCohortSion/API/"
             var BASE_URL = "http://mcts.armman.org/API/"
 
         const val AUTHENTICATE = "authenticate"

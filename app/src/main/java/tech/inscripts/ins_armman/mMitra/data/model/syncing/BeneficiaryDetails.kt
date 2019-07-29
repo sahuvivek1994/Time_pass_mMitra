@@ -1,6 +1,7 @@
 package tech.inscripts.ins_armman.mMitra.data.model.syncing
 
 import com.google.gson.annotations.SerializedName
+import tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract.RegistrationTable
 
 class BeneficiaryDetails {
@@ -84,6 +85,8 @@ class BeneficiaryDetails {
     private var expiredDate: String? = null
     @SerializedName(RegistrationTable.COLUMN_EXPIRED_REASON)
     private var expiredReason: String? = null
+    @SerializedName(DatabaseContract.LoginTable.COLUMN_USER_ID)
+    private var userId: String? = null
 
 
             /*@SerializedName(DATA)
@@ -109,6 +112,9 @@ class BeneficiaryDetails {
         this.name = name
     }
 
+    fun setUserId(userId: String) {
+        this.userId = userId
+    }
 
     fun setAddress(address: String) {
         this.address = address
@@ -146,6 +152,10 @@ class BeneficiaryDetails {
 
     fun getName(): String? {
         return name
+    }
+
+    fun getUserId(): String? {
+        return userId
     }
 
     fun getAddress(): String? {

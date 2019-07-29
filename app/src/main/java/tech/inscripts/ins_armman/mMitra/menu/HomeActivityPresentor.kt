@@ -17,6 +17,7 @@ import java.util.ArrayList
 
 class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeActivityInteractor.OnDataSync,IHomeActivityInteractor.OnFormSync {
 
+
     private val FETCH_USER_DATA = 101
     private val FETCH_REGISTRATION_DATA = 102
     private val FETCH_FORMS_DATA = 103
@@ -28,6 +29,8 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
     private var mContext: Context? = null
     private var mUsername: String = ""
     private var mPassword:String = ""
+    private var mUserId:String = ""
+    //private var mImei: String =""
     private var mImei: ArrayList<String>?=null
 
     var utility= Utility()
@@ -37,8 +40,13 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
                 FETCH_USER_DATA -> if (cursor.moveToFirst()) {
                     mUsername = cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_USERNAME))
                     mPassword = cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_PASSWORD))
-                    mImei = utility.getDeviceImeiNumber(mContext!!)
-                    val arogyasakhiName = cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_NAME))
+                    mUserId=cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_USER_ID))
+                    mImei =utility.getDeviceImeiNumber(mContext!!)
+                   /* mUserId="1"
+                    mUsername="test_user1"
+                    mPassword="test_user1"
+                    mImei="869432026925037"*/
+                    //val arogyasakhiName = cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_NAME))
                   //  mIHomeActivityView?.setArogyasakhiName(arogyasakhiName)
                 }
 
@@ -77,9 +85,10 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
         var regDetails = SyncRegistrationDetails()
         /*regDetails.setusername(mUsername)
         regDetails.setpassword(mPassword)
-        */regDetails.setusername("test_user1")
-        regDetails.setpassword("test_user1")
-       regDetails.setImei("869432026925037")
+        */
+        regDetails.setusername(mUsername)
+        regDetails.setpassword(mPassword)
+       regDetails.setImei(mImei)
 
         val regData = ArrayList<BeneficiaryDetails>()
         while (cursor.moveToNext()) {
@@ -121,9 +130,9 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
             var details = FormDetails()
             var answerList = ArrayList<QuestionAnswer>()
 
-            details.setusername(mUsername!!)
-            details.setpassword(mPassword!!)
-            details.setImei("869432026925037")
+            details.setusername(mUsername)
+            details.setpassword(mPassword)
+            details.setImei(mImei)
             var uniqueId = cursor?.getString(cursor.getColumnIndex(DatabaseContract.FilledFormStatusTable.COLUMN_UNIQUE_ID))
             details.setUniqueId(uniqueId)
             var formId = cursor.getString(cursor.getColumnIndex(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_ID))
@@ -177,6 +186,25 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
             }
 
             mInteractor?.fetchRegistrationDetails(FETCH_REGISTRATION_DATA)
+        }
+    }
+
+    override fun onSuccessfullySyncForm(jsonObject: JSONObject) {
+        if (jsonObject.optBoolean(STATUS)) {
+            mInteractor?.updateFormSyncStatus(jsonObject.optString(UNIQUE_ID), jsonObject.optString(FORM_ID))
+            syncUnsentForms()
+        } else {
+            if (jsonObject.optString(RESPONSE) == AUTHENTICATION_FAILED || jsonObject.optString(RESPONSE) == INVALID_IMEI)
+                onFailure(mContext?.getString(R.string.authentication_error_msg)!!)
+            else {
+                mInteractor?.updateFormFailureStatus(
+                    jsonObject.optString(UNIQUE_ID),
+                    jsonObject.optString(FORM_ID),
+                    jsonObject.optString(RESPONSE, INVALID_DATA)
+                )
+                syncUnsentForms()
+            }
+
         }
     }
 

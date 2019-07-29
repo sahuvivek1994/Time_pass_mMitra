@@ -33,9 +33,9 @@ val utility= Utility()
 
     private  var mSettingsView: ISettingsView? = null
     private var mSettingsInteractor: SettingsInteractor? = null
-    private var mUsername: String? = null
-    private var mPassword:String? = null
-    private var mFormHash:String? = null
+    private var mUsername: String = ""
+    private var mPassword:String = ""
+    private var mFormHash:String = ""
 
     private var totalPagesCalculated: Boolean = false
 
@@ -84,8 +84,9 @@ val utility= Utility()
         if (b) {
             mSettingsView?.showProgressBar(mSettingsView?.getContext()?.getString(R.string.downloading_data)!!)
             val details = RequestFormModel()
-            details.setusername("test_user1")
-            details.setpassword("test_user1")
+            details.setusername(mUsername)
+            details.setpassword(mPassword)
+          // details.setImei("869432026925037")
             details.setImei(utility.getDeviceImeiNumber(mSettingsView!!.getContext()))
             details.setHash(mSettingsInteractor!!.getHash(HASH_ITEM_FORM))
             details.setShowdata("true")
@@ -146,6 +147,7 @@ val utility= Utility()
         mRequest.userName= mUsername!!
         mRequest.password= mPassword!!
         mRequest.setImei(utility.getDeviceImeiNumber(mSettingsView!!.getContext()))
+        //mRequest.setImei("869432026925037")
         mRequest.setLimit(FORM_DOWNLOAD_LIMIT)
 
         pageCounter=1
