@@ -123,7 +123,7 @@ class Utility {
     fun getDeviceImeiNumber(context: Context): ArrayList<String> {
         val telephonyInfo = obj_telephonyInfo.getInstance(context)
         val imeiArray = ArrayList<String>()
-             //  imeiArray.add("869432026925037");
+        //imeiArray.add("869432026925037");
         if (telephonyInfo.isDualSIM()) {
             imeiArray.add(telephonyInfo.imsiSIM1)
             imeiArray.add(telephonyInfo.imsiSIM2)
