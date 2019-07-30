@@ -278,7 +278,7 @@ public final class DatabaseContract {
         public static final String COLUMN_FORM_COMPLETION_STATUS = "form_completion_status";
         public static final String COLUMN_FORM_SYNC_STATUS = "form_sync_status";
         public static final String COLUMN_CREATED_ON = "created_on";
-        public static final String COLUMN_WAGES_STATUS = "wages_status";
+       // public static final String COLUMN_WAGES_STATUS = "wages_status";
         /*COLUMN_FAILURE_STATUS and COLUMN_FAILURE_REASON column is to maintain
             dataSource sync failure status and reason
          */

@@ -74,8 +74,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 5)
             upgradeVersion5(db);
-        if(oldVersion<=7)
-            upgradeVersion7(db);
+       /* if(oldVersion<=7)
+            upgradeVersion7(db);*/
     }
 
     private void upgradeVersion4(SQLiteDatabase db) {
@@ -162,12 +162,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 HashTable.COLUMN_ITEM + " = ? ",
                 new String[]{"form"});
     }
-    private void upgradeVersion7(SQLiteDatabase db){
+    /*private void upgradeVersion7(SQLiteDatabase db){
         if (!isColumnExist(db, FilledFormStatusTable.TABLE_NAME, FilledFormStatusTable.COLUMN_WAGES_STATUS))
             db.execSQL("ALTER TABLE " + FilledFormStatusTable.TABLE_NAME +
                     " ADD COLUMN " + FilledFormStatusTable.COLUMN_WAGES_STATUS + INTEGER_TYPE);
         db.execSQL("update filled_forms_status set wages_status=1 where wages_status is null");
-    }
+    }*/
 
     /**
      * this funtion gives the list of women whose forms are incompletely filled
