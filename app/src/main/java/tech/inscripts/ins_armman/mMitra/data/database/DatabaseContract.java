@@ -8,8 +8,7 @@ import android.os.Environment;
 
 public final class DatabaseContract {
     public static final String DATABASE_NAME = "mMitra_Cohort.sr";
-    public static final int DATABASE_VERSION = 7
-            ;
+    public static final int DATABASE_VERSION = 1;
     public static final String DB_LOCATION = Environment.getExternalStorageDirectory() +"/mMitra_Cohort";
     public static final String TEXT_TYPE = " TEXT";
     public static final String BLOB_TYPE = " BLOB";
