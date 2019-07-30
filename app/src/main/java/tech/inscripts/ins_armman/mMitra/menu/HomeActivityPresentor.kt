@@ -125,7 +125,7 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
 
     override fun syncUnsentForms() {
         var cursor = mInteractor?.checkUnsentForms()
-        if (cursor?.moveToFirst()!!) {
+        if (cursor!!.moveToFirst()) {
 
             var details = FormDetails()
             var answerList = ArrayList<QuestionAnswer>()
@@ -150,6 +150,11 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
             details.setData(answerList)
 
             mInteractor?.sendForms(details, this)
+        }
+        else
+        {
+            mIHomeActivityView?.hideProgressBar()
+            fetchUnsentFormsCount()
         }
     }
     private fun markImproperVisitToSync(uniqueId: String, formId: String, errorMsg: String) {
