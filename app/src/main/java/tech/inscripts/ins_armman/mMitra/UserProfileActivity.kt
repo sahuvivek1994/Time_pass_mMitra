@@ -7,9 +7,9 @@ import android.support.v7.widget.Toolbar
 class UserProfileActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.user_profile_activity)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setContentView(R.layout.activity_user_profile)
+        /*val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.setTitle("User Profile")
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar)*/
     }
 }

@@ -6,14 +6,31 @@ import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 
 class FormDetails : UserDetails() {
     @SerializedName(UNIQUE_ID)
-    var uniqueId:String?=null
+    private var uniqueId:String?=null
     @SerializedName(FORM_ID)
-    var formId:String?=null
-    @SerializedName(CHILD_STATUS)
-    var childStatus:Int?=null
+    private var formId:String?=null
     @SerializedName(DATA)
-    var data: ArrayList<QuestionAnswer>?=null
-    @SerializedName(REFERRAL)
-    var referral: ArrayList<Referral>?=null
+    private var data: ArrayList<QuestionAnswer>?=null
+
+    fun setUniqueId(uniqueId: String) {
+        this.uniqueId = uniqueId
+    }
+    fun getUniqueId(): String? {
+        return uniqueId
+    }
+
+    fun setFormId(formId: String) {
+        this.formId = formId
+    }
+    fun getFormId(): String? {
+        return formId
+    }
+
+    fun setData(data: ArrayList<QuestionAnswer>) {
+        this.data = data
+    }
+    fun getData(): ArrayList<QuestionAnswer>? {
+        return data
+    }
 
 }

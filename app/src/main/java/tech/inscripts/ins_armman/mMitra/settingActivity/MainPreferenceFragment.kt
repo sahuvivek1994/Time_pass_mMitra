@@ -58,12 +58,6 @@ fun initId() {
         false
     }
 
-    preferenceHelpManual = findPreference("help_manual") as Preference
-    preferenceHelpManual!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-        settingsPresentor?.downloadHelpManual()
-        false
-    }
-
     preferenceCheckUpdate = findPreference("logout") as Preference
     preferenceCheckUpdate!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
         settingsPresentor?.logout()

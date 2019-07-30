@@ -13,12 +13,12 @@ android:orientation="vertical">
         <LinearLayout android:layout_width="match_parent" android:layout_height="305dp"
                       android:orientation="vertical"    android:background="@drawable/gradient_background">
 
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="35dp"
-          android:layout_gravity="center_horizontal"  android:src="@drawable/ic_person"/>
+            <ImageView android:layout_width="192dp" android:layout_height="182dp" android:layout_marginTop="35dp"
+                       android:layout_gravity="center_horizontal" android:src="@drawable/ic_person"/>
 
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                       android:layout_gravity="center_horizontal" android:layout_marginTop="10dp"
-                      android:text="name" android:textColor="#fff" android:textStyle="bold" android:textSize="28dp"/>
+                      android:text="text_user" android:textColor="#fff" android:textStyle="bold" android:textSize="28dp"/>
         </LinearLayout>
         <android.support.v7.widget.CardView
         android:layout_width="400dp" android:layout_height="120dp"
@@ -39,11 +39,11 @@ android:orientation="vertical">
     android:orientation="horizontal" android:layout_gravity="center_horizontal">
 
  <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
- android:src="@drawable/ic_local_phone" android:layout_gravity="center_vertical"/>
+ android:src="@drawable/ic_user_name" android:layout_gravity="center_vertical"/>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="9876543210" android:layout_gravity="center_vertical"
-        android:paddingLeft="20dp"/>
+        <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+                  android:text="ALICE BOB CATPANE" android:layout_gravity="center_vertical"
+                  android:paddingLeft="20dp" android:paddingTop="20dp" android:textSize="24sp"/>
     </LinearLayout>
 
     <LinearLayout android:layout_width="360dp" android:layout_height="wrap_content" android:layout_marginTop="30dp"
@@ -52,19 +52,9 @@ android:orientation="vertical">
         <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
                    android:src="@drawable/ic_local_phone" android:layout_gravity="center_vertical"/>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        <TextView android:layout_width="match_parent" android:layout_height="match_parent"
                   android:text="9876543210" android:layout_gravity="center_vertical"
-                  android:paddingLeft="20dp"/>
+                  android:paddingLeft="20dp" android:paddingTop="20dp" android:textSize="24sp"/>
     </LinearLayout>
 
-    <LinearLayout android:layout_width="360dp" android:layout_height="wrap_content" android:layout_marginTop="30dp"
-                                 android:orientation="horizontal" android:layout_gravity="center_horizontal">
-
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
-               android:src="@drawable/ic_local_phone" android:layout_gravity="center_vertical"/>
-
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-              android:text="9876543210" android:layout_gravity="center_vertical"
-              android:paddingLeft="20dp"/>
-</LinearLayout>
 </LinearLayout>

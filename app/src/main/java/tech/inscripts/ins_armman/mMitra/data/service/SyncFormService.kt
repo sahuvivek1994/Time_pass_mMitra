@@ -3,6 +3,7 @@ package tech.inscripts.ins_armman.mMitra.data.service
 import android.content.Context
 import okhttp3.ResponseBody
 import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import tech.inscripts.ins_armman.mMitra.R
@@ -17,7 +18,7 @@ class SyncFormService {
         this.mFormServiceApi = mFormServiceApi
     }
 
-    fun syncForms(formDetails: FormDetails,onFormSync : IHomeActivityInteractor.onFormSync,context: Context){
+    fun syncForms(formDetails: FormDetails,onFormSync : IHomeActivityInteractor.OnFormSync,context: Context){
        var responseBodyCall : Call<ResponseBody> = mFormServiceApi!!.syncFormDetails(formDetails)
         responseBodyCall.enqueue(object : retrofit2.Callback<ResponseBody>{
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
@@ -34,6 +35,8 @@ class SyncFormService {
               else if(response!!.errorBody()!=null){
                   loginJsonResponse = response.errorBody().string()
               }
+              val jsonObject = JSONObject(loginJsonResponse)
+              onFormSync.onSuccessfullySyncForm(jsonObject)
           }
           catch(e : IOException){
               e.printStackTrace()
