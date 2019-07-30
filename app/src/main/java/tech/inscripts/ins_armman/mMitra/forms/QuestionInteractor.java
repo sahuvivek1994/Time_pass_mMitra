@@ -263,10 +263,8 @@ private static Utility utility= new Utility();
         HashMap<String, String> hashMapUserDetails = new HashMap<>();
         Cursor cursor = utility.getDatabase().rawQuery("SELECT * FROM " + DatabaseContract.LoginTable.TABLE_NAME, null);
         if (cursor.moveToFirst()) {
-            hashMapUserDetails.put(PHC_NAME, cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_PHC_NAME)));
             hashMapUserDetails.put(AROGYASAKHI_NAME, cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_NAME)));
             hashMapUserDetails.put(AROGYASAKHI_MOB, cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_PHONE_NO)));
-            hashMapUserDetails.put(AROGYASAKHI_ALTERNATE_NO, cursor.getString(cursor.getColumnIndex(DatabaseContract.LoginTable.COLUMN_ALTERNATE_PHONE_NO)));
         }
         return hashMapUserDetails;
     }

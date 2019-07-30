@@ -6,7 +6,9 @@ import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.UserDetails
+import tech.inscripts.ins_armman.mMitra.login.ILoginInteractor
 import tech.inscripts.ins_armman.mMitra.login.LoginInteractor
 import java.io.IOException
 
@@ -19,7 +21,7 @@ class AuthService {
     }
 
 
-    fun getAuthentication(userDetails: UserDetails,context: Context){
+    fun getAuthentication(userDetails: UserDetails, onLoginFinished: ILoginInteractor.OnLoginFinished, context: Context){
 if(userDetails!=null){
     val responseBodyCall : Call<ResponseBody> = loginServiceAPI!!.getAuthentication(userDetails)
     responseBodyCall.enqueue(object : retrofit2.Callback<ResponseBody> {
@@ -32,19 +34,19 @@ if(userDetails!=null){
                     loginJsonResponse = response.errorBody().string()
                 }
                 val loginJsonObject = JSONObject(loginJsonResponse)
-               // onLoginFinished.onSuccess(loginJsonObject)
+                onLoginFinished.onSuccess(loginJsonObject)
             } catch (e: IOException) {
                 e.printStackTrace()
-               // onLoginFinished.onFailure(context.getString(R.string.input_output_error_occured))
+                onLoginFinished.onFailure(context.getString(R.string.input_output_error_occured))
             } catch (e: JSONException) {
                 e.printStackTrace()
-                //onLoginFinished.onFailure(context.getString(R.string.invalid_data_frm_server))
+                onLoginFinished.onFailure(context.getString(R.string.invalid_data_frm_server))
             }
 
         }
 
         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-            //onLoginFinished.onFailure(context.getString(R.string.oops_some_thing_happened_wrong))
+            onLoginFinished.onFailure(context.getString(R.string.oops_some_thing_happened_wrong))
         }
     })
 }
