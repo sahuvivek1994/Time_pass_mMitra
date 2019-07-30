@@ -1,12 +1,9 @@
 package tech.inscripts.ins_armman.mMitra
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.Snackbar
@@ -18,17 +15,13 @@ import tech.inscripts.ins_armman.mMitra.completeForms.CompleteFormActivity
 import tech.inscripts.ins_armman.mMitra.forms.EnrollmentQuestions
 import tech.inscripts.ins_armman.mMitra.incompleteForms.IncompleteFormActivity
 import tech.inscripts.ins_armman.mMitra.settingActivity.Settings
-import android.support.v4.os.HandlerCompat.postDelayed
 import android.support.v7.app.AlertDialog
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.widget.*
-import tech.inscripts.ins_armman.mMitra.data.model.ArogyasakhiInfoModel
 import tech.inscripts.ins_armman.mMitra.menu.HomeActivityPresentor
 import tech.inscripts.ins_armman.mMitra.menu.IHomeActivityView
 import tech.inscripts.ins_armman.mMitra.settingActivity.SettingsActivity
+import tech.inscripts.ins_armman.mMitra.userProfile.UserProfileActivity
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 
 
