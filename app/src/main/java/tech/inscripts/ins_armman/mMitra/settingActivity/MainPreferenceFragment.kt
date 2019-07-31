@@ -66,10 +66,13 @@ fun initId() {
     preferenceRestoreData=findPreference("restore_data") as Preference
     preferenceRestoreData?.onPreferenceClickListener=Preference.OnPreferenceClickListener {
     var builder : AlertDialog.Builder = AlertDialog.Builder(context)
-        builder.setTitle(R.string.restore_warning_text)
+       /* builder.setTitle(R.string.restore_warning_text)
             .setMessage(R.string.dialog_msg_loss_data_warning)
-            .setPositiveButton(R.string.ok) {
-                    dialog, which -> settingsPresentor!!.restoreData()
+       */
+        builder.setTitle("NOTICE")
+            .setMessage("This functionality in in process")
+        .setPositiveButton(R.string.ok) {
+                    dialog, which ->// settingsPresentor!!.restoreData()
             }
             .setNegativeButton(R.string.cancel) {
                     dialogInterface, i ->
