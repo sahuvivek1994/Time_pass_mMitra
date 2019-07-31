@@ -18,10 +18,10 @@ import tech.inscripts.ins_armman.mMitra.settingActivity.Settings
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.widget.*
+import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity
 import tech.inscripts.ins_armman.mMitra.menu.HomeActivityPresentor
 import tech.inscripts.ins_armman.mMitra.menu.IHomeActivityView
 import tech.inscripts.ins_armman.mMitra.settingActivity.SettingsActivity
-import tech.inscripts.ins_armman.mMitra.userProfile.UserProfileActivity
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 
 
@@ -70,7 +70,7 @@ class HomeActivity : AppCompatActivity(),IHomeActivityView,View.OnClickListener 
 
             R.id.btnCompleteForm -> startActivity(Intent(this@HomeActivity, CompleteFormActivity::class.java))
 
-            R.id.btnUserProfile -> startActivity(Intent(this@HomeActivity, UserProfileActivity::class.java))
+            R.id.btnUserProfile -> startActivity(Intent(this@HomeActivity, MainActivity::class.java))
         }
     }
 

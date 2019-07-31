@@ -316,4 +316,14 @@
     <string name="report_title">REPORTS</string>
     <string name="graphical_view">GRAPHICAL VIEW</string>
 
+
+    <string name="menu_home">पंजीकरण</string>
+    <string name="menu_gallery">पूरा दौरा</string>
+    <string name="menu_slideshow">अधूरा दौरा</string>
+    <string name="menu_tools">अद्यतन प्रपत्र</string>
+    <string name="menu_share">सहायता प्राप्त करें</string>
+    <string name="menu_send">डेटा पुनः स्थापित करें</string>
+    <string name="menu_tool">अद्यतन की जाँच करें</string>
+    <string name="menu_logout">लोग आउट</string>
+
 </resources>
