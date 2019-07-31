@@ -29,11 +29,11 @@
             android:title="@string/sync_forms">
         </Preference>
 
-        <Preference
+        <!--<Preference
             android:icon="@drawable/ic_get_help"
             android:key="help_manual"
             android:title="@string/get_help_mannual">
-        </Preference>
+        </Preference>-->
 
         <Preference
             android:icon="@drawable/ic_restore"
