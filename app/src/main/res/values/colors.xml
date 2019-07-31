@@ -95,7 +95,13 @@
     <color name="primary_dark">#292b3d</color>
     <color name="graylight">#fafafa</color>
     <color name="startblue">#2A717C</color>
+    <color name="centertblue">#70C6D3</color>
     <color name="endblue">#072427</color>
+    <color name="imagefill">#00072427</color>
+    <color name="gradcolor1">#81460822</color>
+    <color name="gradcolor2">#77B32450</color>
+    <color name="gradcolor3">#CE4B2938</color>
+
 
 
 </resources>

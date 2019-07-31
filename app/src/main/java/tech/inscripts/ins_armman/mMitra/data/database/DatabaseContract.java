@@ -23,7 +23,7 @@ public final class DatabaseContract {
     public static final class LoginTable {
         public static final String TABLE_NAME = "login";
         public static final String COLUMN_USER_ID = "user_id";
-        public static final String COLUMN_NAME = "firstName";
+        public static final String COLUMN_NAME = "name";
         public static final String COLUMN_USERNAME = "username";
         public static final String COLUMN_PASSWORD = "password";
         public static final String COLUMN_PHONE_NO = "phone_no";
@@ -35,7 +35,7 @@ public final class DatabaseContract {
                 COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                 COLUMN_USERNAME + TEXT_TYPE + COMMA_SEP +
                 COLUMN_PASSWORD + TEXT_TYPE + COMMA_SEP +
-                COLUMN_PHONE_NO + TEXT_TYPE + COMMA_SEP + ")";
+                COLUMN_PHONE_NO + TEXT_TYPE + ")";
     }
 
     public static final class FormDetailsTable {
@@ -75,8 +75,7 @@ public final class DatabaseContract {
                 COLUMN_QUESTION_LABEL + TEXT_TYPE + COMMA_SEP +
                 COLUMN_MESSAGES + TEXT_TYPE + COMMA_SEP +
                 COLUMN_CALCULATION + TEXT_TYPE + COMMA_SEP +
-                COLUMN_ORIENTATION + INTEGER_TYPE +
-                ")";
+                COLUMN_ORIENTATION + INTEGER_TYPE + ")";
     }
 
     public static final class DependentQuestionsTable {
@@ -103,8 +102,7 @@ public final class DatabaseContract {
                 COLUMN_QUESTION_LABEL + TEXT_TYPE + COMMA_SEP +
                 COLUMN_MESSAGES + TEXT_TYPE + COMMA_SEP +
                 COLUMN_VALIDATIONS + TEXT_TYPE + COMMA_SEP +
-                COLUMN_ORIENTATION + INTEGER_TYPE +
-                ")";
+                COLUMN_ORIENTATION + INTEGER_TYPE + ")";
     }
 
     public static final class QuestionOptionsTable {
@@ -121,8 +119,7 @@ public final class DatabaseContract {
                 COLUMN_QUESTION_ID + INTEGER_TYPE + COMMA_SEP +
                 COLUMN_KEYWORD + TEXT_TYPE + COMMA_SEP +
                 COLUMN_OPTION_LABEL + TEXT_TYPE + COMMA_SEP +
-                COLUMN_MESSAGES + TEXT_TYPE +
-                ")";
+                COLUMN_MESSAGES + TEXT_TYPE + ")";
     }
 
     public static final class ValidationsTable {
@@ -157,8 +154,7 @@ public final class DatabaseContract {
                 COLUMN_LENGTH_ERROR_MESSAGE + TEXT_TYPE + COMMA_SEP +
                 COLUMN_DISPLAY_CONDITION + TEXT_TYPE + COMMA_SEP +
                 COLUMN_CALCULATIONS + TEXT_TYPE + COMMA_SEP +
-                COLUMN_AVOID_REPETETIONS + TEXT_TYPE +
-                ")";
+                COLUMN_AVOID_REPETETIONS + TEXT_TYPE + ")";
     }
 
     public static final class HashTable {
