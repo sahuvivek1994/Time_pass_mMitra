@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_woman_list.*
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.completeFilledForm
 
@@ -43,9 +44,7 @@ class CompleteFormActivity : AppCompatActivity(),ICompleteFormView,CompleteForms
     override fun setAdapter(mWomenList: List<completeFilledForm>) {
         mProgressBar?.visibility = View.GONE
         if(mWomenList==null || mWomenList.size < 1){
-            emptyLayout?.visibility=View.VISIBLE
-            val emptyTextView = findViewById<TextView>(R.id.text_empty_list)
-            emptyTextView.setText(R.string.Reg_women_com)
+            empty_list_layout.visibility=View.VISIBLE
             return
         }
         if(mWomenList!=null){
