@@ -11,7 +11,7 @@ class UserProfileInteractor{
     }
 
     fun regCount() : Cursor {
-        return utility.getDatabase().rawQuery("select count(unique_id) from registration ", null)
+        return utility.getDatabase().rawQuery("select unique_id from registration ", null)
 
     }
 }
