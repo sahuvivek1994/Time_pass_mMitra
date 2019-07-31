@@ -257,7 +257,9 @@
     <string name="change_profile_image_title">Change Profile Image</string>
     <string name="change_pro_img_confirmation_msg">Do you want to change profile image</string>
     <string name="change_child_name_title">change Child Name"</string>
-    <string name="give_sace_between_child_name">please give space between First Name Middle Name and Last name of child</string>
+    <string name="give_sace_between_child_name">please give space between First Name Middle Name and Last name of
+        child
+    </string>
     <string name="name_edit_change_successful">The child name has been changed successfully</string>
     <string name="name_edit_change_unsuccessful">The child name edit failed</string>
     <string name="error_performing_operation">There was some problem</string>
@@ -317,4 +319,21 @@
     <string name="wages_based_on_tab">WAGES (BASED ON TAB)</string>
     <string name="report_title">REPORTS</string>
     <string name="graphical_view">GRAPHICAL VIEW</string>
+    <string name="title_activity_homeactivity">homeactivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_home">Registration</string>
+    <string name="menu_gallery">Complete visits</string>
+    <string name="menu_slideshow">Incomplete visits</string>
+    <string name="menu_tools">Update Forms</string>
+    <string name="menu_share">Get Help mannual</string>
+    <string name="menu_send">Restore Data</string>
+    <string name="menu_tool">Check Update</string>
+    <string name="menu_logout">Logout</string>
+
+
 </resources>
