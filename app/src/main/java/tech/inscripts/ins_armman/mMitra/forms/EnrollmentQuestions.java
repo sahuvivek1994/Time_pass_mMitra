@@ -34,10 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tech.inscripts.ins_armman.mMitra.R;
-import tech.inscripts.ins_armman.mMitra.displayForm.displayForm;
+import tech.inscripts.ins_armman.mMitra.displayform.displayForm;
 import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity;
-import tech.inscripts.ins_armman.mMitra.utility.Constants;
-import tech.inscripts.ins_armman.mMitra.utility.Keywords;
 import tech.inscripts.ins_armman.mMitra.utility.Utility;
 
 import java.io.File;
@@ -51,7 +49,6 @@ import java.util.regex.Pattern;
 
 import static tech.inscripts.ins_armman.mMitra.utility.Constants.*;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.*;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.NAME;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.VILLAGE_NAME;
 
 

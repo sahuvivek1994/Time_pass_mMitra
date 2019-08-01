@@ -26,9 +26,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".settingActivity.Settings">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY" />
+        <activity android:name=".settingactivity.Settings"
+                  android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity android:name="tech.inscripts.ins_armman.mMitra.login.Login"
@@ -38,7 +37,7 @@
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".displayForm.displayForm"
+        <activity android:name=".displayform.displayForm"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
@@ -49,19 +48,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".login.Login" />
         </activity>
-        <activity android:name=".incompleteForms.IncompleteFormActivity"
+        <activity android:name=".incompleteforms.IncompleteFormActivity"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".completeForms.CompleteFormActivity"
+        <activity android:name=".completeforms.CompleteFormActivity"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".completeFormList.CompleteFormListActivity"
+        <activity android:name=".completeformList.CompleteFormListActivity"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".completeFormsDetails.CompleteFormDetailsActivity"
+        <activity android:name=".completeformsdetails.CompleteFormDetailsActivity"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".userProfile.UserProfileActivity"
+        <activity android:name=".userprofile.UserProfileActivity"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

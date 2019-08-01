@@ -2,11 +2,10 @@ package tech.inscripts.ins_armman.mMitra.data.service
 
 import android.content.Context
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.UpdateModel
-import tech.inscripts.ins_armman.mMitra.settingActivity.ISettingsInteractor
+import tech.inscripts.ins_armman.mMitra.settingactivity.ISettingsInteractor
 
 class CheckUpdateService {
    var mCheckUpdateApi : CheckUpdateApi?=null

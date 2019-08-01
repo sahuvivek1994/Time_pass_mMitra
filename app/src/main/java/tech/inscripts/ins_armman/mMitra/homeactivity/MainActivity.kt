@@ -22,22 +22,16 @@ import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_homeactivity.*
 import kotlinx.android.synthetic.main.content_homeactivity.*
-import kotlinx.android.synthetic.main.login.*
-import kotlinx.android.synthetic.main.nav_header_homeactivity.*
-import org.w3c.dom.Text
 import tech.inscripts.ins_armman.mMitra.R
-import tech.inscripts.ins_armman.mMitra.completeForms.CompleteFormActivity
-import tech.inscripts.ins_armman.mMitra.data.model.IncompleteFilledForm
+import tech.inscripts.ins_armman.mMitra.completeforms.CompleteFormActivity
 import tech.inscripts.ins_armman.mMitra.forms.EnrollmentQuestions
-import tech.inscripts.ins_armman.mMitra.incompleteForms.IncompleteFormActivity
-import tech.inscripts.ins_armman.mMitra.settingActivity.Settings
-import tech.inscripts.ins_armman.mMitra.settingActivity.SettingsActivity
-import tech.inscripts.ins_armman.mMitra.settingActivity.SettingsInteractor
-import tech.inscripts.ins_armman.mMitra.settingActivity.SettingsPresentor
-import tech.inscripts.ins_armman.mMitra.userProfile.UserProfileActivity
+import tech.inscripts.ins_armman.mMitra.incompleteforms.IncompleteFormActivity
+import tech.inscripts.ins_armman.mMitra.settingactivity.Settings
+import tech.inscripts.ins_armman.mMitra.settingactivity.SettingsActivity
+import tech.inscripts.ins_armman.mMitra.settingactivity.SettingsPresentor
+import tech.inscripts.ins_armman.mMitra.userprofile.UserProfileActivity
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
-import java.util.zip.Inflater
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,IMainActivity,View.OnClickListener {
 

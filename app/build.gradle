@@ -5,6 +5,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+
+
+        lintOptions {
+            checkReleaseBuilds false
+            abortOnError false        }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "tech.inscripts.ins_armman.last_delete"

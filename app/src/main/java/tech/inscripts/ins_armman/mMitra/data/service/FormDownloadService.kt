@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Response
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.RequestFormModel
-import tech.inscripts.ins_armman.mMitra.settingActivity.ISettingsInteractor
+import tech.inscripts.ins_armman.mMitra.settingactivity.ISettingsInteractor
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.io.IOException
 

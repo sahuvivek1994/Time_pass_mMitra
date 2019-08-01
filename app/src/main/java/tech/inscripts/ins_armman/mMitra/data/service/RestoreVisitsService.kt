@@ -6,9 +6,8 @@ import retrofit2.Response
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreDataRequest
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreVisits
-import tech.inscripts.ins_armman.mMitra.settingActivity.ISettingsInteractor
+import tech.inscripts.ins_armman.mMitra.settingactivity.ISettingsInteractor
 import java.io.IOException
-import javax.security.auth.callback.Callback
 
 class RestoreVisitsService {
     var mServiceAPI : RestoreVisitsServiceAPI?=null
