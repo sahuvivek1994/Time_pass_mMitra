@@ -9,7 +9,7 @@ import retrofit2.Call
 import retrofit2.Response
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.SyncRegistrationDetails
-import tech.inscripts.ins_armman.mMitra.menu.IHomeActivityInteractor
+import tech.inscripts.ins_armman.mMitra.homeactivity.IMainActivityInteractor
 import java.io.IOException
 
 class SyncRegistrationService {
@@ -19,7 +19,7 @@ class SyncRegistrationService {
         this.serviceApi = serviceApi
     }
 
-    fun syncRegistrationDetails(registrationDetails : SyncRegistrationDetails, onDataSync : IHomeActivityInteractor.OnDataSync,context: Context){
+    fun syncRegistrationDetails(registrationDetails : SyncRegistrationDetails, onDataSync : IMainActivityInteractor.OnDataSync, context: Context){
         val responsebodyCall : Call<ResponseBody> = serviceApi!!.SyncRegistrationDetails(registrationDetails)
         responsebodyCall.enqueue(object : retrofit2.Callback<ResponseBody>{
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {

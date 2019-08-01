@@ -1,4 +1,4 @@
-package tech.inscripts.ins_armman.mMitra.menu
+package tech.inscripts.ins_armman.mMitra.homeactivity
 
 import android.content.ContentValues
 import android.content.Context
@@ -21,12 +21,16 @@ import tech.inscripts.ins_armman.mMitra.utility.Constants
 import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 
-class HomeActivityInteractor : IHomeActivityInteractor, LoaderManager.LoaderCallbacks<Cursor> {
+class MainActivityInteractor : IMainActivityInteractor, LoaderManager.LoaderCallbacks<Cursor> {
+    override fun getLoginDetails() : Cursor {
+        return utility.getDatabase().rawQuery("select * from login", null)
+    }
+
     private var mContext: Context?=null
-    private val mOnQueryFinished: IHomeActivityPresentor.OnQueryFinished
+    private val mOnQueryFinished: IMainActivityPresentor.OnQueryFinished
     var utility = Utility()
    var remoteDataSource=RemoteDataSource()
-    constructor(mContext: Context?, mOnQueryFinished: IHomeActivityPresentor.OnQueryFinished) {
+    constructor(mContext: Context?, mOnQueryFinished: IMainActivityPresentor.OnQueryFinished) {
         this.mContext = mContext
         this.mOnQueryFinished = mOnQueryFinished
     }
@@ -86,7 +90,7 @@ class HomeActivityInteractor : IHomeActivityInteractor, LoaderManager.LoaderCall
         return utility.getDatabase().rawQuery(query, arrayOf<String>(referenceId))
     }
 
-    override fun sendRegistrationBasicDetails(registrationDetails: SyncRegistrationDetails, onDataSync: IHomeActivityInteractor.OnDataSync) {
+    override fun sendRegistrationBasicDetails(registrationDetails: SyncRegistrationDetails, onDataSync: IMainActivityInteractor.OnDataSync) {
         val remoteDataSource = remoteDataSource.getInstance()
         val registrationService = remoteDataSource.syncRegistrationService()
         registrationService.syncRegistrationDetails(registrationDetails, onDataSync, mContext!!)
@@ -121,7 +125,7 @@ class HomeActivityInteractor : IHomeActivityInteractor, LoaderManager.LoaderCall
         }
     }
 
-    override fun sendForms(formDetails: FormDetails, onFormSync: IHomeActivityInteractor.OnFormSync) {
+    override fun sendForms(formDetails: FormDetails, onFormSync: IMainActivityInteractor.OnFormSync) {
         val remoteDataSource = remoteDataSource.getInstance()
         val syncFormService = remoteDataSource.syncFormService()
         syncFormService.syncForms(formDetails, onFormSync, mContext!!)
@@ -173,7 +177,7 @@ class HomeActivityInteractor : IHomeActivityInteractor, LoaderManager.LoaderCall
 
     }
 
-    override fun sendUpdatePhotoImage(updateImageModel: UpdateImageModel, photoSync: IHomeActivityInteractor.OnUpdatedPhotoSync) {
+    override fun sendUpdatePhotoImage(updateImageModel: UpdateImageModel, photoSync: IMainActivityInteractor.OnUpdatedPhotoSync) {
     }
 
     override fun updateUpdatePhotoImageStatus(uniqueId: String) {
@@ -240,4 +244,6 @@ throw IllegalArgumentException("Invalid unique &/ formId")
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
     }
+
+
 }

@@ -9,7 +9,7 @@ import retrofit2.Call
 import retrofit2.Response
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.UpdateImageModel
-import tech.inscripts.ins_armman.mMitra.menu.IHomeActivityInteractor
+import tech.inscripts.ins_armman.mMitra.homeactivity.IMainActivityInteractor
 import java.io.IOException
 import javax.security.auth.callback.Callback
 
@@ -20,7 +20,7 @@ class SyncUpdatePhotoservice {
         this.mPhotoserviceApi = mPhotoserviceApi
     }
 
-    fun syncUpdatePhotoDetails(updateImageModel: UpdateImageModel,updatedPhotoSync: IHomeActivityInteractor.OnUpdatedPhotoSync){
+    fun syncUpdatePhotoDetails(updateImageModel: UpdateImageModel,updatedPhotoSync: IMainActivityInteractor.OnUpdatedPhotoSync){
         Log.d("SyncUpdatePhotoService","SyncUpdatePhotoService start request")
         var responseBosyCall = mPhotoserviceApi!!.SyncUpdatePhotoDetails(updateImageModel)
         responseBosyCall.enqueue(object :retrofit2.Callback<ResponseBody>{

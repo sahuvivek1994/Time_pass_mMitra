@@ -23,7 +23,7 @@
         <menu>
 
             <item
-                    android:id="@+id/nav_tools"
+                    android:id="@+id/nav_updateForms"
                     android:icon="@drawable/ic_update_form"
                     android:title="@string/menu_tools"/>
             <!--<item-->
@@ -31,15 +31,15 @@
                     <!--android:icon="@drawable/ic_menu_share"-->
                     <!--android:title="@string/menu_share"/>-->
             <item
-                    android:id="@+id/nav_send"
+                    android:id="@+id/nav_restoreData"
                     android:icon="@drawable/ic_restore_data"
                     android:title="@string/menu_send"/>
             <item
-                    android:id="@+id/nav_s"
+                    android:id="@+id/nav_checkUpdate"
                     android:icon="@drawable/ic_check_update"
                     android:title="@string/menu_tool"/>
             <item
-                    android:id="@+id/nav_sen"
+                    android:id="@+id/nav_logout"
                     android:icon="@drawable/ic_logout"
                     android:title="@string/menu_logout"/>
         </menu>

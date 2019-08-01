@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Response
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.FormDetails
-import tech.inscripts.ins_armman.mMitra.menu.IHomeActivityInteractor
+import tech.inscripts.ins_armman.mMitra.homeactivity.IMainActivityInteractor
 import java.io.IOException
 
 class SyncFormService {
@@ -18,7 +18,7 @@ class SyncFormService {
         this.mFormServiceApi = mFormServiceApi
     }
 
-    fun syncForms(formDetails: FormDetails,onFormSync : IHomeActivityInteractor.OnFormSync,context: Context){
+    fun syncForms(formDetails: FormDetails, onFormSync : IMainActivityInteractor.OnFormSync, context: Context){
        var responseBodyCall : Call<ResponseBody> = mFormServiceApi!!.syncFormDetails(formDetails)
         responseBodyCall.enqueue(object : retrofit2.Callback<ResponseBody>{
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {

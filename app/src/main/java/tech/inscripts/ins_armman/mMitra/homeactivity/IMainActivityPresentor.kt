@@ -1,10 +1,12 @@
-package tech.inscripts.ins_armman.mMitra.menu
+package tech.inscripts.ins_armman.mMitra.homeactivity
 
 import android.database.Cursor
 import tech.inscripts.ins_armman.mMitra.data.model.ArogyasakhiInfoModel
 import tech.inscripts.ins_armman.mMitra.utility.IBasePresenter
+import java.util.ArrayList
 
-interface IHomeActivityPresentor<V> : IBasePresenter<V> {
+interface IMainActivityPresentor<V> : IBasePresenter<V> {
+    fun getLoginDetail(userDetails : ArrayList<String>)
     fun fetchRegistrationData()
     fun onFetchedRegistrationData(cursor: Cursor)
     fun fetchUnsentFormsCount()

@@ -33,9 +33,9 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import tech.inscripts.ins_armman.mMitra.HomeActivity;
 import tech.inscripts.ins_armman.mMitra.R;
 import tech.inscripts.ins_armman.mMitra.displayForm.displayForm;
+import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity;
 import tech.inscripts.ins_armman.mMitra.utility.Constants;
 import tech.inscripts.ins_armman.mMitra.utility.Keywords;
 import tech.inscripts.ins_armman.mMitra.utility.Utility;
@@ -4628,7 +4628,7 @@ private static Utility utility= new Utility();
                             woman_gest_age = null;
                             expec_date = null;
                             current_reg = null;
-                            Intent intent = new Intent(EnrollmentQuestions.this, HomeActivity.class);
+                            Intent intent = new Intent(EnrollmentQuestions.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         } catch (Exception e) {
@@ -5240,7 +5240,7 @@ private static Utility utility= new Utility();
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        Intent intent = new Intent(EnrollmentQuestions.this, HomeActivity.class);
+                        Intent intent = new Intent(EnrollmentQuestions.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                     }
