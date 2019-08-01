@@ -11,10 +11,10 @@ import android.view.View
 import android.widget.Button
 import kotlinx.android.synthetic.main.login.*
 import kotlinx.android.synthetic.main.progress_overlay.*
-import tech.inscripts.ins_armman.mMitra.HomeActivity
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
+import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 
 /**
@@ -100,7 +100,7 @@ class Login : AppCompatActivity(), ILoginView {
     }
 
     override fun openHomeActivity() {
-        val myIntent = Intent(this@Login, HomeActivity::class.java)
+        val myIntent = Intent(this@Login, MainActivity::class.java)
         startActivity(myIntent)
     }
 

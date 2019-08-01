@@ -17,11 +17,13 @@ class UserProfilePresenter{
             } while (cur.moveToNext())
     }
 
-    fun getRegCount(regCount : Int){
+    fun getRegCount(): Int{
         var cur : Cursor=  interactor.regCount()
        var count= cur.count
         if(count>=0)
-        count=regCount
+        return count
+        else
+            return 0
 
     }
 }

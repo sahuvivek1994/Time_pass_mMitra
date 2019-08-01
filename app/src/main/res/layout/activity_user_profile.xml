@@ -48,7 +48,7 @@ android:orientation="vertical">
 
     <LinearLayout android:layout_width="360dp" android:layout_height="wrap_content" android:layout_marginTop="30dp"
                   android:orientation="horizontal" android:layout_gravity="center_horizontal"
-                  tools:visibility="invisible">
+                  tools:visibility="gone">
 
         <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
                    android:src="@drawable/ic_local_phone" android:layout_gravity="center_vertical"/>

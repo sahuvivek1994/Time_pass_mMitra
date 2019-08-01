@@ -1,8 +1,7 @@
-package tech.inscripts.ins_armman.mMitra.menu
+package tech.inscripts.ins_armman.mMitra.homeactivity
 
 import android.content.Context
 import android.database.Cursor
-import android.graphics.BitmapFactory
 import org.json.JSONException
 import org.json.JSONObject
 import tech.inscripts.ins_armman.mMitra.R
@@ -15,7 +14,9 @@ import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
 
-class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeActivityInteractor.OnDataSync,IHomeActivityInteractor.OnFormSync {
+class MainActivityPresentor : IMainActivityPresentor<IMainActivity>,IMainActivityInteractor.OnDataSync,IMainActivityInteractor.OnFormSync {
+
+
 
 
     private val FETCH_USER_DATA = 101
@@ -24,8 +25,8 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
     private val FETCH_UNSENT_FORM_COUNT = 104
 
 
-    private var mIHomeActivityView: IHomeActivityView? = null
-     var mInteractor: HomeActivityInteractor? = null
+    private var mIMainActivityView: IMainActivity? = null
+     var mInteractor: MainActivityInteractor? = null
     private var mContext: Context? = null
     private var mUsername: String = ""
     private var mPassword:String = ""
@@ -34,7 +35,7 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
     private var mImei: ArrayList<String>?=null
 
     var utility= Utility()
-    private val mOnQueryFinished = object : IHomeActivityPresentor.OnQueryFinished {
+    private val mOnQueryFinished = object : IMainActivityPresentor.OnQueryFinished {
         override fun onSuccess(cursor: Cursor, id: Int) {
             when (id) {
                 FETCH_USER_DATA -> if (cursor.moveToFirst()) {
@@ -51,7 +52,7 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
                 }
 
                 FETCH_UNSENT_FORM_COUNT -> if (cursor.moveToFirst())
-                    mIHomeActivityView?.setUnsentFormsCount(cursor.getInt(0))
+                    mIMainActivityView?.setUnsentFormsCount(cursor.getInt(0))
 
                 FETCH_REGISTRATION_DATA -> if (cursor.count > 0) {
                     onFetchedRegistrationData(cursor)
@@ -71,9 +72,9 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
 
 
     override fun fetchRegistrationData() {
-    mIHomeActivityView?.showProgressBar(mContext?.getString(R.string.uploading_forms)!!)
+    mIMainActivityView?.showProgressBar(mContext?.getString(R.string.uploading_forms)!!)
 
-        ResetFailureTask(object : IHomeActivityPresentor.OnResetTaskCompleted {
+        ResetFailureTask(object : IMainActivityPresentor.OnResetTaskCompleted {
             override fun onResetCompleted() {
                 mInteractor?.fetchRegistrationDetails(FETCH_REGISTRATION_DATA)
             }
@@ -93,12 +94,6 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
         val regData = ArrayList<BeneficiaryDetails>()
         while (cursor.moveToNext()) {
             val details = BeneficiaryDetails()
-
-            /*val blob = cursor.getBlob(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_IMAGE))
-            if (blob != null) {
-                val bitmap = BitmapFactory.decodeByteArray(blob, 0, blob.size)
-                details.setImage(utility.getStringFromBitmap(bitmap))
-            }*/
 
             val uniqueId = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID))
             details.setUniqueId(uniqueId)
@@ -153,7 +148,7 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
         }
         else
         {
-            mIHomeActivityView?.hideProgressBar()
+            mIMainActivityView?.hideProgressBar()
             fetchUnsentFormsCount()
         }
     }
@@ -166,10 +161,10 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
         mInteractor?.updateRegistrationFailureStatus(uniqueId, errorMsg)
         mInteractor?.fetchRegistrationDetails(FETCH_REGISTRATION_DATA)
     }
-    override fun attachView(view: IHomeActivityView) {
-        mIHomeActivityView = view
-        mContext = mIHomeActivityView?.getContext()
-        mInteractor = HomeActivityInteractor(mContext, mOnQueryFinished)
+    override fun attachView(view: IMainActivity) {
+        mIMainActivityView = view
+        mContext = mIMainActivityView?.getContext()
+        mInteractor = MainActivityInteractor(mContext, mOnQueryFinished)
         mInteractor?.fetchLoginDetails(FETCH_USER_DATA)
     }
 
@@ -214,9 +209,20 @@ class HomeActivityPresentor : IHomeActivityPresentor<IHomeActivityView>,IHomeAct
     }
 
     override fun onFailure(message: String) {
-        mIHomeActivityView?.hideProgressBar()
-        mIHomeActivityView?.showSnackBar(message)
+        mIMainActivityView?.hideProgressBar()
+        mIMainActivityView?.showSnackBar(message)
         fetchUnsentFormsCount()
+    }
+
+    override fun getLoginDetail(userDetails : ArrayList<String>) {
+        var cur : Cursor= mInteractor?.getLoginDetails()!!
+        if (cur != null && cur.moveToFirst())
+            do {
+                var fullName = cur.getString(cur.getColumnIndex("name"))
+                var username = cur.getString(cur.getColumnIndex("username"))
+                userDetails.add(fullName)
+                userDetails.add(username)
+            } while (cur.moveToNext())
     }
 
 

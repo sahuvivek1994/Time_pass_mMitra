@@ -17,9 +17,9 @@ class UserProfileActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
         presenter.getUserDetails(userDetails)
-        presenter.getRegCount(regCount)
-        textUserName.text=userDetails.get(0)
-        textName.text=userDetails.get(1)
+       regCount=presenter.getRegCount()
+        textUserName?.text=userDetails.get(1)
+        textName.text=userDetails.get(0)
 
         if(regCount>0)
             textCount.text= regCount.toString()

@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Response
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.UpdateImageModel
-import tech.inscripts.ins_armman.mMitra.menu.IHomeActivityInteractor
+import tech.inscripts.ins_armman.mMitra.homeactivity.IMainActivityInteractor
 import java.io.IOException
 
 class SyncUpdatePhotoService {
@@ -18,7 +18,7 @@ class SyncUpdatePhotoService {
         this.mPhotoServiceApi = mPhotoServiceApi
     }
 
-    fun syncUpdatePhotoDetails(updateImageModel: UpdateImageModel,updatedPhotoSync: IHomeActivityInteractor.OnUpdatedPhotoSync){
+    fun syncUpdatePhotoDetails(updateImageModel: UpdateImageModel,updatedPhotoSync: IMainActivityInteractor.OnUpdatedPhotoSync){
         Log.d("SyncUpdatePhotoService", "SyncUpdatePhotoService start request")
         val responseBodyCall = mPhotoServiceApi!!.SyncUpdatePhotoDetails(updateImageModel)
         responseBodyCall.enqueue(object:retrofit2.Callback<ResponseBody>{

@@ -123,7 +123,7 @@ class Utility {
               // imeiArray.add("869432026925037")
         if (telephonyInfo.isDualSIM()) {
             imeiArray.add(telephonyInfo.imsiSIM1)
-            imeiArray.add(telephonyInfo.imsiSIM2)
+            telephonyInfo.imsiSIM2?.let { imeiArray.add(it) }
         } else {
             imeiArray.add(telephonyInfo.imsiSIM1)
         }

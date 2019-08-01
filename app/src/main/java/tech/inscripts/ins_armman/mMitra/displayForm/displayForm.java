@@ -35,9 +35,9 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import tech.inscripts.ins_armman.mMitra.HomeActivity;
 import tech.inscripts.ins_armman.mMitra.R;
 import tech.inscripts.ins_armman.mMitra.forms.*;
+import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity;
 import tech.inscripts.ins_armman.mMitra.utility.TelephonyInfo;
 import tech.inscripts.ins_armman.mMitra.utility.Utility;
 
@@ -3960,7 +3960,7 @@ public class displayForm extends AppCompatActivity {
                             //finish();
 
                                 if (FormID >= 2) {
-                                    Intent intent = new Intent(displayForm.this, HomeActivity.class);
+                                    Intent intent = new Intent(displayForm.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
                                         String formNumber = String.valueOf(FormID + 1);
@@ -4137,7 +4137,7 @@ public class displayForm extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         try {
-                            startActivity(new Intent(displayForm.this, HomeActivity.class));
+                            startActivity(new Intent(displayForm.this, MainActivity.class));
                             finish();
                         } catch (Exception e) {
                             e.printStackTrace();

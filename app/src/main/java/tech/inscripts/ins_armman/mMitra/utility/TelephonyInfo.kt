@@ -13,7 +13,7 @@ class TelephonyInfo {
 
      var telephonyInfo: TelephonyInfo? = null
      var imsiSIM1: String = ""
-     var imsiSIM2: String = ""
+     var imsiSIM2: String? = ""
      var isSIM1Ready: Boolean = false
      var isSIM2Ready: Boolean = false
 
@@ -32,11 +32,12 @@ class TelephonyInfo {
 
             val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
-            telephonyInfo?.imsiSIM1 =telephonyManager.deviceId // "869432026925037"
+            telephonyInfo?.imsiSIM1 = telephonyManager.deviceId
+                    //"865770025862634"
 
             Log.d(TAG, "getInstance: " + telephonyInfo?.imsiSIM1)
 
-            telephonyInfo?.imsiSIM2 = ""
+            telephonyInfo?.imsiSIM2 = null
 
             try {
                 telephonyInfo?.imsiSIM1 = getDeviceIdBySlot(context, "getDeviceIdGemini", 0)

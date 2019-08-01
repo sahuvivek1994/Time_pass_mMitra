@@ -1,18 +1,21 @@
 package tech.inscripts.ins_armman.mMitra.settingActivity
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.NavUtils
 import android.support.v7.widget.Toolbar
 import tech.inscripts.ins_armman.mMitra.R
+import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity
 
 class Settings : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar?.setTitle(R.string.action_settings)
+        setTitle(R.string.action_settings)
+//        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+//        toolbar?.setTitle(R.string.action_settings)
         if (supportActionBar != null) {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         }
@@ -22,7 +25,6 @@ class Settings : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        finish()
-        // NavUtils.navigateUpFromSameTask(this)
+        startActivity(Intent(this,MainActivity::class.java))
     }
 }
