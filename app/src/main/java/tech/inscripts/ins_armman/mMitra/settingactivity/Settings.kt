@@ -14,9 +14,9 @@ class Settings : AppCompatActivity() {
         setTitle(R.string.action_settings)
 //        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 //        toolbar?.setTitle(R.string.action_settings)
-        if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        }
+//        if (supportActionBar != null) {
+//            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+//        }
 
         fragmentManager.beginTransaction().replace(R.id.frame_settings_menu, MainPreferenceFragment()).commit()
     }
