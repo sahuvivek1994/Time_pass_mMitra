@@ -2,6 +2,7 @@ package tech.inscripts.ins_armman.mMitra.login
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
@@ -9,8 +10,10 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.login.*
 import kotlinx.android.synthetic.main.progress_overlay.*
+import kotlinx.android.synthetic.main.user_profile_activity.*
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager
@@ -27,12 +30,11 @@ class Login : AppCompatActivity(), ILoginView {
     val uti = Utility()
     private var mTextInputLayoutUsername: TextInputLayout? = null
     private var mTextInputLayoutPassword: TextInputLayout? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
-        val applicationLanguage = uti.getLanguagePreferance(applicationContext)
+        var applicationLanguage = uti.getLanguagePreferance(applicationContext)
         if(applicationLanguage.isEmpty())
         {
             uti.setApplicationLocale(applicationContext,"eng")
@@ -52,6 +54,7 @@ class Login : AppCompatActivity(), ILoginView {
             val username = edittext_username.text.toString()
             val password = edittext_pass.text.toString()
             mLoginPresenter.validateCredentials(username,password)
+
         })
     }
 

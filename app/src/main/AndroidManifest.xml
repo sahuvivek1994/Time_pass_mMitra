@@ -26,8 +26,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".settingactivity.Settings"
-                  android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".settingactivity.Settings">
         </activity>
 
         <activity android:name="tech.inscripts.ins_armman.mMitra.login.Login"
