@@ -95,7 +95,7 @@ class Login : AppCompatActivity(), ILoginView {
     }
 
     override fun showProgressBar() {
-        uti.animateView(progress_overlay,View.VISIBLE,0.04f,200)
+        uti.animateView(progress_overlay,View.VISIBLE,0.3f,200)
      }
 
     override fun hideProgressBar() {

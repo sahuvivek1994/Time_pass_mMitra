@@ -19,7 +19,7 @@
 
     </group>
 
-    <item android:title="Settings">
+    <item android:title="@string/setting">
         <menu>
 
             <item

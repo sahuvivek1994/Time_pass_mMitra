@@ -326,4 +326,8 @@
     <string name="menu_tool">अद्यतन की जाँच करें</string>
     <string name="menu_logout">लोग आउट</string>
 
+    <string name="tot_registration"> कुल पंजीकरण </string>
+    <string name="home"> होम </string>
+    <string name="setting">सेटिंग्स</string>
+
 </resources>

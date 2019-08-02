@@ -323,4 +323,8 @@
     <string name="menu_tool">अद्यतन तपासा</string>
     <string name="menu_logout">बाहेर पडणे</string>
 
+    <string name="tot_registration"> एकूण नोंदणी </string>
+    <string name="home"> घर </string>
+    <string name="setting">सेटिंग्ज</string>
+
 </resources>

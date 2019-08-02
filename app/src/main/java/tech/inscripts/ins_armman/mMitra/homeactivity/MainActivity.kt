@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homeactivity)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.setTitle("HOME")
+        toolbar.setTitle(R.string.home)
         toolbar.setTitleTextColor(Color.WHITE)
         toolbar.setNavigationIcon(R.drawable.ic_navigation_icon)
         setSupportActionBar(toolbar)
@@ -127,18 +127,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this,IncompleteFormActivity::class.java))
             }
             R.id.nav_updateForms -> {
-                val toast = Toast.makeText(applicationContext, "Work in progress", Toast.LENGTH_SHORT)
+                val toast = Toast.makeText(applicationContext, "In progress", Toast.LENGTH_SHORT)
                 toast.show()            }
             R.id.nav_restoreData -> {
-                val toast = Toast.makeText(applicationContext, "Work in progress", Toast.LENGTH_SHORT)
+                val toast = Toast.makeText(applicationContext, "In progress", Toast.LENGTH_SHORT)
                 toast.show()
             }
 
             R.id.nav_checkUpdate -> {
-                val toast = Toast.makeText(applicationContext, "Work in progress", Toast.LENGTH_SHORT)
+                val toast = Toast.makeText(applicationContext, "In progress", Toast.LENGTH_SHORT)
                 toast.show()            }
             R.id.nav_logout -> {
-                val toast = Toast.makeText(applicationContext, "Work in progress", Toast.LENGTH_SHORT)
+                val toast = Toast.makeText(applicationContext, "In progress", Toast.LENGTH_SHORT)
                 toast.show()            }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
