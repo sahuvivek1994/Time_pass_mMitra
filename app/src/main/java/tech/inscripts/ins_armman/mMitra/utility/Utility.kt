@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.net.ConnectivityManager
 import android.provider.MediaStore.Video.VideoColumns.LANGUAGE
@@ -36,8 +37,8 @@ class Utility {
     val Language = "LANGUAGE"
 
     fun getLanguagePreferance(context: Context): String {
-        val prefs = context.getSharedPreferences(COMMAN_PREF_NAME, Activity.MODE_PRIVATE)
-        return prefs.getString(LANGUAGE, "eng")
+        var prefs = context.getSharedPreferences(COMMAN_PREF_NAME, Activity.MODE_PRIVATE)
+        return prefs.getString(LANGUAGE, "")
     }
 
     /**
@@ -50,11 +51,11 @@ class Utility {
         try {
             setLocaleInPreference(locale, context)
 
-            val res = context.applicationContext.resources
+            var res = context.applicationContext.resources
             // Change locale settings in the app.
-            val dm = res.displayMetrics
-            val conf = res.configuration
-            val localeArray = locale.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            var dm = res.displayMetrics
+            var conf = res.configuration
+            var localeArray = locale.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (localeArray.size > 1) {
                 conf.locale = Locale(localeArray[0], localeArray[1])
             } else {
@@ -82,7 +83,7 @@ class Utility {
      * @param duration     Animation duration in ms
      */
     fun animateView(view: View, toVisibility: Int, toAlpha: Float, duration: Int) {
-        val show = toVisibility == View.VISIBLE
+        var show = toVisibility == View.VISIBLE
         if (show) {
             view.alpha = 0f
         }

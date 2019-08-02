@@ -4,18 +4,18 @@
     android:layout_height="match_parent">
 
     <PreferenceCategory
-        android:title="@string/category_personal"
-        android:key="personal_category">
+            android:title="@string/category_personal"
+            android:key="personal_category">
 
         <ListPreference
-            android:icon="@drawable/ic_language"
-            android:key="language"
-            android:title="@string/language"
-            android:summary="%s"
-            android:entries="@array/languages"
-            android:entryValues="@array/languages_value"
-            android:defaultValue="@string/default_language"
-            android:negativeButtonText="@string/cancel"/>
+                android:icon="@drawable/ic_language"
+                android:key="language"
+                android:title="@string/language"
+                android:summary="%s"
+                android:entries="@array/languages"
+                android:entryValues="@array/languages_value"
+                android:defaultValue="@string/default_language"
+                android:negativeButtonText="@string/cancel"/>
 
     </PreferenceCategory>
 

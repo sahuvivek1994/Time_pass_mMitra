@@ -3727,8 +3727,8 @@ private static Utility utility= new Utility();
 
         try {
             JSONObject validationobj = new JSONObject(validationConditions);
-
             if (validationobj.optString("required") != null && validationobj.optString("required").length() > 0) {
+
                 //compulsory=true;
                 tv.setError("");
                 validationlist.put("" + et.getTag(), "");

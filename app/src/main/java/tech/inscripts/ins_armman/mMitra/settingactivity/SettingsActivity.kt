@@ -23,4 +23,5 @@ class SettingsActivity : AppCompatActivity() {
         super.onBackPressed()
         NavUtils.navigateUpFromSameTask(this)
     }
+
 }

@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.setTitle("HOME")
         toolbar.setTitleTextColor(Color.WHITE)
+        toolbar.setNavigationIcon(R.drawable.ic_navigation_icon)
         setSupportActionBar(toolbar)
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -68,6 +69,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mPresenter?.attachView(this)
         mPresenter?.getLoginDetail(userDetails)
         val name = userDetails.get(0)
+        var navigationView : NavigationView = findViewById(R.id.nav_view)
+        navigationView?.setNavigationItemSelectedListener(this)
+        var header : View= navigationView!!.getHeaderView(0)
+        var textUserName : TextView = header.findViewById(R.id.navUserName)
+        textUserName.text=name
+        var drawerLayout : DrawerLayout = findViewById(R.id.drawer_layout)
+        var mDrawerToggle = ActionBarDrawerToggle(this,drawerLayout,R.string.app_name,R.string.app_name)
+        mDrawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE)
+        drawerLayout.addDrawerListener(mDrawerToggle)
+        mDrawerToggle.syncState()
+
     }
 
     override fun onBackPressed() {

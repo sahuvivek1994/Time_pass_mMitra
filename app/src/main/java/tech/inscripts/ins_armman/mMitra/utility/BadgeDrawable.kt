@@ -21,7 +21,7 @@ class BadgeDrawable(context: Context) : Drawable() {
         mTextSize = context.resources.getDimension(R.dimen.badge_text_size)
 
         mBadgePaint = Paint()
-        mBadgePaint.color = Color.BLUE
+        mBadgePaint.color = Color.RED
         mBadgePaint.isAntiAlias = true
         mBadgePaint.style = Paint.Style.FILL
 
