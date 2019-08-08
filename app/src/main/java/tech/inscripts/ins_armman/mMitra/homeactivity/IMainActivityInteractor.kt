@@ -50,4 +50,7 @@ interface IMainActivityInteractor  {
         fun onSuccessfullyUpdatedPhotoSync(jsonObject: JSONObject)
         fun onFailureUpdatedPhotoSync(textResId: Int)
     }
+
+    fun deleteLoginDetails()
+
 }

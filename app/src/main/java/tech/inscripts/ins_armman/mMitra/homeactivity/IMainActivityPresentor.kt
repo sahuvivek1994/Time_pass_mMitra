@@ -11,6 +11,7 @@ interface IMainActivityPresentor<V> : IBasePresenter<V> {
     fun onFetchedRegistrationData(cursor: Cursor)
     fun fetchUnsentFormsCount()
     fun syncUnsentForms()
+    fun logout()
 
     interface OnQueryFinished {
 
