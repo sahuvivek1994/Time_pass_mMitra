@@ -23,7 +23,9 @@ import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
 
-class SettingsPresentor : ISettingsPresentor<ISettingsView>, ISettingsInteractor.OnFormDownloadFinished, ISettingsInteractor.onCheckUpdateFinished
+class SettingsPresentor : ISettingsPresentor<ISettingsView>,
+    ISettingsInteractor.OnFormDownloadFinished,
+    ISettingsInteractor.onCheckUpdateFinished
     , ISettingsInteractor.OnRegistrationsDownloadFinished
     , ISettingsInteractor.OnVisitsDownloadFinished {
 
@@ -169,10 +171,30 @@ val utility= Utility()
 
     override fun onSuccessFormDownloading(jsonObject: JSONObject, hash: String) {
         mSettingsView?.hideProgressBar()
+        var value : Boolean= false
+        var a=mSettingsView?.getContext()
+        try{
+            value= jsonObject.get("status") as Boolean
+        }
+        catch(e : Exception ){
 
-        mSettingsInteractor?.saveFormData(jsonObject)
+        }
+        if(!value){
+            if (jsonObject.has("response")) {
+                mSettingsView?.showSnackBar(a!!.getString(R.string.forms_already_updated))
+            } else {
+                try {
+                    jsonObject.put("hash", hash)
+                    mSettingsInteractor?.saveFormData(jsonObject)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                    mSettingsView?.showSnackBar(a!!.getString(R.string.invalid_data_frm_server))
+                }
 
-        mSettingsView?.hideProgressBar()
+            }
+        }else{
+            mSettingsView?.showSnackBar(a!!.getString(R.string.forms_already_updated))
+        }
 
         /**
          * Code commented of hash check it will get uncomment for new version in which hash will be used on server side also

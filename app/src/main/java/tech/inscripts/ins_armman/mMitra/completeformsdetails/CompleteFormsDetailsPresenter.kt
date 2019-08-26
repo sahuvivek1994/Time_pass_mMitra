@@ -1,5 +1,6 @@
 package tech.inscripts.ins_armman.mMitra.completeformsdetails
 
+import android.util.Log
 import tech.inscripts.ins_armman.mMitra.data.model.CompleteFormQnA
 import java.util.*
 import java.util.Arrays.asList
@@ -51,8 +52,10 @@ class CompleteFormsDetailsPresenter : ICompleteFormsDetailsPresenter<CompleteFor
                             var ansArray: List<String> = ans.split(",").map { it.trim() }
                             var ansLabel: List<String>? = interactor?.getAnswerLabel(ansArray)
                             ans = ansLabel?.joinToString()
+//                            Log.d("ANS :", ans)
                         }
                         completeFormQnA.answer = ans
+                        Log.d("STORE_ANS :", ans)
                         }
                     else {
                         completeFormQnA.answer = cur.getString(cur.getColumnIndex("option_label"))

@@ -338,5 +338,6 @@
     <string name="tot_registration"> Total Registration </string>
     <string name="home">Home </string>
     <string name="setting">settings</string>
+    <string name="logout_message">Are you sure you want to logout?</string>
 
 </resources>

@@ -8,4 +8,5 @@ interface IMainActivity : IMvpView {
        fun showProgressBar(label: String)
        fun hideProgressBar()
        fun showFormUpdateErrorDialog()
+       fun updateAvailable(url : String)
 }

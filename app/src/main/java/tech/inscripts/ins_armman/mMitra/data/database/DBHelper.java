@@ -292,7 +292,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cur=null;
        String str="";
         cur = utility.getDatabase().rawQuery("select question_type from main_questions where question_label = '" + question_label + "'", null);
-        if(cur!=null &&  cur.moveToFirst()) {
+         if(cur!=null &&  cur.moveToFirst()) {
            str = cur.getString(cur.getColumnIndex("question_type"));
        }return  str;
     }

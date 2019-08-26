@@ -20,7 +20,6 @@ class FormDownloadService {
         this.formDownloadServiceAPI = formDownloadServiceAPI
     }
 
-
     fun downloadForms(requestFormModel: RequestFormModel,onFormDownloadFinished : ISettingsInteractor.OnFormDownloadFinished,context: Context){
         if(requestFormModel != null){
             val responseBodyCall : Call<ResponseBody> = formDownloadServiceAPI!!.downloadFormJson(requestFormModel)

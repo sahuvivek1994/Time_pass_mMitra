@@ -1,21 +1,31 @@
 package tech.inscripts.ins_armman.mMitra.homeactivity
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.database.Cursor
 import org.json.JSONException
 import org.json.JSONObject
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract
+import tech.inscripts.ins_armman.mMitra.data.model.RequestFormModel
 import tech.inscripts.ins_armman.mMitra.data.model.SyncRegistrationDetails
+import tech.inscripts.ins_armman.mMitra.data.model.UpdateModel
+import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreDataRequest
+import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreRegistration
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.BeneficiaryDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.FormDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.QuestionAnswer
+import tech.inscripts.ins_armman.mMitra.login.Login
+import tech.inscripts.ins_armman.mMitra.settingactivity.*
 import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
 
-class MainActivityPresentor : IMainActivityPresentor<IMainActivity>,IMainActivityInteractor.OnDataSync,IMainActivityInteractor.OnFormSync {
-
+class MainActivityPresentor : IMainActivityPresentor<IMainActivity>,IMainActivityInteractor.OnDataSync,
+    IMainActivityInteractor.OnFormSync,ISettingsInteractor.OnFormDownloadFinished,ISettingsInteractor.onCheckUpdateFinished,
+    ISettingsInteractor.OnRegistrationsDownloadFinished {
 
 
 
@@ -24,7 +34,9 @@ class MainActivityPresentor : IMainActivityPresentor<IMainActivity>,IMainActivit
     private val FETCH_FORMS_DATA = 103
     private val FETCH_UNSENT_FORM_COUNT = 104
 
-
+var mRequest: RestoreDataRequest?=null
+    var pageCounter =0
+   var settingsPresenter : SettingsPresentor?=null
     private var mIMainActivityView: IMainActivity? = null
      var mInteractor: MainActivityInteractor? = null
     private var mContext: Context? = null
@@ -164,7 +176,7 @@ class MainActivityPresentor : IMainActivityPresentor<IMainActivity>,IMainActivit
     override fun attachView(view: IMainActivity) {
         mIMainActivityView = view
         mContext = mIMainActivityView?.getContext()
-        mInteractor = MainActivityInteractor(mContext, mOnQueryFinished)
+        mInteractor = MainActivityInteractor(mContext!!, mOnQueryFinished)
         mInteractor?.fetchLoginDetails(FETCH_USER_DATA)
     }
 
@@ -225,5 +237,110 @@ class MainActivityPresentor : IMainActivityPresentor<IMainActivity>,IMainActivit
             } while (cur.moveToNext())
     }
 
+   /* override fun resetDataMemberValues(){
+        mRequest = RestoreDataRequest()
+        mRequest?.userName
+        mRequest?.password
+        mRequest?.setImei(utility.getDeviceImeiNumber(mIMainActivityView!!.getContext()))
+        mRequest?.setLimit(FORM_DOWNLOAD_LIMIT)
+        pageCounter = 1
+
+    }
+    override fun restoreRegistrations(pageNumber: Int) {
+        mRequest?.setPageNumber(pageNumber)
+        mInteractor?.downloadRegistrationData(mRequest!!, this)
+    }*/
+
+    override fun checkUpdate() {
+        var a= mIMainActivityView?.getContext()
+        if(utility.hasInternetConnectivity(a)){
+            mIMainActivityView?.showProgressBar(a!!.getString(R.string.looking_for_update))
+            mInteractor?.checkReleaseUpdate(this)
+        }
+        else mIMainActivityView?.showSnackBar(a!!.getString(R.string.no_internet_connection))
+    }
+
+
+
+
+
+    override fun downloadForms() {
+        var a= mIMainActivityView?.getContext()
+        val b= utility.hasInternetConnectivity(a)
+        if(b){
+            mIMainActivityView?.showProgressBar(a?.getString(R.string.downloading_data)!!)
+            var details = RequestFormModel()
+            details.setusername(mUsername)
+            details.setpassword(mPassword)
+            details.setImei(utility.getDeviceImeiNumber(a!!))
+            details.setHash(mInteractor!!.getHash(HASH_ITEM_FORM))
+            details.setShowdata("true")
+            mInteractor?.downloadForms(details, this)
+           // settingsInteractor?.downloadForms(details,this)
+        }else{
+            mIMainActivityView?.showSnackBar(a?.getString(R.string.no_internet_connection)!!)
+        }
+    }
+    override fun onSuccessFormDownloading(jsonObject: JSONObject, hash: String) {
+        mIMainActivityView?.hideProgressBar()
+
+        mInteractor?.saveFormData(jsonObject)
+
+        mIMainActivityView?.hideProgressBar()
+    }
+
+    override fun logout() {
+        mInteractor?.deleteLoginDetails()
+        val intent = Intent(mIMainActivityView?.getContext(), Login::class.java)
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        mIMainActivityView?.getContext()?.startActivity(intent)
+    }
+    override fun restoreData() {
+        /*var a= mIMainActivityView?.getContext()
+        if (utility.hasInternetConnectivity(a)) {
+            mIMainActivityView?.showProgressBar(a!!.getString(R.string.downloading_data))
+            resetDataMemberValues()
+            restoreRegistrations(pageCounter)
+        } else
+            mIMainActivityView?.showSnackBar(a!!.getString(R.string.no_internet_connection))*/
+    }
+    override fun onSuccessRegistrationsDownloading(registration: RestoreRegistration) {
+        /*if(registration.getTotal()>0){
+            listRegistrations.addAll(registration.getRegistrationData()!!)
+            if(!totalPagesCalculated){
+                totalPagesCalculated= true
+                //totalPages = Math.ceil(registration.getTotal() as Double / FORM_DOWNLOAD_LIMIT as Double).toInt()
+                totalPages = Math.ceil((registration.getTotal()).toDouble() / (FORM_DOWNLOAD_LIMIT).toDouble()).toInt()
+            }
+        }
+        if(pageCounter<totalPages){
+            restoreRegistrations(++pageCounter)
+        }else{
+            pageCounter=1
+            totalPages=0
+            totalPagesCalculated=false
+            restoreVisits(pageCounter)
+        } */
+    }
+
+    override fun onUpdateCheckSuccess(updateModel: UpdateModel) {
+        mIMainActivityView?.hideProgressBar()
+        if(!updateModel.getStatus()){
+            mIMainActivityView?.showSnackBar(mIMainActivityView!!.getContext().getString(R.string.dialog_app_updated_text))
+            return
+        }
+        val context: Context= mIMainActivityView?.getContext()!!
+        try{
+            val pInfo : PackageInfo = context.packageManager.getPackageInfo(context.packageName,0)
+            var versionCode = pInfo.versionCode
+            val newVersionCode = Integer.parseInt(updateModel.getData()!!.versionCode)
+
+            if(newVersionCode>versionCode){
+                mIMainActivityView!!.updateAvailable(updateModel!!.getData()!!.link)
+            }
+        }catch(e : PackageManager.NameNotFoundException){
+            e.printStackTrace()
+        }
+    }
 
 }

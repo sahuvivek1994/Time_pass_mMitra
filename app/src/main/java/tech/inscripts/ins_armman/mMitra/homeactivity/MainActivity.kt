@@ -1,6 +1,7 @@
 package tech.inscripts.ins_armman.mMitra.homeactivity
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
@@ -15,7 +16,6 @@ import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -35,16 +35,16 @@ import java.util.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,IMainActivity,View.OnClickListener {
 
-  var settingPresenter = SettingsPresentor()
+    var settingsPresentor :SettingsPresentor?=null
     var mPresenter: MainActivityPresentor?=null
     var utility : Utility = Utility()
     var mSyncDrawable: LayerDrawable? = null
-    var mProgressDialog: AlertDialog? = null
+    var mProgressDialog: android.support.v7.app.AlertDialog? = null
     var userDetails = ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homeactivity)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        val toolbar: android.support.v7.widget.Toolbar = findViewById(R.id.toolbar)
         toolbar.setTitle(R.string.home)
         toolbar.setTitleTextColor(Color.WHITE)
         toolbar.setNavigationIcon(R.drawable.ic_navigation_icon)
@@ -127,19 +127,43 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this,IncompleteFormActivity::class.java))
             }
             R.id.nav_updateForms -> {
-                val toast = Toast.makeText(applicationContext, "In progress", Toast.LENGTH_SHORT)
-                toast.show()            }
+                mPresenter?.downloadForms()
+            }
             R.id.nav_restoreData -> {
-                val toast = Toast.makeText(applicationContext, "In progress", Toast.LENGTH_SHORT)
-                toast.show()
+                val builder = android.support.v7.app.AlertDialog.Builder(getContext())
+                builder.setTitle(R.string.logout)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setMessage(R.string.logout_message)
+                    .setCancelable(false)
+                    .setPositiveButton(
+                        R.string.ok
+                    ) { dialog, which -> /*mPresenter?.restoreData()*/ }
+                    .setNegativeButton(
+                        R.string.cancel
+                    ) { dialog, which -> dialog.cancel() }
+                    .show()
+
             }
 
             R.id.nav_checkUpdate -> {
-                val toast = Toast.makeText(applicationContext, "In progress", Toast.LENGTH_SHORT)
-                toast.show()            }
+                mPresenter?.checkUpdate()
+                          }
+
             R.id.nav_logout -> {
-                val toast = Toast.makeText(applicationContext, "In progress", Toast.LENGTH_SHORT)
-                toast.show()            }
+                val builder = android.support.v7.app.AlertDialog.Builder(getContext())
+                builder.setTitle(R.string.logout)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setMessage(R.string.logout_message)
+                    .setCancelable(false)
+                    .setPositiveButton(
+                        R.string.ok
+                    ) { dialog, which -> mPresenter?.logout() }
+                    .setNegativeButton(
+                        R.string.cancel
+                    ) { dialog, which -> dialog.cancel() }
+                    .show()
+
+            }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -162,7 +186,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var dialogView = inflater.inflate(R.layout.progress_dialog_layout, null)
         var textView = dialogView.findViewById<TextView>(R.id.textView_label)
         textView.text = label
-        var mAlertDialogBuilder = AlertDialog.Builder(this)
+        var mAlertDialogBuilder = android.support.v7.app.AlertDialog.Builder(this)
         mAlertDialogBuilder.setView(dialogView)
         mAlertDialogBuilder.setCancelable(false)
         mProgressDialog = mAlertDialogBuilder.create()
@@ -174,7 +198,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun showFormUpdateErrorDialog() {
-        val builder = AlertDialog.Builder(getContext())
+        val builder = android.support.v7.app.AlertDialog.Builder(getContext())
         builder.setTitle(R.string.restore_warning_text)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setMessage(R.string.update_forms_message)
@@ -198,5 +222,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.btnUserProfile -> startActivity(Intent(this, UserProfileActivity::class.java))
         }
+    }
+
+    override fun updateAvailable(url: String) {
+        android.app.AlertDialog.Builder(this)
+            .setMessage(getString(R.string.dialog_update_available))
+            .setPositiveButton(getString(R.string.dialog_install_text), DialogInterface.OnClickListener { dialog, which ->
+                settingsPresentor!!.downloadApk(url)
+            })
+            .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, which ->  })
+            .show()
     }
 }
