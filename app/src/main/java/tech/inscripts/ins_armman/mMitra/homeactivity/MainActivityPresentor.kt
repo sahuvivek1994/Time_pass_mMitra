@@ -1,6 +1,7 @@
 package tech.inscripts.ins_armman.mMitra.homeactivity
 
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import org.json.JSONException
 import org.json.JSONObject
@@ -10,6 +11,7 @@ import tech.inscripts.ins_armman.mMitra.data.model.SyncRegistrationDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.BeneficiaryDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.FormDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.QuestionAnswer
+import tech.inscripts.ins_armman.mMitra.login.Login
 import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
@@ -225,5 +227,11 @@ class MainActivityPresentor : IMainActivityPresentor<IMainActivity>,IMainActivit
             } while (cur.moveToNext())
     }
 
+    override fun logout() {
+            mInteractor?.deleteLoginDetails()
+        val intent = Intent(mIMainActivityView?.getContext(), Login::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            mIMainActivityView?.getContext()?.startActivity(intent)
 
+    }
 }

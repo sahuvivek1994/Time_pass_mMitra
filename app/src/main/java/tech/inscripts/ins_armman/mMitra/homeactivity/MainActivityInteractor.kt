@@ -245,5 +245,7 @@ throw IllegalArgumentException("Invalid unique &/ formId")
     override fun onLoaderReset(loader: Loader<Cursor>) {
     }
 
-
+    override fun deleteLoginDetails() {
+        utility.getDatabase().delete(DatabaseContract.LoginTable.TABLE_NAME, null, null)
+    }
 }

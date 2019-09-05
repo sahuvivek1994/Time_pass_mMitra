@@ -138,8 +138,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val toast = Toast.makeText(applicationContext, "In progress", Toast.LENGTH_SHORT)
                 toast.show()            }
             R.id.nav_logout -> {
-                val toast = Toast.makeText(applicationContext, "In progress", Toast.LENGTH_SHORT)
-                toast.show()            }
+                mPresenter?.logout()
+            }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
