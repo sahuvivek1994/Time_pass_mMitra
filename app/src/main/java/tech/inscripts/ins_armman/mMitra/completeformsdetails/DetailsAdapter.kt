@@ -58,6 +58,32 @@ class DetailsAdapter() : RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
                 }
                 question = obj.getString(this.language)
                 answer = obj1.getString(this.language)
+               /* holder.txtQuestion.text = question
+                if(ansArray.size>1) {
+                    var i = 0
+                    while (i < ansArray.size) {
+                        if (ansArray[i].contains("{")) {
+                            var a= ansArray.get(i)
+                            mDetails?.set(position,c)?.answer =a
+                            var obj1 = JSONObject()
+                           *//* language = utility.getLanguagePreferance(mContext)
+                            if (language!!.isEmpty()) {
+                                utility.setApplicationLocale(mContext, "en")
+                            } else {
+                                utility.setApplicationLocale(mContext, language!!)
+                            }*//*
+                            answer = obj1.getString(this.language)
+                            finalAns?.add(answer!!)
+                            i++
+                        }
+                    }
+                    ans = finalAns?.joinToString()!!
+                }
+                else{
+                    var obj1 = JSONObject(c.answer)
+                    ans = obj1.getString(this.language)
+                }
+                holder.txtAnswer.text = ans*/
                 holder.txtQuestion.text = question
                 holder.txtAnswer.text = answer
                 println("settext question :$question")

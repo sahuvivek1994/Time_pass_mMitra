@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">एम मित्रा कोहार्ट</string>
-    <string name="hint_username">Username</string>
-    <string name="hint_password">Password</string>
-    <string name="button_login">Login</string>
-    <string name="enter_username">Please enter username</string>
-    <string name="enter_password">Please enter password</string>
+    <string name="hint_username">उपयोगकर्ता नाम</string>
+    <string name="hint_password">पासवर्ड</string>
+    <string name="button_login">लॉग इन</string>
+    <string name="enter_username">कृपया उपयोगकर्ता नाम दर्ज करें</string>
+    <string name="enter_password">कृप्या पास्वर्ड भरो</string>
     <string name="action_settings">सेटिंग</string>
-    <string name="sync">Sync</string>
+    <string name="sync">संकलन</string>
     <string name="continue_filling_forms">फॉर्म भरना जारी रखें</string>
     <string name="view_filled_form">भरे हुए फॉर्म देखें</string>
     <string name="anc">ए एन सी जाँच</string>
@@ -39,8 +39,8 @@
         कनेक्शन जाँच लें
     </string>
     <string name="no_internet">इंटरनेट उपलब्ध नहीं हैं</string>
-    <string name="downloading_data">Downloading data...</string>
-    <string name="saving_forms">Saving Forms...</string>
+    <string name="downloading_data">डेटा डाउनलोड कर रहा है...</string>
+    <string name="saving_forms">फॉर्म जमा हो रहे हैं...</string>
     <string name="select" tools:ignore="ExtraTranslation">चुनें</string>
     <string name="button_next">अगला</string>
     <string name="button_previous">पिछला</string>
@@ -104,8 +104,8 @@
 
     //==============================================================
 
-    <string name="forms_already_updated">Forms already updated</string>
-    <string name="visit_history">Visits History</string>
+    <string name="forms_already_updated">फ़ॉर्म पहले से अपडेट है</string>
+    <string name="visit_history">फार्म का इतिहास</string>
     <string name="unique_id">ID</string>
     <string name="mobile_no">Mobile No.</string>
     <string name="alternate_no">Alternate No.</string>
@@ -265,11 +265,11 @@
     <string name="no_result_found">%s result found</string>
     <string name="no_high_risk_woman_msg">No high risk Woman found</string>
     <string name="no_high_risk_child_msg">No high risk Child found</string>
-    <string name="pending_label_text">Pending</string>
-    <string name="incomplete_visit">incomplete visit</string>
-    <string name="btn_registration">REGISTRATION</string>
-    <string name="btn_incomplete_visit">incomplete visit</string>
-    <string name="btn_complete_visit">पूर्ण भेटी</string>
+    <string name="pending_label_text">अपूर्ण</string>
+    <string name="incomplete_visit">अपूर्ण फ़ॉर्म</string>
+    <string name="btn_registration">पंजीकरण</string>
+    <string name="btn_incomplete_visit">अपूर्ण फ़ॉर्म </string>
+    <string name="btn_complete_visit">पूर्ण फ़ॉर्म</string>
     <string name="btn_user_details">वापरकर्ता तपशील</string>
     <string name="total_visits">Total visits</string>
     <string name="due_visits">Due visits</string>

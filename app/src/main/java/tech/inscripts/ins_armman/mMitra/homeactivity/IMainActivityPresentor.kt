@@ -37,6 +37,7 @@ interface IMainActivityPresentor<V> : IBasePresenter<V> {
     fun restoreData()
     fun logout()
     fun downloadForms()
-     /*fun restoreRegistrations(pageNumber: Int)
-     fun resetDataMemberValues()*/
+    fun restoreRegistrations(pageNumber: Int)
+    fun resetDataMemberValues()
+    fun restoreVisits(pageNumber: Int)
 }

@@ -13,7 +13,6 @@ import android.widget.Button
 import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.login.*
 import kotlinx.android.synthetic.main.progress_overlay.*
-import kotlinx.android.synthetic.main.user_profile_activity.*
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseManager

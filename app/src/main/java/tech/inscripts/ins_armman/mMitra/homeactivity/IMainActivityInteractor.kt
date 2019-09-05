@@ -62,5 +62,6 @@ interface IMainActivityInteractor  {
     fun saveFormData(formJsonObject: JSONObject)
     fun deleteLoginDetails()
     fun downloadRegistrationData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnRegistrationsDownloadFinished)
+    fun downloadVisitsData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnVisitsDownloadFinished)
     fun checkReleaseUpdate(onCheckUpdateFinished: ISettingsInteractor.onCheckUpdateFinished)
 }

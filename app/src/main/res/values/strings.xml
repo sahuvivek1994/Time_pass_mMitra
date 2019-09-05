@@ -90,13 +90,13 @@
     <string-array name="languages">
         <item>@string/title_english</item>
         <item>@string/title_marathi</item>
-        <!--<item>@string/title_hindi</item>-->
+        <item>@string/title_hindi</item>
     </string-array>
 
     <string-array name="languages_value" translatable="false">
         <item>eng</item>
         <item>mr</item>
-        <!--<item>hi</item>-->
+        <item>hi</item>
     </string-array>
 
     <string name="default_language">eng</string>

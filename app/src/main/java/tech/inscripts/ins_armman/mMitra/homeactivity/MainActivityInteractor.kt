@@ -10,6 +10,7 @@ import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -28,6 +29,7 @@ import tech.inscripts.ins_armman.mMitra.data.model.syncing.FormDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.UpdateImageModel
 import tech.inscripts.ins_armman.mMitra.data.retrofit.RemoteDataSource
 import tech.inscripts.ins_armman.mMitra.data.service.FormDownloadService
+import tech.inscripts.ins_armman.mMitra.data.service.RestoreVisitsService
 import tech.inscripts.ins_armman.mMitra.settingactivity.ISettingsInteractor
 import tech.inscripts.ins_armman.mMitra.settingactivity.SettingsInteractor
 import tech.inscripts.ins_armman.mMitra.utility.Constants
@@ -278,7 +280,7 @@ throw IllegalArgumentException("Invalid unique &/ formId")
         var formDownloadService: FormDownloadService = remoteDataSource.downloadFormService()
         formDownloadService.downloadForms(requestFormModel, onFormDownloadFinished, mContext)
     }
-    override fun saveFormData(formJsonObject: JSONObject) {
+    override fun saveFormData(formJsonObject: JSONObject) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
         SaveFormASyncTask().execute(formJsonObject)
     }
 
@@ -290,6 +292,12 @@ throw IllegalArgumentException("Invalid unique &/ formId")
         var remoteDataSource: RemoteDataSource = dataSource.getInstance()
         val service = remoteDataSource.restoreRegistrationService()
         service.downloadRegistrationData(mContext, request, downloadFinished)
+    }
+
+    override fun downloadVisitsData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnVisitsDownloadFinished) {
+        var remoteDataSource: RemoteDataSource = dataSource.getInstance()
+        var service: RestoreVisitsService = remoteDataSource.restoreVisitsService()
+        service.downloadVisitsData(mContext!!, request, downloadFinished)
     }
 
     override fun checkReleaseUpdate(onCheckUpdateFinished: ISettingsInteractor.onCheckUpdateFinished) {
@@ -699,6 +707,8 @@ throw IllegalArgumentException("Invalid unique &/ formId")
                 for(p in 0 until jsonArray4.length()){
                     var dependant_ques_key = jsonArray4.getJSONObject(p)
                     var dependant_ques_lang : JSONObject = dependant_ques_key.getJSONObject("language")
+                    Log.d("values :", dependant_ques_key.toString())
+                    Log.d("values :", dependant_ques_lang.toString())
                     if(dependant_ques_key.optString("messages")!=null && dependant_ques_key.optString("messages").length>0){
                         dependant_ques_messages= dependant_ques_key.optString("messages")
                     }

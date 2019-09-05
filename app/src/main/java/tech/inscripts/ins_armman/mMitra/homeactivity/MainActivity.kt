@@ -131,13 +131,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_restoreData -> {
                 val builder = android.support.v7.app.AlertDialog.Builder(getContext())
-                builder.setTitle(R.string.logout)
+                builder.setTitle(R.string.restore_data)
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setMessage(R.string.logout_message)
+                    .setMessage(R.string.dialog_msg_loss_data_warning)
                     .setCancelable(false)
                     .setPositiveButton(
                         R.string.ok
-                    ) { dialog, which -> /*mPresenter?.restoreData()*/ }
+                    ) { dialog, which -> mPresenter?.restoreData() }
                     .setNegativeButton(
                         R.string.cancel
                     ) { dialog, which -> dialog.cancel() }

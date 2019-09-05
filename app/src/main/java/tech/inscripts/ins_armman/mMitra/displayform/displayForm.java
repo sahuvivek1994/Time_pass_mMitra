@@ -3957,7 +3957,7 @@ public class displayForm extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             //finish();
 
-                                if (FormID >= 2) {
+                                if (FormID >= 5) {
                                     Intent intent = new Intent(displayForm.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {

@@ -12,8 +12,10 @@ import tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract
 import tech.inscripts.ins_armman.mMitra.data.model.RequestFormModel
 import tech.inscripts.ins_armman.mMitra.data.model.SyncRegistrationDetails
 import tech.inscripts.ins_armman.mMitra.data.model.UpdateModel
+import tech.inscripts.ins_armman.mMitra.data.model.restoreData.BeneficiariesList
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreDataRequest
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreRegistration
+import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreVisits
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.BeneficiaryDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.FormDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.QuestionAnswer
@@ -25,9 +27,7 @@ import java.util.ArrayList
 
 class MainActivityPresentor : IMainActivityPresentor<IMainActivity>,IMainActivityInteractor.OnDataSync,
     IMainActivityInteractor.OnFormSync,ISettingsInteractor.OnFormDownloadFinished,ISettingsInteractor.onCheckUpdateFinished,
-    ISettingsInteractor.OnRegistrationsDownloadFinished {
-
-
+    ISettingsInteractor.OnRegistrationsDownloadFinished,ISettingsInteractor.OnVisitsDownloadFinished {
 
     private val FETCH_USER_DATA = 101
     private val FETCH_REGISTRATION_DATA = 102
@@ -45,6 +45,11 @@ var mRequest: RestoreDataRequest?=null
     private var mUserId:String = ""
     //private var mImei: String =""
     private var mImei: ArrayList<String>?=null
+    private val listRegistrations = ArrayList<BeneficiaryDetails>()
+    private var totalPagesCalculated: Boolean = false
+    private val listVisits = ArrayList<BeneficiariesList>()
+    private var totalPages: Int = 0
+
 
     var utility= Utility()
     private val mOnQueryFinished = object : IMainActivityPresentor.OnQueryFinished {
@@ -63,7 +68,7 @@ var mRequest: RestoreDataRequest?=null
                   //  mIHomeActivityView?.setArogyasakhiName(arogyasakhiName)
                 }
 
-                FETCH_UNSENT_FORM_COUNT -> if (cursor.moveToFirst())
+            FETCH_UNSENT_FORM_COUNT -> if (cursor.moveToFirst())
                     mIMainActivityView?.setUnsentFormsCount(cursor.getInt(0))
 
                 FETCH_REGISTRATION_DATA -> if (cursor.count > 0) {
@@ -96,9 +101,6 @@ var mRequest: RestoreDataRequest?=null
 
     override fun onFetchedRegistrationData(cursor: Cursor) {
         var regDetails = SyncRegistrationDetails()
-        /*regDetails.setusername(mUsername)
-        regDetails.setpassword(mPassword)
-        */
         regDetails.setusername(mUsername)
         regDetails.setpassword(mPassword)
        regDetails.setImei(mImei)
@@ -237,7 +239,7 @@ var mRequest: RestoreDataRequest?=null
             } while (cur.moveToNext())
     }
 
-   /* override fun resetDataMemberValues(){
+    override fun resetDataMemberValues(){
         mRequest = RestoreDataRequest()
         mRequest?.userName
         mRequest?.password
@@ -249,7 +251,7 @@ var mRequest: RestoreDataRequest?=null
     override fun restoreRegistrations(pageNumber: Int) {
         mRequest?.setPageNumber(pageNumber)
         mInteractor?.downloadRegistrationData(mRequest!!, this)
-    }*/
+    }
 
     override fun checkUpdate() {
         var a= mIMainActivityView?.getContext()
@@ -270,8 +272,8 @@ var mRequest: RestoreDataRequest?=null
         if(b){
             mIMainActivityView?.showProgressBar(a?.getString(R.string.downloading_data)!!)
             var details = RequestFormModel()
-            details.setusername(mUsername)
             details.setpassword(mPassword)
+            details.setusername(mUsername)
             details.setImei(utility.getDeviceImeiNumber(a!!))
             details.setHash(mInteractor!!.getHash(HASH_ITEM_FORM))
             details.setShowdata("true")
@@ -296,16 +298,16 @@ var mRequest: RestoreDataRequest?=null
         mIMainActivityView?.getContext()?.startActivity(intent)
     }
     override fun restoreData() {
-        /*var a= mIMainActivityView?.getContext()
+        var a= mIMainActivityView?.getContext()
         if (utility.hasInternetConnectivity(a)) {
             mIMainActivityView?.showProgressBar(a!!.getString(R.string.downloading_data))
             resetDataMemberValues()
             restoreRegistrations(pageCounter)
         } else
-            mIMainActivityView?.showSnackBar(a!!.getString(R.string.no_internet_connection))*/
+            mIMainActivityView?.showSnackBar(a!!.getString(R.string.no_internet_connection))
     }
     override fun onSuccessRegistrationsDownloading(registration: RestoreRegistration) {
-        /*if(registration.getTotal()>0){
+        if(registration.getTotal()>0){
             listRegistrations.addAll(registration.getRegistrationData()!!)
             if(!totalPagesCalculated){
                 totalPagesCalculated= true
@@ -320,7 +322,22 @@ var mRequest: RestoreDataRequest?=null
             totalPages=0
             totalPagesCalculated=false
             restoreVisits(pageCounter)
-        } */
+        }
+    }
+
+    override fun restoreVisits(pageNumber: Int) {
+        mRequest?.setPageNumber(pageNumber)
+        mInteractor?.downloadVisitsData(mRequest!!,this)
+    }
+
+    override fun onSuccessVisitsDownloading(visits: RestoreVisits) {
+        if(visits.getTotal()>0){
+            visits.getBeneficiariesLists()?.let { listVisits.addAll(it) }
+            if(!totalPagesCalculated){
+                totalPagesCalculated =true
+                totalPages=Math.ceil((visits.getTotal()).toDouble() / (FORM_DOWNLOAD_LIMIT).toDouble() ).toInt()
+            }
+        }
     }
 
     override fun onUpdateCheckSuccess(updateModel: UpdateModel) {
