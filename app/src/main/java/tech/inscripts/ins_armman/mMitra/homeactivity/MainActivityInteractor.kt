@@ -706,7 +706,7 @@ throw IllegalArgumentException("Invalid unique &/ formId")
                 val jsonArray4 = depedant_ques_action_dependant_key.optJSONArray("question")
                 for(p in 0 until jsonArray4.length()){
                     var dependant_ques_key = jsonArray4.getJSONObject(p)
-                    var dependant_ques_lang : JSONObject = dependant_ques_key.getJSONObject("language")
+                    var dependant_ques_lang : JSONObject = dependant_ques_key.getJSONObject("languages")
                     Log.d("values :", dependant_ques_key.toString())
                     Log.d("values :", dependant_ques_lang.toString())
                     if(dependant_ques_key.optString("messages")!=null && dependant_ques_key.optString("messages").length>0){
