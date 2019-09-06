@@ -90,13 +90,13 @@
     <string-array name="languages">
         <item>@string/title_english</item>
         <item>@string/title_marathi</item>
-        <!--<item>@string/title_hindi</item>-->
+        <item>@string/title_hindi</item>
     </string-array>
 
     <string-array name="languages_value" translatable="false">
         <item>eng</item>
         <item>mr</item>
-        <!--<item>hi</item>-->
+        <item>hi</item>
     </string-array>
 
     <string name="default_language">eng</string>
@@ -335,8 +335,10 @@
     <string name="menu_tool">Check Update</string>
     <string name="menu_logout">Logout</string>
 
-    <string name="tot_registration"> Total Registration </string>
+    <string name="tot_registration"> TOTAL REGISTRATION </string>
     <string name="home">Home </string>
     <string name="setting">settings</string>
+    <string name="logout_message">Are you sure you want to logout?</string>
+    <string name="no_reg">NO REGISTRATION</string>
 
 </resources>

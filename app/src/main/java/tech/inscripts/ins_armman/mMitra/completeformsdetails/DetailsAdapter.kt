@@ -2,6 +2,7 @@ package tech.inscripts.ins_armman.mMitra.completeformsdetails
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,11 +43,13 @@ class DetailsAdapter() : RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: DetailsAdapter.ViewHolder, position: Int) {
     var c : CompleteFormQnA = mDetails?.get(position)!!
         answer = c.answer
+        var ansArray: List<String> = answer?.split(",")!!.map { it.trim() }
         question=c.question
         if (answer!!.contains("{") && question!!.contains("{")) {
             try {
-                val obj = JSONObject(c.question)
-                val obj1 = JSONObject(c.answer)
+                var obj = JSONObject(c.question)
+                var obj1 = JSONObject(c.answer)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Log.d("ADAPTER_ANS :", c.answer)
                 language = utility.getLanguagePreferance(mContext)
                 if (language!!.isEmpty()) {
                     utility.setApplicationLocale(mContext, "en")
@@ -55,6 +58,32 @@ class DetailsAdapter() : RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
                 }
                 question = obj.getString(this.language)
                 answer = obj1.getString(this.language)
+               /* holder.txtQuestion.text = question
+                if(ansArray.size>1) {
+                    var i = 0
+                    while (i < ansArray.size) {
+                        if (ansArray[i].contains("{")) {
+                            var a= ansArray.get(i)
+                            mDetails?.set(position,c)?.answer =a
+                            var obj1 = JSONObject()
+                           *//* language = utility.getLanguagePreferance(mContext)
+                            if (language!!.isEmpty()) {
+                                utility.setApplicationLocale(mContext, "en")
+                            } else {
+                                utility.setApplicationLocale(mContext, language!!)
+                            }*//*
+                            answer = obj1.getString(this.language)
+                            finalAns?.add(answer!!)
+                            i++
+                        }
+                    }
+                    ans = finalAns?.joinToString()!!
+                }
+                else{
+                    var obj1 = JSONObject(c.answer)
+                    ans = obj1.getString(this.language)
+                }
+                holder.txtAnswer.text = ans*/
                 holder.txtQuestion.text = question
                 holder.txtAnswer.text = answer
                 println("settext question :$question")

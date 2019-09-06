@@ -23,6 +23,6 @@ class UserProfileActivity : AppCompatActivity(){
         if(regCount>0)
             textCount.text= regCount.toString()
     else
-            textCount.text= "no registration"
+            textCount.setText(R.string.no_reg)
     }
 }

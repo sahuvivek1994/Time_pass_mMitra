@@ -11,7 +11,6 @@ interface IMainActivityPresentor<V> : IBasePresenter<V> {
     fun onFetchedRegistrationData(cursor: Cursor)
     fun fetchUnsentFormsCount()
     fun syncUnsentForms()
-
     interface OnQueryFinished {
 
         fun onSuccess(cursor: Cursor, id: Int)
@@ -33,4 +32,12 @@ interface IMainActivityPresentor<V> : IBasePresenter<V> {
 
         fun onTaskFailed()
     }
+
+    fun checkUpdate()
+    fun restoreData()
+    fun logout()
+    fun downloadForms()
+    fun restoreRegistrations(pageNumber: Int)
+    fun resetDataMemberValues()
+    fun restoreVisits(pageNumber: Int)
 }

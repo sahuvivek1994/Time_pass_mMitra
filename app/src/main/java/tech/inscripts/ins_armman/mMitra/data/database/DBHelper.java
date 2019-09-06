@@ -9,6 +9,8 @@ import android.util.Log;
 import tech.inscripts.ins_armman.mMitra.utility.Utility;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract.*;
 
@@ -208,7 +210,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getcompleteFormListList() {
 
-        return utility.getDatabase().rawQuery("SELECT name,unique_id from registration WHERE unique_id IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1 and form_id >= 2 )", null);
+        return utility.getDatabase().rawQuery("SELECT name,unique_id from registration WHERE unique_id IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1 and form_id >= 5 )", null);
     }
 
     /**
@@ -269,5 +271,29 @@ public class DBHelper extends SQLiteOpenHelper {
                 " left join question_options as qo on qo.keyword = qa.answer_keyword" +
                 " where qa.unique_id='"+unique_id+"'" +
                 " and qa.form_id="+Form_id+" group by(qa.question_keyword)",null);
+    }
+
+    public List getAnswerLabel(List<String> ansArray){
+        List<String> ansLabel=new ArrayList<>();
+        Cursor cur=null;
+        for(int i=0;i<ansArray.size();i++){
+            String keyword = ansArray.get(i);
+            cur = utility.getDatabase().rawQuery("select option_label from question_options where keyword = '" + keyword + "'", null);
+            if(cur!=null && cur.moveToFirst()) {
+            String str = cur.getString(cur.getColumnIndex("option_label"));
+            ansLabel.add(str);
+            cur.moveToNext();
+            }
+        }
+        return ansLabel;
+    }
+
+    public String getQuestionType(String question_label){
+        Cursor cur=null;
+       String str="";
+        cur = utility.getDatabase().rawQuery("select question_type from main_questions where question_label = '" + question_label + "'", null);
+         if(cur!=null &&  cur.moveToFirst()) {
+           str = cur.getString(cur.getColumnIndex("question_type"));
+       }return  str;
     }
 }

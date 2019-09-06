@@ -45,14 +45,14 @@ import tech.inscripts.ins_armman.mMitra.utility.Constants
 import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 
-class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cursor> {
+class SettingsInteractor: ISettingsInteractor, LoaderManager.LoaderCallbacks<Cursor> {
     val utility= Utility()
-    var mContext: Context
+    var mContext: Context?=null
     var mOnQueryFinished: ISettingsPresentor.OnQueryFinished? = null
-    var mSettingsPresentor: SettingsPresentor
+    var mSettingsPresentor: SettingsPresentor?=null
     var dataSource = RemoteDataSource()
 
-    constructor(mContext: Context, mOnQueryFinished: ISettingsPresentor.OnQueryFinished, mSettingsPresentor: SettingsPresentor) {
+    constructor(mContext: Context, mOnQueryFinished: ISettingsPresentor.OnQueryFinished, mSettingsPresentor: SettingsPresentor)  {
         this.mContext = mContext
         this.mOnQueryFinished = mOnQueryFinished
         this.mSettingsPresentor = mSettingsPresentor
@@ -66,7 +66,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
     override fun downloadForms(requestFormModel: RequestFormModel, onFormDownloadFinished: ISettingsInteractor.OnFormDownloadFinished) {
         var remoteDataSource: RemoteDataSource = dataSource.getInstance()
         var formDownloadService: FormDownloadService = remoteDataSource.downloadFormService()
-        formDownloadService.downloadForms(requestFormModel, onFormDownloadFinished, mContext)
+        formDownloadService.downloadForms(requestFormModel, onFormDownloadFinished, mContext!!)
     }
 
     override fun fetchLoginDetails(id: Int) {
@@ -103,7 +103,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
     override fun checkReleaseUpdate(onCheckUpdateFinished: ISettingsInteractor.onCheckUpdateFinished) {
         val remoteDataSource = dataSource.getInstance()
         val checkUpdateService = remoteDataSource.getCheckUpdateService()
-        checkUpdateService.getUpdateData(onCheckUpdateFinished, mContext)
+        checkUpdateService.getUpdateData(onCheckUpdateFinished, mContext!!)
     }
 
     override fun downloadAndSaveApk(apkLink: String) {
@@ -119,14 +119,14 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
         //set downloadManager
         var request = DownloadManager.Request(Uri.parse(apkLink))
-        request.setDescription(mContext.getString(R.string.apk_download_request_text))
-        request.setTitle(mContext.getString(R.string.app_name))
+        request.setDescription(mContext?.getString(R.string.apk_download_request_text))
+        request.setTitle(mContext?.getString(R.string.app_name))
 
         //set destination
         request.setDestinationUri(uri)
 
         //get download service and enqueue file
-        var manager: DownloadManager = mContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        var manager: DownloadManager = mContext?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadId = manager.enqueue(request)
 
 
@@ -149,7 +149,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                         var dl_progress = byte_downloaded * 100 / byte_total
                         var progressInt = dl_progress
                         Log.i("download_apk", "progress" + progressInt)
-                        mSettingsPresentor.setApkDownloadProgress(progressInt)
+                        mSettingsPresentor?.setApkDownloadProgress(progressInt)
                     }
                     cur.close()
                 }
@@ -158,7 +158,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
         val onComplete = object : android.content.BroadcastReceiver() {
             override fun onReceive(ctxt: Context, intent: Intent) {
-                mSettingsPresentor.onApkDownloaded()
+                mSettingsPresentor?.onApkDownloaded()
                 val install = Intent(Intent.ACTION_VIEW)
                 install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 install.setDataAndType(
@@ -166,13 +166,13 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                     manager.getMimeTypeForDownloadedFile(downloadId)
                 )
                 if (install != null) {
-                    mContext.startActivity(install)
+                    mContext?.startActivity(install)
                 }
-                mContext.unregisterReceiver(this)
+                mContext?.unregisterReceiver(this)
                 //finish();
             }
         }
-        mContext.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        mContext?.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 
     override fun getHash(type: String): String {
@@ -190,13 +190,13 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
     override fun downloadRegistrationData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnRegistrationsDownloadFinished) {
         var remoteDataSource: RemoteDataSource = dataSource.getInstance()
         var service: RestoreRegistrationService = remoteDataSource.restoreRegistrationService()
-        service.downloadRegistrationData(mContext, request, downloadFinished)
+        service.downloadRegistrationData(mContext!!, request, downloadFinished)
     }
 
     override fun downloadVisitsData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnVisitsDownloadFinished) {
         var remoteDataSource: RemoteDataSource = dataSource.getInstance()
         var service: RestoreVisitsService = remoteDataSource.restoreVisitsService()
-        service.downloadVisitsData(mContext, request, downloadFinished)
+        service.downloadVisitsData(mContext!!, request, downloadFinished)
     }
 
     override fun saveDownloadedData(listRegistrations: ArrayList<BeneficiaryDetails>, listVisits: ArrayList<BeneficiariesList>) {
@@ -282,14 +282,14 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
         override fun onPreExecute() {
             super.onPreExecute()
-            var inflator = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            var inflator = mContext?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             var dialogView = inflator.inflate(R.layout.progress_dialog_layout, null)
             var textView: TextView = dialogView.findViewById(R.id.textView_label)
             progressBar = dialogView.findViewById(R.id.progressBar)
             textView.setText(R.string.saving_forms)
             progressBar!!.isIndeterminate = false
             progressBar!!.max = TOTAL_FORM_COUNT
-            var mAlertDialogBuilder = AlertDialog.Builder(mContext)
+            var mAlertDialogBuilder = AlertDialog.Builder(mContext!!)
             mAlertDialogBuilder.setView(dialogView)
             mAlertDialogBuilder.setCancelable(false)
             mProgressDialog = mAlertDialogBuilder.create()
@@ -641,7 +641,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                 val jsonArray4 = depedant_ques_action_dependant_key.optJSONArray("question")
                 for(p in 0 until jsonArray4.length()){
                     var dependant_ques_key = jsonArray4.getJSONObject(p)
-                    var dependant_ques_lang : JSONObject = dependant_ques_key.getJSONObject("language")
+                    var dependant_ques_lang : JSONObject = dependant_ques_key.getJSONObject("languages")
                     if(dependant_ques_key.optString("messages")!=null && dependant_ques_key.optString("messages").length>0){
                         dependant_ques_messages= dependant_ques_key.optString("messages")
                     }
@@ -694,14 +694,14 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
         override fun onPreExecute() {
             super.onPreExecute()
-            var inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            var inflater = mContext?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             var dialogView = inflater.inflate(R.layout.progress_dialog_layout, null)
             val textView = dialogView.findViewById<TextView>(R.id.textView_label)
             progressBar = dialogView.findViewById(R.id.progressBar)
             textView.setText(R.string.saving_forms)
             progressBar?.isIndeterminate = false
             progressBar?.max = listRegistrations!!.size + listVisits!!.size
-            val mAlertDialogBuilder = AlertDialog.Builder(mContext)
+            val mAlertDialogBuilder = AlertDialog.Builder(mContext!!)
             mAlertDialogBuilder.setView(dialogView)
             mAlertDialogBuilder.setCancelable(false)
             mProgressDialog = mAlertDialogBuilder.create()

@@ -3,9 +3,12 @@ package tech.inscripts.ins_armman.mMitra.homeactivity
 import android.database.Cursor
 import org.json.JSONArray
 import org.json.JSONObject
+import tech.inscripts.ins_armman.mMitra.data.model.RequestFormModel
 import tech.inscripts.ins_armman.mMitra.data.model.SyncRegistrationDetails
+import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreDataRequest
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.FormDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.UpdateImageModel
+import tech.inscripts.ins_armman.mMitra.settingactivity.ISettingsInteractor
 
 interface IMainActivityInteractor  {
     fun getLoginDetails() :Cursor
@@ -50,4 +53,15 @@ interface IMainActivityInteractor  {
         fun onSuccessfullyUpdatedPhotoSync(jsonObject: JSONObject)
         fun onFailureUpdatedPhotoSync(textResId: Int)
     }
+    interface OnFormDownloadFinished {
+        fun onSuccessFormDownloading(jsonObject: JSONObject, hash: String)
+        fun onFailure(message: String)
+    }
+    fun getHash(type: String): String
+    fun downloadForms(requestFormModel: RequestFormModel, onFormDownloadFinished: ISettingsInteractor.OnFormDownloadFinished)
+    fun saveFormData(formJsonObject: JSONObject)
+    fun deleteLoginDetails()
+    fun downloadRegistrationData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnRegistrationsDownloadFinished)
+    fun downloadVisitsData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnVisitsDownloadFinished)
+    fun checkReleaseUpdate(onCheckUpdateFinished: ISettingsInteractor.onCheckUpdateFinished)
 }
