@@ -335,9 +335,10 @@
     <string name="menu_tool">Check Update</string>
     <string name="menu_logout">Logout</string>
 
-    <string name="tot_registration"> Total Registration </string>
+    <string name="tot_registration"> TOTAL REGISTRATION </string>
     <string name="home">Home </string>
     <string name="setting">settings</string>
     <string name="logout_message">Are you sure you want to logout?</string>
+    <string name="no_reg">NO REGISTRATION</string>
 
 </resources>

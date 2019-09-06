@@ -327,4 +327,5 @@
     <string name="home"> घर </string>
     <string name="setting">सेटिंग्ज</string>
     <string name="logout_message">आपली खात्री आहे की आपण लॉगआउट करू इच्छिता?</string>
+    <string name="no_reg">नोंदणी नाही</string>
 </resources>
