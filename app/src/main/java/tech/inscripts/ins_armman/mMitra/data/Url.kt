@@ -5,8 +5,8 @@ interface Url {
 
         //API V2 added after dataSource sync error message structure changed
 
-        var BASE_URL = "http://app.mmitra.org/m-mitraCohortSion/API/"
-
+       /* var BASE_URL = "http://app.mmitra.org/m-mitraCohortSion/API/"*/
+        var BASE_URL = "http://192.168.0.60/m-mitraCohortSion/API/"
         const val AUTHENTICATE = "authenticate"
         const val DOWNLOAD_FORMS = "newjson"
         const val DOWNLOAD_HELP_MANUAL = "gethelp"

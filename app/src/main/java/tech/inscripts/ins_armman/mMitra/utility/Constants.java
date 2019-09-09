@@ -118,7 +118,7 @@ public interface Constants {
 
     int FORM_DOWNLOAD_LIMIT = 10;
 
-    int TOTAL_FORM_COUNT = 22;
+    int TOTAL_FORM_COUNT = 5;
 
     int CHILD_REGISTRATION_VISIT_ID = 0;
     int WOMAN_REGISTRATION_VISIT_ID = 1;

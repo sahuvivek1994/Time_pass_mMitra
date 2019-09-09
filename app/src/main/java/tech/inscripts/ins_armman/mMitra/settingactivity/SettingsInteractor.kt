@@ -682,7 +682,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
 
     }
 
-    inner class SaveRestoredDataAsyncTask (listRegistrations: ArrayList<BeneficiaryDetails>,listVisits: ArrayList<BeneficiariesList>): AsyncTask<ArrayList<Object>, Int, Void>() {
+    inner class SaveRestoredDataAsyncTask : AsyncTask<ArrayList<Object>, Int, Void> {
 
         var progressBar: ProgressBar? = null
         var mProgressDialog: AlertDialog? = null
@@ -690,6 +690,10 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
         var listRegistrations: ArrayList<BeneficiaryDetails>? = null
         var listVisits: ArrayList<BeneficiariesList>? = null
 
+        constructor(listRegistrations: ArrayList<BeneficiaryDetails>?, listVisits: ArrayList<BeneficiariesList>?) {
+            this.listRegistrations = listRegistrations
+            this.listVisits = listVisits
+        }
 
 
         override fun onPreExecute() {
@@ -700,7 +704,9 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
             progressBar = dialogView.findViewById(R.id.progressBar)
             textView.setText(R.string.saving_forms)
             progressBar?.isIndeterminate = false
-            progressBar?.max = listRegistrations!!.size + listVisits!!.size
+            var a=listRegistrations?.size
+            var b=listVisits?.size
+            progressBar?.max=a!!+b!!
             val mAlertDialogBuilder = AlertDialog.Builder(mContext)
             mAlertDialogBuilder.setView(dialogView)
             mAlertDialogBuilder.setCancelable(false)
@@ -784,7 +790,7 @@ class SettingsInteractor : ISettingsInteractor, LoaderManager.LoaderCallbacks<Cu
                 values.put(DatabaseContract.FilledFormStatusTable.COLUMN_CREATED_ON, list.createdOn)
 
                 val referenceId =
-                    utility.getDatabase().insert(DatabaseContract.FilledFormStatusTable.TABLE_NAME, null, values) as Int
+                    utility.getDatabase().insert(DatabaseContract.FilledFormStatusTable.TABLE_NAME, null, values).toInt()
 
                 for (questionAnswer in list.questionAnswers!!) {
                     saveQuestionAnswers(referenceId, data.uniqueId, list.formId, questionAnswer)

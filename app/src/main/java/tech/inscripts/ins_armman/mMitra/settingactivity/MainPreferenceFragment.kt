@@ -72,7 +72,7 @@ fun initId() {
         builder.setTitle("NOTICE")
             .setMessage("This functionality in in process")
         .setPositiveButton(R.string.ok) {
-                    dialog, which ->// settingsPresentor!!.restoreData()
+                    dialog, which -> settingsPresentor!!.restoreData()
             }
             .setNegativeButton(R.string.cancel) {
                     dialogInterface, i ->
