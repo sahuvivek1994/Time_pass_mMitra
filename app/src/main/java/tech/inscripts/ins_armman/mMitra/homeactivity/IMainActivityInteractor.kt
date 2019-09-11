@@ -5,10 +5,13 @@ import org.json.JSONArray
 import org.json.JSONObject
 import tech.inscripts.ins_armman.mMitra.data.model.RequestFormModel
 import tech.inscripts.ins_armman.mMitra.data.model.SyncRegistrationDetails
+import tech.inscripts.ins_armman.mMitra.data.model.restoreData.BeneficiariesList
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreDataRequest
+import tech.inscripts.ins_armman.mMitra.data.model.syncing.BeneficiaryDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.FormDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.UpdateImageModel
 import tech.inscripts.ins_armman.mMitra.settingactivity.ISettingsInteractor
+import java.util.ArrayList
 
 interface IMainActivityInteractor  {
     fun getLoginDetails() :Cursor
@@ -64,4 +67,6 @@ interface IMainActivityInteractor  {
     fun downloadRegistrationData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnRegistrationsDownloadFinished)
     fun downloadVisitsData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnVisitsDownloadFinished)
     fun checkReleaseUpdate(onCheckUpdateFinished: ISettingsInteractor.onCheckUpdateFinished)
+    fun saveDownloadedData(listRegistrations: ArrayList<BeneficiaryDetails>, listVisits: ArrayList<BeneficiariesList>)
+
 }

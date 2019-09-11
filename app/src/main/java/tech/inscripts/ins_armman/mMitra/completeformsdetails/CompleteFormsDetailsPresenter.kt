@@ -31,9 +31,17 @@ class CompleteFormsDetailsPresenter : ICompleteFormsDetailsPresenter<CompleteFor
             if (cur != null && cur.moveToFirst()) {
                 do {
                     val completeFormQnA = CompleteFormQnA()
-                    var que: String? = cur.getString(cur.getColumnIndex("question_label"))
+                     var que= cur.getString(cur.getColumnIndex("question_label"))
                     if (que == null) {
                         que = cur.getString(cur.getColumnIndex("question_keyword"))
+                    //to get the question label of the dependant question
+                        var queLabel = interactor?.getDependantQuestion(que)
+                        if(queLabel!=null){
+                            que=queLabel
+                        }
+                        else {
+                            que = cur.getString(cur.getColumnIndex("question_keyword"))
+                        }
                         completeFormQnA.question = que
                     } else {
                         completeFormQnA.question = cur.getString(cur.getColumnIndex("question_label"))
@@ -41,19 +49,18 @@ class CompleteFormsDetailsPresenter : ICompleteFormsDetailsPresenter<CompleteFor
                     }
                     var ans: String? = cur.getString(cur.getColumnIndex("option_label"))
                     if (ans == null) {
-
-                        var queType = interactor?.getQuestionType(que_keyword)
+                       /* var queType = interactor?.getQuestionType(que_keyword)
                         if (queType == "int" || queType == "text" || queType == "date")
                         {
-                            ans = cur.getString(cur.getColumnIndex("answer_keyword"))
-                        }
+                       */     ans = cur.getString(cur.getColumnIndex("answer_keyword"))
+                        /*}
                         else {
                             ans = cur.getString(cur.getColumnIndex("answer_keyword"))
                             var ansArray: List<String> = ans.split(",").map { it.trim() }
                             var ansLabel: List<String>? = interactor?.getAnswerLabel(ansArray)
                             ans = ansLabel?.joinToString()
 //                            Log.d("ANS :", ans)
-                        }
+                        }*/
                         completeFormQnA.answer = ans
                         Log.d("STORE_ANS :", ans)
                         }

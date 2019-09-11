@@ -23,4 +23,7 @@ class CompleteFormsDetailsInteractor : ICompleteFormsDetailsInteractor {
     override fun getQuestionType(queKeyword: String): String {
     return db.getQuestionType(queKeyword)
     }
+    override fun getDependantQuestion(que_keyword: String): String {
+    return db.dependantQuestion(que_keyword)
+    }
 }
