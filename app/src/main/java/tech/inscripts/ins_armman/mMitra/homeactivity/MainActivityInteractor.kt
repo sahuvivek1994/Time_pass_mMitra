@@ -4,12 +4,15 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ProgressBar
@@ -24,8 +27,11 @@ import tech.inscripts.ins_armman.mMitra.data.database.LocalDataSource
 import tech.inscripts.ins_armman.mMitra.data.model.Form
 import tech.inscripts.ins_armman.mMitra.data.model.RequestFormModel
 import tech.inscripts.ins_armman.mMitra.data.model.SyncRegistrationDetails
+import tech.inscripts.ins_armman.mMitra.data.model.restoreData.BeneficiariesList
 import tech.inscripts.ins_armman.mMitra.data.model.restoreData.RestoreDataRequest
+import tech.inscripts.ins_armman.mMitra.data.model.syncing.BeneficiaryDetails
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.FormDetails
+import tech.inscripts.ins_armman.mMitra.data.model.syncing.QuestionAnswer
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.UpdateImageModel
 import tech.inscripts.ins_armman.mMitra.data.retrofit.RemoteDataSource
 import tech.inscripts.ins_armman.mMitra.data.service.FormDownloadService
@@ -35,6 +41,8 @@ import tech.inscripts.ins_armman.mMitra.settingactivity.SettingsInteractor
 import tech.inscripts.ins_armman.mMitra.utility.Constants
 import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 import tech.inscripts.ins_armman.mMitra.utility.Utility
+import java.io.ByteArrayOutputStream
+import java.util.ArrayList
 
 class MainActivityInteractor : IMainActivityInteractor, LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -282,6 +290,9 @@ throw IllegalArgumentException("Invalid unique &/ formId")
     }
     override fun saveFormData(formJsonObject: JSONObject) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
         SaveFormASyncTask().execute(formJsonObject)
+    }
+    override fun saveDownloadedData(listRegistrations: ArrayList<BeneficiaryDetails>, listVisits: ArrayList<BeneficiariesList>) {
+        SaveRestoredDataAsyncTask(listRegistrations, listVisits).execute()
     }
 
     override fun deleteLoginDetails() {
@@ -748,4 +759,142 @@ throw IllegalArgumentException("Invalid unique &/ formId")
         }
 
     }
+    inner class SaveRestoredDataAsyncTask : AsyncTask<ArrayList<Object>, Int, Void> {
+
+        var progressBar: ProgressBar? = null
+        var mProgressDialog: AlertDialog? = null
+        var mProgress: Int = 0
+        var listRegistrations: ArrayList<BeneficiaryDetails>? = null
+        var listVisits: ArrayList<BeneficiariesList>? = null
+
+        constructor(listRegistrations: ArrayList<BeneficiaryDetails>?, listVisits: ArrayList<BeneficiariesList>?) {
+            this.listRegistrations = listRegistrations
+            this.listVisits = listVisits
+        }
+
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            var inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            var dialogView = inflater.inflate(R.layout.progress_dialog_layout, null)
+            val textView = dialogView.findViewById<TextView>(R.id.textView_label)
+            progressBar = dialogView.findViewById(R.id.progressBar)
+            textView.setText(R.string.saving_forms)
+            progressBar?.isIndeterminate = false
+            var a=listRegistrations?.size
+            var b=listVisits?.size
+            progressBar?.max=a!!+b!!
+            val mAlertDialogBuilder = AlertDialog.Builder(mContext)
+            mAlertDialogBuilder.setView(dialogView)
+            mAlertDialogBuilder.setCancelable(false)
+            mProgressDialog = mAlertDialogBuilder.create()
+            mProgressDialog?.show()
+
+
+        }
+
+        override fun doInBackground(vararg params: ArrayList<Object>?): Void? {
+            deleteOldData()
+            utility.getDatabase().beginTransaction()
+            for (details in listRegistrations!!) {
+                saveRegistrations(details)
+                publishProgress(++mProgress)
+            }
+
+            for (data in listVisits!!) {
+                saveVisits(data)
+                publishProgress(++mProgress)
+            }
+
+            utility.getDatabase().setTransactionSuccessful()
+            utility.getDatabase().endTransaction()
+            return null
+        }
+
+        override fun onProgressUpdate(vararg values: Int?) {
+            super.onProgressUpdate(*values)
+            progressBar?.progress = values[0]!!
+        }
+
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+            mProgressDialog?.dismiss()
+        }
+
+
+        fun saveRegistrations(data: BeneficiaryDetails) {
+            val values = ContentValues()
+            values.put(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID, data.getUniqueId())
+            values.put(DatabaseContract.RegistrationTable.COLUMN_NAME, data.getName())
+            //values.put(RegistrationTable.COLUMN_MNAME, data.middleName)
+            // values.put(RegistrationTable.COLUMN_LNAME, data.lastName)
+            values.put(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO, data.getMobNo())
+            values.put(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE, data.getLmp())
+            values.put(DatabaseContract.RegistrationTable.COLUMN_ADDRESS, data.getAddress())
+            values.put(DatabaseContract.RegistrationTable.COLUMN_AGE, data.getDob())
+            values.put(DatabaseContract.RegistrationTable.COLUMN_EDUCATION, data.getEducation())
+            values.put(DatabaseContract.RegistrationTable.COLUMN_REGISTRATION_STATUS, 1)
+            values.put(DatabaseContract.RegistrationTable.COLUMN_SYNC_STATUS, 1)
+            values.put(DatabaseContract.RegistrationTable.COLUMN_CREATED_ON, data.getCreatedOn())
+            // values.put(RegistrationTable.COLUMN_CLOSE_STATUS, data.getCloseStatus())
+            values.put(DatabaseContract.RegistrationTable.COLUMN_CLOSE_DATE, data.getCloseDate())
+            values.put(DatabaseContract.RegistrationTable.COLUMN_CLOSE_REASON, data.getCloseReason())
+            values.put(DatabaseContract.RegistrationTable.COLUMN_EXPIRED_DATE, data.getExpiredDate())
+            values.put(DatabaseContract.RegistrationTable.COLUMN_EXPIRED_REASON, data.getExpiredReason())
+
+            if (data.getImage() != null && !data.getImage().equals("")) {
+                try {
+                    val encodeByte = Base64.decode(data.getImage(), Base64.DEFAULT)
+                    var bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+                    val out = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                    values.put(DatabaseContract.RegistrationTable.COLUMN_IMAGE, out.toByteArray())
+                } catch (e: Exception) {
+                    e.message
+                }
+            }
+            utility.getDatabase().insert(DatabaseContract.RegistrationTable.TABLE_NAME, null, values)
+        }
+
+        fun saveVisits(data: BeneficiariesList) {
+            for (list in data.visitsList!!) {
+                val values = ContentValues()
+                values.put(DatabaseContract.FilledFormStatusTable.COLUMN_UNIQUE_ID, data.uniqueId)
+                values.put(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_ID, list.formId)
+                values.put(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_COMPLETION_STATUS, 1)
+                values.put(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_SYNC_STATUS, 1)
+                values.put(DatabaseContract.FilledFormStatusTable.COLUMN_CREATED_ON, list.createdOn)
+
+                val referenceId =
+                    utility.getDatabase().insert(DatabaseContract.FilledFormStatusTable.TABLE_NAME, null, values).toInt()
+
+                for (questionAnswer in list.questionAnswers!!) {
+                    saveQuestionAnswers(referenceId, data.uniqueId, list.formId, questionAnswer)
+                }
+            }
+        }
+
+        fun saveQuestionAnswers(referenceId: Int, uniqueId: String, formId: Int, questionAnswer: QuestionAnswer) {
+            val values = ContentValues()
+            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_REFERENCE_ID, referenceId)
+            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_UNIQUE_ID, uniqueId)
+            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_FORM_ID, formId)
+            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_QUESTION_KEYWORD, questionAnswer.getKeyword())
+            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_ANSWER_KEYWORD, questionAnswer.getAnswer())
+            values.put(DatabaseContract.QuestionAnswerTable.COLUMN_CREATED_ON, questionAnswer.getCreatedOn())
+            utility.getDatabase().insert(DatabaseContract.QuestionAnswerTable.TABLE_NAME, null, values)
+        }
+
+        fun deleteOldData() {
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.RegistrationTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.FilledFormStatusTable.TABLE_NAME)
+            utility.getDatabase().execSQL("DROP TABLE IF EXISTS " + DatabaseContract.QuestionAnswerTable.TABLE_NAME)
+
+            utility.getDatabase().execSQL(DatabaseContract.RegistrationTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(DatabaseContract.FilledFormStatusTable.CREATE_TABLE)
+            utility.getDatabase().execSQL(DatabaseContract.QuestionAnswerTable.CREATE_TABLE)
+        }
+    }
+
 }

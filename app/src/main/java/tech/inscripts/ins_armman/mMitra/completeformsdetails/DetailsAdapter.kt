@@ -45,6 +45,8 @@ class DetailsAdapter() : RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
         answer = c.answer
         var ansArray: List<String> = answer?.split(",")!!.map { it.trim() }
         question=c.question
+     // var ans : String =""
+       // var finalAns : ArrayList<String> ?=null
         if (answer!!.contains("{") && question!!.contains("{")) {
             try {
                 var obj = JSONObject(c.question)

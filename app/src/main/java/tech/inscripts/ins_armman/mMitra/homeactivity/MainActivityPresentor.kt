@@ -241,8 +241,8 @@ var mRequest: RestoreDataRequest?=null
 
     override fun resetDataMemberValues(){
         mRequest = RestoreDataRequest()
-        mRequest?.userName
-        mRequest?.password
+        mRequest?.userName= mUsername!!
+        mRequest?.password= mPassword!!
         mRequest?.setImei(utility.getDeviceImeiNumber(mIMainActivityView!!.getContext()))
         mRequest?.setLimit(FORM_DOWNLOAD_LIMIT)
         pageCounter = 1
@@ -308,7 +308,11 @@ var mRequest: RestoreDataRequest?=null
     }
     override fun onSuccessRegistrationsDownloading(registration: RestoreRegistration) {
         if(registration.getTotal()>0){
-            listRegistrations.addAll(registration.getRegistrationData()!!)
+           // listRegistrations.addAll(registration.getRegistrationData()!!)
+            var a=registration.getRegistrationData()
+            if (a != null) {
+                listRegistrations.addAll(a)
+            }
             if(!totalPagesCalculated){
                 totalPagesCalculated= true
                 //totalPages = Math.ceil(registration.getTotal() as Double / FORM_DOWNLOAD_LIMIT as Double).toInt()
@@ -332,11 +336,22 @@ var mRequest: RestoreDataRequest?=null
 
     override fun onSuccessVisitsDownloading(visits: RestoreVisits) {
         if(visits.getTotal()>0){
-            visits.getBeneficiariesLists()?.let { listVisits.addAll(it) }
+            //visits.getBeneficiariesLists()?.let { listVisits.addAll(it) }
+            var a=visits.getBeneficiariesLists()
+            if (a != null) {
+                listVisits.addAll(a)
+            }
             if(!totalPagesCalculated){
                 totalPagesCalculated =true
                 totalPages=Math.ceil((visits.getTotal()).toDouble() / (FORM_DOWNLOAD_LIMIT).toDouble() ).toInt()
             }
+        }
+        if (pageCounter < totalPages)  {
+            restoreVisits(++pageCounter)
+        }
+        else {
+            mIMainActivityView?.hideProgressBar()
+            mInteractor?.saveDownloadedData(listRegistrations, listVisits)
         }
     }
 

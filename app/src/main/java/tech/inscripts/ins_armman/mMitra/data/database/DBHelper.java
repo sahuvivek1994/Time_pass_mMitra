@@ -296,4 +296,16 @@ public class DBHelper extends SQLiteOpenHelper {
            str = cur.getString(cur.getColumnIndex("question_type"));
        }return  str;
     }
+
+    public String dependantQuestion(String que_keyword){
+        Cursor cur=null;
+        String label="";
+        cur= utility.getDatabase().rawQuery( "select "+DependentQuestionsTable.COLUMN_QUESTION_LABEL+" from "+DependentQuestionsTable.TABLE_NAME+" where "+DependentQuestionsTable.COLUMN_KEYWORD +" = '"+que_keyword+"'",null);
+        int a=cur.getCount();
+        if(cur!=null && cur.moveToFirst()) {
+            label = cur.getString(cur.getColumnIndex(DependentQuestionsTable.COLUMN_QUESTION_LABEL));
+            cur.moveToNext();
+        }
+        return label;
+    }
 }
