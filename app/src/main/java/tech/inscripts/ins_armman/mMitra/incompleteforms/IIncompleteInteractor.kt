@@ -4,5 +4,5 @@ import android.database.Cursor
 
 interface IIncompleteInteractor {
     fun getIncompleteFormList() : Cursor
-     fun getLastCompleteFilledForm(unique: String): Cursor
+     fun getLastCompleteFilledForm(unique: String): Int?
 }

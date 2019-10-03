@@ -7,4 +7,5 @@ import java.util.ArrayList
 interface ICompleteFormListView {
      fun getContext(): Context
      fun getData(formDetails: ArrayList<CompleteFormQnA>)
+     fun checkFormPresent()
 }

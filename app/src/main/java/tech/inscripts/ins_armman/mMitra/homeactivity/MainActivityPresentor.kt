@@ -359,6 +359,7 @@ var mRequest: RestoreDataRequest?=null
         else {
             mIMainActivityView?.hideProgressBar()
             mInteractor?.saveDownloadedData(listRegistrations, listVisits)
+            mIMainActivityView?.showSnackBar(mIMainActivityView?.getContext()!!.getString(R.string.msg_restore_successful))
         }
     }
 

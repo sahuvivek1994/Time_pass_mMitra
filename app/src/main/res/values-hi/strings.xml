@@ -226,6 +226,7 @@
     <string name="dialog_msg_loss_data_warning">आपका ना भेजे गये फोर्म मिट जायेंगा| \n यदि यह फोर्म
         भेजना हैं तो "रद्द" का बटन दबाएँ अथवा आगे भेजने के लिए "ठिक" बटन दबाएँ
     </string>
+    <string name="msg_restore_successful">डेटा को सफलतापूर्वक पुनर्स्थापित किया गया</string>
     <string name="no_records_error_msg">कोई रिकॉर्ड नहीं</string>
     <string name="resources_text">Resources</string>
     <string name="authentication_error_msg">अमान्य Username and Password</string>

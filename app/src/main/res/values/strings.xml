@@ -247,6 +247,7 @@
     <string name="dialog_msg_loss_data_warning">This operation will remove the unsent forms and this
         might result in loss of data.\nPress Cancel to send unsent forms or Press OK to proceed.
     </string>
+    <string name="msg_restore_successful">Data restored successfully</string>
     <string name="no_records_error_msg">No Records</string>
     <string name="resources_text">Resources</string>
     <string name="authentication_error_msg">Invalid Username and Password</string>

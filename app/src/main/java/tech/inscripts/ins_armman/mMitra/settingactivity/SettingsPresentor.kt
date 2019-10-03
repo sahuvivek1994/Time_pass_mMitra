@@ -285,6 +285,7 @@ val utility= Utility()
         else {
             mSettingsView?.hideProgressBar()
             mSettingsInteractor?.saveDownloadedData(listRegistrations, listVisits)
+            mSettingsView?.showSnackBar(mSettingsView?.getContext()!!.getString(R.string.msg_restore_successful))
         }
     }
 
