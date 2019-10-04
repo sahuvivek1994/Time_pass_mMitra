@@ -9,13 +9,13 @@ class IncomleteFormPresenter : IIncompleteFormPresenter<IncompleteFormActivity> 
 
     var incompleteView :IncompleteFormActivity?=null
     var interactor : IncompleteFormInteractor?=null
-
+    var womenList : ArrayList<IncompleteFilledForm> =ArrayList()
     /**
      * this method is used to get the list of women whose forms are incomplete
      */
     override fun getIncompleteFormList() {
 var space= " "
-        var womenList : ArrayList<IncompleteFilledForm> =ArrayList()
+
         var cursor : Cursor = interactor?.getIncompleteFormList()!!
        var a= cursor.count
         if(a!=null || a>0) {
@@ -38,13 +38,13 @@ var space= " "
             incompleteView?.setAdapter(womenList)
     }
 
-    override fun getUniqueIdFormId(uniqueId: String) {
-
-       var cursor : Cursor= interactor?.getLastCompleteFilledForm(uniqueId)!!
-        var formId= (cursor.getString(cursor.getColumnIndex("form_id")) ).toInt()
+    override fun getUniqueIdFormId(uniqueId: String) : Int? {
+        var formId= interactor?.getLastCompleteFilledForm(uniqueId)
+        if (formId != null) {
+            formId = formId +1
+        }
         incompleteView?.openActivity(uniqueId,formId)
-
-
+        return formId
     }
 
     override fun attachView(view: IncompleteFormActivity) {

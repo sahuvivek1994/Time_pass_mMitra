@@ -35,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tech.inscripts.ins_armman.mMitra.R;
+import tech.inscripts.ins_armman.mMitra.data.database.DBHelper;
 import tech.inscripts.ins_armman.mMitra.forms.*;
 import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity;
 import tech.inscripts.ins_armman.mMitra.utility.Utility;
@@ -191,6 +192,7 @@ public class displayForm extends AppCompatActivity {
     private String childUniqueId = "";
     private ArrayList<String> childsUniqueIds;
     private String mAppLanguage;
+    DBHelper dbHelper = new DBHelper(this);
 
     /**
      * This method gives the next visit date of the ANM
@@ -3956,8 +3958,8 @@ public class displayForm extends AppCompatActivity {
                     .setPositiveButton(displayForm.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //finish();
-
-                                if (FormID >= 5) {
+                            int formId= dbHelper.getMaxFormId();
+                                if (FormID >= formId) {
                                     Intent intent = new Intent(displayForm.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {

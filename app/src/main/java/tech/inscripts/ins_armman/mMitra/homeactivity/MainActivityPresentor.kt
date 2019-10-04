@@ -244,8 +244,14 @@ var mRequest: RestoreDataRequest?=null
         mRequest?.userName= mUsername!!
         mRequest?.password= mPassword!!
         mRequest?.setImei(utility.getDeviceImeiNumber(mIMainActivityView!!.getContext()))
+        //mRequest.setImei("869432026925037")
         mRequest?.setLimit(FORM_DOWNLOAD_LIMIT)
-        pageCounter = 1
+
+        pageCounter=1
+        totalPages=0
+        totalPagesCalculated=false
+        listRegistrations.clear()
+        listVisits.clear()
 
     }
     override fun restoreRegistrations(pageNumber: Int) {
@@ -289,6 +295,7 @@ var mRequest: RestoreDataRequest?=null
         mInteractor?.saveFormData(jsonObject)
 
         mIMainActivityView?.hideProgressBar()
+        mIMainActivityView?.showSnackBar(mIMainActivityView?.getContext()?.getString(R.string.Toast_msg_for_formsavesuccessfully)!!)
     }
 
     override fun logout() {
@@ -352,6 +359,7 @@ var mRequest: RestoreDataRequest?=null
         else {
             mIMainActivityView?.hideProgressBar()
             mInteractor?.saveDownloadedData(listRegistrations, listVisits)
+            mIMainActivityView?.showSnackBar(mIMainActivityView?.getContext()!!.getString(R.string.msg_restore_successful))
         }
     }
 

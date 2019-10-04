@@ -47,8 +47,7 @@ val utility= Utility()
     private lateinit var mRequest: RestoreDataRequest
     private val listRegistrations = ArrayList<BeneficiaryDetails>()
     private val listVisits = ArrayList<BeneficiariesList>()
-    private val listReferral= ArrayList<Referral>()
-   // private val listGrowthMonitoring= ArrayList<GrowthMonitoring>()
+
 
 
     var onQueryFinished : OnQueryFinished = object : OnQueryFinished{
@@ -157,7 +156,6 @@ val utility= Utility()
         totalPagesCalculated=false
         listRegistrations.clear()
         listVisits.clear()
-        listReferral.clear()
     }
 
     override fun attachView(view: ISettingsView) {
@@ -186,6 +184,7 @@ val utility= Utility()
                 try {
                     jsonObject.put("hash", hash)
                     mSettingsInteractor?.saveFormData(jsonObject)
+                    mSettingsView?.showSnackBar(mSettingsView?.getContext()?.getString(R.string.Toast_msg_for_formsavesuccessfully)!!)
                 } catch (e: JSONException) {
                     e.printStackTrace()
                     mSettingsView?.showSnackBar(a!!.getString(R.string.invalid_data_frm_server))
@@ -286,6 +285,7 @@ val utility= Utility()
         else {
             mSettingsView?.hideProgressBar()
             mSettingsInteractor?.saveDownloadedData(listRegistrations, listVisits)
+            mSettingsView?.showSnackBar(mSettingsView?.getContext()!!.getString(R.string.msg_restore_successful))
         }
     }
 

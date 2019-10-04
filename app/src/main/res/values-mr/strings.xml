@@ -222,8 +222,8 @@
     <string name="not_referred">संदर्भित न केलेले</string>
     <string name="restore_warning_text">चेतावनी</string>
     <string name="dialog_msg_loss_data_warning">आपला न पाठवलेला फॉर्म रद्द होइल | हे फॉर्म पुढे
-        पाठविण्यासाठी \n रद्द बटण दाबा किंवा पुढे जाण्यासाठी "ठीक" बटण दाबणे
-    </string>
+        पाठविण्यासाठी \n रद्द बटण दाबा किंवा पुढे जाण्यासाठी "ठीक" बटण दाबणे</string>
+    <string name="msg_restore_successful">डेटा यशस्वीरित्या पुनर्संचयित केला गेला </string>
     <string name="no_records_error_msg">कोणतेही रेकॉर्ड नाहीत</string>
     <string name="resources_text">संसाधने</string>
     <string name="authentication_error_msg">अवैध वापरकर्ता चे नाव आणि पासवर्ड</string>

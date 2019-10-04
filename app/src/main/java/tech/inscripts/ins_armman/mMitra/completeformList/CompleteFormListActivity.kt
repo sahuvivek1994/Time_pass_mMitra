@@ -1,6 +1,7 @@
 package tech.inscripts.ins_armman.mMitra.completeformList
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
@@ -11,6 +12,7 @@ import android.view.View
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.model.CompleteFormQnA
+import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity
 import java.util.ArrayList
 
 class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,FormListAdapter.ClickListener {
@@ -42,7 +44,7 @@ class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,FormL
         //firstName = intent.getStringExtra("firstName")
         form_id = intent.getIntExtra("form_id", 0)
         presentor.getCompleteFormList(id)
-
+        checkFormPresent()
     }
 
 
@@ -62,5 +64,27 @@ class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,FormL
     override fun onDestroy() {
         super.onDestroy()
         presentor.detachView()
+    }
+
+    override fun checkFormPresent() {
+
+        var value = presentor.checkFormPresent()
+        if (value == -1) {
+            val builder = android.support.v7.app.AlertDialog.Builder(
+                this@CompleteFormListActivity,
+                R.style.AppCompatAlertDialogStyle
+            )
+            builder.setTitle(getString(R.string.title_data_not_found))
+            builder.setMessage(getString(R.string.sync_forms_message))
+            builder.setCancelable(false)
+            builder.setPositiveButton(
+                R.string.ok
+            ) { dialog, which ->
+                dialog.cancel()
+                var intent : Intent = Intent(this@CompleteFormListActivity, MainActivity::class.java)
+                startActivity(intent)
+            }
+            builder.show()
+        }
     }
 }

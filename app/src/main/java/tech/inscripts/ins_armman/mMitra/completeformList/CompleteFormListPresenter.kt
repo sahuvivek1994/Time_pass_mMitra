@@ -39,4 +39,9 @@ class CompleteFormListPresenter : ICompleteFormListPresenter<CompleteFormListAct
     override fun detachView() {
         view=null
     }
+
+    override fun checkFormPresent(): Int? {
+        var value = interactor?.checkFormPresent()
+        return value
+    }
 }

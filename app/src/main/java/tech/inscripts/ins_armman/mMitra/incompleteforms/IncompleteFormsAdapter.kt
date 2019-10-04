@@ -15,6 +15,7 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
     var mContext : Context?=null
     private var mWomenList: List<IncompleteFilledForm>? = null
     private lateinit var mOnItemClickListener:onItemClickListener
+    private var presenter = IncomleteFormPresenter()
    // var obj = ViewHolder()
 
     constructor(mContext: Context?, mWomenList: List<IncompleteFilledForm>?,mOnItemClickListener :onItemClickListener) : this() {
@@ -41,7 +42,7 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
     }
 
     interface  onItemClickListener{
-        fun onItemClick(uniqueId: String, form_id: Int)
+        fun onItemClick(uniqueId: String, form_id: Int?)
 
     }
 
@@ -55,10 +56,10 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
         fun bindData(listModel: IncompleteFilledForm?) {
             if (listModel != null) {
                 textViewName.text = listModel!!.name
-
+                var formIdToOpen = (listModel.formId).toInt()
+                    //presenter.getUniqueIdFormId(listModel!!.uniqueId)
+               formIdToOpen +=1
                 constraintLayout.setOnClickListener {
-                    var formIdToOpen = Integer.parseInt(listModel!!.formId)
-                    //formIdToOpen += 1
                     mOnItemClickListener?.onItemClick(listModel!!.uniqueId, formIdToOpen)
                 }
             }

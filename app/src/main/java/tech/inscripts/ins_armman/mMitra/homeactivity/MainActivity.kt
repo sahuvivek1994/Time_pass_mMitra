@@ -131,16 +131,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_restoreData -> {
                 val builder = android.support.v7.app.AlertDialog.Builder(getContext())
-                //builder.setTitle(R.string.restore_data)
                 builder.setTitle(R.string.restore_data)
-                builder.setTitle("NOTICE")
+               // builder.setTitle("NOTICE")
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                   // .setMessage(R.string.dialog_msg_loss_data_warning)
-                    .setMessage("This Functionality in in progress..")
+                    .setMessage(R.string.dialog_msg_loss_data_warning)
+                    //.setMessage("This Functionality in in progress..")
                     .setCancelable(false)
                     .setPositiveButton(
                         R.string.ok
-                    ) { dialog, which -> //mPresenter?.restoreData()
+                    ) { dialog, which -> mPresenter?.restoreData()
                     }
                     .setNegativeButton(
                         R.string.cancel

@@ -72,15 +72,16 @@ class IncompleteFormActivity : AppCompatActivity(),IIncompleteFormView{
         if (adapter == null) {
             adapter = IncompleteFormsAdapter(
                 this@IncompleteFormActivity, mWomenList,object : IncompleteFormsAdapter.onItemClickListener {
-                    override fun onItemClick(uniqueId: String, form_id: Int) {
+                    override fun onItemClick(uniqueId: String, form_id: Int?) {
                             val unique_id = uniqueId
+                        var form_id : Int?=0
                             val builder = android.app.AlertDialog.Builder(this@IncompleteFormActivity)
                             builder
                                 .setTitle("Form Details")
                                 .setMessage("do you want to continue filling the incomplete forms ?")
                                 .setPositiveButton(this@IncompleteFormActivity.getString(R.string.continue_filling_forms)
                                 ) { dialog, which ->
-                                   //presenter?.getUniqueIdFormId(uniqueId)
+                                  form_id= presenter?.getUniqueIdFormId(uniqueId)
                                     openActivity(unique_id, form_id)
                                 }
                                 .setNegativeButton(this@IncompleteFormActivity.getString(R.string.view_filled_form)
@@ -101,12 +102,10 @@ class IncompleteFormActivity : AppCompatActivity(),IIncompleteFormView{
         }
         }
 
-    override fun openActivity(uniqueId: String, formId: Int) {
+    override fun openActivity(uniqueId: String, formId: Int?) {
         val intent2 = Intent(this@IncompleteFormActivity, displayForm::class.java)
         intent2.putExtra(UNIQUE_ID, uniqueId)
         intent2.putExtra(FORM_ID, formId.toString())
-        //intent2.putExtra("child", noOfChild)
-        //intent2.putExtra("childcounter", childCounter)
         startActivity(intent2)
         finish()
     }

@@ -177,14 +177,14 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public Cursor getIncompleteFormListList() {
 
-        String query="select c.unique_id,c.form_id,r.name,c.form_completion_status from filled_forms_status as c join registration as r  on c.unique_id=r.unique_id and form_completion_status=0 group by c.unique_id";
-        return utility.getDatabase().rawQuery(query,null);
-        /*return utility.getDatabase().rawQuery("SELECT * FROM " +
-                "(SELECT current.unique_id,current.form_id,reg.firstName, current.form_completion_status " +
+       /* String query="select c.unique_id,c.form_id,r.name,c.form_completion_status from filled_forms_status as c join registration as r  on c.unique_id=r.unique_id and form_completion_status=0 group by c.unique_id";
+        return utility.getDatabase().rawQuery(query,null);*/
+        return utility.getDatabase().rawQuery("SELECT * FROM " +
+                "(SELECT current.unique_id,current.form_id,reg.name, current.form_completion_status " +
                 "FROM filled_forms_status AS current " +
                 " JOIN registration AS reg on current.unique_id = reg.unique_id " +
-                " AND current.unique_id NOT IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1))" +
-                " GROUP BY unique_id", null);*/
+                " AND current.unique_id NOT IN (SELECT unique_id FROM filled_forms_status WHERE form_id = 8 AND form_completion_status = 1))" +
+                " GROUP BY unique_id", null);
     }
 
     public String fetchCount() {
@@ -209,8 +209,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getcompleteFormListList() {
-
-        return utility.getDatabase().rawQuery("SELECT name,unique_id from registration WHERE unique_id IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1 and form_id >= 5 )", null);
+        String form_id="";
+        Cursor cursor=utility.getDatabase().rawQuery("select max(form_id) as form_id from form_details",null);
+        if (cursor != null && cursor.moveToFirst()) {
+            form_id= cursor.getString(cursor.getColumnIndex(FormDetailsTable.COLUMN_FORM_ID));
+        }
+        if(form_id == null) form_id ="8";
+        int formId=Integer.valueOf(form_id);
+        return utility.getDatabase().rawQuery("SELECT name,unique_id from registration WHERE unique_id IN (SELECT unique_id FROM filled_forms_status WHERE form_completion_status = 1 and form_id = "+ formId +")", null);
     }
 
     /**
@@ -218,8 +224,13 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param uniqueId
      * @return
      */
-    public Cursor getLastCompleteFilledFormId(String uniqueId) {
-        return utility.getDatabase().rawQuery("SELECT max(form_id) as form_id FROM " + FilledFormStatusTable.TABLE_NAME + " WHERE unique_id = '" + uniqueId + "' AND form_completion_status = 1", null);
+    public int getLastCompleteFilledFormId(String uniqueId) {
+int formId = 0;
+Cursor cur= utility.getDatabase().rawQuery("SELECT max(form_id) as form_id FROM " + FilledFormStatusTable.TABLE_NAME + " WHERE unique_id = '" + uniqueId + "' AND form_completion_status = 1", null);
+if(cur!=null && cur.moveToFirst()){
+    formId = Integer.parseInt(cur.getString(cur.getColumnIndex("form_id")));
+}
+return  formId;
     }
     /*public Cursor getCompleteFormDetails(String unique_id, int form_id) {
         return utility.getDatabase().rawQuery("SELECT main_questions.question_label," +
@@ -308,4 +319,27 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return label;
     }
+
+    /**
+     * this method is to find the max form_id
+     * @return
+     */
+    public int getMaxFormId(){
+    String form_id="";
+    Cursor cursor=utility.getDatabase().rawQuery("select max(form_id) as form_id from form_details",null);
+    if (cursor != null && cursor.moveToFirst()) {
+        form_id= cursor.getString(cursor.getColumnIndex(FormDetailsTable.COLUMN_FORM_ID));
+    }
+    int formId=Integer.valueOf(form_id);
+        return formId;
+}
+
+public int checkFormsPresent(){
+        Cursor cur = utility.getDatabase().rawQuery("select form_id from form_details",null);
+        int a= cur.getCount();
+        if(a<0 || a== 0){
+            a= -1;
+        }
+        return a;
+}
 }
