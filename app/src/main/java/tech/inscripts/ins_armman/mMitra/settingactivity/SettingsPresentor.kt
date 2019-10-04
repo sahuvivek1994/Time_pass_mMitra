@@ -233,10 +233,14 @@ val utility= Utility()
         try{
             val pInfo : PackageInfo= context.packageManager.getPackageInfo(context.packageName,0)
             var versionCode = pInfo.versionCode
-            val newVersionCode = Integer.parseInt(updateModel.getData()!!.versionCode)
+            var value = updateModel.getData()!!.versionCode
+            val newVersionCode = (value).toInt()
 
             if(newVersionCode>versionCode){
                 mSettingsView!!.updateAvailable(updateModel!!.getData()!!.link)
+            }
+            else{
+                mSettingsView?.showSnackBar(mSettingsView!!.getContext().getString(R.string.dialog_app_updated_text))
             }
         }catch(e : PackageManager.NameNotFoundException){
             e.printStackTrace()
