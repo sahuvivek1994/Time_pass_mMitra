@@ -3,7 +3,11 @@ package tech.inscripts.ins_armman.mMitra.forms;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.app.*;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,36 +24,93 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.*;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.*;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
-import bsh.EvalError;
-import bsh.Interpreter;
-import org.joda.time.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import org.joda.time.Days;
+import org.joda.time.Hours;
+import org.joda.time.LocalDate;
+import org.joda.time.Minutes;
+import org.joda.time.Months;
+import org.joda.time.Seconds;
+import org.joda.time.Weeks;
+import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import tech.inscripts.ins_armman.mMitra.R;
-import tech.inscripts.ins_armman.mMitra.displayform.displayForm;
-import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity;
-import tech.inscripts.ins_armman.mMitra.utility.Utility;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
-import static tech.inscripts.ins_armman.mMitra.utility.Constants.*;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.*;
+import bsh.EvalError;
+import bsh.Interpreter;
+import tech.inscripts.ins_armman.mMitra.R;
+import tech.inscripts.ins_armman.mMitra.displayform.displayForm;
+import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity;
+import tech.inscripts.ins_armman.mMitra.utility.Utility;
+
+import static tech.inscripts.ins_armman.mMitra.utility.Constants.FORM_ID;
+import static tech.inscripts.ins_armman.mMitra.utility.Constants.UNIQUE_ID;
+import static tech.inscripts.ins_armman.mMitra.utility.Constants.delimeter;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.ADDRESS;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.AROGYASAKHI_ALTERNATE_NO;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.AROGYASAKHI_MOB;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.AROGYASAKHI_NAME;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.EDUCATION;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.LMP_DATE_KEYWORD;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.MARITAL_STATUS;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.PHC_NAME;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.VILLAGE_NAME;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.WOMAN_AGE;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.WOMAN_DOB;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.WOMAN_MOB_NO;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.WOMAN_NAME;
 
 
 /**
@@ -58,7 +119,6 @@ import static tech.inscripts.ins_armman.mMitra.utility.Keywords.VILLAGE_NAME;
  */
 public class EnrollmentQuestions extends AppCompatActivity {
 
-     Utility utilityObj = new Utility();
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     private static final String TAG = "EnrollmentQuestions";
@@ -67,6 +127,9 @@ public class EnrollmentQuestions extends AppCompatActivity {
     // directory firstName to store captured images and videos
     private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
     public static String expec_date, woman_gest_age, current_reg, Server_expected_date;
+    private static Utility utility = new Utility();
+    public String mAppLanguage = "eng";
+    Utility utilityObj = new Utility();
     List<String> chechboxlist = new ArrayList<>();
     int counter;
     //    DBHelper dbhelper;
@@ -145,9 +208,9 @@ public class EnrollmentQuestions extends AppCompatActivity {
     Double length_min;
     Double length_max;
     String length_lang;
-    boolean HighriskStatus=false;
-    boolean SaveFormStatus=false;
-    String serverDate, ashaName,beneficiaryID;
+    boolean HighriskStatus = false;
+    boolean SaveFormStatus = false;
+    String serverDate, ashaName, beneficiaryID;
     List<String> tempdependantStore = new ArrayList<>();
     HashMap<String, List> MainQuestempstoredependant = new HashMap<>();
     List<String> removeDependentQuestion = new ArrayList<>();
@@ -174,6 +237,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
         }
 
     };
+    GradientDrawable drawableMainQstn, drawableDependentQstn;
     private Locale myLocale;
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
@@ -183,12 +247,10 @@ public class EnrollmentQuestions extends AppCompatActivity {
     private SimpleDateFormat dateTimeFormatter1;
     private Uri fileUri; // file url to store image/video
     private int mMigrantStatus = 0;
-    private String uniqueId="";
+    private String uniqueId = "";
     private QuestionInteractor questionInteractor;
-    public String mAppLanguage = "eng";
     private HashMap<String, String> hashMapUserDetails = new HashMap<>();
-    GradientDrawable drawableMainQstn, drawableDependentQstn;
-private static Utility utility= new Utility();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -499,7 +561,6 @@ private static Utility utility= new Utility();
                 parentid++;
 
 
-
                 /**
                  * this if is used to check whether last layout for the question is reached or not.
                  * scrollcounter gets updated after clicking on next button
@@ -517,12 +578,12 @@ private static Utility utility= new Utility();
 
                     if (labelKeywirdDetails.containsKey(scroll_temp.getId())) {
 
-                           TextView labelTextView = (TextView) ((LinearLayout) ((LinearLayout) scroll_temp.getChildAt(0)).getChildAt(0)).getChildAt(0);
+                        TextView labelTextView = (TextView) ((LinearLayout) ((LinearLayout) scroll_temp.getChildAt(0)).getChildAt(0)).getChildAt(0);
 
-                           labelCalculation(labelTextView, labelKeywirdDetails.get(scroll_temp.getId()));
+                        labelCalculation(labelTextView, labelKeywirdDetails.get(scroll_temp.getId()));
 
-                       }
-                       scroll_temp.setVisibility(View.VISIBLE);
+                    }
+                    scroll_temp.setVisibility(View.VISIBLE);
 
                     textViewTotalPgCount.setText((scrollcounter + 1) + pageCountText);
                     progress.setProgress(scrollcounter + 1);
@@ -540,7 +601,7 @@ private static Utility utility= new Utility();
                 Toast.makeText(getApplicationContext(), EnrollmentQuestions.this.getString(R.string.Toast_msg_for_compulsory), Toast.LENGTH_SHORT).show();
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -580,38 +641,38 @@ private static Utility utility= new Utility();
 
         try {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                builder
-                        .setTitle(EnrollmentQuestions.this.getString(R.string.save_form))
-                        .setMessage(EnrollmentQuestions.this.getString(R.string.save_form_message))
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(EnrollmentQuestions.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //finish();
+            AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+            builder
+                    .setTitle(EnrollmentQuestions.this.getString(R.string.save_form))
+                    .setMessage(EnrollmentQuestions.this.getString(R.string.save_form_message))
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(EnrollmentQuestions.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //finish();
 
-                                uniqueId = questionInteractor.saveRegistrationDetails(womendetails.get(WOMAN_NAME), womendetails.get(WOMAN_MOB_NO)
-                                        , womendetails.get(LMP_DATE_KEYWORD), womendetails.get(ADDRESS), womendetails.get(WOMAN_AGE)
-                                        , womendetails.get(EDUCATION), womendetails.get(MARITAL_STATUS), photo, 1,womendetails.get(WOMAN_DOB));
-
-
-                                /**
-                                 * Saving the Enrollment form status as complete and its upload status as 0 i.e not uploaded to the server
-                                  */
-                    int referenceId = questionInteractor.saveFilledFormStatus(uniqueId, Integer.parseInt(formID), 1, 0, utilityObj.getCurrentDateTime());
-
-                    questionInteractor.saveQuestionAnswers(womendetails, referenceId, uniqueId, Integer.parseInt(formID), utilityObj.getCurrentDateTime());
+                            uniqueId = questionInteractor.saveRegistrationDetails(womendetails.get(WOMAN_NAME), womendetails.get(WOMAN_MOB_NO)
+                                    , womendetails.get(LMP_DATE_KEYWORD), womendetails.get(ADDRESS), womendetails.get(WOMAN_AGE)
+                                    , womendetails.get(EDUCATION), womendetails.get(MARITAL_STATUS), photo, 1, womendetails.get(WOMAN_DOB));
 
 
-                    Toast.makeText(getApplicationContext(), EnrollmentQuestions.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
+                            /**
+                             * Saving the Enrollment form status as complete and its upload status as 0 i.e not uploaded to the server
+                             */
+                            int referenceId = questionInteractor.saveFilledFormStatus(uniqueId, Integer.parseInt(formID), 1, 0, utilityObj.getCurrentDateTime());
 
-                    Intent intent = new Intent(EnrollmentQuestions.this, displayForm.class);
-                    intent.putExtra(UNIQUE_ID, uniqueId);
-                    intent.putExtra(FORM_ID, "2");
-                    startActivity(intent);
-                    finish();
+                            questionInteractor.saveQuestionAnswers(womendetails, referenceId, uniqueId, Integer.parseInt(formID), utilityObj.getCurrentDateTime());
 
-                }
-            });
+
+                            Toast.makeText(getApplicationContext(), EnrollmentQuestions.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(EnrollmentQuestions.this, displayForm.class);
+                            intent.putExtra(UNIQUE_ID, uniqueId);
+                            intent.putExtra(FORM_ID, "2");
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    });
             builder.setNegativeButton(EnrollmentQuestions.this.getString(R.string.no), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     //finish();
@@ -656,8 +717,7 @@ private static Utility utility= new Utility();
      * @param displayCondition
      * @return layout (ll)
      */
-    public LinearLayout createEdittext(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String validationcondition, String validationmsg, String messages, String displayCondition, final int orientation, String lengthmax)
-    {
+    public LinearLayout createEdittext(int i, String language, final String formid, final String setid, final String keyword, final String validationfield, String validationcondition, String validationmsg, String messages, String displayCondition, final int orientation, String lengthmax) {
         System.out.println("inside createEdittext count" + i + "   keyword" + keyword + "set id +++" + setid);
         try {
             JSONObject textobj = new JSONObject(language);
@@ -696,9 +756,8 @@ private static Utility utility= new Utility();
 
         et.setLongClickable(false);
 
-        if(lengthmax != null && lengthmax.length()>0)
-        {
-            et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(Integer.parseInt(lengthmax))});
+        if (lengthmax != null && lengthmax.length() > 0) {
+            et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Integer.parseInt(lengthmax))});
         }
 
         runtimevalidationlist.put(et.getId(), scroll.getId());
@@ -720,14 +779,14 @@ private static Utility utility= new Utility();
             womendetails.put(keyword, et.getText().toString());
             womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString().trim());
             validationlist.put("" + et.getTag(), et.getText().toString());
-        } else if(keyword.equalsIgnoreCase(PHC_NAME)) {
+        } else if (keyword.equalsIgnoreCase(PHC_NAME)) {
             et.setText(hashMapUserDetails.get(PHC_NAME));
             et.setFocusable(false);
             tv.setError(null);
             womendetails.put(keyword, et.getText().toString());
             womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString().trim());
             validationlist.put("" + et.getTag(), et.getText().toString());
-        } else if(keyword.equalsIgnoreCase(AROGYASAKHI_NAME)) {
+        } else if (keyword.equalsIgnoreCase(AROGYASAKHI_NAME)) {
             et.setText(hashMapUserDetails.get(AROGYASAKHI_NAME));
             et.setFocusable(false);
             tv.setError(null);
@@ -735,7 +794,6 @@ private static Utility utility= new Utility();
             womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString().trim());
             validationlist.put("" + et.getTag(), et.getText().toString());
         }
-
 
 
         if (womendetails.containsKey(keyword)) {
@@ -751,13 +809,12 @@ private static Utility utility= new Utility();
 
         if (displayCondition != null && displayCondition.length() > 0 && womenpreviousEcdetails.containsKey(keyword)) {
             et.setText(womenpreviousEcdetails.get(keyword));
-            if(Integer.parseInt(formid)!=31)
-            {
+            if (Integer.parseInt(formid) != 31) {
                 et.setEnabled(false);
             }
             tv.setError(null);
             womendetails.put(keyword, womenpreviousEcdetails.get(keyword));
-            validationlist.put(""+et.getTag(), womenpreviousEcdetails.get(keyword));
+            validationlist.put("" + et.getTag(), womenpreviousEcdetails.get(keyword));
             womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + womenpreviousEcdetails.get(keyword));
             Backup_answerTyped1.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + womenpreviousEcdetails.get(keyword));
 
@@ -943,12 +1000,10 @@ private static Utility utility= new Utility();
             }
         }
 
-        if(displayCondition!=null && displayCondition.length()>0 && womenpreviousEcdetails.containsKey(keyword))
-        {
-            try
-            {
+        if (displayCondition != null && displayCondition.length() > 0 && womenpreviousEcdetails.containsKey(keyword)) {
+            try {
 
-                Date dt=serverdateFormatter.parse(womenpreviousEcdetails.get(keyword));
+                Date dt = serverdateFormatter.parse(womenpreviousEcdetails.get(keyword));
 
                 et.setText(formatter.format(dt));
                 if (validationfield != null && validationfield.equalsIgnoreCase("true"))
@@ -957,12 +1012,11 @@ private static Utility utility= new Utility();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if(Integer.parseInt(formid)!=31)
-            {
+            if (Integer.parseInt(formid) != 31) {
                 et.setEnabled(false);
             }
             et.setError(null);
-            validationlist.put(""+et.getTag(), womenpreviousEcdetails.get(keyword));
+            validationlist.put("" + et.getTag(), womenpreviousEcdetails.get(keyword));
             womendetails.put(keyword, womenpreviousEcdetails.get(keyword));
             womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + womenpreviousEcdetails.get(keyword));
 
@@ -986,26 +1040,25 @@ private static Utility utility= new Utility();
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 final int DRAWABLE_RIGHT = 2;
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            if (validationfield != null && validationfield.equalsIgnoreCase("true"))
-                                if (validationmsg == null && validationmsg.length() < 0)
-                                    if (et.getCompoundDrawables()[DRAWABLE_RIGHT] != null && motionEvent.getRawX() >= (et.getRight() - et.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                                        // your action here
-                                        et.setText("");
-                                        et.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                                        validationlist.put("" + et.getTag(), "");
-                                        return true;
-                                    }
-                            if (fromDatePickerDialog == null || (!fromDatePickerDialog.isShowing())) {
-                                showDatePicker();
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (validationfield != null && validationfield.equalsIgnoreCase("true"))
+                            if (validationmsg == null && validationmsg.length() < 0)
+                                if (et.getCompoundDrawables()[DRAWABLE_RIGHT] != null && motionEvent.getRawX() >= (et.getRight() - et.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                                    // your action here
+                                    et.setText("");
+                                    et.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                                    validationlist.put("" + et.getTag(), "");
+                                    return true;
+                                }
+                        if (fromDatePickerDialog == null || (!fromDatePickerDialog.isShowing())) {
+                            showDatePicker();
 //
-                                fromDatePickerDialog.show();
-                            }
+                            fromDatePickerDialog.show();
+                        }
 
-                            break;
-                    }
-
+                        break;
+                }
 
 
                 return false;
@@ -1057,9 +1110,9 @@ private static Utility utility= new Utility();
                                     validationlist.put("" + et.getTag(), "");
                                 }
                             } else {*/
-                                lmpvalid = true;
-                                validationlist.put("" + et.getTag(), et.getText().toString());
-                                et.setError(null);
+                            lmpvalid = true;
+                            validationlist.put("" + et.getTag(), et.getText().toString());
+                            et.setError(null);
                             //}
 
                         } else {
@@ -1348,8 +1401,7 @@ private static Utility utility= new Utility();
      * @param displayCondition
      * @return layout (ll)
      */
-    public LinearLayout createInt(String answerType, String language, final String formid, final String setid, final String keyword, final String validationfield, final String validationcondition, String validationmsg, final String Lengthmin, final String Lengthmax, String Lengthmsg, final String Rangemin, final String Rangemax, String Rangemsg, final String Counsellingmsg, String messages, String displayCondition, final int orientation, final String calculations)
-    {
+    public LinearLayout createInt(String answerType, String language, final String formid, final String setid, final String keyword, final String validationfield, final String validationcondition, String validationmsg, final String Lengthmin, final String Lengthmax, String Lengthmsg, final String Rangemin, final String Rangemax, String Rangemsg, final String Counsellingmsg, String messages, String displayCondition, final int orientation, final String calculations) {
 
 
         try {
@@ -1461,8 +1513,7 @@ private static Utility utility= new Utility();
 
         if (displayCondition != null && displayCondition.length() > 0 && womenpreviousEcdetails.containsKey(keyword)) {
             et.setText(womenpreviousEcdetails.get(keyword));
-            if(Integer.parseInt(formid)!=31)
-            {
+            if (Integer.parseInt(formid) != 31) {
                 et.setEnabled(false);
             }
             et.setError(null);
@@ -1474,18 +1525,18 @@ private static Utility utility= new Utility();
 
         }
 
-         if(keyword.equalsIgnoreCase(AROGYASAKHI_MOB)) {
+        if (keyword.equalsIgnoreCase(AROGYASAKHI_MOB)) {
             et.setText(hashMapUserDetails.get(AROGYASAKHI_MOB));
             et.setFocusable(false);
             tv.setError(null);
-             womendetails.put(keyword, et.getText().toString());
+            womendetails.put(keyword, et.getText().toString());
             womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString().trim());
             validationlist.put("" + et.getTag(), et.getText().toString());
-        } else if(keyword.equalsIgnoreCase(AROGYASAKHI_ALTERNATE_NO)) {
+        } else if (keyword.equalsIgnoreCase(AROGYASAKHI_ALTERNATE_NO)) {
             et.setText(hashMapUserDetails.get(AROGYASAKHI_ALTERNATE_NO));
             et.setFocusable(false);
             tv.setError(null);
-             womendetails.put(keyword, et.getText().toString());
+            womendetails.put(keyword, et.getText().toString());
             womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString().trim());
             validationlist.put("" + et.getTag(), et.getText().toString());
         }
@@ -1562,35 +1613,9 @@ private static Utility utility= new Utility();
 
 
                     /**
-                     * This if condition is used for validations of mobile number i.e (between 10 to 12)
-                     *
+                     * This Code is use to check Length of the text field if it is less then it will show
+                     * Error message
                      */
-
-                    if (Rangemin != null && Rangemin.length() > 0 && et.getText().toString().length() > 0) {
-                        if ((Double.parseDouble(Rangemin) <= Double.parseDouble(et.getText().toString())) && (Double.parseDouble(et.getText().toString()) <= Double.parseDouble(Rangemax))) {
-                            et.setError(null);
-                            //next.setEnabled(true);
-
-                            validationlist.put("" + et.getTag(), et.getText().toString());
-//						NextButtonvalidationlist.put(et.getId(), scroll.getId());
-
-                        } else {
-
-                            et.setError(finalRangemsg);
-                            //next.setEnabled(false);
-
-                            validationlist.put("" + et.getTag(), "");
-                            //NextButtonvalidationlist.put(""+et.getTag(),runtimevalidationlist.get(et.getId()));
-                            NextButtonvalidationlist.put("" + et.getTag(), scroll.getId());
-
-                        }
-                    } else {
-                        et.setError(null);
-                        //next.setEnabled(true);
-
-                        validationlist.remove("" + et.getTag());
-                        NextButtonvalidationlist.remove("" + et.getTag());
-                    }
 
                     if (Lengthmin != null && Lengthmin.length() > 0 && et.getText().toString().length() > 0) {
 
@@ -1614,8 +1639,42 @@ private static Utility utility= new Utility();
 
                         validationlist.remove("" + et.getTag());
                         NextButtonvalidationlist.remove("" + et.getTag());
+
+                        /**
+                         * This if condition is used for validations of mobile number or any range applyed for questions
+                         * i.e (between 10 to 12) To check the range in text Field.
+                         */
+
+                        if (Rangemin != null && Rangemin.length() > 0 && et.getText().toString().length() > 0) {
+                            if ((Double.parseDouble(Rangemin) <= Double.parseDouble(et.getText().toString())) && (Double.parseDouble(et.getText().toString()) <= Double.parseDouble(Rangemax))) {
+                                et.setError(null);
+                                //next.setEnabled(true);
+
+                                validationlist.put("" + et.getTag(), et.getText().toString());
+                                System.out.println("CHECK DATA" + et.getText().toString());
+//						NextButtonvalidationlist.put(et.getId(), scroll.getId());
+
+                            } else {
+
+                                et.setError(finalRangemsg);
+                                //next.setEnabled(false);
+                                validationlist.put("" + et.getTag(), "");
+                                //NextButtonvalidationlist.put(""+et.getTag(),runtimevalidationlist.get(et.getId()));
+                                NextButtonvalidationlist.put("" + et.getTag(), scroll.getId());
+                            }
+                        } else {
+                            et.setError(null);
+                            //next.setEnabled(true);
+
+                            validationlist.remove("" + et.getTag());
+                            NextButtonvalidationlist.remove("" + et.getTag());
+                        }
                     }
 
+/**
+ * This is Dynamic calculation used for age to check
+ */
+/*
                     if(calculations!=null && calculations.length()>0)
                     {
                         if(!dynamicCalculation(calculations))
@@ -1629,8 +1688,8 @@ private static Utility utility= new Utility();
                             validationlist.remove(""+et.getTag());
                         }
                     }
-                }catch(Exception e)
-                {
+*/
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -1704,7 +1763,7 @@ private static Utility utility= new Utility();
 
         NextButtonvalidationlist.put(keyword, scroll.getId());
 
-        SpinnerItems placeHolderItem =  new SpinnerItems("-1", getResources().getString(R.string.select));
+        SpinnerItems placeHolderItem = new SpinnerItems("-1", getResources().getString(R.string.select));
         spinnerArray.add(0, placeHolderItem);
 
 
@@ -1725,14 +1784,14 @@ private static Utility utility= new Utility();
 
                 String answer = items.getValue();
 
-                if (position == 0){
-                    validationlist.put(keyword,"");
+                if (position == 0) {
+                    validationlist.put(keyword, "");
                     tv.setError("");
                     return;
                 }
 
                 tv.setError(null);
-                validationlist.put(keyword,answer);
+                validationlist.put(keyword, answer);
                 womendetails.put(keyword, answer);
                 womenanswer.put(position, "" + formid
                         + delimeter + setid
@@ -1926,7 +1985,7 @@ private static Utility utility= new Utility();
             /**
              * This for loop is used to display the radio buttons for the given question
              */
-            int length=optionList.size();
+            int length = optionList.size();
             for (int k = 1; k < length; k++) {
                 radio = radio + 1;
 
@@ -1996,8 +2055,7 @@ private static Utility utility= new Utility();
                     tv.setError(null);
 
                     validationlist.put(keyword, womenpreviousEcdetails.get(keyword));
-                    if(Integer.parseInt(formid)!=31)
-                    {
+                    if (Integer.parseInt(formid) != 31) {
                         rb.setEnabled(false);
                     }
                 }
@@ -2590,7 +2648,7 @@ private static Utility utility= new Utility();
                     break;
 
                 case "float":
-                    ll=createdependentInt(1, qstnData.getQuestionText(), qstnData.getAnswerType(),qstnData.getParentQstnKeyword(),qstnData.getFormid(),qstnData.getSetId(),qstnData.getKeyword(),qstnData.getValidationCondition(),qstnData.getMessages(),displayCondition,qstnData.getPageScrollId(),qstnData.getOrientation());
+                    ll = createdependentInt(1, qstnData.getQuestionText(), qstnData.getAnswerType(), qstnData.getParentQstnKeyword(), qstnData.getFormid(), qstnData.getSetId(), qstnData.getKeyword(), qstnData.getValidationCondition(), qstnData.getMessages(), displayCondition, qstnData.getPageScrollId(), qstnData.getOrientation());
                     break;
 
                 case "text":
@@ -2666,8 +2724,7 @@ private static Utility utility= new Utility();
 
 //        et.requestFocus();
 
-        if(validationConditions!=null && validationConditions.length()>0)
-        {
+        if (validationConditions != null && validationConditions.length() > 0) {
 
 
             try {
@@ -2685,11 +2742,10 @@ private static Utility utility= new Utility();
 
                     JSONObject lengthobject = validationobj.getJSONObject("length");
 //
-                    int maxLength=lengthobject.optInt("max");
+                    int maxLength = lengthobject.optInt("max");
 
-                    if(maxLength > 0)
-                    {
-                        et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
+                    if (maxLength > 0) {
+                        et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
                     }
 
                 }
@@ -2871,7 +2927,6 @@ private static Utility utility= new Utility();
         }
 
 
-
         et.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -2956,17 +3011,17 @@ private static Utility utility= new Utility();
                                     validationlist.put("" + et.getTag(), "");
                                 }
                             } else {*/
-                                lmpvalid = true;
-                                String myFormat = "yyyy-MM-dd"; //In which you need put here
-                                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                            lmpvalid = true;
+                            String myFormat = "yyyy-MM-dd"; //In which you need put here
+                            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-                                System.out.println("dependantQuesKeyword = " + dependantQuesKeyword);
-                                storeEnteredData.put(dependantQuesKeyword, sdf.format(newDate.getTime()).toString());
-                                System.out.println("storeEnteredData = " + storeEnteredData.get(dependantQuesKeyword));
-                                validationlist.remove("" + et.getTag());
-                                NextButtonvalidationlist.remove("" + et.getTag());
-                                tv.setError(null);
-                                et.setError(null);
+                            System.out.println("dependantQuesKeyword = " + dependantQuesKeyword);
+                            storeEnteredData.put(dependantQuesKeyword, sdf.format(newDate.getTime()).toString());
+                            System.out.println("storeEnteredData = " + storeEnteredData.get(dependantQuesKeyword));
+                            validationlist.remove("" + et.getTag());
+                            NextButtonvalidationlist.remove("" + et.getTag());
+                            tv.setError(null);
+                            et.setError(null);
                             //}
 
                         } else {
@@ -3006,20 +3061,20 @@ private static Utility utility= new Utility();
 
     /**
      * THis method is used to create dependant int dynamically
-     * @param i = loop id
-     * @param language = dependant question text
-     * @param answerType = main question keyword
-     * @param radiotag = radio tag on which the question is dependant
-     * @param formid = form id current used
-     * @param setid = setid of the question
+     *
+     * @param i                    = loop id
+     * @param language             = dependant question text
+     * @param answerType           = main question keyword
+     * @param radiotag             = radio tag on which the question is dependant
+     * @param formid               = form id current used
+     * @param setid                = setid of the question
      * @param dependantQuesKeyword = dependant question keyword
      * @param validationConditions = validations if present on dependant question
      * @param messages             = this field contains json with multiple highrisk,counselling,referral conditions
      * @param PageScrollID         = scroll id of the page on which dependant question is displayed.
      * @return ll
      */
-    public LinearLayout createdependentInt(int i, String language, final String answerType, final String radiotag, final String formid, final String setid, final String dependantQuesKeyword, final String validationConditions, final String messages, final String displayCondition, String PageScrollID, final int orientation)
-    {
+    public LinearLayout createdependentInt(int i, String language, final String answerType, final String radiotag, final String formid, final String setid, final String dependantQuesKeyword, final String validationConditions, final String messages, final String displayCondition, String PageScrollID, final int orientation) {
         final int ScrollPageId = Integer.parseInt(PageScrollID);
 
         try {
@@ -3054,16 +3109,15 @@ private static Utility utility= new Utility();
         et.setInputType(InputType.TYPE_CLASS_NUMBER);
 //        et.requestFocus();
 
-        switch (answerType)
-        {
-            case "int" :
+        switch (answerType) {
+            case "int":
                 et.setInputType(InputType.TYPE_CLASS_NUMBER);
                 break;
 
             default:
                 et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-                et.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(4,2)});
+                et.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(4, 2)});
                 break;
         }
 
@@ -3145,8 +3199,8 @@ private static Utility utility= new Utility();
 
                 calculations(validationConditions, messages, dependantQuesKeyword, et);
 
-                if(dependantQuesKeyword.equals(WOMAN_AGE) && ! hasFocus) {
-                    if(et.getText().toString().isEmpty()) {
+                if (dependantQuesKeyword.equals(WOMAN_AGE) && !hasFocus) {
+                    if (et.getText().toString().isEmpty()) {
                         womendetails.remove(WOMAN_DOB);
                     } else {
                         LocalDate date = LocalDate.now().minusYears(Integer.parseInt(et.getText().toString()));
@@ -4047,7 +4101,7 @@ private static Utility utility= new Utility();
                 length_lang = "";
             }
 
-                StorePVSmsgs(messages);
+            StorePVSmsgs(messages);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -4076,7 +4130,7 @@ private static Utility utility= new Utility();
                         if (main_ques_options_key.getJSONObject("range") != null && main_ques_options_key.getJSONObject("range").length() > 0) {
                             JSONObject parseRangeminmax = main_ques_options_key.getJSONObject("range");
 
-                            Visits highriskcond =new Visits(parseRangeminmax.optDouble("min"),parseRangeminmax.optDouble("max"),main_ques_options_key.optString("languages").toString(),"");
+                            Visits highriskcond = new Visits(parseRangeminmax.optDouble("min"), parseRangeminmax.optDouble("max"), main_ques_options_key.optString("languages").toString(), "");
 
                             //System.out.println("main_ques_options_key languages = " + main_ques_options_key.optString("languages").toString());;
 
@@ -4096,7 +4150,7 @@ private static Utility utility= new Utility();
                         if (main_ques_options_key.getJSONObject("range") != null && main_ques_options_key.getJSONObject("range").length() > 0) {
                             JSONObject parseRangeminmax = main_ques_options_key.getJSONObject("range");
 
-                            Visits counsellingcond =new Visits(parseRangeminmax.optDouble("min"),parseRangeminmax.optDouble("max"),main_ques_options_key.optString("languages").toString(),main_ques_options_key.optString("show_popup"));
+                            Visits counsellingcond = new Visits(parseRangeminmax.optDouble("min"), parseRangeminmax.optDouble("max"), main_ques_options_key.optString("languages").toString(), main_ques_options_key.optString("show_popup"));
 
                             //System.out.println("main_ques_options_key languages = " + main_ques_options_key.optString("languages").toString());;
 
@@ -4118,11 +4172,10 @@ private static Utility utility= new Utility();
                         if (patientVisitSummary_conditionsArray_options_key.has("range")) {
                             JSONObject parseRangeminmax = patientVisitSummary_conditionsArray_options_key.getJSONObject("range");
 
-                            Visits patientVisitSummarycond =new Visits(parseRangeminmax.optDouble("min"),parseRangeminmax.optDouble("max"),patientVisitSummary_conditionsArray_options_key.optString("languages").toString(),"");
+                            Visits patientVisitSummarycond = new Visits(parseRangeminmax.optDouble("min"), parseRangeminmax.optDouble("max"), patientVisitSummary_conditionsArray_options_key.optString("languages").toString(), "");
                             StoredPatientVisitSummaryRanges.add(patientVisitSummarycond);
-                        }else
-                        {
-                            Visits patientVisitSummarycond =new Visits(0,0,patientVisitSummary_conditionsArray_options_key.optString("languages").toString(),"");
+                        } else {
+                            Visits patientVisitSummarycond = new Visits(0, 0, patientVisitSummary_conditionsArray_options_key.optString("languages").toString(), "");
 
                             StoredPatientVisitSummaryRanges.add(patientVisitSummarycond);
                         }
@@ -4185,7 +4238,7 @@ private static Utility utility= new Utility();
 
                                     counclingMsgQstnKeywords.add(keyword);
 
-                                    if(StoredCounsellingRanges.get(i).getShowPopUp().equalsIgnoreCase("1"))
+                                    if (StoredCounsellingRanges.get(i).getShowPopUp().equalsIgnoreCase("1"))
                                         criticalCounsellingMsg(language);
                                 }
                             }
@@ -4248,19 +4301,19 @@ private static Utility utility= new Utility();
 
                         highrisklist.put("" + et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + value + delimeter + rangelang + delimeter + "highrisk" + delimeter + "0");
                         break;
-                    }else {
-                        LinearLayout ll_1= (LinearLayout) et.getParent();
+                    } else {
+                        LinearLayout ll_1 = (LinearLayout) et.getParent();
 //                        ll_1.setBackgroundColor(ctx.getResources().getColor(R.color.dependent_question_background));
                         //ll.setBackgroundColor(Color.parseColor("#0d47a1"));
                         System.out.println("et.getId() = " + et.getId());
-                        highrisklist.remove(""+et.getId());
+                        highrisklist.remove("" + et.getId());
                     }
 
                 }
 
             } else {
 
-                LinearLayout ll_1= (LinearLayout) et.getParent();
+                LinearLayout ll_1 = (LinearLayout) et.getParent();
 //                ll_1.setBackgroundColor(ctx.getResources().getColor(R.color.dependent_question_background));
                 highrisklist.remove("" + et.getId());
             }
@@ -5144,7 +5197,7 @@ private static Utility utility= new Utility();
                 switch (enrollmentList.get(j).getAnswerType()) {
                     case "text":
                         //System.out.println("answer type..........");
-                        ll = createEdittext(j, enrollmentList.get(j).getQuestionText(), enrollmentList.get(j).getFormid(),enrollmentList.get(j).getSetid(), enrollmentList.get(j).getKeyword(), enrollmentList.get(j).getValidationfield(), enrollmentList.get(j).getValidationCondition(), enrollmentList.get(j).getValidationengmsg(), enrollmentList.get(j).getMessages(),enrollmentList.get(j).getDisplayCondition(),enrollmentList.get(j).getOrientation(),enrollmentList.get(j).getLengthmax());
+                        ll = createEdittext(j, enrollmentList.get(j).getQuestionText(), enrollmentList.get(j).getFormid(), enrollmentList.get(j).getSetid(), enrollmentList.get(j).getKeyword(), enrollmentList.get(j).getValidationfield(), enrollmentList.get(j).getValidationCondition(), enrollmentList.get(j).getValidationengmsg(), enrollmentList.get(j).getMessages(), enrollmentList.get(j).getDisplayCondition(), enrollmentList.get(j).getOrientation(), enrollmentList.get(j).getLengthmax());
 
 
                         break;
@@ -5154,7 +5207,7 @@ private static Utility utility= new Utility();
                         break;
 
                     case "int":
-                        ll = createInt(enrollmentList.get(j).getAnswerType(), enrollmentList.get(j).getQuestionText(), enrollmentList.get(j).getFormid(),enrollmentList.get(j).getSetid(), enrollmentList.get(j).getKeyword(), enrollmentList.get(j).getValidationfield(), enrollmentList.get(j).getValidationCondition(), enrollmentList.get(j).getValidationengmsg(), enrollmentList.get(j).getLengthmin(), enrollmentList.get(j).getLengthmax(), enrollmentList.get(j).getLengthvalidationmsg(), enrollmentList.get(j).getRangemin(), enrollmentList.get(j).getRangemax(), enrollmentList.get(j).getRangevalidationmsg(), enrollmentList.get(j).getCounselling_lang(), enrollmentList.get(j).getMessages(),enrollmentList.get(j).getDisplayCondition(),enrollmentList.get(j).getOrientation(),enrollmentList.get(j).getCalculations());
+                        ll = createInt(enrollmentList.get(j).getAnswerType(), enrollmentList.get(j).getQuestionText(), enrollmentList.get(j).getFormid(), enrollmentList.get(j).getSetid(), enrollmentList.get(j).getKeyword(), enrollmentList.get(j).getValidationfield(), enrollmentList.get(j).getValidationCondition(), enrollmentList.get(j).getValidationengmsg(), enrollmentList.get(j).getLengthmin(), enrollmentList.get(j).getLengthmax(), enrollmentList.get(j).getLengthvalidationmsg(), enrollmentList.get(j).getRangemin(), enrollmentList.get(j).getRangemax(), enrollmentList.get(j).getRangevalidationmsg(), enrollmentList.get(j).getCounselling_lang(), enrollmentList.get(j).getMessages(), enrollmentList.get(j).getDisplayCondition(), enrollmentList.get(j).getOrientation(), enrollmentList.get(j).getCalculations());
 
                         break;
 
@@ -5164,7 +5217,7 @@ private static Utility utility= new Utility();
 
                     case "float":
 
-                        ll = createInt(enrollmentList.get(j).getAnswerType(), enrollmentList.get(j).getQuestionText(), enrollmentList.get(j).getFormid(),enrollmentList.get(j).getSetid(), enrollmentList.get(j).getKeyword(), enrollmentList.get(j).getValidationfield(), enrollmentList.get(j).getValidationCondition(), enrollmentList.get(j).getValidationengmsg(), enrollmentList.get(j).getLengthmin(), enrollmentList.get(j).getLengthmax(), enrollmentList.get(j).getLengthvalidationmsg(), enrollmentList.get(j).getRangemin(), enrollmentList.get(j).getRangemax(), enrollmentList.get(j).getRangevalidationmsg(), enrollmentList.get(j).getCounselling_lang(), enrollmentList.get(j).getMessages(),enrollmentList.get(j).getDisplayCondition(),enrollmentList.get(j).getOrientation(),enrollmentList.get(j).getCalculations());
+                        ll = createInt(enrollmentList.get(j).getAnswerType(), enrollmentList.get(j).getQuestionText(), enrollmentList.get(j).getFormid(), enrollmentList.get(j).getSetid(), enrollmentList.get(j).getKeyword(), enrollmentList.get(j).getValidationfield(), enrollmentList.get(j).getValidationCondition(), enrollmentList.get(j).getValidationengmsg(), enrollmentList.get(j).getLengthmin(), enrollmentList.get(j).getLengthmax(), enrollmentList.get(j).getLengthvalidationmsg(), enrollmentList.get(j).getRangemin(), enrollmentList.get(j).getRangemax(), enrollmentList.get(j).getRangevalidationmsg(), enrollmentList.get(j).getCounselling_lang(), enrollmentList.get(j).getMessages(), enrollmentList.get(j).getDisplayCondition(), enrollmentList.get(j).getOrientation(), enrollmentList.get(j).getCalculations());
 
                         break;
 
