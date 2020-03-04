@@ -2,6 +2,7 @@ package tech.inscripts.ins_armman.mMitra.completeformList
 
 import android.content.Context
 import android.content.Intent
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +66,11 @@ class FormListAdapter() : RecyclerView.Adapter<FormListAdapter.ViewHolder>() {
         } catch (e: JSONException) {
             e.printStackTrace()
         }
+        if(position %2 == 1)
+            holder.cardView.setCardBackgroundColor(mContext.resources.getColor(R.color.report_incomplete))
+        else
+            holder.cardView.setCardBackgroundColor(mContext.resources.getColor(R.color.report_incomplete1))
+
     }
 
     fun setClickListener(clickListener : ClickListener){
@@ -77,6 +83,7 @@ class FormListAdapter() : RecyclerView.Adapter<FormListAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         internal var txtformName: TextView=itemView.findViewById(R.id.textview_name)
+        internal var cardView : CardView =itemView.findViewById(R.id.card_view_completeList);
 
         init {
             itemView.setOnClickListener(this)

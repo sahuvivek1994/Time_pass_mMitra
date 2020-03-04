@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -48,6 +49,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static tech.inscripts.ins_armman.mMitra.utility.Constants.*;
+import static tech.inscripts.ins_armman.mMitra.utility.Constants.NAME;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.*;
 
 
@@ -95,6 +97,7 @@ public class displayForm extends AppCompatActivity {
     List<Visit> dependantList = null; // is used to retireve dependant question for the selected button
     List<String> removeDependentQuestion = new ArrayList<>();
     String formid, language;
+    Bitmap photo;
     String womanLmp, mamtaCardID;
     int progresscount, womenDeliveryDays, Migrant;
     ProgressBar progress;
@@ -5183,8 +5186,15 @@ public class displayForm extends AppCompatActivity {
             FormID = Integer.parseInt(formid);
             uniqueId = b.getString(UNIQUE_ID);
 
-
             questionInteractor = new QuestionInteractor(displayForm.this);
+/**
+ * this if is used when woman's first form is not fiilled and her 2nd form is being filled then to generate her unique number savewoman method is being called
+ */
+            if(uniqueId.equals("0")){
+                String name = b.getString(NAME);
+                uniqueId = questionInteractor.saveWoman(name, 1);
+            }
+
             mAppLanguage = utilityObj.getLanguagePreferance(getApplicationContext());
             womanLmp = b.getString(LMP_DATE);
 

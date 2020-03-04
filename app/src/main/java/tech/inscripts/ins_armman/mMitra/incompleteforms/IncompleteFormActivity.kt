@@ -32,7 +32,7 @@ class IncompleteFormActivity : AppCompatActivity(),IIncompleteFormView{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_woman_list)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.setTitle("Incomplete Forms")
+        toolbar.title = "Incomplete Forms"
         mProgressBar = findViewById(R.id.child_list_progress_bar)
         emptyLayout = findViewById(R.id.empty_list_layout)
         recyclerView=findViewById(R.id.recycler_view)
@@ -72,9 +72,10 @@ class IncompleteFormActivity : AppCompatActivity(),IIncompleteFormView{
         if (adapter == null) {
             adapter = IncompleteFormsAdapter(
                 this@IncompleteFormActivity, mWomenList,object : IncompleteFormsAdapter.onItemClickListener {
-                    override fun onItemClick(uniqueId: String, form_id: Int?) {
+                    override fun onItemClick(uniqueId: String, form_id: Int?,womanName : String) {
                             val unique_id = uniqueId
                         var form_id : Int?=0
+                        var womanName: String = womanName
                             val builder = android.app.AlertDialog.Builder(this@IncompleteFormActivity)
                             builder
                                 .setTitle("Form Details")
@@ -91,6 +92,7 @@ class IncompleteFormActivity : AppCompatActivity(),IIncompleteFormView{
                                     val uniqueId = unique_id
                                     intent.putExtra("id", unique_id)
                                     intent.putExtra("form_id", form_id)
+                                    intent.putExtra("firstName", womanName)
                                     startActivity(intent)
                                 }.show()
                     }

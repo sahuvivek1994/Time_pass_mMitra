@@ -86,7 +86,8 @@
     <color name="table_bg1">#FFEB3B</color>
     <color name="report_overdue">#FFD08C</color>
     <color name="report_due">#C0FF8C</color>
-    <color name="report_incomplete">#FFF78C</color>
+    <color name="report_incomplete">#F4F0AE</color>
+    <color name="report_incomplete1">#D1CD9B</color>
     <color name="value1">#8CECD6</color>
     <color name="value2">#8EC1EC</color>
     <color name="value3">#7F9ADD</color>

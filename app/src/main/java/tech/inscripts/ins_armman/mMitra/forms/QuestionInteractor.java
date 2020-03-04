@@ -61,6 +61,23 @@ private static Utility utility= new Utility();
         return woman_id;
     }
 
+    /**
+     * this method is called when woman's 2nd form is being filled first and her 1st form is not filled
+     * then to store woman's name and unique is this method is used.
+     *  @param name
+     * @param registrationStatus
+     * @return
+     */
+    public String saveWoman(String name,int registrationStatus){
+        ContentValues values = new ContentValues();
+        String woman_id =  utility.generateUniqueId();
+        values.put(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID, woman_id);
+        values.put(DatabaseContract.RegistrationTable.COLUMN_NAME, name);
+        values.put(DatabaseContract.RegistrationTable.COLUMN_REGISTRATION_STATUS, registrationStatus);
+        utility.getDatabase().insert(DatabaseContract.RegistrationTable.TABLE_NAME, null, values);
+        return woman_id;
+    }
+
     public int saveFilledFormStatus(String uniqueId, int formId, int completionStatus, int syncStatus, String createdOn) {
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_UNIQUE_ID, uniqueId);
