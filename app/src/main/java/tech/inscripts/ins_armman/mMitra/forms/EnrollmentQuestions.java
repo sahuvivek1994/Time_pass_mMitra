@@ -167,7 +167,9 @@ public class EnrollmentQuestions extends AppCompatActivity {
     String gestationalDate;
     SimpleDateFormat formatter;
     Date SystemDate, selectedDate;
-    String Name;
+    String Name,womanName="",womanUniqueId="";
+    Bundle b;
+    int flag,NormalRegFlag;
     String women_in_highrisk;
     Integer mamtaCardPresent;
     Bitmap photo;
@@ -650,9 +652,9 @@ public class EnrollmentQuestions extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             //finish();
 
-                            uniqueId = questionInteractor.saveRegistrationDetails(womendetails.get(WOMAN_NAME), womendetails.get(WOMAN_MOB_NO)
-                                    , womendetails.get(LMP_DATE_KEYWORD), womendetails.get(ADDRESS), womendetails.get(WOMAN_AGE)
-                                    , womendetails.get(EDUCATION), womendetails.get(MARITAL_STATUS), photo, 1, womendetails.get(WOMAN_DOB));
+                                uniqueId = questionInteractor.saveRegistrationDetails(womanUniqueId,womendetails.get(WOMAN_NAME), womendetails.get(WOMAN_MOB_NO)
+                                        , womendetails.get(LMP_DATE_KEYWORD), womendetails.get(ADDRESS), womendetails.get(WOMAN_AGE)
+                                        , womendetails.get(EDUCATION), womendetails.get(MARITAL_STATUS), photo, 1, womendetails.get(WOMAN_DOB));
 
 
                             /**
@@ -665,10 +667,12 @@ public class EnrollmentQuestions extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(), EnrollmentQuestions.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(EnrollmentQuestions.this, displayForm.class);
+                           /* Intent intent = new Intent(EnrollmentQuestions.this, displayForm.class);
                             intent.putExtra(UNIQUE_ID, uniqueId);
                             intent.putExtra(FORM_ID, "2");
                             startActivity(intent);
+
+                            */
                             finish();
 
                         }
@@ -5111,6 +5115,16 @@ public class EnrollmentQuestions extends AppCompatActivity {
             inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
             formID = "1";
+            Intent in = getIntent();
+            b = in.getExtras();
+           NormalRegFlag = b.getInt("NormalRegFlag");
+                    if(NormalRegFlag==101) {
+                        womanUniqueId = b.getString("id");
+                        womanName = b.getString("firstName");
+                        // flag = b.getInt("flag");
+                        if (womanUniqueId == null)
+                            womanUniqueId = "0";
+                    }
 
             questionInteractor = new QuestionInteractor(EnrollmentQuestions.this);
             mAppLanguage = utilityObj.getLanguagePreferance(getApplicationContext());

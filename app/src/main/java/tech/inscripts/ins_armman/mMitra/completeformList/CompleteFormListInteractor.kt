@@ -21,4 +21,8 @@ class CompleteFormListInteractor : ICompleteFormListInteractor {
     override fun checkFormPresent(): Int {
         return dbHelper.checkFormsPresent()
     }
+
+    override fun checkRegFormFilled(uniqueId : String): String {
+        return dbHelper.checkRegFormFillrd(uniqueId)
+    }
 }

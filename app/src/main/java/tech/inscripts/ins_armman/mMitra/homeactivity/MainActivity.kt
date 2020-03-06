@@ -22,7 +22,7 @@ import android.widget.EditText
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_homeactivity.*
 import kotlinx.android.synthetic.main.content_homeactivity.*
-import kotlinx.android.synthetic.main.woman_name_layout.view.*
+import kotlinx.android.synthetic.main.reg_alert_layout.view.*
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.completeforms.CompleteFormActivity
 import tech.inscripts.ins_armman.mMitra.displayform.displayForm
@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var mSyncDrawable: LayerDrawable? = null
     var mProgressDialog: android.support.v7.app.AlertDialog? = null
     var userDetails = ArrayList<String>()
+    private var name : String=""
+    private var phone : String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homeactivity)
@@ -105,6 +107,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         utility.setBadgeCount(this, mSyncDrawable!!, 0)
         mPresenter?.fetchUnsentFormsCount()
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mPresenter?.fetchUnsentFormsCount()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -239,7 +246,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setMessage("Do you want to fill Participant Details?")
             .setPositiveButton("Fill Participant Details") {
-                    dialog, which -> startActivity(Intent(this, EnrollmentQuestions::class.java)) }
+                    dialog, which ->
+                val intent = Intent(this@MainActivity, EnrollmentQuestions::class.java)
+                intent.putExtra("NormalRegFlag", 100)
+                startActivity(intent)
+            }
             .setNegativeButton("Continue from Form 2"){
                 dialog,which->
                 askWomanName()
@@ -251,28 +262,43 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      * if woman's 2nd form is being filled first then to keep her track this method is called where woman's name is asked
      * and her name and unique id will be stored.
      */
-    private fun askWomanName(){
-    val mDialogView = LayoutInflater.from(this).inflate(R.layout.woman_name_layout, null)
-    var etName : EditText =mDialogView.findViewById(R.id.dialogNameEt)
-    val builder = AlertDialog.Builder(getContext())
-        .setView(mDialogView)
-        .setCancelable(false)
-            val mAlertDialog = builder.show()
-                    mDialogView.btnContinue.setOnClickListener {
-                        var name : String = etName.text.toString()
-                        if(name!=null) {
-                            mAlertDialog.dismiss()
-                            val intent = Intent(this@MainActivity, displayForm::class.java)
-                            intent.putExtra(Constants.UNIQUE_ID, "0")
-                            intent.putExtra(Constants.FORM_ID, "2")
-                            intent.putExtra(Constants.NAME, name)
-                            startActivity(intent)
-                        }
-                        mDialogView.btnCancel.setOnClickListener {
-                            mAlertDialog.dismiss()
-                        }
+    private fun askWomanName() {
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.reg_alert_layout, null)
+        var etName: EditText = mDialogView.findViewById(R.id.dialogNameEt)
+        var etPhone: EditText = mDialogView.findViewById(R.id.dialogPhoneEt)
+        val builder = AlertDialog.Builder(getContext())
+            .setView(mDialogView)
+        val mAlertDialog = builder.show()
+        mDialogView.btnContinue.setOnClickListener {
+            name = etName.text.toString()
+            phone = etPhone.text.toString()
+            if (name != null && phone != null) {
+                if (phone.length ==10) {
+                    mAlertDialog.dismiss()
+                    val intent = Intent(this@MainActivity, displayForm::class.java)
+                    intent.putExtra(Constants.UNIQUE_ID, "0")
+                    intent.putExtra(Constants.FORM_ID, "2")
+                    intent.putExtra(Constants.NAME, name)
+                    intent.putExtra("phone", phone)
+                    startActivity(intent)
+                } else {
+                    etPhone.error = "please enter valid phone number"
+                }
+            }else if(name.isEmpty() && !phone.isEmpty() ){
+                etName.error = "please enter proper name"
+            }
+            else if(phone.isEmpty() && !name.isEmpty()){
+                etPhone.error = "please enter phone number"
+            }
+            else{
+                etName.error = "please enter proper name"
+                etPhone.error = "please enter phone number"
+            }
+            mDialogView.btnCancel.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
         }
-}
+    }
     override fun updateAvailable(url: String) {
         android.app.AlertDialog.Builder(this)
             .setMessage(getString(R.string.dialog_update_available))
@@ -281,5 +307,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             })
             .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, which ->  })
             .show()
+    }
+
+    override fun alertForRegistration() {
+        val builder = AlertDialog.Builder(getContext())
+        builder.setTitle("REGISTRAtION ALERT")
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setMessage("You haven't filled registration form of this woman. To sync the data on server please fill registration form first.")
+            .setCancelable(false)
+            .setPositiveButton(
+                R.string.ok
+            ) { dialog, which -> }
+            .show()
+
     }
 }

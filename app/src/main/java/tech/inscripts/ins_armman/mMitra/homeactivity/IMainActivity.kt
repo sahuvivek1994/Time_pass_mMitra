@@ -9,4 +9,5 @@ interface IMainActivity : IMvpView {
        fun hideProgressBar()
        fun showFormUpdateErrorDialog()
        fun updateAvailable(url : String)
+       fun alertForRegistration()
 }

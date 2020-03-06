@@ -87,8 +87,7 @@ class IncompleteFormActivity : AppCompatActivity(),IIncompleteFormView{
                                 }
                                 .setNegativeButton(this@IncompleteFormActivity.getString(R.string.view_filled_form)
                                 ) { dialog, which ->
-                                    val intent =
-                                        Intent(this@IncompleteFormActivity, CompleteFormListActivity::class.java)
+                                    val intent = Intent(this@IncompleteFormActivity, CompleteFormListActivity::class.java)
                                     val uniqueId = unique_id
                                     intent.putExtra("id", unique_id)
                                     intent.putExtra("form_id", form_id)

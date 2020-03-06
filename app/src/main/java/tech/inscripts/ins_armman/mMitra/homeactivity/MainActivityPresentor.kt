@@ -49,6 +49,7 @@ var mRequest: RestoreDataRequest?=null
     private var totalPagesCalculated: Boolean = false
     private val listVisits = ArrayList<BeneficiariesList>()
     private var totalPages: Int = 0
+    var formCount : Int =0
 
 
     var utility= Utility()
@@ -69,7 +70,7 @@ var mRequest: RestoreDataRequest?=null
                 }
 
             FETCH_UNSENT_FORM_COUNT -> if (cursor.moveToFirst())
-                    mIMainActivityView?.setUnsentFormsCount(cursor.getInt(0))
+                 mIMainActivityView?.setUnsentFormsCount(cursor.getInt(0))
 
                 FETCH_REGISTRATION_DATA -> if (cursor.count > 0) {
                     onFetchedRegistrationData(cursor)
@@ -103,21 +104,32 @@ var mRequest: RestoreDataRequest?=null
         var regDetails = SyncRegistrationDetails()
         regDetails.setusername(mUsername)
         regDetails.setpassword(mPassword)
-       regDetails.setImei(mImei)
-
+        regDetails.setImei(mImei)
         val regData = ArrayList<BeneficiaryDetails>()
         while (cursor.moveToNext()) {
             val details = BeneficiaryDetails()
-
             val uniqueId = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID))
+            val name= cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_NAME))
+            val mobile = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO))
+            val addr = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_ADDRESS))
+            if(addr==null){
+                onFetchedDirectwomanRegData(uniqueId,name,mobile)
+               }
+            else{
+                val lmp =   cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE))
+                val dob = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_AGE))
+                val education = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_EDUCATION))
+                val createdOn = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_CREATED_ON))
+
             details.setUniqueId(uniqueId)
-            details.setName(cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_NAME)))
-            details.setAddress(cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_ADDRESS)))
-            details.setMobNo(cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO)))
-            details.setLmp(cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE)))
-            details.setDob(cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_AGE)))
-            details.setEducation(cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_EDUCATION)))
-            details.setCreatedOn(cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_CREATED_ON)))
+            details.setName(name)
+            details.setAddress(addr)
+            details.setMobNo(mobile)
+            details.setLmp(lmp)
+            details.setDob(dob)
+            details.setEducation(education)
+            details.setCreatedOn(createdOn)
+            details.setFlag(0)
             regData.add(details)
         }
         if (regData.size == 0)
@@ -126,7 +138,33 @@ var mRequest: RestoreDataRequest?=null
         regDetails.setRegData(regData)
 
         mInteractor?.sendRegistrationBasicDetails(regDetails, this)
+        }
     }
+
+    override fun onFetchedDirectwomanRegData(uniqueId :String,name : String,mobile : String) {
+
+        var regDetails = SyncRegistrationDetails()
+        regDetails.setusername(mUsername)
+        regDetails.setpassword(mPassword)
+        regDetails.setImei(mImei)
+
+        val regData = ArrayList<BeneficiaryDetails>()
+        val details = BeneficiaryDetails()
+        details.setUniqueId(uniqueId)
+        details.setName(name)
+        details.setMobNo(mobile)
+        details.setFlag(1)
+
+        regData.add(details)
+
+        if (regData.size == 0)
+            return
+
+        regDetails.setRegData(regData)
+
+        mInteractor?.sendRegistrationBasicDetails(regDetails, this)
+    }
+
 
     override fun fetchUnsentFormsCount() {
     mInteractor?.fetchUnsentFormsCount(FETCH_UNSENT_FORM_COUNT)
@@ -135,7 +173,6 @@ var mRequest: RestoreDataRequest?=null
     override fun syncUnsentForms() {
         var cursor = mInteractor?.checkUnsentForms()
         if (cursor!!.moveToFirst()) {
-
             var details = FormDetails()
             var answerList = ArrayList<QuestionAnswer>()
 
@@ -159,9 +196,7 @@ var mRequest: RestoreDataRequest?=null
             details.setData(answerList)
 
             mInteractor?.sendForms(details, this)
-        }
-        else
-        {
+        } else {
             mIMainActivityView?.hideProgressBar()
             fetchUnsentFormsCount()
         }

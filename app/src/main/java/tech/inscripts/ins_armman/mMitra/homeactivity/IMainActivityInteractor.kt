@@ -68,5 +68,5 @@ interface IMainActivityInteractor  {
     fun downloadVisitsData(request: RestoreDataRequest, downloadFinished: ISettingsInteractor.OnVisitsDownloadFinished)
     fun checkReleaseUpdate(onCheckUpdateFinished: ISettingsInteractor.onCheckUpdateFinished)
     fun saveDownloadedData(listRegistrations: ArrayList<BeneficiaryDetails>, listVisits: ArrayList<BeneficiariesList>)
-
+    fun checkDirectWomanReg(uniqueId : String) : String?
 }

@@ -21,6 +21,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import tech.inscripts.ins_armman.mMitra.R
+import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.database.DatabaseContract
 import tech.inscripts.ins_armman.mMitra.data.database.GenericCursorLoader
 import tech.inscripts.ins_armman.mMitra.data.database.LocalDataSource
@@ -56,10 +57,11 @@ class MainActivityInteractor : IMainActivityInteractor, LoaderManager.LoaderCall
     private val mOnQueryFinished: IMainActivityPresentor.OnQueryFinished
     var utility = Utility()
    var dataSource=RemoteDataSource()
-
+    var db : DBHelper
     constructor(mContext: Context, mOnQueryFinished: IMainActivityPresentor.OnQueryFinished) {
         this.mContext = mContext
         this.mOnQueryFinished = mOnQueryFinished
+        this.db=DBHelper(mContext)
     }
 
 
@@ -897,4 +899,7 @@ throw IllegalArgumentException("Invalid unique &/ formId")
         }
     }
 
+override fun checkDirectWomanReg(uniqueId : String) : String{
+    return db.checkRegFormFillrd(uniqueId)
+}
 }

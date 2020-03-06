@@ -87,6 +87,8 @@ class BeneficiaryDetails {
     private var expiredReason: String? = null
     @SerializedName(DatabaseContract.LoginTable.COLUMN_USER_ID)
     private var userId: String? = null
+    @SerializedName("flag")
+    private var flag:Int?=null
 
 
             /*@SerializedName(DATA)
@@ -218,6 +220,14 @@ class BeneficiaryDetails {
 
     fun setExpiredReason(expiredReason: String) {
         this.expiredReason = expiredReason
+    }
+
+    fun getFlag(): Int? {
+        return flag
+    }
+
+    fun setFlag(flag: Int) {
+        this.flag = flag
     }
 
     override fun toString(): String {
