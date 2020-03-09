@@ -19,6 +19,6 @@ class IncompleteFormInteractor : IIncompleteInteractor {
 
 
     override fun getIncompleteFormList(): Cursor {
-        return dbHelper?.getIncompleteFormListList()!!
+        return dbHelper?.incompleteFormListList!!
     }
 }

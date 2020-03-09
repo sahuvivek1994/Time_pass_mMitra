@@ -41,7 +41,10 @@ var space= " "
     override fun getUniqueIdFormId(uniqueId: String) : Int? {
         var formId= interactor?.getLastCompleteFilledForm(uniqueId)
         if (formId != null) {
-            formId = formId +1
+            if(formId == -1)
+                formId = 2
+            else
+                formId += 1
         }
         incompleteView?.openActivity(uniqueId,formId)
         return formId

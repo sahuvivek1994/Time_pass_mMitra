@@ -42,7 +42,7 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
     }
 
     interface  onItemClickListener{
-        fun onItemClick(uniqueId: String, form_id: Int?)
+        fun onItemClick(uniqueId: String, form_id: Int?,womanName : String)
 
     }
 
@@ -60,7 +60,7 @@ class IncompleteFormsAdapter() : RecyclerView.Adapter<IncompleteFormsAdapter.Vie
                     //presenter.getUniqueIdFormId(listModel!!.uniqueId)
                formIdToOpen +=1
                 constraintLayout.setOnClickListener {
-                    mOnItemClickListener?.onItemClick(listModel!!.uniqueId, formIdToOpen)
+                    mOnItemClickListener?.onItemClick(listModel!!.uniqueId, formIdToOpen,listModel!!.name)
                 }
             }
         }

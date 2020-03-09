@@ -9,9 +9,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_new_complete_form.*
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.database.DBHelper
 import tech.inscripts.ins_armman.mMitra.data.model.CompleteFormQnA
+import tech.inscripts.ins_armman.mMitra.forms.EnrollmentQuestions
 import tech.inscripts.ins_armman.mMitra.homeactivity.MainActivity
 import java.util.ArrayList
 
@@ -25,14 +28,16 @@ class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,FormL
     internal lateinit var id: String
     internal lateinit var name:String
     internal var form_id: Int = 0
-
+    internal lateinit var txtName : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_completed_forms_list)
+        //setContentView(R.layout.activity_completed_forms_list)
+        setContentView(R.layout.activity_new_complete_form)
         val toolbar = findViewById<Toolbar>(R.id.include)
-        toolbar.setTitle("Filled Form List")
+        toolbar.title = "Filled Form List"
         setSupportActionBar(toolbar)
         recyclerView= findViewById(R.id.recyclerView)
+        txtName = findViewById(R.id.txtName)
         db = DBHelper(this)
         presentor= CompleteFormListPresenter()
         presentor.attachView(this)
@@ -41,10 +46,17 @@ class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,FormL
         recyclerView.itemAnimator = DefaultItemAnimator()
 
         id = intent.getStringExtra("id")
-        //firstName = intent.getStringExtra("firstName")
+        name = intent.getStringExtra("firstName")
         form_id = intent.getIntExtra("form_id", 0)
-        presentor.getCompleteFormList(id)
+        txtName.text = name
         checkFormPresent()
+        btnFormFill.setOnClickListener {
+            val intent = Intent(this@CompleteFormListActivity, EnrollmentQuestions::class.java)
+            intent.putExtra("id", id)
+            intent.putExtra("firstName", name)
+            intent.putExtra("NormalRegFlag",101)
+            startActivity(intent)
+        }
     }
 
 
@@ -52,6 +64,7 @@ class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,FormL
         adapter = FormListAdapter(this,id,form_id,formDetails)
         recyclerView.adapter = adapter
         adapter.setClickListener(this)
+        adapter.notifyDataSetChanged()
     }
 
     override fun itemClicked(view: View, position: Int) {
@@ -85,6 +98,16 @@ class CompleteFormListActivity : AppCompatActivity(),ICompleteFormListView,FormL
                 startActivity(intent)
             }
             builder.show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presentor.getCompleteFormList(id)
+        var regFilledStatus = presentor.checkRegFormFilled(id)
+        if(regFilledStatus == "true") {
+            btnFormFill.setBackgroundColor(this.resources.getColor(R.color.color_completed))
+            btnFormFill.isEnabled = false
         }
     }
 }

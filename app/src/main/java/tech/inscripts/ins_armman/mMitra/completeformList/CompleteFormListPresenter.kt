@@ -44,4 +44,8 @@ class CompleteFormListPresenter : ICompleteFormListPresenter<CompleteFormListAct
         var value = interactor?.checkFormPresent()
         return value
     }
+
+    override fun checkRegFormFilled(uniqueId : String): String {
+        return interactor?.checkRegFormFilled(uniqueId)
+    }
 }

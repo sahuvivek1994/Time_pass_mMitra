@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -48,6 +49,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static tech.inscripts.ins_armman.mMitra.utility.Constants.*;
+import static tech.inscripts.ins_armman.mMitra.utility.Constants.NAME;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.*;
 
 
@@ -95,6 +97,7 @@ public class displayForm extends AppCompatActivity {
     List<Visit> dependantList = null; // is used to retireve dependant question for the selected button
     List<String> removeDependentQuestion = new ArrayList<>();
     String formid, language;
+    Bitmap photo;
     String womanLmp, mamtaCardID;
     int progresscount, womenDeliveryDays, Migrant;
     ProgressBar progress;
@@ -164,7 +167,8 @@ public class displayForm extends AppCompatActivity {
     SimpleDateFormat YMDFormat, DMYFormat;
     String pageCountText;
     TextView textViewTotalPgCount;
-    String visitId;
+    String visitId,directWomanName="",directWomanPhone="",directWomanUniqueId="";
+    int directWomanFlag=0;
     // List<ListClass> womenData = null;
     InputFilter filter = new InputFilter() {
         public CharSequence filter(CharSequence source, int start, int end,
@@ -3963,6 +3967,14 @@ public class displayForm extends AppCompatActivity {
                                     Intent intent = new Intent(displayForm.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
+                                    if(directWomanFlag==1){
+                                        directWomanName= b.getString(NAME);
+                                        directWomanPhone = b.getString("phone");
+                                        questionInteractor.saveWoman(uniqueId,directWomanName,directWomanPhone, 1);
+                                       //url questionInteractor.saveDirectWomanDetails(maxautoId,uniqueId,directWomanName,directWomanPhone);
+                                        /*if(!uniqueId.equals("0"))
+                                            questionInteractor.updateDirectReg(uniqueId);*/
+                                    }
                                         String formNumber = String.valueOf(FormID + 1);
                                         Intent intent2 = new Intent(displayForm.this, displayForm.class);
                                         intent2.putExtra(UNIQUE_ID, uniqueId);
@@ -5183,7 +5195,6 @@ public class displayForm extends AppCompatActivity {
             FormID = Integer.parseInt(formid);
             uniqueId = b.getString(UNIQUE_ID);
 
-
             questionInteractor = new QuestionInteractor(displayForm.this);
             mAppLanguage = utilityObj.getLanguagePreferance(getApplicationContext());
             womanLmp = b.getString(LMP_DATE);
@@ -5213,8 +5224,7 @@ public class displayForm extends AppCompatActivity {
             YMDFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             DMYFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
-            String uniqueIDToUse = uniqueId;
-            /*if (formid.equals("6") || formid.equals("7")
+             /*if (formid.equals("6") || formid.equals("7")
                     || formid.equals("8") || formid.equals("9")) {
                 childsUniqueIds = questionInteractor.getChildrenUniqueID(uniqueId);
 
@@ -5226,6 +5236,15 @@ public class displayForm extends AppCompatActivity {
             */
            // uniqueIDToUse = childUniqueId;
             //}
+/**
+ * this if is used when woman's first form is not fiilled and her 2nd form is being filled then to generate her unique number savewoman method is being called
+ */
+            if(uniqueId.equals("0")){
+                directWomanUniqueId =  questionInteractor.generateUniqueId();
+                uniqueId = directWomanUniqueId;
+                directWomanFlag=1;
+            }
+            String uniqueIDToUse = uniqueId;
 
             maxautoId = questionInteractor.getFilledFormReferenceId(uniqueIDToUse, String.valueOf(FormID));
 

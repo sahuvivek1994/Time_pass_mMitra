@@ -30,35 +30,73 @@ private static Utility utility= new Utility();
         this.mContext = mContext;
     }
 
-    public String saveRegistrationDetails(String name, String mobileNo
+    public String saveRegistrationDetails(String womanUniqueId,String name, String mobileNo
             ,String lmp, String address, String age, String education, String marital_status, Bitmap bitmap, int registrationStatus,String dob) {
         ContentValues values = new ContentValues();
-
-        String woman_id =  utility.generateUniqueId();
-
+        String woman_id="";
         byte[] buffer = null;
         if(bitmap != null) {
             bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
             buffer = utility.getImageByteArray(bitmap);
         }
-        values.put(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID, woman_id);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_NAME, name);
-        //values.put(DatabaseContract.RegistrationTable.COLUMN_MNAME, middle_name);
-       // values.put(DatabaseContract.RegistrationTable.COLUMN_LNAME, last_name);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_ADDRESS, address);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_DOB, dob);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_AGE, age);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO, mobileNo);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_EDUCATION, education);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE, lmp);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_MARITAL_STATUS, marital_status);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_IMAGE, buffer);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_REGISTRATION_STATUS, registrationStatus);
-        values.put(DatabaseContract.RegistrationTable.COLUMN_CREATED_ON, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
+        if(womanUniqueId.equals("0")) {
+            woman_id = utility.generateUniqueId();
+            values.put(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID, woman_id);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_NAME, name);
+            //values.put(DatabaseContract.RegistrationTable.COLUMN_MNAME, middle_name);
+            // values.put(DatabaseContract.RegistrationTable.COLUMN_LNAME, last_name);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_ADDRESS, address);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_DOB, dob);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_AGE, age);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO, mobileNo);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_EDUCATION, education);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE, lmp);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_MARITAL_STATUS, marital_status);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_IMAGE, buffer);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_REGISTRATION_STATUS, registrationStatus);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_CREATED_ON, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
 
-        utility.getDatabase().insert(DatabaseContract.RegistrationTable.TABLE_NAME, null, values);
+            utility.getDatabase().insert(DatabaseContract.RegistrationTable.TABLE_NAME, null, values);
+
+        }
+        else {
+            woman_id = womanUniqueId;
+            values.put(DatabaseContract.RegistrationTable.COLUMN_ADDRESS, address);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_DOB, dob);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_AGE, age);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_EDUCATION, education);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE, lmp);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_MARITAL_STATUS, marital_status);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_IMAGE, buffer);
+            values.put(DatabaseContract.RegistrationTable.COLUMN_CREATED_ON, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
+
+            utility.getDatabase().update(DatabaseContract.RegistrationTable.TABLE_NAME
+                    , values
+                    , DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID + " = ? "
+                    , new String[]{woman_id});
+
+        }
+
 
         return woman_id;
+    }
+
+    /**
+     * this method is called when woman's 2nd form is being filled first and her 1st form is not filled
+     * then to store woman's name and unique is this method is used.
+     *  @param name
+     * @param registrationStatus
+     * @return
+     */
+    public void saveWoman(String uniqueId,String name,String phone,int registrationStatus){
+        ContentValues values = new ContentValues();
+        String woman_id =  uniqueId;
+        values.put(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID, woman_id);
+        values.put(DatabaseContract.RegistrationTable.COLUMN_NAME, name);
+        values.put(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO, phone);
+        values.put(DatabaseContract.RegistrationTable.COLUMN_REGISTRATION_STATUS, registrationStatus);
+        values.put(DatabaseContract.RegistrationTable.COLUMN_CREATED_ON, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()));
+        utility.getDatabase().insert(DatabaseContract.RegistrationTable.TABLE_NAME, null, values);
     }
 
     public int saveFilledFormStatus(String uniqueId, int formId, int completionStatus, int syncStatus, String createdOn) {
@@ -68,7 +106,6 @@ private static Utility utility= new Utility();
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_COMPLETION_STATUS, completionStatus);
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_FORM_SYNC_STATUS, syncStatus);
         values.put(DatabaseContract.FilledFormStatusTable.COLUMN_CREATED_ON, createdOn);
-       // values.put(DatabaseContract.FilledFormStatusTable.COLUMN_WAGES_STATUS, wages_status);
 
         return (int) utility.getDatabase().insert(DatabaseContract.FilledFormStatusTable.TABLE_NAME, null, values);
     }
@@ -408,5 +445,8 @@ private static Utility utility= new Utility();
         else return null;
     }
 
-
+public String generateUniqueId(){
+        String id =  utility.generateUniqueId();
+        return id;
+}
 }

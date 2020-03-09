@@ -9,6 +9,7 @@ interface IMainActivityPresentor<V> : IBasePresenter<V> {
     fun getLoginDetail(userDetails : ArrayList<String>)
     fun fetchRegistrationData()
     fun onFetchedRegistrationData(cursor: Cursor)
+    fun onFetchedDirectwomanRegData(uniqueID :String, name : String,mobile : String)
     fun fetchUnsentFormsCount()
     fun syncUnsentForms()
     interface OnQueryFinished {

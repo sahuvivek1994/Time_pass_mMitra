@@ -226,10 +226,16 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public int getLastCompleteFilledFormId(String uniqueId) {
 int formId = 0;
+String form="";
 Cursor cur= utility.getDatabase().rawQuery("SELECT max(form_id) as form_id FROM " + FilledFormStatusTable.TABLE_NAME + " WHERE unique_id = '" + uniqueId + "' AND form_completion_status = 1", null);
 if(cur!=null && cur.moveToFirst()){
-    formId = Integer.parseInt(cur.getString(cur.getColumnIndex("form_id")));
+    form = cur.getString(cur.getColumnIndex("form_id"));
+    if(form==null)
+        formId=-1;
+    else
+        formId = Integer.parseInt(form);
 }
+else formId = -1;
 return  formId;
     }
     /*public Cursor getCompleteFormDetails(String unique_id, int form_id) {
@@ -248,7 +254,6 @@ return  formId;
      *form 6 contains question label but does'nt contain answer label so only
      main_questions and question_answers involved in query and not question_option
      * @param unique_id=child unique_id
-     * @param form_id=child form_id
      * @return
      *//*
     public Cursor getForm6Details(String unique_id,int form_id){
@@ -341,5 +346,21 @@ public int checkFormsPresent(){
             a= -1;
         }
         return a;
+}
+
+public String checkRegFormFillrd(String uniqueId){
+   String status="";
+   String addr="";
+    Cursor cur = utility.getDatabase().rawQuery("select "+ RegistrationTable.COLUMN_ADDRESS+" from "+RegistrationTable.TABLE_NAME+
+            " where "+RegistrationTable.COLUMN_UNIQUE_ID+"= '"+uniqueId+"'",null);
+    int a = cur.getCount();
+    if(cur!=null && cur.moveToFirst()){
+        addr = cur.getString(cur.getColumnIndex(RegistrationTable.COLUMN_ADDRESS));
+        if(addr!=null)
+            status = "true";
+        else
+            status = "false";
+    }
+    return status;
 }
 }

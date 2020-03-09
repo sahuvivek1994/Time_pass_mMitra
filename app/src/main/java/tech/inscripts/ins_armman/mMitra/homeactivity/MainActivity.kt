@@ -6,32 +6,35 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
-import android.widget.Toast
 import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
-import android.view.MenuItem
 import android.support.v4.widget.DrawerLayout
-import android.support.design.widget.NavigationView
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_homeactivity.*
 import kotlinx.android.synthetic.main.content_homeactivity.*
+import kotlinx.android.synthetic.main.reg_alert_layout.view.*
 import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.completeforms.CompleteFormActivity
+import tech.inscripts.ins_armman.mMitra.displayform.displayForm
 import tech.inscripts.ins_armman.mMitra.forms.EnrollmentQuestions
 import tech.inscripts.ins_armman.mMitra.incompleteforms.IncompleteFormActivity
 import tech.inscripts.ins_armman.mMitra.settingactivity.Settings
 import tech.inscripts.ins_armman.mMitra.settingactivity.SettingsActivity
 import tech.inscripts.ins_armman.mMitra.settingactivity.SettingsPresentor
 import tech.inscripts.ins_armman.mMitra.userprofile.UserProfileActivity
+import tech.inscripts.ins_armman.mMitra.utility.Constants
 import tech.inscripts.ins_armman.mMitra.utility.Utility
-import java.util.ArrayList
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,IMainActivity,View.OnClickListener {
 
@@ -41,6 +44,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var mSyncDrawable: LayerDrawable? = null
     var mProgressDialog: android.support.v7.app.AlertDialog? = null
     var userDetails = ArrayList<String>()
+    private var name : String=""
+    private var phone : String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homeactivity)
@@ -104,6 +109,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onResume() {
+        super.onResume()
+        mPresenter?.fetchUnsentFormsCount()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item != null) {
             when (item.getItemId()) {
@@ -130,7 +140,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 mPresenter?.downloadForms()
             }
             R.id.nav_restoreData -> {
-                val builder = android.support.v7.app.AlertDialog.Builder(getContext())
+                val builder = AlertDialog.Builder(getContext())
                 builder.setTitle(R.string.restore_data)
                // builder.setTitle("NOTICE")
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -153,7 +163,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                           }
 
             R.id.nav_logout -> {
-                val builder = android.support.v7.app.AlertDialog.Builder(getContext())
+                val builder = AlertDialog.Builder(getContext())
                 builder.setTitle(R.string.logout)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setMessage(R.string.logout_message)
@@ -189,7 +199,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var dialogView = inflater.inflate(R.layout.progress_dialog_layout, null)
         var textView = dialogView.findViewById<TextView>(R.id.textView_label)
         textView.text = label
-        var mAlertDialogBuilder = android.support.v7.app.AlertDialog.Builder(this)
+        var mAlertDialogBuilder = AlertDialog.Builder(this)
         mAlertDialogBuilder.setView(dialogView)
         mAlertDialogBuilder.setCancelable(false)
         mProgressDialog = mAlertDialogBuilder.create()
@@ -201,7 +211,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun showFormUpdateErrorDialog() {
-        val builder = android.support.v7.app.AlertDialog.Builder(getContext())
+        val builder = AlertDialog.Builder(getContext())
         builder.setTitle(R.string.restore_warning_text)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setMessage(R.string.update_forms_message)
@@ -217,7 +227,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onClick(v: View?) {
         when (v?.getId()) {
-            R.id.btnRegistration -> startActivity(Intent(this, EnrollmentQuestions::class.java))
+            R.id.btnRegistration -> openForms()//startActivity(Intent(this, EnrollmentQuestions::class.java))
 
             R.id.btnIncompleteForm -> startActivity(Intent(this, IncompleteFormActivity::class.java))
 
@@ -227,6 +237,68 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    /**
+     * this method is used for asking user whether the first form is being filled or from 2nd form the form filling will be donw
+     */
+    private fun openForms(){
+        val builder = AlertDialog.Builder(getContext())
+        builder.setTitle("CONFIRM")
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setMessage("Do you want to fill Participant Details?")
+            .setPositiveButton("Fill Participant Details") {
+                    dialog, which ->
+                val intent = Intent(this@MainActivity, EnrollmentQuestions::class.java)
+                intent.putExtra("NormalRegFlag", 100)
+                startActivity(intent)
+            }
+            .setNegativeButton("Continue from Form 2"){
+                dialog,which->
+                askWomanName()
+            }
+            .show()
+    }
+
+    /**
+     * if woman's 2nd form is being filled first then to keep her track this method is called where woman's name is asked
+     * and her name and unique id will be stored.
+     */
+    private fun askWomanName() {
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.reg_alert_layout, null)
+        var etName: EditText = mDialogView.findViewById(R.id.dialogNameEt)
+        var etPhone: EditText = mDialogView.findViewById(R.id.dialogPhoneEt)
+        val builder = AlertDialog.Builder(getContext())
+            .setView(mDialogView)
+        val mAlertDialog = builder.show()
+        mDialogView.btnContinue.setOnClickListener {
+            name = etName.text.toString()
+            phone = etPhone.text.toString()
+            if (name != null && phone != null) {
+                if (phone.length ==10) {
+                    mAlertDialog.dismiss()
+                    val intent = Intent(this@MainActivity, displayForm::class.java)
+                    intent.putExtra(Constants.UNIQUE_ID, "0")
+                    intent.putExtra(Constants.FORM_ID, "2")
+                    intent.putExtra(Constants.NAME, name)
+                    intent.putExtra("phone", phone)
+                    startActivity(intent)
+                } else {
+                    etPhone.error = "please enter valid phone number"
+                }
+            }else if(name.isEmpty() && !phone.isEmpty() ){
+                etName.error = "please enter proper name"
+            }
+            else if(phone.isEmpty() && !name.isEmpty()){
+                etPhone.error = "please enter phone number"
+            }
+            else{
+                etName.error = "please enter proper name"
+                etPhone.error = "please enter phone number"
+            }
+            mDialogView.btnCancel.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
+        }
+    }
     override fun updateAvailable(url: String) {
         android.app.AlertDialog.Builder(this)
             .setMessage(getString(R.string.dialog_update_available))
@@ -235,5 +307,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             })
             .setNegativeButton(getString(R.string.cancel),DialogInterface.OnClickListener { dialog, which ->  })
             .show()
+    }
+
+    override fun alertForRegistration() {
+        val builder = AlertDialog.Builder(getContext())
+        builder.setTitle("REGISTRAtION ALERT")
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setMessage("You haven't filled registration form of this woman. To sync the data on server please fill registration form first.")
+            .setCancelable(false)
+            .setPositiveButton(
+                R.string.ok
+            ) { dialog, which -> }
+            .show()
+
     }
 }
