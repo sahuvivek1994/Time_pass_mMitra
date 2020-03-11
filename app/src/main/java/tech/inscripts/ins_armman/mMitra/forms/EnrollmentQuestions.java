@@ -105,7 +105,9 @@ import static tech.inscripts.ins_armman.mMitra.utility.Keywords.AROGYASAKHI_NAME
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.EDUCATION;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.LMP_DATE_KEYWORD;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.MARITAL_STATUS;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.NAME_KEYWORD;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.PHC_NAME;
+import static tech.inscripts.ins_armman.mMitra.utility.Keywords.PHONE_KEYWORD;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.VILLAGE_NAME;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.WOMAN_AGE;
 import static tech.inscripts.ins_armman.mMitra.utility.Keywords.WOMAN_DOB;
@@ -167,7 +169,8 @@ public class EnrollmentQuestions extends AppCompatActivity {
     String gestationalDate;
     SimpleDateFormat formatter;
     Date SystemDate, selectedDate;
-    String Name,womanName="",womanUniqueId="";
+    String Name,womanName="",womanUniqueId,directRegName="",directRegPhone="";
+    ArrayList<String> directRegDetails= new ArrayList<>();
     Bundle b;
     int flag,NormalRegFlag;
     String women_in_highrisk;
@@ -666,13 +669,12 @@ public class EnrollmentQuestions extends AppCompatActivity {
 
 
                             Toast.makeText(getApplicationContext(), EnrollmentQuestions.this.getString(R.string.Toast_msg_for_formsavesuccessfully), Toast.LENGTH_LONG).show();
-
-                           /* Intent intent = new Intent(EnrollmentQuestions.this, displayForm.class);
-                            intent.putExtra(UNIQUE_ID, uniqueId);
-                            intent.putExtra(FORM_ID, "2");
-                            startActivity(intent);
-
-                            */
+                            if(NormalRegFlag==100) {
+                                Intent intent = new Intent(EnrollmentQuestions.this, displayForm.class);
+                                intent.putExtra(UNIQUE_ID, uniqueId);
+                                intent.putExtra(FORM_ID, "2");
+                                startActivity(intent);
+                            }
                             finish();
 
                         }
@@ -797,6 +799,15 @@ public class EnrollmentQuestions extends AppCompatActivity {
             womendetails.put(keyword, et.getText().toString());
             womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString().trim());
             validationlist.put("" + et.getTag(), et.getText().toString());
+        }else if(keyword.equals(NAME_KEYWORD)){
+            if(NormalRegFlag==101){
+                et.setText(directRegName);
+            et.setFocusable(false);
+            tv.setError(null);
+            womendetails.put(keyword, et.getText().toString());
+            womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString().trim());
+            validationlist.put("" + et.getTag(), et.getText().toString());
+        }
         }
 
 
@@ -1543,6 +1554,18 @@ public class EnrollmentQuestions extends AppCompatActivity {
             womendetails.put(keyword, et.getText().toString());
             womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString().trim());
             validationlist.put("" + et.getTag(), et.getText().toString());
+        }else if(keyword.equals(PHONE_KEYWORD)){
+            if(NormalRegFlag==101){
+            et.setText(directRegPhone);
+            et.setFocusable(false);
+            tv.setError(null);
+            et.setError(null);
+            womendetails.put(keyword, et.getText().toString());
+            womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString().trim());
+            validationlist.put("" + et.getTag(), et.getText().toString());
+            NextButtonvalidationlist.remove("" + et.getTag());
+
+            }
         }
 
 
@@ -5113,20 +5136,36 @@ public class EnrollmentQuestions extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object[] params) {
             inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            questionInteractor = new QuestionInteractor(EnrollmentQuestions.this);
 
             formID = "1";
             Intent in = getIntent();
             b = in.getExtras();
+            /**
+             * NormalRegFlag = to track whether woman's rwgistration form is filled first or not.
+             * if NormalRegFlag = 100 that means woman's registration form is filled first ie normal registration (flow from @MAinActivity)
+             * if NormalRegFlag = 101 that means woman's other forms are filled first and her name and phone_no already present
+             * while filling form 2.(flow from @ CompleteFormListActivity)
+             */
            NormalRegFlag = b.getInt("NormalRegFlag");
                     if(NormalRegFlag==101) {
                         womanUniqueId = b.getString("id");
                         womanName = b.getString("firstName");
                         // flag = b.getInt("flag");
-                        if (womanUniqueId == null)
-                            womanUniqueId = "0";
-                    }
+                        if (womanUniqueId == null) {
+                            womanUniqueId = "0"; //womanId= 0 means womam's reistration form is being filled as first form
+                            //so uniqueID is not generated that means normal registration
+                        }else{
+                        /**get name and phone number of direct registration woman to autodisplay and store it in registration visit.*/
 
-            questionInteractor = new QuestionInteractor(EnrollmentQuestions.this);
+                        directRegDetails = questionInteractor.getDirectWomanDetails(womanUniqueId);
+                        directRegName = directRegDetails.get(0);
+                        directRegPhone = directRegDetails.get(1);
+                    }
+                    }
+                    else
+                        womanUniqueId = "0"; //womanId= 0 means womam's reistration form is being filled as first form
+
             mAppLanguage = utilityObj.getLanguagePreferance(getApplicationContext());
             init();
 

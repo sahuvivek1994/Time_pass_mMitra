@@ -77,6 +77,7 @@
     <string name="title_data_not_found">यह डेटा नहीं मिला</string>
     <string name="ok">ठीक</string>
     <string name="cancel">रद्द</string>
+    <string name="next">Continue</string>
     <string name="no_important_msg">कोई संदेश नहीं हैं</string>
     <string name="loading_question">सवाल लोड हो रहा है ...</string>
     <string name="error">Error</string>
@@ -332,4 +333,12 @@
     <string name="setting">सेटिंग्स</string>
 <string name="logout_message">क्या आप लॉग आउट करना चाहते हैं?</string>
     <string name="no_reg">कोई पंजीकरण नहीं</string>
+    <string name="confirm_Reg">Do you want to fill Participant Information now?</string>
+    <string name="confirm_Reg_option1">Fill now</string>
+    <string name="confirm_Reg_option2">Fill later</string>
+    <string name="direct_woman_details">Please enter following details to continue</string>
+    <string name="direct_woman_name">Enter Name</string>
+    <string name="direct_woman_phone">Enter Mobile Number</string>
+    <string name="valid_phone">please enter valid phone number</string>
+    <string name="valid_name">please enter proper name</string>
 </resources>
