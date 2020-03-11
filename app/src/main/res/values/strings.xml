@@ -67,6 +67,7 @@
     <string name="title_data_not_found">Data not found</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="next">Next</string>
     <string name="no_important_msg">No message detected</string>
     <string name="loading_question">Loading questions....</string>
     <string name="error">Error</string>
@@ -341,5 +342,12 @@
     <string name="setting">settings</string>
     <string name="logout_message">Are you sure you want to logout?</string>
     <string name="no_reg">NO REGISTRATION</string>
-
+    <string name="confirm_Reg">Do you want to fill Participant Information now?</string>
+    <string name="confirm_Reg_option1">Fill now</string>
+    <string name="confirm_Reg_option2">Fill later</string>
+    <string name="direct_woman_details">Please enter following details to continue</string>
+    <string name="direct_woman_name">Enter complete name</string>
+    <string name="direct_woman_phone">Enter mobile number</string>
+    <string name="valid_phone">please enter valid phone number</string>
+    <string name="valid_name">please enter proper name</string>
 </resources>

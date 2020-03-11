@@ -87,7 +87,7 @@ class BeneficiaryDetails {
     private var expiredReason: String? = null
     @SerializedName(DatabaseContract.LoginTable.COLUMN_USER_ID)
     private var userId: String? = null
-    @SerializedName("flag")
+    @SerializedName("mmitra_flag")
     private var flag:Int?=null
 
 

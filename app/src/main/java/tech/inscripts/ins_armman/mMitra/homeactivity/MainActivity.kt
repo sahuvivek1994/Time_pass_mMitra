@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
-            startActivity(Intent(this,EnrollmentQuestions::class.java))
+            openForms()
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -127,9 +127,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_registration -> {
-                startActivity(Intent(this,EnrollmentQuestions::class.java))
-            }
+            R.id.nav_registration -> { openForms() }
             R.id.nav_complete -> {
                 startActivity(Intent(this,CompleteFormActivity::class.java))
             }
@@ -242,16 +240,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      */
     private fun openForms(){
         val builder = AlertDialog.Builder(getContext())
-        builder.setTitle("CONFIRM")
+        builder.setTitle(this.getString(R.string.confirm_dialog))
             .setIcon(android.R.drawable.ic_dialog_alert)
-            .setMessage("Do you want to fill Participant Details?")
-            .setPositiveButton("Fill Participant Details") {
+            .setMessage(this.getString(R.string.confirm_Reg))
+            .setPositiveButton(this.getString(R.string.confirm_Reg_option1)) {
                     dialog, which ->
                 val intent = Intent(this@MainActivity, EnrollmentQuestions::class.java)
                 intent.putExtra("NormalRegFlag", 100)
                 startActivity(intent)
             }
-            .setNegativeButton("Continue from Form 2"){
+            .setNegativeButton(this.getString(R.string.confirm_Reg_option2)){
                 dialog,which->
                 askWomanName()
             }
@@ -282,21 +280,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     intent.putExtra("phone", phone)
                     startActivity(intent)
                 } else {
-                    etPhone.error = "please enter valid phone number"
+                    etPhone.error = this.getString(R.string.valid_phone)
                 }
             }else if(name.isEmpty() && !phone.isEmpty() ){
-                etName.error = "please enter proper name"
+                etName.error = this.getString(R.string.valid_name)
             }
             else if(phone.isEmpty() && !name.isEmpty()){
-                etPhone.error = "please enter phone number"
+                etPhone.error = this.getString(R.string.valid_phone)
             }
             else{
-                etName.error = "please enter proper name"
-                etPhone.error = "please enter phone number"
+                etName.error = this.getString(R.string.valid_name)
+                etPhone.error = this.getString(R.string.valid_phone)
             }
-            mDialogView.btnCancel.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
+        }
+        mDialogView.btnCancel.setOnClickListener {
+            mAlertDialog.dismiss()
         }
     }
     override fun updateAvailable(url: String) {

@@ -31,4 +31,8 @@ public interface Keywords {
     String CHILD_DEATH_REASON = "cause_of_death_as_mentioned_on_the_death_certificate";
     String CHILD_DOB = "Date_of_Birth";
     String CHILD_COUNT="child_count";
+    String NAME_KEYWORD="Participant_complete_name";
+//    String NAME_KEYWORD="woman_name";
+    String PHONE_KEYWORD="mobile_number";
+//    String PHONE_KEYWORD="phone_no";
 }

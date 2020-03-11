@@ -39,6 +39,9 @@ private static Utility utility= new Utility();
             bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
             buffer = utility.getImageByteArray(bitmap);
         }
+        /**
+         * womanUniqueId = 0 that means woman's registration form is filled as first form that makes it normal registration.
+         */
         if(womanUniqueId.equals("0")) {
             woman_id = utility.generateUniqueId();
             values.put(DatabaseContract.RegistrationTable.COLUMN_UNIQUE_ID, woman_id);
@@ -59,6 +62,9 @@ private static Utility utility= new Utility();
             utility.getDatabase().insert(DatabaseContract.RegistrationTable.TABLE_NAME, null, values);
 
         }
+        /**
+         * this part is to store woman's name and phone number to registration where her registration form is not filled yet.
+         */
         else {
             woman_id = womanUniqueId;
             values.put(DatabaseContract.RegistrationTable.COLUMN_ADDRESS, address);
@@ -449,4 +455,16 @@ public String generateUniqueId(){
         String id =  utility.generateUniqueId();
         return id;
 }
+
+public ArrayList<String> getDirectWomanDetails(String unique_id){
+        Cursor cur= utility.getDatabase().rawQuery("select name,phone_no from registration where unique_id='"+unique_id+"'",null);
+        int a= cur.getCount();
+        ArrayList<String> directRegDetails = new ArrayList<>();
+        if(cur!=null && cur.moveToFirst()){
+            directRegDetails.add(cur.getString(cur.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_NAME)));
+            directRegDetails.add(cur.getString(cur.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO)));
+        }
+        return directRegDetails;
+}
+
 }
