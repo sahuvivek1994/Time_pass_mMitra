@@ -1,6 +1,5 @@
 package tech.inscripts.ins_armman.mMitra.data.service
 
-import android.content.Context
 import android.util.Log
 import okhttp3.ResponseBody
 import org.json.JSONException
@@ -11,9 +10,8 @@ import tech.inscripts.ins_armman.mMitra.R
 import tech.inscripts.ins_armman.mMitra.data.model.syncing.UpdateImageModel
 import tech.inscripts.ins_armman.mMitra.homeactivity.IMainActivityInteractor
 import java.io.IOException
-import javax.security.auth.callback.Callback
 
-class SyncUpdatePhotoservice {
+class SyncUpdatePhotoService {
     var mPhotoserviceApi : SyncUpdatePhotoServiceApi?=null
 
     constructor(mPhotoserviceApi: SyncUpdatePhotoServiceApi?) {
