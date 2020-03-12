@@ -98,22 +98,22 @@ import tech.inscripts.ins_armman.mMitra.utility.Utility;
 import static tech.inscripts.ins_armman.mMitra.utility.Constants.FORM_ID;
 import static tech.inscripts.ins_armman.mMitra.utility.Constants.UNIQUE_ID;
 import static tech.inscripts.ins_armman.mMitra.utility.Constants.delimeter;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.ADDRESS;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.AROGYASAKHI_ALTERNATE_NO;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.AROGYASAKHI_MOB;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.AROGYASAKHI_NAME;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.EDUCATION;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.LMP_DATE_KEYWORD;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.MARITAL_STATUS;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.NAME_KEYWORD;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.PHC_NAME;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.PHONE_KEYWORD;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.VILLAGE_NAME;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.WOMAN_AGE;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.WOMAN_DOB;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.WOMAN_MOB_NO;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.WOMAN_NAME;
-
+import static tech.inscripts.ins_armman.mMitra.Keywords.ADDRESS;
+import static tech.inscripts.ins_armman.mMitra.Keywords.AROGYASAKHI_ALTERNATE_NO;
+import static tech.inscripts.ins_armman.mMitra.Keywords.AROGYASAKHI_MOB;
+import static tech.inscripts.ins_armman.mMitra.Keywords.AROGYASAKHI_NAME;
+import static tech.inscripts.ins_armman.mMitra.Keywords.EDUCATION;
+import static tech.inscripts.ins_armman.mMitra.Keywords.LMP_DATE_KEYWORD;
+import static tech.inscripts.ins_armman.mMitra.Keywords.MARITAL_STATUS;
+import static tech.inscripts.ins_armman.mMitra.Keywords.NAME_KEYWORD;
+import static tech.inscripts.ins_armman.mMitra.Keywords.PHC_NAME;
+import static tech.inscripts.ins_armman.mMitra.Keywords.PHONE_KEYWORD;
+import static tech.inscripts.ins_armman.mMitra.Keywords.VILLAGE_NAME;
+import static tech.inscripts.ins_armman.mMitra.Keywords.WOMAN_AGE;
+import static tech.inscripts.ins_armman.mMitra.Keywords.WOMAN_DOB;
+import static tech.inscripts.ins_armman.mMitra.Keywords.WOMAN_MOB_NO;
+import static tech.inscripts.ins_armman.mMitra.Keywords.WOMAN_NAME;
+import static tech.inscripts.ins_armman.mMitra.Keywords.*;
 
 /**
  * This class is used to display questions of registration forms dynamically from the localDB.
@@ -658,8 +658,6 @@ public class EnrollmentQuestions extends AppCompatActivity {
                                 uniqueId = questionInteractor.saveRegistrationDetails(womanUniqueId,womendetails.get(WOMAN_NAME), womendetails.get(WOMAN_MOB_NO)
                                         , womendetails.get(LMP_DATE_KEYWORD), womendetails.get(ADDRESS), womendetails.get(WOMAN_AGE)
                                         , womendetails.get(EDUCATION), womendetails.get(MARITAL_STATUS), photo, 1, womendetails.get(WOMAN_DOB));
-
-
                             /**
                              * Saving the Enrollment form status as complete and its upload status as 0 i.e not uploaded to the server
                              */

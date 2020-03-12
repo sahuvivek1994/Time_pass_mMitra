@@ -25,7 +25,7 @@ import tech.inscripts.ins_armman.mMitra.utility.Constants.*
 import tech.inscripts.ins_armman.mMitra.utility.Utility
 import java.util.ArrayList
 
-class MainActivityPresentor : IMainActivityPresentor<IMainActivity>,IMainActivityInteractor.OnDataSync,
+ class MainActivityPresentor : IMainActivityPresentor<IMainActivity>,IMainActivityInteractor.OnDataSync,
     IMainActivityInteractor.OnFormSync,ISettingsInteractor.OnFormDownloadFinished,ISettingsInteractor.onCheckUpdateFinished,
     ISettingsInteractor.OnRegistrationsDownloadFinished,ISettingsInteractor.OnVisitsDownloadFinished {
 
@@ -112,14 +112,15 @@ var mRequest: RestoreDataRequest?=null
             val name= cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_NAME))
             val mobile = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_MOBILE_NO))
             val addr = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_ADDRESS))
+            val createdOn = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_CREATED_ON))
             if(addr==null){
-                onFetchedDirectwomanRegData(uniqueId,name,mobile)
+                onFetchedDirectwomanRegData(uniqueId,name,mobile,createdOn)
                }
             else{
                 val lmp =   cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_LMP_DATE))
                 val dob = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_AGE))
                 val education = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_EDUCATION))
-                val createdOn = cursor.getString(cursor.getColumnIndex(DatabaseContract.RegistrationTable.COLUMN_CREATED_ON))
+
 
             details.setUniqueId(uniqueId)
             details.setName(name)
@@ -141,7 +142,7 @@ var mRequest: RestoreDataRequest?=null
         }
     }
 
-    override fun onFetchedDirectwomanRegData(uniqueId :String,name : String,mobile : String) {
+    override fun onFetchedDirectwomanRegData(uniqueId :String,name : String,mobile : String,createdOn : String) {
 
         var regDetails = SyncRegistrationDetails()
         regDetails.setusername(mUsername)
@@ -154,7 +155,7 @@ var mRequest: RestoreDataRequest?=null
         details.setName(name)
         details.setMobNo(mobile)
         details.setFlag(1)
-
+        details.setCreatedOn(createdOn)
         regData.add(details)
 
         if (regData.size == 0)

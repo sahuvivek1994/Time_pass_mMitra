@@ -1,23 +1,24 @@
-package tech.inscripts.ins_armman.mMitra.utility;
+package tech.inscripts.ins_armman.mMitra;
 
 public interface Keywords {
+
     String VILLAGE_NAME = "village_name";
     String PHC_NAME = "phc_name";
     String AROGYASAKHI_NAME = "arogyasakhi_name";
     String AROGYASAKHI_MOB = "arogyasakhi_mob";
     String AROGYASAKHI_ALTERNATE_NO = "arogyasakhi_alternate_mob_no";
     String NAME = "name";
-    String WOMAN_NAME = "woman_name";
-  //  String WOMAN_MNAME = "middle_name";
+    String WOMAN_NAME = "Participant_complete_name";
+    //  String WOMAN_MNAME = "middle_name";
     String WOMAN_DOB = "women_dob";
-    String WOMAN_AGE = "woman_age";
-    String ADDRESS = "woman_address";
-    String LMP_DATE_KEYWORD = "lmp_date";
+    String WOMAN_AGE = "Age";
+    String ADDRESS = "participant_complete_address";
+    String LMP_DATE_KEYWORD = "lmpdate";
     String EDD = "edd";
-    String WOMAN_MOB_NO = "phone_no";
+    String WOMAN_MOB_NO = "mobile_number";
     String WOMAN_ALTERNATE_NO = "women_alternate_mob_no";
-    String EDUCATION = "women_education";
-    String MARITAL_STATUS = "marital_status";
+    String EDUCATION = "completed_education";
+    String MARITAL_STATUS = "maritalstatus";
     String HOUSE_TYPE = "woman_house_type";
     String MOTHER_CLOSE_REASON = "close_reason";
     String MOTHER_DEATH_DATE = "mother_expire_date";

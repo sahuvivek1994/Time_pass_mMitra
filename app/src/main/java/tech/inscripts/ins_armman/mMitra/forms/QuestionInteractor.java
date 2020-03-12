@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static tech.inscripts.ins_armman.mMitra.utility.Constants.*;
-import static tech.inscripts.ins_armman.mMitra.utility.Keywords.*;
+import static tech.inscripts.ins_armman.mMitra.Keywords.*;
 
 
 /**
