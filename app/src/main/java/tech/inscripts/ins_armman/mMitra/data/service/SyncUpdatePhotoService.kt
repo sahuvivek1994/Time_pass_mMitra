@@ -12,16 +12,16 @@ import tech.inscripts.ins_armman.mMitra.homeactivity.IMainActivityInteractor
 import java.io.IOException
 
 class SyncUpdatePhotoService {
-    var mPhotoServiceApi:SyncUpdatePhotoServiceApi?=null
+    var mPhotoserviceApi : SyncUpdatePhotoServiceApi?=null
 
-    constructor(mPhotoServiceApi: SyncUpdatePhotoServiceApi?) {
-        this.mPhotoServiceApi = mPhotoServiceApi
+    constructor(mPhotoserviceApi: SyncUpdatePhotoServiceApi?) {
+        this.mPhotoserviceApi = mPhotoserviceApi
     }
 
     fun syncUpdatePhotoDetails(updateImageModel: UpdateImageModel,updatedPhotoSync: IMainActivityInteractor.OnUpdatedPhotoSync){
-        Log.d("SyncUpdatePhotoService", "SyncUpdatePhotoService start request")
-        val responseBodyCall = mPhotoServiceApi!!.SyncUpdatePhotoDetails(updateImageModel)
-        responseBodyCall.enqueue(object:retrofit2.Callback<ResponseBody>{
+        Log.d("SyncUpdatePhotoService","SyncUpdatePhotoService start request")
+        var responseBosyCall = mPhotoserviceApi!!.SyncUpdatePhotoDetails(updateImageModel)
+        responseBosyCall.enqueue(object :retrofit2.Callback<ResponseBody>{
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
                 updatedPhotoSync.onFailureUpdatedPhotoSync(R.string.oops_some_thing_happened_wrong)
 
