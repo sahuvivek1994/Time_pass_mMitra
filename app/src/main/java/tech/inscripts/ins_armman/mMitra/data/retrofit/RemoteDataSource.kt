@@ -57,8 +57,8 @@ return FormDownloadService(createApiService(FormDownloadServiceAPI::class.java))
 
 
 
-    fun syncUpdatePhotoService(): SyncUpdatePhotoservice {
+    /*fun syncUpdatePhotoService(): SyncUpdatePhotoservice {
         return SyncUpdatePhotoservice(createApiService(SyncUpdatePhotoServiceApi::class.java))
-    }
+    }*/
 
 }
