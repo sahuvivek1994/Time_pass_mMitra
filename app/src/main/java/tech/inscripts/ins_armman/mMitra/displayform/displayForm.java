@@ -512,9 +512,6 @@ public class displayForm extends AppCompatActivity {
                     scroll_temp = (ScrollView) Frame.findViewById(Integer.parseInt(String.valueOf(scrollId.get(scrollcounter))));
                     scroll_temp.setVisibility(View.VISIBLE);
 
-                    if(directWomanFlag ==1 && FormID ==2 )
-                        questionInteractor.saveFilledFormStatus(uniqueId, FormID, 1, 0, utilityObj.getCurrentDateTime());
-                    else
                     questionInteractor.updateFormCompletionStatus(maxautoId);
                     //TODO: Remove all currentTable code from project
 //                    questionInteractor.currentFormUpdate(uniqueId, FormID);
@@ -1323,7 +1320,7 @@ public class displayForm extends AppCompatActivity {
             validationlist.put("" + et.getTag(), et.getText().toString());
             NextButtonvalidationlist.put("" + et.getTag(), scroll.getId());
             if(keyword.equalsIgnoreCase("participant_study_id")){
-                if(directWomanName.equals(null) || directWomanName.isEmpty()){
+                if(directWomanFlag!=1){
                     validationlist.remove("" + et.getTag());
                     NextButtonvalidationlist.remove(keyword);
                 }
@@ -5275,8 +5272,8 @@ public class displayForm extends AppCompatActivity {
             maxautoId = questionInteractor.getFilledFormReferenceId(uniqueIDToUse, String.valueOf(FormID));
 
             if (maxautoId == -1) {
-                if(directWomanFlag!=1 && FormID!=2)
-                    maxautoId = questionInteractor.saveFilledFormStatus(uniqueIDToUse, FormID, 0, 0, utilityObj.getCurrentDateTime());
+
+                maxautoId = questionInteractor.saveFilledFormStatus(uniqueIDToUse, FormID, 0, 0, utilityObj.getCurrentDateTime());
             }
 
             previousVisitDetails = questionInteractor.getFormFilledData(uniqueIDToUse, (FormID - 1));
@@ -5416,7 +5413,7 @@ public class displayForm extends AppCompatActivity {
                  * following if loop is for certain questions to skip on specific conditions
                  */
                 if(alertList.get(j).getKeyword().equals("participant_study_id")){
-                    if(directWomanName.equals(null) || directWomanName.isEmpty()){
+                    if(directWomanFlag!=1){
                         ll_4layout.removeView(ll);
                     }
                 }
