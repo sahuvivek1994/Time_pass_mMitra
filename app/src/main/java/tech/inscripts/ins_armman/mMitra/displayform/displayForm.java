@@ -1320,7 +1320,12 @@ public class displayForm extends AppCompatActivity {
             tv.setError("");
             validationlist.put("" + et.getTag(), et.getText().toString());
             NextButtonvalidationlist.put("" + et.getTag(), scroll.getId());
-
+            if(keyword.equalsIgnoreCase("participant_study_id")){
+                if(directWomanName.equals(null) || directWomanName.isEmpty()){
+                    validationlist.remove("" + et.getTag());
+                    NextButtonvalidationlist.remove(keyword);
+                }
+            }
         }
 
         if (messages != null && messages.length() > 0) {
@@ -1740,14 +1745,24 @@ public class displayForm extends AppCompatActivity {
                 rb.setOnClickListener(new View.OnClickListener() {
 
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                         hideSoftKeyboard(v);
 
                         PregnancyStatus = rb.getTag().toString();
                         int id = rg.getCheckedRadioButtonId();
                         int parentId = (((ViewGroup) rb.getParent()).getId()); //parentTag
-
+/*
+*
+        if (PregnancyStatus.equals("previous_pregnancies_issue_no") && !PregnancyStatus.equals(null)) {
+            try {
+                //onClickButtonFunctionality(rb, v, quesid, keyword, setid, 1, tv, formid, optionList, displayCondition, "" + runtimevalidationlist.get(rg.getId()), isCompulsory, orientation);
+                questionInteractor.updateFormCompletionStatus(maxautoId);
+                ImportantNote_Dialog();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }*/
                         if (PregnancyStatus.equals("close_no") || PregnancyStatus.equals("erase_the_case_no") || PregnancyStatus.equals("ec_close_no")) {
                             android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(displayForm.this, R.style.AppCompatAlertDialogStyle);
                             builder.setCancelable(false);
@@ -1854,6 +1869,7 @@ public class displayForm extends AppCompatActivity {
         } else {
             multipleRadioButton(quesid, keyword, setid, rg.getId(), tv, formid, optionList, displayCondition, "" + runtimevalidationlist.get(rg.getId()), isCompulsory, orientation);
         }
+
 
         return ll;
     }
@@ -3985,6 +4001,14 @@ public class displayForm extends AppCompatActivity {
                     })
                     .setNegativeButton(displayForm.this.getString(R.string.no), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            if(directWomanFlag==1){
+                                directWomanName= b.getString(NAME);
+                                directWomanPhone = b.getString("phone");
+                                questionInteractor.saveWoman(uniqueId,directWomanName,directWomanPhone, 1);
+                                //url questionInteractor.saveDirectWomanDetails(maxautoId,uniqueId,directWomanName,directWomanPhone);
+                                        /*if(!uniqueId.equals("0"))
+                                            questionInteractor.updateDirectReg(uniqueId);*/
+                            }
                             //finish();
                         }
                     })
@@ -5384,6 +5408,15 @@ public class displayForm extends AppCompatActivity {
                 ll.setPadding(20, 30, 20, 40);
 
                 ll_4layout.addView(ll);
+
+                /**
+                 * following if loop is for certain questions to skip on specific conditions
+                 */
+                if(alertList.get(j).getKeyword().equals("participant_study_id")){
+                    if(directWomanName.equals(null) || directWomanName.isEmpty()){
+                        ll_4layout.removeView(ll);
+                    }
+                }
 
                 switch (alertList.get(j).getAnswerType()) {
                     case "text":

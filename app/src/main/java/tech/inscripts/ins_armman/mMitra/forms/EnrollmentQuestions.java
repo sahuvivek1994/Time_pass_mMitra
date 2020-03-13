@@ -671,6 +671,7 @@ public class EnrollmentQuestions extends AppCompatActivity {
                                 Intent intent = new Intent(EnrollmentQuestions.this, displayForm.class);
                                 intent.putExtra(UNIQUE_ID, uniqueId);
                                 intent.putExtra(FORM_ID, "2");
+                                intent.putExtra("NormalRegFlag", 100);
                                 startActivity(intent);
                             }
                             finish();
@@ -1562,7 +1563,10 @@ public class EnrollmentQuestions extends AppCompatActivity {
             womenanswer.put(et.getId(), "" + formid + delimeter + setid + delimeter + keyword + delimeter + et.getText().toString().trim());
             validationlist.put("" + et.getTag(), et.getText().toString());
             NextButtonvalidationlist.remove("" + et.getTag());
-
+            }
+        }else if (keyword.equals("participant_study_id")) {
+            if (NormalRegFlag != 100) {
+                NextButtonvalidationlist.remove("" + et.getTag());
             }
         }
 
@@ -5244,6 +5248,15 @@ public class EnrollmentQuestions extends AppCompatActivity {
                 ll.setBackground(drawableMainQstn);
                 ll.setPadding(20, 30, 20, 40);
                 ll_4layout.addView(ll);
+
+                /**
+                 * following if loop is for certain questions to skip on specific conditions
+                 */
+                if(enrollmentList.get(j).keyword.equals("participant_study_id")){
+                    if( NormalRegFlag!=100){
+                        ll_4layout.removeView(ll);
+                    }
+                }
 
                 switch (enrollmentList.get(j).getAnswerType()) {
                     case "text":
