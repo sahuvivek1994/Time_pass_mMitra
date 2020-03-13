@@ -512,7 +512,9 @@ public class displayForm extends AppCompatActivity {
                     scroll_temp = (ScrollView) Frame.findViewById(Integer.parseInt(String.valueOf(scrollId.get(scrollcounter))));
                     scroll_temp.setVisibility(View.VISIBLE);
 
-
+                    if(directWomanFlag ==1 && FormID ==2 )
+                        questionInteractor.saveFilledFormStatus(uniqueId, FormID, 1, 0, utilityObj.getCurrentDateTime());
+                    else
                     questionInteractor.updateFormCompletionStatus(maxautoId);
                     //TODO: Remove all currentTable code from project
 //                    questionInteractor.currentFormUpdate(uniqueId, FormID);
@@ -5273,7 +5275,8 @@ public class displayForm extends AppCompatActivity {
             maxautoId = questionInteractor.getFilledFormReferenceId(uniqueIDToUse, String.valueOf(FormID));
 
             if (maxautoId == -1) {
-                maxautoId = questionInteractor.saveFilledFormStatus(uniqueIDToUse, FormID, 0, 0, utilityObj.getCurrentDateTime());
+                if(directWomanFlag!=1 && FormID!=2)
+                    maxautoId = questionInteractor.saveFilledFormStatus(uniqueIDToUse, FormID, 0, 0, utilityObj.getCurrentDateTime());
             }
 
             previousVisitDetails = questionInteractor.getFormFilledData(uniqueIDToUse, (FormID - 1));
