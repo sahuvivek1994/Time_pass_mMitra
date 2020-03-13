@@ -15,7 +15,7 @@ class IncomleteFormPresenter : IIncompleteFormPresenter<IncompleteFormActivity> 
      */
     override fun getIncompleteFormList() {
 var space= " "
-
+        womenList.clear()
         var cursor : Cursor = interactor?.getIncompleteFormList()!!
        var a= cursor.count
         if(a!=null || a>0) {
